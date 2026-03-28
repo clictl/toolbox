@@ -2,8 +2,6 @@
 
 The official tool registry for [clictl](https://clictl.dev) - the package manager for AI agents. 223+ curated specs for APIs, CLIs, MCP servers, and skills.
 
-A [Soap Bucket LLC](https://www.soapbucket.org) project.
-
 ```bash
 # Use this toolbox
 clictl toolbox add https://github.com/clictl/toolbox
@@ -170,10 +168,9 @@ See [SPEC_SCHEMA.md](SPEC_SCHEMA.md) for the complete schema reference with temp
 
 ## Links
 
-- [github.com/clictl/cli](https://github.com/clictl/cli) -- CLI source code
-- [github.com/clictl/registry](https://github.com/clictl/registry) -- This registry
-- [soapbucket.org](https://soapbucket.org) -- Parent project
+- [clictl.dev](https://clictl.dev) - Website
+- [github.com/clictl/cli](https://github.com/clictl/cli) - CLI source code
+- [github.com/clictl/toolbox](https://github.com/clictl/toolbox) - This toolbox
+- [github.com/clictl/toolbox-example](https://github.com/clictl/toolbox-example) - Example toolbox template
 
-## Author
-
-[Rick Crawford](https://www.linkedin.com/in/rickcrawford/) -- [GitHub](https://github.com/clictl)
+A [Soap Bucket LLC](https://www.soapbucket.org) project.

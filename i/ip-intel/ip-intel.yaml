@@ -5,8 +5,8 @@ category: ip
 tags: [ip, geolocation, security, threat, composite, pipeline]
 protocol: composite
 owner_name: clictl
-website: https://github.com/clictl/registry
-support_url: https://github.com/clictl/registry/issues
+website: https://github.com/clictl/toolbox
+support_url: https://github.com/clictl/toolbox/issues
 pricing_model: free
 
 connection:
