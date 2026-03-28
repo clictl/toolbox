@@ -1,0 +1,7 @@
+# clictl Official Toolbox
+# This config enables `clictl toolbox sync` for the official registry.
+# Specs are at the root level with letter-prefix directories (a-z).
+
+workspace: "official"
+branches:
+  - main

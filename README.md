@@ -2,12 +2,11 @@
 
 The official tool registry for [clictl](https://clictl.dev) - the package manager for AI agents. 223+ curated specs for APIs, CLIs, MCP servers, and skills.
 
-```bash
-# Use this toolbox
-clictl toolbox add https://github.com/clictl/toolbox
+This toolbox is included by default when you install clictl:
 
-# Or it's included by default when you install clictl
+```bash
 curl -fsSL https://clictl.dev/install.sh | sh
+clictl search github
 ```
 
 ## For AI Agents
