@@ -171,5 +171,6 @@ See [SPEC_SCHEMA.md](SPEC_SCHEMA.md) for the complete schema reference with temp
 - [github.com/clictl/cli](https://github.com/clictl/cli) - CLI source code
 - [github.com/clictl/toolbox](https://github.com/clictl/toolbox) - This toolbox
 - [github.com/clictl/toolbox-example](https://github.com/clictl/toolbox-example) - Example toolbox template
+- [Contributing](CONTRIBUTING.md) - How to add a tool spec
 
 A [Soap Bucket LLC](https://www.soapbucket.org) project.
