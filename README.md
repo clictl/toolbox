@@ -1,5 +1,9 @@
 # clictl Official Toolbox
 
+[![Tool Count](https://img.shields.io/badge/tools-223%2B-blue)](https://github.com/clictl/toolbox)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Spec Tests](https://github.com/clictl/toolbox/actions/workflows/validate.yaml/badge.svg)](https://github.com/clictl/toolbox/actions/workflows/validate.yaml)
+
 The official tool registry for [clictl](https://clictl.dev) - the package manager for AI agents. 223+ curated specs for APIs, CLIs, MCP servers, and skills.
 
 This toolbox is included by default when you install clictl:
