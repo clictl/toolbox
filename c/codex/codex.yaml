@@ -1,0 +1,37 @@
+name: codex
+description: OpenAI's lightweight coding agent that runs in your terminal
+version: "1.0"
+category: ai
+tags: [ai, openai, codex, coding, agent, llm]
+protocol: cli
+tool_type: cli
+owner_name: OpenAI
+website: https://github.com/openai/codex
+support_url: https://github.com/openai/codex/issues
+pricing_model: paid
+
+auth:
+  - type: none
+
+actions:
+  - name: chat
+    description: Start an interactive coding session with Codex
+    method: command
+    path: codex
+    params:
+      - name: prompt
+        type: string
+        required: false
+        description: Initial prompt to send to Codex
+        in: arg
+
+  - name: run
+    description: Run a prompt non-interactively
+    method: command
+    path: codex
+    params:
+      - name: prompt
+        type: string
+        required: true
+        description: The prompt to execute
+        in: arg

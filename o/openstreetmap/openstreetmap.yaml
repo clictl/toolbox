@@ -1,0 +1,122 @@
+name: openstreetmap
+description: OpenStreetMap Nominatim API for geocoding addresses, reverse geocoding coordinates, and searching places
+version: "1.0"
+category: data
+tags: [openstreetmap, geocoding, maps, places, coordinates, nominatim]
+protocol: rest
+owner_name: OpenStreetMap Foundation
+website: https://www.openstreetmap.org
+support_url: https://nominatim.org/release-docs/latest/api/Overview
+pricing_model: free
+
+connection:
+  base_url: https://nominatim.openstreetmap.org
+  timeout: 15s
+  headers:
+    Accept: application/json
+    User-Agent: clictl/1.0
+
+auth:
+  - type: none
+
+actions:
+  - name: search
+    description: Search for places by name, address, or other attributes
+    method: GET
+    path: /search
+    params:
+      - name: q
+        type: string
+        required: true
+        description: "Free-form search query, e.g. 'Empire State Building' or '123 Main St, Springfield'"
+        in: query
+      - name: format
+        type: string
+        default: "jsonv2"
+        description: "Output format: 'jsonv2' (recommended), 'json', 'geojson', or 'xml'"
+        in: query
+      - name: limit
+        type: int
+        default: "10"
+        description: Maximum number of results (max 50)
+        in: query
+      - name: addressdetails
+        type: int
+        default: "1"
+        description: Set to 1 to include a breakdown of the address into elements
+        in: query
+      - name: countrycodes
+        type: string
+        description: "Comma-separated ISO 3166-1 country codes to limit results, e.g. 'us,gb'"
+        in: query
+      - name: viewbox
+        type: string
+        description: "Preferred area as 'lon1,lat1,lon2,lat2' bounding box"
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+      - truncate: { max_items: 20 }
+
+  - name: reverse
+    description: Look up the address for a given latitude and longitude
+    method: GET
+    path: /reverse
+    params:
+      - name: lat
+        type: string
+        required: true
+        description: Latitude of the point to look up
+        in: query
+      - name: lon
+        type: string
+        required: true
+        description: Longitude of the point to look up
+        in: query
+      - name: format
+        type: string
+        default: "jsonv2"
+        description: Output format
+        in: query
+      - name: zoom
+        type: int
+        default: "18"
+        description: "Level of detail (0 = country, 18 = building)"
+        in: query
+      - name: addressdetails
+        type: int
+        default: "1"
+        description: Set to 1 to include address breakdown
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+      - select: ["place_id", "display_name", "address", "lat", "lon", "type", "importance"]
+
+  - name: lookup
+    description: Look up address details for one or more OSM objects by their IDs
+    method: GET
+    path: /lookup
+    params:
+      - name: osm_ids
+        type: string
+        required: true
+        description: "Comma-separated OSM IDs with type prefix, e.g. 'R146656,W104393803,N240109189'"
+        in: query
+      - name: format
+        type: string
+        default: "jsonv2"
+        description: Output format
+        in: query
+      - name: addressdetails
+        type: int
+        default: "1"
+        description: Set to 1 to include address breakdown
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+      - truncate: { max_items: 20 }

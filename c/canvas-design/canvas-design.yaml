@@ -1,0 +1,136 @@
+name: canvas-design
+description: Create refined visual art pieces in PNG and PDF formats through a
+  design philosophy framework
+version: "1.0"
+category: design
+tags:
+- skill
+- art
+- canvas
+- poster
+- visual-design
+- pdf
+- png
+protocol: skill
+owner_name: Anthropic
+namespace: anthropic
+website: https://github.com/anthropics/skills
+support_url: https://github.com/anthropics/skills/issues
+pricing_model: free
+license: Apache-2.0
+source:
+  type: github
+  repo: anthropics/skills
+  path: skills/canvas-design/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: SKILL.md
+  - name: canvas-fonts/ArsenalSC-OFL.txt
+  - name: canvas-fonts/ArsenalSC-Regular.ttf
+  - name: canvas-fonts/BigShoulders-Bold.ttf
+  - name: canvas-fonts/BigShoulders-OFL.txt
+  - name: canvas-fonts/BigShoulders-Regular.ttf
+  - name: canvas-fonts/Boldonse-OFL.txt
+  - name: canvas-fonts/Boldonse-Regular.ttf
+  - name: canvas-fonts/BricolageGrotesque-Bold.ttf
+  - name: canvas-fonts/BricolageGrotesque-OFL.txt
+  - name: canvas-fonts/BricolageGrotesque-Regular.ttf
+  - name: canvas-fonts/CrimsonPro-Bold.ttf
+  - name: canvas-fonts/CrimsonPro-Italic.ttf
+  - name: canvas-fonts/CrimsonPro-OFL.txt
+  - name: canvas-fonts/CrimsonPro-Regular.ttf
+  - name: canvas-fonts/DMMono-OFL.txt
+  - name: canvas-fonts/DMMono-Regular.ttf
+  - name: canvas-fonts/EricaOne-OFL.txt
+  - name: canvas-fonts/EricaOne-Regular.ttf
+  - name: canvas-fonts/GeistMono-Bold.ttf
+  - name: canvas-fonts/GeistMono-OFL.txt
+  - name: canvas-fonts/GeistMono-Regular.ttf
+  - name: canvas-fonts/Gloock-OFL.txt
+  - name: canvas-fonts/Gloock-Regular.ttf
+  - name: canvas-fonts/IBMPlexMono-Bold.ttf
+  - name: canvas-fonts/IBMPlexMono-OFL.txt
+  - name: canvas-fonts/IBMPlexMono-Regular.ttf
+  - name: canvas-fonts/IBMPlexSerif-Bold.ttf
+  - name: canvas-fonts/IBMPlexSerif-BoldItalic.ttf
+  - name: canvas-fonts/IBMPlexSerif-Italic.ttf
+  - name: canvas-fonts/IBMPlexSerif-Regular.ttf
+  - name: canvas-fonts/InstrumentSans-Bold.ttf
+  - name: canvas-fonts/InstrumentSans-BoldItalic.ttf
+  - name: canvas-fonts/InstrumentSans-Italic.ttf
+  - name: canvas-fonts/InstrumentSans-OFL.txt
+  - name: canvas-fonts/InstrumentSans-Regular.ttf
+  - name: canvas-fonts/InstrumentSerif-Italic.ttf
+  - name: canvas-fonts/InstrumentSerif-Regular.ttf
+  - name: canvas-fonts/Italiana-OFL.txt
+  - name: canvas-fonts/Italiana-Regular.ttf
+  - name: canvas-fonts/JetBrainsMono-Bold.ttf
+  - name: canvas-fonts/JetBrainsMono-OFL.txt
+  - name: canvas-fonts/JetBrainsMono-Regular.ttf
+  - name: canvas-fonts/Jura-Light.ttf
+  - name: canvas-fonts/Jura-Medium.ttf
+  - name: canvas-fonts/Jura-OFL.txt
+  - name: canvas-fonts/LibreBaskerville-OFL.txt
+  - name: canvas-fonts/LibreBaskerville-Regular.ttf
+  - name: canvas-fonts/Lora-Bold.ttf
+  - name: canvas-fonts/Lora-BoldItalic.ttf
+  - name: canvas-fonts/Lora-Italic.ttf
+  - name: canvas-fonts/Lora-OFL.txt
+  - name: canvas-fonts/Lora-Regular.ttf
+  - name: canvas-fonts/NationalPark-Bold.ttf
+  - name: canvas-fonts/NationalPark-OFL.txt
+  - name: canvas-fonts/NationalPark-Regular.ttf
+  - name: canvas-fonts/NothingYouCouldDo-OFL.txt
+  - name: canvas-fonts/NothingYouCouldDo-Regular.ttf
+  - name: canvas-fonts/Outfit-Bold.ttf
+  - name: canvas-fonts/Outfit-OFL.txt
+  - name: canvas-fonts/Outfit-Regular.ttf
+  - name: canvas-fonts/PixelifySans-Medium.ttf
+  - name: canvas-fonts/PixelifySans-OFL.txt
+  - name: canvas-fonts/PoiretOne-OFL.txt
+  - name: canvas-fonts/PoiretOne-Regular.ttf
+  - name: canvas-fonts/RedHatMono-Bold.ttf
+  - name: canvas-fonts/RedHatMono-OFL.txt
+  - name: canvas-fonts/RedHatMono-Regular.ttf
+  - name: canvas-fonts/Silkscreen-OFL.txt
+  - name: canvas-fonts/Silkscreen-Regular.ttf
+  - name: canvas-fonts/SmoochSans-Medium.ttf
+  - name: canvas-fonts/SmoochSans-OFL.txt
+  - name: canvas-fonts/Tektur-Medium.ttf
+  - name: canvas-fonts/Tektur-OFL.txt
+  - name: canvas-fonts/Tektur-Regular.ttf
+  - name: canvas-fonts/WorkSans-Bold.ttf
+  - name: canvas-fonts/WorkSans-BoldItalic.ttf
+  - name: canvas-fonts/WorkSans-Italic.ttf
+  - name: canvas-fonts/WorkSans-OFL.txt
+  - name: canvas-fonts/WorkSans-Regular.ttf
+  - name: canvas-fonts/YoungSerif-OFL.txt
+  - name: canvas-fonts/YoungSerif-Regular.ttf
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: anthropic
+  version: '1.0'
+auth:
+- type: none
+requires_system:
+- name: python3
+  check: "python3 --version"
+  brew: python3
+runtime:
+  language: python
+  manager: uvx
+  dependencies:
+  - Pillow

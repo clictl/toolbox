@@ -1,0 +1,47 @@
+name: aws-s3
+description: AWS S3 API for object storage operations
+version: "1.0"
+category: cloud
+tags: [aws, s3, storage, cloud, objects, buckets]
+protocol: rest
+owner_name: Amazon Web Services
+website: https://aws.amazon.com/s3/
+support_url: https://docs.aws.amazon.com/s3/
+
+connection:
+  base_url: https://s3.amazonaws.com
+  timeout: 30s
+  headers:
+    Accept: application/xml
+
+auth:
+  - type: custom
+    key_env: AWS_ACCESS_KEY_ID
+    note: "Requires AWS Signature V4 signing. Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables."
+
+actions:
+  - name: list_buckets
+    description: List all S3 buckets in the account
+    method: GET
+    path: /
+    params: []
+
+  - name: list_objects
+    description: List objects in a specific S3 bucket
+    method: GET
+    path: /{{bucket}}
+    params:
+      - name: bucket
+        type: string
+        required: true
+        description: S3 bucket name
+        in: path
+      - name: prefix
+        type: string
+        description: Filter objects by key prefix
+        in: query
+      - name: max-keys
+        type: int
+        default: "100"
+        description: Maximum number of objects to return (max 1000)
+        in: query

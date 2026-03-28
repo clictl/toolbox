@@ -1,0 +1,118 @@
+name: asana-mcp
+description: Official Asana MCP server for project and task management with workspace access
+version: "1.0"
+category: productivity
+tags: [mcp, asana, project-management, tasks, workspace, collaboration]
+protocol: mcp
+owner_name: Asana
+website: https://developers.asana.com/docs/using-asanas-mcp-server
+support_url: https://developers.asana.com
+pricing_model: freemium
+
+transport:
+  type: http
+  url: https://mcp.asana.com/v2/mcp
+  timeout: 30s
+
+auth:
+  - type: oauth2
+    authorization_url: https://app.asana.com/-/oauth_authorize
+    token_url: https://app.asana.com/-/oauth_token
+    scopes: [default]
+
+tools:
+  expose:
+    - name: list_tasks
+      description: "List tasks in a project"
+      params:
+        - name: project_gid
+          type: string
+          required: true
+          description: "Project GID"
+    - name: get_task
+      description: "Get details of a specific task"
+      params:
+        - name: task_gid
+          type: string
+          required: true
+          description: "Task GID"
+    - name: create_task
+      description: "Create a new task"
+      destructive: true
+      params:
+        - name: project_gid
+          type: string
+          required: true
+          description: "Project GID to add the task to"
+        - name: name
+          type: string
+          required: true
+          description: "Task name"
+        - name: notes
+          type: string
+          required: false
+          description: "Task description"
+        - name: due_on
+          type: string
+          required: false
+          description: "Due date in YYYY-MM-DD format"
+    - name: update_task
+      description: "Update an existing task"
+      destructive: true
+      params:
+        - name: task_gid
+          type: string
+          required: true
+          description: "Task GID"
+        - name: name
+          type: string
+          required: false
+          description: "Updated task name"
+        - name: completed
+          type: bool
+          required: false
+          description: "Whether the task is complete"
+    - name: list_projects
+      description: "List projects in a workspace"
+      params:
+        - name: workspace_gid
+          type: string
+          required: true
+          description: "Workspace GID"
+    - name: search_tasks
+      description: "Search tasks across projects"
+      params:
+        - name: workspace_gid
+          type: string
+          required: true
+          description: "Workspace GID"
+        - name: query
+          type: string
+          required: true
+          description: "Search query"
+    - name: add_comment
+      description: "Add a comment to a task"
+      destructive: true
+      params:
+        - name: task_gid
+          type: string
+          required: true
+          description: "Task GID"
+        - name: text
+          type: string
+          required: true
+          description: "Comment text"
+
+prompts:
+  system: |
+    This server provides access to Asana projects and tasks. Use it for
+    viewing tasks, creating new items, updating status, and managing
+    project workflows. Confirm before creating or modifying tasks.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true

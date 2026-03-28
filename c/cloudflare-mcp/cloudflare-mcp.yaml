@@ -1,0 +1,208 @@
+name: cloudflare-mcp
+description: Official Cloudflare MCP server for managing Workers, KV, R2, D1, and DNS from AI agents
+version: "1.0"
+category: cloud
+tags: [mcp, cloudflare, workers, kv, r2, d1, dns, edge, serverless]
+protocol: mcp
+owner_name: Cloudflare
+website: https://github.com/cloudflare/mcp-server-cloudflare
+support_url: https://github.com/cloudflare/mcp-server-cloudflare/issues
+pricing_model: freemium
+license: Apache-2.0
+
+package:
+  registry: npm
+  name: "@cloudflare/mcp-server-cloudflare"
+  version: "0.1.0"
+  manager: npx
+
+docs:
+  api_reference: https://developers.cloudflare.com/api/
+
+auth:
+  - type: api_key
+    key_env: CLOUDFLARE_API_TOKEN
+    inject:
+      location: env
+      param: CLOUDFLARE_API_TOKEN
+
+tools:
+  expose:
+    - name: worker_list
+      description: "List all Workers in the account"
+    - name: worker_get
+      description: "Get a Worker script by name"
+      params:
+        - name: name
+          type: string
+          required: true
+          description: "Worker script name"
+    - name: worker_put
+      description: "Create or update a Worker script"
+      destructive: true
+      params:
+        - name: name
+          type: string
+          required: true
+          description: "Worker script name"
+        - name: script
+          type: string
+          required: true
+          description: "Worker script content"
+    - name: worker_delete
+      description: "Delete a Worker script"
+      destructive: true
+      params:
+        - name: name
+          type: string
+          required: true
+          description: "Worker script name"
+    - name: kv_namespace_list
+      description: "List KV namespaces"
+    - name: kv_get
+      description: "Get a value from a KV namespace"
+      params:
+        - name: namespace_id
+          type: string
+          required: true
+          description: "KV namespace ID"
+        - name: key
+          type: string
+          required: true
+          description: "Key to retrieve"
+    - name: kv_put
+      description: "Write a value to a KV namespace"
+      destructive: true
+      params:
+        - name: namespace_id
+          type: string
+          required: true
+          description: "KV namespace ID"
+        - name: key
+          type: string
+          required: true
+          description: "Key to write"
+        - name: value
+          type: string
+          required: true
+          description: "Value to store"
+    - name: kv_delete
+      description: "Delete a key from a KV namespace"
+      destructive: true
+      params:
+        - name: namespace_id
+          type: string
+          required: true
+          description: "KV namespace ID"
+        - name: key
+          type: string
+          required: true
+          description: "Key to delete"
+    - name: r2_bucket_list
+      description: "List R2 storage buckets"
+    - name: r2_object_list
+      description: "List objects in an R2 bucket"
+      params:
+        - name: bucket_name
+          type: string
+          required: true
+          description: "R2 bucket name"
+        - name: prefix
+          type: string
+          required: false
+          description: "Object key prefix filter"
+    - name: r2_object_get
+      description: "Get an object from R2 storage"
+      params:
+        - name: bucket_name
+          type: string
+          required: true
+          description: "R2 bucket name"
+        - name: key
+          type: string
+          required: true
+          description: "Object key"
+    - name: r2_object_put
+      description: "Upload an object to R2 storage"
+      destructive: true
+      params:
+        - name: bucket_name
+          type: string
+          required: true
+          description: "R2 bucket name"
+        - name: key
+          type: string
+          required: true
+          description: "Object key"
+        - name: content
+          type: string
+          required: true
+          description: "Object content"
+    - name: d1_database_list
+      description: "List D1 databases"
+    - name: dns_record_list
+      description: "List DNS records for a zone"
+      params:
+        - name: zone_id
+          type: string
+          required: true
+          description: "Cloudflare zone ID"
+    - name: dns_record_create
+      description: "Create a new DNS record"
+      destructive: true
+      params:
+        - name: zone_id
+          type: string
+          required: true
+          description: "Cloudflare zone ID"
+        - name: type
+          type: string
+          required: true
+          description: "Record type (e.g. A, AAAA, CNAME, TXT)"
+        - name: name
+          type: string
+          required: true
+          description: "Record name"
+        - name: content
+          type: string
+          required: true
+          description: "Record value"
+        - name: ttl
+          type: integer
+          required: false
+          description: "TTL in seconds"
+  tool_transforms:
+    worker_list:
+      - truncate: { max_items: 50 }
+    kv_namespace_list:
+      - truncate: { max_items: 50 }
+    r2_object_list:
+      - truncate: { max_items: 100 }
+    dns_record_list:
+      - truncate: { max_items: 50 }
+
+permissions:
+  network:
+    - "api.cloudflare.com"
+  env:
+    - "CLOUDFLARE_API_TOKEN"
+
+prompts:
+  system: |
+    This server manages Cloudflare services. Always list existing
+    resources before creating new ones. When deploying Workers, verify
+    the script compiles correctly. Be cautious with DNS changes as
+    they affect live traffic.
+  tool_instructions:
+    worker_put: "Verify the script is valid before deploying."
+    worker_delete: "Confirm with the user. This stops the Worker immediately."
+    dns_record_create: "Double-check record type, name, and value. DNS changes affect live traffic."
+
+resources:
+  expose: all
+
+install_mode:
+  default: both
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s

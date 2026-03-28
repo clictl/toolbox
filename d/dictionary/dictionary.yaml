@@ -1,0 +1,43 @@
+name: dictionary
+description: Free English dictionary with definitions, phonetics, pronunciation audio, synonyms, and example sentences
+version: "1.0"
+category: text
+tags: [dictionary, definitions, words, language, english, synonyms, phonetics]
+protocol: rest
+owner_name: Free Dictionary API
+website: https://dictionaryapi.dev
+support_url: https://github.com/meetDeveloper/freeDictionaryAPI
+
+connection:
+  base_url: https://api.dictionaryapi.dev/api/v2
+  timeout: 10s
+
+auth:
+  - type: none
+
+actions:
+  - name: define
+    description: Look up the definition of an English word including phonetics, meanings, synonyms, and example usage
+    method: GET
+    path: /entries/en/{{word}}
+    params:
+      - name: word
+        type: string
+        required: true
+        description: "English word to look up, e.g. 'serendipity'"
+        in: path
+    transform:
+      - js: |
+          function transform(data) {
+            var entry = data[0];
+            var result = { word: entry.word, phonetic: entry.phonetic || "" };
+            result.meanings = entry.meanings.map(function(m) {
+              return {
+                part_of_speech: m.partOfSpeech,
+                definitions: m.definitions.slice(0, 3).map(function(d) {
+                  return { definition: d.definition, example: d.example || "" };
+                })
+              };
+            });
+            return result;
+          }

@@ -1,0 +1,93 @@
+name: ntfy
+description: ntfy.sh push notification service for publishing messages to topics and reading notification history
+version: "1.0"
+category: communication
+tags: [ntfy, notifications, push, alerts, pubsub]
+protocol: rest
+owner_name: ntfy
+website: https://ntfy.sh
+support_url: https://docs.ntfy.sh
+pricing_model: free
+
+connection:
+  base_url: https://ntfy.sh
+  timeout: 15s
+  headers:
+    Accept: application/json
+
+auth:
+  - type: api_key
+    key_env: NTFY_TOKEN
+    inject:
+      location: header
+      param: Authorization
+      prefix: "Bearer"
+
+actions:
+  - name: publish
+    description: Send a push notification to a topic. Anyone subscribed to the topic will receive it.
+    method: POST
+    path: /
+    params:
+      - name: topic
+        type: string
+        required: true
+        description: The topic name to publish to
+        in: body
+      - name: message
+        type: string
+        required: true
+        description: The notification message body
+        in: body
+      - name: title
+        type: string
+        description: Optional title for the notification
+        in: body
+      - name: priority
+        type: int
+        description: "Priority level from 1 (min) to 5 (max), default is 3"
+        in: body
+      - name: tags
+        type: string
+        description: "Comma-separated list of tags or emoji shortcodes, e.g. 'warning,server'"
+        in: body
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+      - select: ["id", "time", "event", "topic", "message"]
+
+  - name: poll
+    description: Poll for recent messages on a topic without subscribing to a stream
+    method: GET
+    path: /{{topic}}/json
+    params:
+      - name: topic
+        type: string
+        required: true
+        description: The topic name to poll
+        in: path
+      - name: poll
+        type: string
+        default: "1"
+        description: Set to 1 to return immediately with cached messages
+        in: query
+      - name: since
+        type: string
+        description: "Return messages since a duration or timestamp, e.g. '10m', '1h', or a Unix timestamp"
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+      - truncate: { max_items: 20 }
+
+  - name: server-health
+    description: Check the health status of the ntfy server
+    method: GET
+    path: /v1/health
+    params: []
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"

@@ -1,0 +1,100 @@
+name: tmdb
+description: The Movie Database API for movies, TV shows, and actor information
+version: "1.0"
+category: media
+tags: [movies, tv, actors, entertainment, film]
+protocol: rest
+owner_name: The Movie Database
+website: https://themoviedb.org
+support_url: https://developer.themoviedb.org/docs
+
+connection:
+  base_url: https://api.themoviedb.org/3
+  timeout: 15s
+  headers:
+    Accept: application/json
+
+auth:
+  - type: bearer
+    key_env: TMDB_TOKEN
+    inject:
+      location: header
+      key: Authorization
+      prefix: "Bearer "
+
+actions:
+  - name: search_movies
+    description: Search for movies by title
+    method: GET
+    path: /search/movie
+    params:
+      - name: query
+        type: string
+        required: true
+        description: Movie title to search for
+        in: query
+      - name: page
+        type: int
+        default: "1"
+        description: Page number of results
+        in: query
+      - name: language
+        type: string
+        default: en-US
+        description: "Language code, e.g. 'en-US', 'fr-FR'"
+        in: query
+    transform:
+      extract: "$.results"
+
+  - name: movie
+    description: Get detailed information about a specific movie
+    method: GET
+    path: /movie/{{movie_id}}
+    params:
+      - name: movie_id
+        type: int
+        required: true
+        description: TMDB movie ID
+        in: path
+      - name: language
+        type: string
+        default: en-US
+        description: Language for the response
+        in: query
+
+  - name: trending
+    description: Get trending movies for a given time window
+    method: GET
+    path: /trending/movie/{{time_window}}
+    params:
+      - name: time_window
+        type: string
+        required: true
+        default: week
+        description: "Time window for trending: 'day' or 'week'"
+        in: path
+      - name: language
+        type: string
+        default: en-US
+        description: Language for the response
+        in: query
+    transform:
+      extract: "$.results"
+
+  - name: popular
+    description: Get a list of currently popular movies
+    method: GET
+    path: /movie/popular
+    params:
+      - name: page
+        type: int
+        default: "1"
+        description: Page number of results
+        in: query
+      - name: language
+        type: string
+        default: en-US
+        description: Language for the response
+        in: query
+    transform:
+      extract: "$.results"

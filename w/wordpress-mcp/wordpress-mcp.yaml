@@ -1,0 +1,126 @@
+name: wordpress-mcp
+description: MCP adapter for WordPress bridging the Abilities API to the Model Context Protocol
+version: "1.0"
+category: developer
+tags: [mcp, wordpress, cms, content, publishing, automattic]
+protocol: mcp
+owner_name: WordPress
+website: https://github.com/WordPress/mcp-adapter
+support_url: https://github.com/WordPress/mcp-adapter/issues
+pricing_model: free
+license: GPL-2.0
+
+transport:
+  type: http
+  url: https://example.com/wp-json/mcp/v1
+  timeout: 30s
+
+auth:
+  - type: api_key
+    key_env: WORDPRESS_APPLICATION_PASSWORD
+    inject:
+      location: header
+      param: Authorization
+      prefix: "Basic"
+
+tools:
+  expose:
+    - name: list_posts
+      description: "List published and draft posts"
+      params:
+        - name: status
+          type: string
+          required: false
+          description: "Filter by status: publish, draft, pending, or private"
+        - name: per_page
+          type: int
+          required: false
+          description: "Number of posts to return"
+    - name: get_post
+      description: "Get a single post by ID"
+      params:
+        - name: post_id
+          type: int
+          required: true
+          description: "Post ID"
+    - name: create_post
+      description: "Create a new post"
+      destructive: true
+      params:
+        - name: title
+          type: string
+          required: true
+          description: "Post title"
+        - name: content
+          type: string
+          required: true
+          description: "Post content in HTML"
+        - name: status
+          type: string
+          required: false
+          description: "Post status: publish, draft, pending, or private"
+    - name: update_post
+      description: "Update an existing post"
+      destructive: true
+      params:
+        - name: post_id
+          type: int
+          required: true
+          description: "Post ID to update"
+        - name: title
+          type: string
+          required: false
+          description: "Updated post title"
+        - name: content
+          type: string
+          required: false
+          description: "Updated post content"
+        - name: status
+          type: string
+          required: false
+          description: "Updated post status"
+    - name: delete_post
+      description: "Delete a post"
+      destructive: true
+      params:
+        - name: post_id
+          type: int
+          required: true
+          description: "Post ID to delete"
+    - name: list_pages
+      description: "List published and draft pages"
+      params:
+        - name: per_page
+          type: int
+          required: false
+          description: "Number of pages to return"
+    - name: get_page
+      description: "Get a single page by ID"
+      params:
+        - name: page_id
+          type: int
+          required: true
+          description: "Page ID"
+    - name: list_categories
+      description: "List all post categories"
+    - name: list_media
+      description: "List media library items"
+      params:
+        - name: per_page
+          type: int
+          required: false
+          description: "Number of items to return"
+
+prompts:
+  system: |
+    This server provides access to a WordPress site via the MCP adapter.
+    Use it for managing posts, pages, media, and site configuration.
+    Always confirm before publishing or deleting content.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true

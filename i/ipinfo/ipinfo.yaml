@@ -1,0 +1,39 @@
+name: ipinfo
+description: IP address geolocation, ASN, company, and privacy detection data
+version: "1.0"
+category: ip
+tags: [ip, geolocation, network, asn, vpn, privacy]
+protocol: rest
+owner_name: IPinfo
+website: https://ipinfo.io
+support_url: https://ipinfo.io/developers
+
+connection:
+  base_url: https://ipinfo.io
+  timeout: 10s
+  headers:
+    Accept: application/json
+
+auth:
+  - type: bearer
+    key_env: IPINFO_TOKEN
+    inject:
+      location: header
+      key: Authorization
+      prefix: "Bearer "
+
+actions:
+  - name: lookup
+    description: Get geolocation, ISP, and network info for an IP address (omit IP to look up your own)
+    method: GET
+    path: /{{#ip}}{{ip}}{{/ip}}
+    params:
+      - name: ip
+        type: string
+        description: "IP address to look up (omit to get your own IP info)"
+
+  - name: my_ip
+    description: Get your own public IP address
+    method: GET
+    path: /ip
+    params: []

@@ -1,0 +1,108 @@
+name: coingecko
+description: Cryptocurrency prices, market data, exchange rates, and trending coins
+version: "1.0"
+category: crypto
+tags: [crypto, bitcoin, ethereum, prices, market, trading, defi]
+protocol: rest
+owner_name: CoinGecko
+website: https://coingecko.com
+support_url: https://www.coingecko.com/en/api/documentation
+
+connection:
+  base_url: https://api.coingecko.com/api/v3
+  timeout: 15s
+  headers:
+    Accept: application/json
+
+auth:
+  - type: api_key
+    key_env: COINGECKO_API_KEY
+    inject:
+      location: query
+      param: x_cg_demo_api_key
+
+actions:
+  - name: price
+    description: Get the current price of one or more cryptocurrencies in any supported currency
+    method: GET
+    path: /simple/price
+    params:
+      - name: ids
+        type: string
+        required: true
+        description: "Comma-separated coin IDs, e.g. 'bitcoin,ethereum,solana'"
+        in: query
+      - name: vs_currencies
+        type: string
+        required: true
+        description: "Comma-separated target currencies, e.g. 'usd,eur,btc'"
+        in: query
+      - name: include_24hr_change
+        type: string
+        default: "true"
+        description: Include 24-hour price change percentage
+        in: query
+      - name: include_market_cap
+        type: string
+        default: "false"
+        description: Include market capitalization
+        in: query
+
+  - name: markets
+    description: List coins with market data sorted by market cap, volume, or price change
+    method: GET
+    path: /coins/markets
+    params:
+      - name: vs_currency
+        type: string
+        required: true
+        description: "Target currency, e.g. 'usd'"
+        in: query
+      - name: order
+        type: string
+        default: market_cap_desc
+        description: "Sort order: market_cap_desc, volume_desc, price_desc, price_asc"
+        in: query
+      - name: per_page
+        type: int
+        default: "10"
+        description: Number of results per page (1-250)
+        in: query
+      - name: page
+        type: int
+        default: "1"
+        in: query
+
+  - name: coin
+    description: Get detailed data for a specific coin including description, links, and market data
+    method: GET
+    path: /coins/{{id}}
+    params:
+      - name: id
+        type: string
+        required: true
+        description: "Coin ID, e.g. 'bitcoin', 'ethereum'"
+        in: path
+      - name: localization
+        type: string
+        default: "false"
+        in: query
+
+  - name: trending
+    description: Get the top 7 trending coins searched by users in the last 24 hours
+    method: GET
+    path: /search/trending
+    params: []
+    transform:
+      extract: "$.coins"
+
+  - name: search
+    description: Search for coins, categories, and exchanges by name or symbol
+    method: GET
+    path: /search
+    params:
+      - name: query
+        type: string
+        required: true
+        description: Search query string
+        in: query

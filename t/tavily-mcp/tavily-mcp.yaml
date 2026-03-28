@@ -1,0 +1,72 @@
+name: tavily-mcp
+description: MCP server for Tavily advanced web search with AI-optimized results
+version: "1.0"
+category: search
+tags: [mcp, tavily, search, web, ai, research]
+protocol: mcp
+owner_name: Tavily AI
+website: https://github.com/tavily-ai/tavily-mcp
+support_url: https://github.com/tavily-ai/tavily-mcp/issues
+pricing_model: freemium
+license: MIT
+
+package:
+  registry: npm
+  name: "tavily-mcp"
+  version: "0.1.0"
+  manager: npx
+
+auth:
+  - type: api_key
+    key_env: TAVILY_API_KEY
+    inject:
+      location: env
+      param: TAVILY_API_KEY
+
+tools:
+  expose:
+    - name: search
+      description: "Search the web with AI-optimized results"
+      params:
+        - name: query
+          type: string
+          required: true
+          description: "Search query string"
+        - name: max_results
+          type: int
+          required: false
+          description: "Maximum number of results"
+        - name: search_depth
+          type: string
+          required: false
+          description: "Search depth: basic or advanced"
+        - name: include_domains
+          type: string
+          required: false
+          description: "Comma-separated domains to include"
+        - name: exclude_domains
+          type: string
+          required: false
+          description: "Comma-separated domains to exclude"
+    - name: extract
+      description: "Extract content from a URL"
+      params:
+        - name: url
+          type: string
+          required: true
+          description: "URL to extract content from"
+
+prompts:
+  system: |
+    This server provides AI-optimized web search via Tavily. Use it for
+    research, fact-checking, and finding up-to-date information.
+    Results are structured for easy consumption by AI agents.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s

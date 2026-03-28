@@ -1,0 +1,39 @@
+name: tailwind-docs
+description: Tailwind CSS utility-first framework documentation
+version: "1.0"
+category: documentation
+tags: [documentation, css, tailwind, frontend, reference]
+protocol: rest
+tool_type: website
+owner_name: Tailwind Labs
+website: https://tailwindcss.com
+support_url: https://github.com/tailwindlabs/tailwindcss/discussions
+pricing_model: free
+
+site:
+  url: https://tailwindcss.com/docs
+  sitemap: https://tailwindcss.com/sitemap.xml
+  content_type: documentation
+  preferred_format: html
+
+access:
+  method: fetch
+  robots_txt: respected
+
+connection:
+  base_url: https://tailwindcss.com
+
+auth:
+  - type: none
+
+actions:
+  - name: get_page
+    description: Fetch a specific Tailwind CSS documentation page
+    method: GET
+    path: /docs/{topic}
+    params:
+      - name: topic
+        type: string
+        required: true
+        description: Documentation topic slug (e.g., display, flex, padding, installation)
+        in: path

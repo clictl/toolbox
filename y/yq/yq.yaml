@@ -1,0 +1,69 @@
+name: yq
+description: Lightweight command-line YAML, JSON, and XML processor. Filter, transform, and convert structured data
+version: "1.0"
+category: developer
+tags: [yaml, json, config, data]
+protocol: cli
+tool_type: cli
+owner_name: Mike Farah
+website: https://github.com/mikefarah/yq
+support_url: https://mikefarah.gitbook.io/yq/
+
+connection:
+  shell: /bin/sh
+  requires:
+    - name: yq
+      url: https://github.com/mikefarah/yq#install
+      check: "yq --version"
+
+auth:
+  - type: none
+
+actions:
+  - name: read
+    description: Evaluate a yq expression against a YAML file and return the result
+    run: "yq '{{expression}}' {{file}}"
+    params:
+      - name: expression
+        type: string
+        required: true
+        description: "yq expression to evaluate (e.g., .metadata.name, .items[].id)"
+      - name: file
+        type: string
+        required: true
+        description: Path to the YAML file to read
+
+  - name: write
+    description: Update a YAML file in-place using a yq expression
+    run: "yq -i '{{expression}}' {{file}}"
+    params:
+      - name: expression
+        type: string
+        required: true
+        description: "yq expression to apply (e.g., .version = \"2.0\", .env.DEBUG = true)"
+      - name: file
+        type: string
+        required: true
+        description: Path to the YAML file to modify
+
+  - name: convert_to_json
+    description: Convert a YAML file to JSON format and print the output
+    run: "yq -o json {{file}}"
+    params:
+      - name: file
+        type: string
+        required: true
+        description: Path to the YAML file to convert
+
+  - name: merge
+    description: Merge multiple YAML files together, with later files overriding earlier ones
+    run: "yq eval-all 'select(fileIndex == 0) * select(fileIndex == 1)' {{file1}} {{file2}}"
+    params:
+      - name: file1
+        type: string
+        required: true
+        description: Path to the base YAML file
+      - name: file2
+        type: string
+        required: true
+        description: Path to the YAML file to merge on top

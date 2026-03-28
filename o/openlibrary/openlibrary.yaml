@@ -1,0 +1,90 @@
+name: openlibrary
+description: Open Library API for searching books, retrieving work details, and looking up author information
+version: "1.0"
+category: data
+tags: [books, library, reading, authors, isbn, literature]
+protocol: rest
+owner_name: Internet Archive
+website: https://openlibrary.org
+support_url: https://openlibrary.org/developers/api
+pricing_model: free
+
+connection:
+  base_url: https://openlibrary.org
+  timeout: 15s
+  headers:
+    Accept: application/json
+
+auth:
+  - type: none
+
+actions:
+  - name: search
+    description: Search for books by title, author, subject, or general keyword
+    method: GET
+    path: /search.json
+    params:
+      - name: q
+        type: string
+        required: true
+        description: General search query
+        in: query
+      - name: title
+        type: string
+        description: Search specifically by book title
+        in: query
+      - name: author
+        type: string
+        description: Search specifically by author name
+        in: query
+      - name: subject
+        type: string
+        description: Search by subject or topic
+        in: query
+      - name: limit
+        type: int
+        default: "10"
+        description: Number of results to return
+        in: query
+      - name: page
+        type: int
+        default: "1"
+        description: Page number for pagination
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.docs"
+      - truncate: { max_items: 20 }
+
+  - name: book
+    description: Get detailed information about a specific work by its Open Library ID
+    method: GET
+    path: /works/{{olid}}.json
+    params:
+      - name: olid
+        type: string
+        required: true
+        description: "Open Library work ID, e.g. 'OL45883W'"
+        in: path
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+      - select: ["title", "description", "subjects", "covers", "first_publish_date", "authors"]
+
+  - name: author
+    description: Get information about an author by their Open Library ID
+    method: GET
+    path: /authors/{{olid}}.json
+    params:
+      - name: olid
+        type: string
+        required: true
+        description: "Open Library author ID, e.g. 'OL34184A'"
+        in: path
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+      - select: ["name", "birth_date", "death_date", "bio", "links", "wikipedia"]

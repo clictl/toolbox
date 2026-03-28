@@ -1,0 +1,77 @@
+name: slides
+description: Create and edit presentation slide decks (.pptx) using PptxGenJS with layout helpers and validation utilities
+version: "1.0"
+category: productivity
+tags:
+- skill
+- presentations
+- pptx
+- slides
+- powerpoint
+protocol: skill
+owner_name: OpenAI
+namespace: openai
+website: https://github.com/openai/skills
+support_url: https://github.com/openai/skills/issues
+pricing_model: free
+license: MIT
+source:
+  type: github
+  repo: openai/skills
+  path: skills/.curated/slides/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: SKILL.md
+  - name: agents/openai.yaml
+  - name: assets/pptxgenjs_helpers/code.js
+  - name: assets/pptxgenjs_helpers/image.js
+  - name: assets/pptxgenjs_helpers/index.js
+  - name: assets/pptxgenjs_helpers/latex.js
+  - name: assets/pptxgenjs_helpers/layout.js
+  - name: assets/pptxgenjs_helpers/layout_builders.js
+  - name: assets/pptxgenjs_helpers/svg.js
+  - name: assets/pptxgenjs_helpers/text.js
+  - name: assets/pptxgenjs_helpers/util.js
+  - name: assets/slides-small.svg
+  - name: assets/slides.png
+  - name: references/pptxgenjs-helpers.md
+  - name: scripts/create_montage.py
+  - name: scripts/detect_font.py
+  - name: scripts/ensure_raster_image.py
+  - name: scripts/render_slides.py
+  - name: scripts/slides_test.py
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: openai
+  version: '1.0'
+auth:
+- type: none
+requires_system:
+- name: node
+  check: node --version
+  brew: node
+- name: python3
+  check: python3 --version
+  brew: python3
+runtime:
+  language: node
+  manager: npm
+  dependencies:
+  - pptxgenjs
+  - sharp
+  - mathjax-full
+  - shiki
+  - puppeteer

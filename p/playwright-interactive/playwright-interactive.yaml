@@ -1,0 +1,52 @@
+name: playwright-interactive
+description: Persistent browser and Electron interaction through js_repl for fast iterative UI debugging
+version: "1.0"
+category: developer
+tags:
+- skill
+- browser
+- automation
+- debugging
+- playwright
+- electron
+protocol: skill
+owner_name: OpenAI
+namespace: openai
+website: https://github.com/openai/skills
+support_url: https://github.com/openai/skills/issues
+pricing_model: free
+license: MIT
+source:
+  type: github
+  repo: openai/skills
+  path: skills/.curated/playwright-interactive/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: NOTICE.txt
+  - name: SKILL.md
+  - name: agents/openai.yaml
+  - name: assets/playwright-small.svg
+  - name: assets/playwright.png
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: openai
+  version: '1.0'
+auth:
+- type: none
+requires_system:
+- name: node
+  check: node --version
+  brew: node

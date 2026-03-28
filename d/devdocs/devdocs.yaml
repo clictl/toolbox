@@ -1,0 +1,61 @@
+name: devdocs
+description: Combined API documentation browser for programming languages and libraries
+version: "1.0"
+category: reference
+tags: [reference, api-docs, programming, developer-tools]
+protocol: rest
+tool_type: website
+owner_name: DevDocs
+website: https://devdocs.io
+support_url: https://github.com/freeCodeCamp/devdocs/issues
+pricing_model: free
+
+site:
+  url: https://devdocs.io
+  content_type: reference
+  preferred_format: html
+
+access:
+  method: fetch
+  robots_txt: respected
+
+connection:
+  base_url: https://devdocs.io
+  headers:
+    Accept: application/json
+
+auth:
+  - type: none
+
+actions:
+  - name: list_docs
+    description: List all available documentation sets with name, version, and slug
+    method: GET
+    path: /docs/docs.json
+    transform:
+      - select: ["name", "slug", "version", "release"]
+      - truncate: { max_items: 50 }
+      - template: |
+          # Available Documentation Sets
+
+          {{range .}}- **{{.name}}** ({{.slug}}) v{{.version}}
+          {{end}}
+
+  - name: search
+    description: Search entries within a specific documentation set by slug
+    method: GET
+    path: /docs/{doc}/index.json
+    params:
+      - name: doc
+        type: string
+        required: true
+        description: Documentation slug (e.g., javascript, python~3.12, react, css, go, ruby~3.3)
+        in: path
+    transform:
+      - extract: "$.entries"
+      - truncate: { max_items: 30 }
+      - template: |
+          # Documentation Entries
+
+          {{range .}}- **{{.name}}** - {{.type}} ([view](https://devdocs.io/{{.path}}))
+          {{end}}

@@ -1,0 +1,357 @@
+name: cloudflare-deploy
+description: Skill that teaches agents to deploy applications to Cloudflare Workers and Pages
+version: "1.0"
+category: devops
+tags:
+- skill
+- cloudflare
+- deploy
+- workers
+- pages
+- serverless
+- edge
+protocol: skill
+owner_name: OpenAI
+namespace: openai
+website: https://github.com/openai/skills
+support_url: https://github.com/openai/skills/issues
+pricing_model: free
+license: MIT
+source:
+  type: github
+  repo: openai/skills
+  path: skills/.curated/cloudflare-deploy/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: SKILL.md
+  - name: agents/openai.yaml
+  - name: assets/cloudflare-small.svg
+  - name: assets/cloudflare.png
+  - name: references/agents-sdk/README.md
+  - name: references/agents-sdk/api.md
+  - name: references/agents-sdk/configuration.md
+  - name: references/agents-sdk/gotchas.md
+  - name: references/agents-sdk/patterns.md
+  - name: references/ai-gateway/README.md
+  - name: references/ai-gateway/configuration.md
+  - name: references/ai-gateway/dynamic-routing.md
+  - name: references/ai-gateway/features.md
+  - name: references/ai-gateway/sdk-integration.md
+  - name: references/ai-gateway/troubleshooting.md
+  - name: references/ai-search/README.md
+  - name: references/ai-search/api.md
+  - name: references/ai-search/configuration.md
+  - name: references/ai-search/gotchas.md
+  - name: references/ai-search/patterns.md
+  - name: references/analytics-engine/README.md
+  - name: references/analytics-engine/api.md
+  - name: references/analytics-engine/configuration.md
+  - name: references/analytics-engine/gotchas.md
+  - name: references/analytics-engine/patterns.md
+  - name: references/api-shield/README.md
+  - name: references/api-shield/api.md
+  - name: references/api-shield/configuration.md
+  - name: references/api-shield/gotchas.md
+  - name: references/api-shield/patterns.md
+  - name: references/api/README.md
+  - name: references/api/api.md
+  - name: references/api/configuration.md
+  - name: references/api/gotchas.md
+  - name: references/api/patterns.md
+  - name: references/argo-smart-routing/README.md
+  - name: references/argo-smart-routing/api.md
+  - name: references/argo-smart-routing/configuration.md
+  - name: references/argo-smart-routing/gotchas.md
+  - name: references/argo-smart-routing/patterns.md
+  - name: references/bindings/README.md
+  - name: references/bindings/api.md
+  - name: references/bindings/configuration.md
+  - name: references/bindings/gotchas.md
+  - name: references/bindings/patterns.md
+  - name: references/bot-management/README.md
+  - name: references/bot-management/api.md
+  - name: references/bot-management/configuration.md
+  - name: references/bot-management/gotchas.md
+  - name: references/bot-management/patterns.md
+  - name: references/browser-rendering/README.md
+  - name: references/browser-rendering/api.md
+  - name: references/browser-rendering/configuration.md
+  - name: references/browser-rendering/gotchas.md
+  - name: references/browser-rendering/patterns.md
+  - name: references/c3/README.md
+  - name: references/c3/api.md
+  - name: references/c3/configuration.md
+  - name: references/c3/gotchas.md
+  - name: references/c3/patterns.md
+  - name: references/cache-reserve/README.md
+  - name: references/cache-reserve/api.md
+  - name: references/cache-reserve/configuration.md
+  - name: references/cache-reserve/gotchas.md
+  - name: references/cache-reserve/patterns.md
+  - name: references/containers/README.md
+  - name: references/containers/api.md
+  - name: references/containers/configuration.md
+  - name: references/containers/gotchas.md
+  - name: references/containers/patterns.md
+  - name: references/cron-triggers/README.md
+  - name: references/cron-triggers/api.md
+  - name: references/cron-triggers/configuration.md
+  - name: references/cron-triggers/gotchas.md
+  - name: references/cron-triggers/patterns.md
+  - name: references/d1/README.md
+  - name: references/d1/api.md
+  - name: references/d1/configuration.md
+  - name: references/d1/gotchas.md
+  - name: references/d1/patterns.md
+  - name: references/ddos/README.md
+  - name: references/ddos/api.md
+  - name: references/ddos/configuration.md
+  - name: references/ddos/gotchas.md
+  - name: references/ddos/patterns.md
+  - name: references/do-storage/README.md
+  - name: references/do-storage/api.md
+  - name: references/do-storage/configuration.md
+  - name: references/do-storage/gotchas.md
+  - name: references/do-storage/patterns.md
+  - name: references/do-storage/testing.md
+  - name: references/durable-objects/README.md
+  - name: references/durable-objects/api.md
+  - name: references/durable-objects/configuration.md
+  - name: references/durable-objects/gotchas.md
+  - name: references/durable-objects/patterns.md
+  - name: references/email-routing/README.md
+  - name: references/email-routing/api.md
+  - name: references/email-routing/configuration.md
+  - name: references/email-routing/gotchas.md
+  - name: references/email-routing/patterns.md
+  - name: references/email-workers/README.md
+  - name: references/email-workers/api.md
+  - name: references/email-workers/configuration.md
+  - name: references/email-workers/gotchas.md
+  - name: references/email-workers/patterns.md
+  - name: references/hyperdrive/README.md
+  - name: references/hyperdrive/api.md
+  - name: references/hyperdrive/configuration.md
+  - name: references/hyperdrive/gotchas.md
+  - name: references/hyperdrive/patterns.md
+  - name: references/images/README.md
+  - name: references/images/api.md
+  - name: references/images/configuration.md
+  - name: references/images/gotchas.md
+  - name: references/images/patterns.md
+  - name: references/kv/README.md
+  - name: references/kv/api.md
+  - name: references/kv/configuration.md
+  - name: references/kv/gotchas.md
+  - name: references/kv/patterns.md
+  - name: references/miniflare/README.md
+  - name: references/miniflare/api.md
+  - name: references/miniflare/configuration.md
+  - name: references/miniflare/gotchas.md
+  - name: references/miniflare/patterns.md
+  - name: references/network-interconnect/README.md
+  - name: references/network-interconnect/api.md
+  - name: references/network-interconnect/configuration.md
+  - name: references/network-interconnect/gotchas.md
+  - name: references/network-interconnect/patterns.md
+  - name: references/observability/README.md
+  - name: references/observability/api.md
+  - name: references/observability/configuration.md
+  - name: references/observability/gotchas.md
+  - name: references/observability/patterns.md
+  - name: references/pages-functions/README.md
+  - name: references/pages-functions/api.md
+  - name: references/pages-functions/configuration.md
+  - name: references/pages-functions/gotchas.md
+  - name: references/pages-functions/patterns.md
+  - name: references/pages/README.md
+  - name: references/pages/api.md
+  - name: references/pages/configuration.md
+  - name: references/pages/gotchas.md
+  - name: references/pages/patterns.md
+  - name: references/pipelines/README.md
+  - name: references/pipelines/api.md
+  - name: references/pipelines/configuration.md
+  - name: references/pipelines/gotchas.md
+  - name: references/pipelines/patterns.md
+  - name: references/pulumi/README.md
+  - name: references/pulumi/api.md
+  - name: references/pulumi/configuration.md
+  - name: references/pulumi/gotchas.md
+  - name: references/pulumi/patterns.md
+  - name: references/queues/README.md
+  - name: references/queues/api.md
+  - name: references/queues/configuration.md
+  - name: references/queues/gotchas.md
+  - name: references/queues/patterns.md
+  - name: references/r2-data-catalog/README.md
+  - name: references/r2-data-catalog/api.md
+  - name: references/r2-data-catalog/configuration.md
+  - name: references/r2-data-catalog/gotchas.md
+  - name: references/r2-data-catalog/patterns.md
+  - name: references/r2-sql/README.md
+  - name: references/r2-sql/api.md
+  - name: references/r2-sql/configuration.md
+  - name: references/r2-sql/gotchas.md
+  - name: references/r2-sql/patterns.md
+  - name: references/r2/README.md
+  - name: references/r2/api.md
+  - name: references/r2/configuration.md
+  - name: references/r2/gotchas.md
+  - name: references/r2/patterns.md
+  - name: references/realtime-sfu/README.md
+  - name: references/realtime-sfu/api.md
+  - name: references/realtime-sfu/configuration.md
+  - name: references/realtime-sfu/gotchas.md
+  - name: references/realtime-sfu/patterns.md
+  - name: references/realtimekit/README.md
+  - name: references/realtimekit/api.md
+  - name: references/realtimekit/configuration.md
+  - name: references/realtimekit/gotchas.md
+  - name: references/realtimekit/patterns.md
+  - name: references/sandbox/README.md
+  - name: references/sandbox/api.md
+  - name: references/sandbox/configuration.md
+  - name: references/sandbox/gotchas.md
+  - name: references/sandbox/patterns.md
+  - name: references/secrets-store/README.md
+  - name: references/secrets-store/api.md
+  - name: references/secrets-store/configuration.md
+  - name: references/secrets-store/gotchas.md
+  - name: references/secrets-store/patterns.md
+  - name: references/smart-placement/README.md
+  - name: references/smart-placement/api.md
+  - name: references/smart-placement/configuration.md
+  - name: references/smart-placement/gotchas.md
+  - name: references/smart-placement/patterns.md
+  - name: references/snippets/README.md
+  - name: references/snippets/api.md
+  - name: references/snippets/configuration.md
+  - name: references/snippets/gotchas.md
+  - name: references/snippets/patterns.md
+  - name: references/spectrum/README.md
+  - name: references/spectrum/api.md
+  - name: references/spectrum/configuration.md
+  - name: references/spectrum/gotchas.md
+  - name: references/spectrum/patterns.md
+  - name: references/static-assets/README.md
+  - name: references/static-assets/api.md
+  - name: references/static-assets/configuration.md
+  - name: references/static-assets/gotchas.md
+  - name: references/static-assets/patterns.md
+  - name: references/stream/README.md
+  - name: references/stream/api-live.md
+  - name: references/stream/api.md
+  - name: references/stream/configuration.md
+  - name: references/stream/gotchas.md
+  - name: references/stream/patterns.md
+  - name: references/tail-workers/README.md
+  - name: references/tail-workers/api.md
+  - name: references/tail-workers/configuration.md
+  - name: references/tail-workers/gotchas.md
+  - name: references/tail-workers/patterns.md
+  - name: references/terraform/README.md
+  - name: references/terraform/api.md
+  - name: references/terraform/configuration.md
+  - name: references/terraform/gotchas.md
+  - name: references/terraform/patterns.md
+  - name: references/tunnel/README.md
+  - name: references/tunnel/api.md
+  - name: references/tunnel/configuration.md
+  - name: references/tunnel/gotchas.md
+  - name: references/tunnel/networking.md
+  - name: references/tunnel/patterns.md
+  - name: references/turn/README.md
+  - name: references/turn/api.md
+  - name: references/turn/configuration.md
+  - name: references/turn/gotchas.md
+  - name: references/turn/patterns.md
+  - name: references/turnstile/README.md
+  - name: references/turnstile/api.md
+  - name: references/turnstile/configuration.md
+  - name: references/turnstile/gotchas.md
+  - name: references/turnstile/patterns.md
+  - name: references/vectorize/README.md
+  - name: references/vectorize/api.md
+  - name: references/vectorize/configuration.md
+  - name: references/vectorize/gotchas.md
+  - name: references/vectorize/patterns.md
+  - name: references/waf/README.md
+  - name: references/waf/api.md
+  - name: references/waf/configuration.md
+  - name: references/waf/gotchas.md
+  - name: references/waf/patterns.md
+  - name: references/web-analytics/README.md
+  - name: references/web-analytics/configuration.md
+  - name: references/web-analytics/gotchas.md
+  - name: references/web-analytics/integration.md
+  - name: references/web-analytics/patterns.md
+  - name: references/workerd/README.md
+  - name: references/workerd/api.md
+  - name: references/workerd/configuration.md
+  - name: references/workerd/gotchas.md
+  - name: references/workerd/patterns.md
+  - name: references/workers-ai/README.md
+  - name: references/workers-ai/api.md
+  - name: references/workers-ai/configuration.md
+  - name: references/workers-ai/gotchas.md
+  - name: references/workers-ai/patterns.md
+  - name: references/workers-for-platforms/README.md
+  - name: references/workers-for-platforms/api.md
+  - name: references/workers-for-platforms/configuration.md
+  - name: references/workers-for-platforms/gotchas.md
+  - name: references/workers-for-platforms/patterns.md
+  - name: references/workers-playground/README.md
+  - name: references/workers-playground/api.md
+  - name: references/workers-playground/configuration.md
+  - name: references/workers-playground/gotchas.md
+  - name: references/workers-playground/patterns.md
+  - name: references/workers-vpc/README.md
+  - name: references/workers-vpc/api.md
+  - name: references/workers-vpc/configuration.md
+  - name: references/workers-vpc/gotchas.md
+  - name: references/workers-vpc/patterns.md
+  - name: references/workers/README.md
+  - name: references/workers/api.md
+  - name: references/workers/configuration.md
+  - name: references/workers/frameworks.md
+  - name: references/workers/gotchas.md
+  - name: references/workers/patterns.md
+  - name: references/workflows/README.md
+  - name: references/workflows/api.md
+  - name: references/workflows/configuration.md
+  - name: references/workflows/gotchas.md
+  - name: references/workflows/patterns.md
+  - name: references/wrangler/README.md
+  - name: references/wrangler/api.md
+  - name: references/wrangler/auth.md
+  - name: references/wrangler/configuration.md
+  - name: references/wrangler/gotchas.md
+  - name: references/wrangler/patterns.md
+  - name: references/zaraz/IMPLEMENTATION_SUMMARY.md
+  - name: references/zaraz/README.md
+  - name: references/zaraz/api.md
+  - name: references/zaraz/configuration.md
+  - name: references/zaraz/gotchas.md
+  - name: references/zaraz/patterns.md
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: openai
+  version: '1.0'
+auth:
+- type: none
+requires_mcp:
+- cloudflare-mcp

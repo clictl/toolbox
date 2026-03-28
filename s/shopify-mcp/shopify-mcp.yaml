@@ -1,0 +1,70 @@
+name: shopify-mcp
+description: Official Shopify MCP server for searching docs, exploring API schemas, and building functions
+version: "1.0"
+category: developer
+tags: [mcp, shopify, ecommerce, api, docs, storefront, commerce]
+protocol: mcp
+owner_name: Shopify
+website: https://shopify.dev/docs/apps/build/devmcp
+support_url: https://github.com/nicobailon/dev-mcp/issues
+pricing_model: free
+license: ISC
+
+package:
+  registry: npm
+  name: "@shopify/dev-mcp"
+  version: "1.8.0"
+  manager: npx
+
+auth:
+  - type: none
+
+tools:
+  expose:
+    - name: search_docs
+      description: "Search Shopify developer documentation"
+      params:
+        - name: query
+          type: string
+          required: true
+          description: "Search query for Shopify docs"
+    - name: get_api_schema
+      description: "Get Shopify API schema for a resource"
+      params:
+        - name: resource
+          type: string
+          required: true
+          description: "API resource name (e.g. products, orders)"
+        - name: api
+          type: string
+          required: false
+          description: "API type: admin, storefront, or functions"
+    - name: introspect_graphql
+      description: "Introspect the Shopify GraphQL API schema"
+      params:
+        - name: query
+          type: string
+          required: true
+          description: "GraphQL introspection query"
+    - name: search_examples
+      description: "Search for code examples in Shopify docs"
+      params:
+        - name: query
+          type: string
+          required: true
+          description: "Search query for examples"
+
+prompts:
+  system: |
+    This server provides access to Shopify developer documentation,
+    API schemas, and tooling. Use it for building Shopify apps,
+    exploring APIs, and getting answers about Shopify development.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s

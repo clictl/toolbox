@@ -1,0 +1,72 @@
+name: virustotal
+description: VirusTotal API for scanning files, URLs, and domains against multiple antivirus engines
+version: "1.0"
+category: security
+tags: [virustotal, security, malware, antivirus, scanning, threat-intelligence]
+protocol: rest
+owner_name: Google (VirusTotal)
+website: https://www.virustotal.com
+support_url: https://docs.virustotal.com/reference
+pricing_model: freemium
+
+connection:
+  base_url: https://www.virustotal.com/api/v3
+  timeout: 15s
+  headers:
+    Accept: application/json
+
+auth:
+  - type: api_key
+    key_env: VT_API_KEY
+    inject:
+      location: header
+      key: x-apikey
+
+actions:
+  - name: file-report
+    description: Get the analysis report for a file by its hash (MD5, SHA-1, or SHA-256)
+    method: GET
+    path: /files/{{hash}}
+    params:
+      - name: hash
+        type: string
+        required: true
+        description: "File hash to look up (MD5, SHA-1, or SHA-256)"
+        in: path
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.data.attributes"
+      - select: ["meaningful_name", "type_description", "size", "last_analysis_stats", "last_analysis_date", "reputation", "popular_threat_classification"]
+
+  - name: url-report
+    description: Get the analysis report for a URL by its URL ID (base64-encoded URL without padding)
+    method: GET
+    path: /urls/{{url_id}}
+    params:
+      - name: url_id
+        type: string
+        required: true
+        description: "URL identifier (base64-encoded URL without trailing '=' padding)"
+        in: path
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.data.attributes"
+      - select: ["url", "last_final_url", "last_http_response_content_length", "last_analysis_stats", "last_analysis_date", "reputation", "categories"]
+
+  - name: domain-report
+    description: Get the analysis report and reputation data for a domain
+    method: GET
+    path: /domains/{{domain}}
+    params:
+      - name: domain
+        type: string
+        required: true
+        description: "Domain name to look up, e.g. 'example.com'"
+        in: path
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.data.attributes"
+      - select: ["last_dns_records", "last_analysis_stats", "last_analysis_date", "reputation", "categories", "registrar", "creation_date"]

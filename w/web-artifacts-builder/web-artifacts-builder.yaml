@@ -1,0 +1,56 @@
+name: web-artifacts-builder
+description: Create elaborate, multi-component HTML artifacts using React,
+  Tailwind CSS, and shadcn/ui
+version: "1.0"
+category: developer
+tags:
+- skill
+- react
+- tailwind
+- shadcn
+- html
+- artifacts
+- frontend
+protocol: skill
+owner_name: Anthropic
+namespace: anthropic
+website: https://github.com/anthropics/skills
+support_url: https://github.com/anthropics/skills/issues
+pricing_model: free
+license: Apache-2.0
+source:
+  type: github
+  repo: anthropics/skills
+  path: skills/web-artifacts-builder/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: SKILL.md
+  - name: scripts/bundle-artifact.sh
+  - name: scripts/init-artifact.sh
+  - name: scripts/shadcn-components.tar.gz
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: anthropic
+  version: '1.0'
+auth:
+- type: none
+requires_system:
+- name: node
+  check: "node --version"
+  brew: node
+- name: pnpm
+  check: "pnpm --version"
+  brew: pnpm

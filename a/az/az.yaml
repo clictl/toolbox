@@ -1,0 +1,58 @@
+name: az
+description: Azure CLI for managing Microsoft Azure resources. Deploy, configure, and monitor cloud services
+version: "1.0"
+category: cloud
+tags: [azure, cloud, microsoft, infrastructure]
+protocol: cli
+tool_type: cli
+owner_name: Microsoft
+website: https://learn.microsoft.com/en-us/cli/azure/
+support_url: https://learn.microsoft.com/en-us/cli/azure/reference-index
+
+connection:
+  shell: /bin/sh
+  requires:
+    - name: az
+      url: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli
+      check: "az --version"
+
+auth:
+  - type: oauth2
+    note: "Run 'az login' to authenticate via browser-based OAuth2 flow"
+
+actions:
+  - name: login
+    description: Authenticate with Azure using an interactive browser login
+    run: "az login"
+    params: []
+
+  - name: account_show
+    description: Show the currently active Azure subscription and account details
+    run: "az account show"
+    params: []
+
+  - name: resource_list
+    description: List all resources in the current subscription, optionally filtered by resource group
+    run: "az resource list {{#resource_group}}--resource-group {{resource_group}}{{/resource_group}} --output table"
+    params:
+      - name: resource_group
+        type: string
+        description: Filter resources by resource group name
+
+  - name: group_list
+    description: List all resource groups in the current subscription
+    run: "az group list --output table"
+    params: []
+
+  - name: deploy
+    description: Deploy an ARM or Bicep template to a resource group
+    run: "az deployment group create --resource-group {{resource_group}} --template-file {{template}}"
+    params:
+      - name: resource_group
+        type: string
+        required: true
+        description: Target resource group for the deployment
+      - name: template
+        type: string
+        required: true
+        description: Path to the ARM template or Bicep file

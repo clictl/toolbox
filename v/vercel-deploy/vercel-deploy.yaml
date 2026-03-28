@@ -1,0 +1,53 @@
+name: vercel-deploy
+description: Skill that teaches agents to deploy applications to Vercel with environment config and preview URLs
+version: "1.0"
+category: devops
+tags:
+- skill
+- vercel
+- deploy
+- nextjs
+- serverless
+- preview
+- hosting
+protocol: skill
+owner_name: OpenAI
+namespace: openai
+website: https://github.com/openai/skills
+support_url: https://github.com/openai/skills/issues
+pricing_model: free
+license: MIT
+source:
+  type: github
+  repo: openai/skills
+  path: skills/.curated/vercel-deploy/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: SKILL.md
+  - name: agents/openai.yaml
+  - name: assets/vercel-small.svg
+  - name: assets/vercel.png
+  - name: scripts/deploy.sh
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: openai
+  version: '1.0'
+auth:
+- type: none
+requires_system:
+- name: curl
+  check: curl --version
+  brew: curl

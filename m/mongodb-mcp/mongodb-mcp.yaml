@@ -1,0 +1,124 @@
+name: mongodb-mcp
+description: MCP server for MongoDB with query execution, aggregation pipelines, and collection management
+version: "1.0"
+category: data
+tags: [mcp, mongodb, database, nosql, document-store, aggregation]
+protocol: mcp
+owner_name: MongoDB
+website: https://github.com/mongodb-js/mongodb-mcp-server
+support_url: https://github.com/mongodb-js/mongodb-mcp-server/issues
+pricing_model: free
+license: Apache-2.0
+
+package:
+  registry: npm
+  name: "mongodb-mcp-server"
+  version: "0.1.0"
+  manager: npx
+
+auth:
+  - type: connection_string
+    key_env: MONGODB_URI
+    inject:
+      location: env
+      param: MONGODB_URI
+
+tools:
+  expose:
+    - name: query
+      description: "Execute a find query against a MongoDB collection"
+      params:
+        - name: database
+          type: string
+          required: true
+          description: "Database name"
+        - name: collection
+          type: string
+          required: true
+          description: "Collection name"
+        - name: filter
+          type: object
+          required: false
+          description: "MongoDB query filter document"
+        - name: limit
+          type: int
+          required: false
+          description: "Maximum number of documents to return"
+    - name: find
+      description: "Find documents with projection and sort options"
+      params:
+        - name: database
+          type: string
+          required: true
+          description: "Database name"
+        - name: collection
+          type: string
+          required: true
+          description: "Collection name"
+        - name: filter
+          type: object
+          required: false
+          description: "Query filter"
+        - name: projection
+          type: object
+          required: false
+          description: "Fields to include or exclude"
+        - name: sort
+          type: object
+          required: false
+          description: "Sort specification"
+    - name: aggregate
+      description: "Execute an aggregation pipeline"
+      params:
+        - name: database
+          type: string
+          required: true
+          description: "Database name"
+        - name: collection
+          type: string
+          required: true
+          description: "Collection name"
+        - name: pipeline
+          type: array
+          required: true
+          description: "Aggregation pipeline stages"
+    - name: list_collections
+      description: "List all collections in a database"
+      params:
+        - name: database
+          type: string
+          required: true
+          description: "Database name"
+    - name: list_databases
+      description: "List all databases on the server"
+    - name: insert_document
+      description: "Insert a document into a collection"
+      destructive: true
+      params:
+        - name: database
+          type: string
+          required: true
+          description: "Database name"
+        - name: collection
+          type: string
+          required: true
+          description: "Collection name"
+        - name: document
+          type: object
+          required: true
+          description: "Document to insert"
+
+prompts:
+  system: |
+    This server provides access to MongoDB databases. Use it for querying
+    documents, running aggregation pipelines, and exploring collections.
+    Always confirm before performing write operations.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s

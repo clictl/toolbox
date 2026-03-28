@@ -1,0 +1,133 @@
+name: google-maps-mcp
+description: Official Google Maps MCP server for place search, geocoding, directions, and elevation data
+version: "1.0"
+category: geo
+tags: [mcp, google-maps, places, geocoding, directions, elevation, geospatial]
+protocol: mcp
+owner_name: Google
+website: https://github.com/modelcontextprotocol/servers
+support_url: https://github.com/modelcontextprotocol/servers/issues
+pricing_model: freemium
+
+package:
+  registry: npm
+  name: "@anthropic/google-maps-mcp"
+  version: "0.1.0"
+  manager: npx
+
+docs:
+  api_reference: https://developers.google.com/maps/documentation
+
+auth:
+  - type: api_key
+    key_env: GOOGLE_MAPS_API_KEY
+    inject:
+      location: env
+      param: GOOGLE_MAPS_API_KEY
+
+tools:
+  expose:
+    - name: maps_geocode
+      description: "Convert an address into geographic coordinates"
+      params:
+        - name: address
+          type: string
+          required: true
+          description: "Address to geocode"
+    - name: maps_reverse_geocode
+      description: "Convert coordinates into a human-readable address"
+      params:
+        - name: latitude
+          type: string
+          required: true
+          description: "Latitude coordinate"
+        - name: longitude
+          type: string
+          required: true
+          description: "Longitude coordinate"
+    - name: maps_search_places
+      description: "Search for places using text queries"
+      params:
+        - name: query
+          type: string
+          required: true
+          description: "Search text"
+        - name: location
+          type: string
+          required: false
+          description: "Center point as lat,lng"
+        - name: radius
+          type: int
+          required: false
+          description: "Search radius in meters"
+    - name: maps_place_details
+      description: "Get detailed information about a specific place"
+      params:
+        - name: place_id
+          type: string
+          required: true
+          description: "Google Place ID"
+    - name: maps_distance_matrix
+      description: "Calculate travel distance and time between origins and destinations"
+      params:
+        - name: origins
+          type: string
+          required: true
+          description: "Pipe-separated list of origins"
+        - name: destinations
+          type: string
+          required: true
+          description: "Pipe-separated list of destinations"
+        - name: mode
+          type: string
+          required: false
+          description: "Travel mode - driving, walking, bicycling, or transit"
+    - name: maps_elevation
+      description: "Get elevation data for locations on earth"
+      params:
+        - name: locations
+          type: string
+          required: true
+          description: "Pipe-separated lat,lng pairs"
+    - name: maps_directions
+      description: "Get directions between two or more locations"
+      params:
+        - name: origin
+          type: string
+          required: true
+          description: "Starting location"
+        - name: destination
+          type: string
+          required: true
+          description: "Ending location"
+        - name: mode
+          type: string
+          required: false
+          description: "Travel mode - driving, walking, bicycling, or transit"
+  tool_transforms:
+    maps_search_places:
+      - truncate: { max_items: 20 }
+
+permissions:
+  network:
+    - "maps.googleapis.com"
+  env:
+    - "GOOGLE_MAPS_API_KEY"
+
+prompts:
+  system: |
+    This server provides Google Maps data. Use maps_search_places for
+    finding locations and maps_directions for navigation. Provide
+    specific addresses or coordinates for best results.
+  tool_instructions:
+    maps_search_places: "Be specific with location queries. Include city/country for better results."
+    maps_distance_matrix: "Specify travel mode (driving, walking, bicycling, transit)."
+
+resources:
+  expose: all
+
+install_mode:
+  default: both
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 120s

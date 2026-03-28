@@ -1,0 +1,62 @@
+name: discord
+description: Discord Bot API for server and channel management
+version: "1.0"
+category: communication
+tags: [discord, messaging, bot, gaming, community]
+protocol: rest
+owner_name: Discord
+website: https://discord.com
+support_url: https://discord.com/developers/docs
+
+connection:
+  base_url: https://discord.com/api/v10
+  timeout: 15s
+  headers:
+    Accept: application/json
+
+auth:
+  - type: bearer
+    key_env: DISCORD_BOT_TOKEN
+    inject:
+      location: header
+      key: Authorization
+      prefix: "Bot "
+
+actions:
+  - name: guilds
+    description: List servers (guilds) the bot has joined
+    method: GET
+    path: /users/@me/guilds
+    params:
+      - name: limit
+        type: int
+        default: "10"
+        description: Maximum number of guilds to return (max 200)
+        in: query
+
+  - name: channels
+    description: List all channels in a server
+    method: GET
+    path: /guilds/{{guild_id}}/channels
+    params:
+      - name: guild_id
+        type: string
+        required: true
+        description: Discord server (guild) ID
+        in: path
+
+  - name: send_message
+    description: Send a message to a channel
+    method: POST
+    path: /channels/{{channel_id}}/messages
+    params:
+      - name: channel_id
+        type: string
+        required: true
+        description: Discord channel ID
+        in: path
+      - name: content
+        type: string
+        required: true
+        description: Message content to send
+        in: body

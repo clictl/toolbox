@@ -1,0 +1,76 @@
+name: linear
+description: Linear API for issue tracking and project management
+version: "1.0"
+category: productivity
+tags: [linear, issues, project-management, bugs, tasks]
+protocol: graphql
+owner_name: Linear
+website: https://linear.app
+support_url: https://developers.linear.app
+
+connection:
+  url: https://api.linear.app/graphql
+  headers:
+    Accept: application/json
+
+auth:
+  - type: bearer
+    key_env: LINEAR_API_KEY
+    inject:
+      location: header
+      key: Authorization
+      prefix: "Bearer "
+
+actions:
+  - name: issues
+    description: List issues with priority, state, and assignee information
+    query: |
+      query($first: Int!) {
+        issues(first: $first) {
+          nodes {
+            id
+            title
+            state { name }
+            priority
+            assignee { name }
+          }
+        }
+      }
+    params:
+      - name: first
+        type: int
+        default: "20"
+        description: Number of issues to return
+        variable: first
+    transform:
+      extract: "$.data.issues.nodes"
+
+  - name: teams
+    description: List all teams in the workspace
+    query: |
+      {
+        teams {
+          nodes {
+            id
+            name
+            key
+          }
+        }
+      }
+    params: []
+    transform:
+      extract: "$.data.teams.nodes"
+
+  - name: me
+    description: Get the currently authenticated user's profile
+    query: |
+      {
+        viewer {
+          id
+          name
+          email
+        }
+      }
+    params: []
+    transform:
+      extract: "$.data.viewer"

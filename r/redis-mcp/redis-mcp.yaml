@@ -1,0 +1,123 @@
+name: redis-mcp
+description: Official Redis MCP server for data management, search, and natural language queries
+version: "1.0"
+category: data
+tags: [mcp, redis, cache, database, key-value, search, in-memory]
+protocol: mcp
+owner_name: Redis
+website: https://github.com/redis/mcp-redis
+support_url: https://github.com/redis/mcp-redis/issues
+pricing_model: free
+license: MIT
+
+transport:
+  type: stdio
+  command: uvx
+  args: ["redis-mcp-server"]
+  requires:
+    - name: uv
+      url: https://docs.astral.sh/uv/
+      check: "uv --version"
+
+auth:
+  - type: api_key
+    key_env: REDIS_URL
+    inject:
+      location: env
+      param: REDIS_URL
+
+tools:
+  expose:
+    - name: get
+      description: "Get the value of a key"
+      params:
+        - name: key
+          type: string
+          required: true
+          description: "Redis key"
+    - name: set
+      description: "Set a key-value pair"
+      destructive: true
+      params:
+        - name: key
+          type: string
+          required: true
+          description: "Redis key"
+        - name: value
+          type: string
+          required: true
+          description: "Value to set"
+        - name: ttl
+          type: int
+          required: false
+          description: "Time-to-live in seconds"
+    - name: delete
+      description: "Delete a key"
+      destructive: true
+      params:
+        - name: key
+          type: string
+          required: true
+          description: "Redis key to delete"
+    - name: keys
+      description: "List keys matching a pattern"
+      params:
+        - name: pattern
+          type: string
+          required: true
+          description: "Glob-style pattern (e.g. user:*)"
+    - name: search
+      description: "Search using Redis Search"
+      params:
+        - name: index
+          type: string
+          required: true
+          description: "Search index name"
+        - name: query
+          type: string
+          required: true
+          description: "Search query"
+    - name: info
+      description: "Get Redis server information"
+    - name: hget
+      description: "Get a field from a hash"
+      params:
+        - name: key
+          type: string
+          required: true
+          description: "Hash key"
+        - name: field
+          type: string
+          required: true
+          description: "Hash field name"
+    - name: hset
+      description: "Set a field in a hash"
+      destructive: true
+      params:
+        - name: key
+          type: string
+          required: true
+          description: "Hash key"
+        - name: field
+          type: string
+          required: true
+          description: "Hash field name"
+        - name: value
+          type: string
+          required: true
+          description: "Value to set"
+
+prompts:
+  system: |
+    This server provides access to Redis instances. Use it for
+    managing keys, searching data, and running queries. Confirm
+    before performing destructive operations like deleting keys.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s

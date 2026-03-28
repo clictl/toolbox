@@ -1,0 +1,75 @@
+name: hackernews
+description: Hacker News API for accessing top stories, new posts, comments, and user profiles
+version: "1.0"
+category: news
+tags: [hackernews, news, tech, startups, stories, comments]
+protocol: rest
+owner_name: Y Combinator
+website: https://news.ycombinator.com
+support_url: https://github.com/HackerNews/API
+
+connection:
+  base_url: https://hacker-news.firebaseio.com/v0
+  timeout: 10s
+
+auth:
+  - type: none
+
+actions:
+  - name: top
+    description: Get the IDs of the current top stories on Hacker News
+    method: GET
+    path: /topstories.json
+    params: []
+    transform:
+      - truncate: { max_items: 20 }
+
+  - name: new
+    description: Get the IDs of the newest stories
+    method: GET
+    path: /newstories.json
+    params: []
+    transform:
+      - truncate: { max_items: 20 }
+
+  - name: best
+    description: Get the IDs of the best stories
+    method: GET
+    path: /beststories.json
+    params: []
+    transform:
+      - truncate: { max_items: 20 }
+
+  - name: item
+    description: Get a specific item (story, comment, job, poll) by its ID
+    method: GET
+    path: /item/{{id}}.json
+    params:
+      - name: id
+        type: int
+        required: true
+        description: Item ID number
+        in: path
+
+  - name: user
+    description: Get a Hacker News user profile by username
+    method: GET
+    path: /user/{{username}}.json
+    params:
+      - name: username
+        type: string
+        required: true
+        description: HN username
+        in: path
+
+  - name: ask
+    description: Get the IDs of the current Ask HN stories
+    method: GET
+    path: /askstories.json
+    params: []
+
+  - name: show
+    description: Get the IDs of the current Show HN stories
+    method: GET
+    path: /showstories.json
+    params: []

@@ -1,0 +1,54 @@
+name: brand-guidelines
+description: Apply Anthropic's official brand colors and typography to artifacts
+  for a consistent look and feel
+version: "1.0"
+category: design
+tags:
+- skill
+- branding
+- design
+- typography
+- styling
+- anthropic
+protocol: skill
+owner_name: Anthropic
+namespace: anthropic
+website: https://github.com/anthropics/skills
+support_url: https://github.com/anthropics/skills/issues
+pricing_model: free
+license: Apache-2.0
+source:
+  type: github
+  repo: anthropics/skills
+  path: skills/brand-guidelines/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: SKILL.md
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: anthropic
+  version: '1.0'
+auth:
+- type: none
+requires_system:
+- name: python3
+  check: "python3 --version"
+  brew: python3
+runtime:
+  language: python
+  manager: uvx
+  dependencies:
+  - python-pptx

@@ -1,0 +1,107 @@
+name: sourcegraph
+description: Sourcegraph API for searching code across repositories and browsing file contents
+version: "1.0"
+category: developer
+tags: [sourcegraph, code-search, repositories, grep, developer]
+protocol: rest
+owner_name: Sourcegraph
+website: https://sourcegraph.com
+support_url: https://docs.sourcegraph.com/api
+pricing_model: freemium
+
+connection:
+  base_url: https://sourcegraph.com/.api
+  timeout: 30s
+  headers:
+    Accept: application/json
+
+auth:
+  - type: api_key
+    key_env: SRC_ACCESS_TOKEN
+    inject:
+      location: header
+      param: Authorization
+      prefix: "token"
+
+actions:
+  - name: search
+    description: Search code across all indexed repositories using Sourcegraph query syntax
+    method: POST
+    path: /graphql
+    safe: true
+    params:
+      - name: query
+        type: string
+        required: true
+        description: "Sourcegraph search query, e.g. 'repo:github.com/org/repo lang:go func main'"
+        in: body
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.data.search.results.results"
+      - truncate: { max_items: 20 }
+
+  - name: list-repos
+    description: Search for repositories indexed on Sourcegraph
+    method: POST
+    path: /graphql
+    safe: true
+    params:
+      - name: query
+        type: string
+        required: true
+        description: "Repository search query, e.g. 'repo:github.com/org/' or 'repo:.*kubernetes.*'"
+        in: body
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.data.repositories.nodes"
+      - truncate: { max_items: 20 }
+
+  - name: get-file
+    description: Read the contents of a file from a specific repository and revision
+    method: POST
+    path: /graphql
+    safe: true
+    params:
+      - name: repo
+        type: string
+        required: true
+        description: "Full repository name, e.g. 'github.com/sourcegraph/sourcegraph'"
+        in: body
+      - name: rev
+        type: string
+        default: "HEAD"
+        description: "Git revision (branch, tag, or commit hash)"
+        in: body
+      - name: path
+        type: string
+        required: true
+        description: "File path within the repository, e.g. 'README.md'"
+        in: body
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.data.repository.commit.file"
+      - select: ["path", "content", "totalLines", "byteSize"]
+
+  - name: stream-search
+    description: Search code using the streaming search API for faster results
+    method: GET
+    path: /search/stream
+    params:
+      - name: q
+        type: string
+        required: true
+        description: "Sourcegraph search query string"
+        in: query
+      - name: display
+        type: int
+        default: "20"
+        description: Maximum number of results to display
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+      - truncate: { max_items: 20 }

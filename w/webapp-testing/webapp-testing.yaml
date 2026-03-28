@@ -1,0 +1,64 @@
+name: webapp-testing
+description: Skill that teaches agents to test web applications using Playwright with
+  screenshots, DOM inspection, and browser logs
+version: "1.0"
+category: developer
+tags:
+- skill
+- testing
+- playwright
+- browser
+- webapp
+- screenshots
+- e2e
+protocol: skill
+owner_name: Anthropic
+namespace: anthropic
+website: https://github.com/anthropics/skills
+support_url: https://github.com/anthropics/skills/issues
+pricing_model: free
+license: Apache-2.0
+source:
+  type: github
+  repo: anthropics/skills
+  path: skills/webapp-testing/
+  ref: main
+  files:
+  - name: LICENSE.txt
+    sha256: 58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd
+  - name: SKILL.md
+    sha256: 51b7349e77ec63b7744a6f63647e7566a0b4d2e301121cc10e8c2113af6556a2
+  - name: examples/console_logging.py
+    sha256: ea46877289acb82da7e7ce59d0bc37c8977cd57e2a006d0c88d7a1c625bf95da
+  - name: examples/element_discovery.py
+    sha256: d63c89604a22f8845d724e95dda45db49b1bf57c25ce0a83afbb7b8da3d402f0
+  - name: examples/static_html_automation.py
+    sha256: 9d533aafb875ee3ab8b8ebf8f5b9003ac8d999da3d09b285cce252e623140064
+  - name: scripts/with_server.py
+    sha256: b0dcf4918935b795f4eda9821579b9902119235ff4447f687a30286e7d0925fd
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: anthropic
+  version: '1.0'
+auth:
+- type: none
+requires_system:
+- name: python3
+  check: "python3 --version"
+  brew: python3
+requires_mcp:
+- playwright-mcp
+
+runtime:
+  language: python
+  manager: uvx
+  dependencies: [playwright]

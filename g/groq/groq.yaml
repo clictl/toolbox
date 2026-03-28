@@ -1,0 +1,69 @@
+name: groq
+description: Groq inference API for ultra-fast LLM chat completions
+version: "1.0"
+category: ai
+tags: [groq, llm, ai, chat, inference, fast]
+protocol: rest
+owner_name: Groq
+website: https://groq.com
+support_url: https://console.groq.com/docs
+pricing_model: freemium
+
+connection:
+  base_url: https://api.groq.com/openai/v1
+  timeout: 60s
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+
+auth:
+  - type: bearer
+    key_env: GROQ_API_KEY
+    inject:
+      location: header
+      key: Authorization
+      prefix: "Bearer "
+
+actions:
+  - name: chat
+    description: Create a chat completion using Groq-hosted models with low latency
+    method: POST
+    path: /chat/completions
+    safe: true
+    params:
+      - name: model
+        type: string
+        required: true
+        default: llama-3.3-70b-versatile
+        description: "Model ID, e.g. 'llama-3.3-70b-versatile', 'mixtral-8x7b-32768', 'gemma2-9b-it'"
+        in: body
+      - name: messages
+        type: string
+        required: true
+        description: "JSON array of message objects, e.g. [{\"role\":\"user\",\"content\":\"Hello\"}]"
+        in: body
+      - name: temperature
+        type: float
+        default: "1.0"
+        description: Sampling temperature between 0 and 2
+        in: body
+      - name: max_tokens
+        type: int
+        default: "1024"
+        description: Maximum number of tokens to generate
+        in: body
+    assert:
+      - status: [200]
+      - exists: "$.choices"
+    transform:
+      - extract: "$.choices"
+
+  - name: models
+    description: List all available models on Groq
+    method: GET
+    path: /models
+    params: []
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.data"

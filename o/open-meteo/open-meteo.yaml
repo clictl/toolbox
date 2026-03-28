@@ -1,0 +1,129 @@
+name: open-meteo
+description: Free weather API with current conditions, forecasts, and historical data. No API key required.
+version: "1.0"
+category: weather
+tags: [weather, forecast, temperature, climate, wind, humidity, free]
+protocol: rest
+owner_name: Open-Meteo
+website: https://open-meteo.com
+support_url: https://open-meteo.com/en/docs
+pricing_model: free
+data_freshness: real-time
+
+docs:
+  api_reference: https://open-meteo.com/en/docs
+  getting_started: https://open-meteo.com/en/docs
+
+connection:
+  base_url: https://api.open-meteo.com/v1
+  timeout: 15s
+  headers:
+    Accept: application/json
+
+auth:
+  - type: none
+
+actions:
+  - name: current
+    description: Get current weather conditions for a location by latitude and longitude
+    method: GET
+    path: /forecast
+    params:
+      - name: latitude
+        type: number
+        required: true
+        description: Latitude coordinate
+        in: query
+      - name: longitude
+        type: number
+        required: true
+        description: Longitude coordinate
+        in: query
+      - name: current
+        type: string
+        default: "temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code,apparent_temperature"
+        description: Comma-separated current weather variables
+        in: query
+      - name: temperature_unit
+        type: string
+        default: celsius
+        description: "Temperature unit: celsius or fahrenheit"
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.current"
+      - template: |
+          Temperature: {{.temperature_2m}}°C (feels like {{.apparent_temperature}}°C)
+          Humidity: {{.relative_humidity_2m}}%
+          Wind: {{.wind_speed_10m}} km/h
+
+  - name: forecast
+    description: Get a multi-day weather forecast with daily high/low temperatures
+    method: GET
+    path: /forecast
+    params:
+      - name: latitude
+        type: number
+        required: true
+        description: Latitude coordinate
+        in: query
+      - name: longitude
+        type: number
+        required: true
+        description: Longitude coordinate
+        in: query
+      - name: daily
+        type: string
+        default: "temperature_2m_max,temperature_2m_min,precipitation_sum,weather_code"
+        description: Comma-separated daily forecast variables
+        in: query
+      - name: forecast_days
+        type: integer
+        default: "7"
+        description: Number of forecast days (1-16)
+        in: query
+      - name: temperature_unit
+        type: string
+        default: celsius
+        description: "Temperature unit: celsius or fahrenheit"
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.daily"
+
+  - name: hourly
+    description: Get hourly weather forecast for the next 24-48 hours
+    method: GET
+    path: /forecast
+    params:
+      - name: latitude
+        type: number
+        required: true
+        description: Latitude coordinate
+        in: query
+      - name: longitude
+        type: number
+        required: true
+        description: Longitude coordinate
+        in: query
+      - name: hourly
+        type: string
+        default: "temperature_2m,precipitation_probability,weather_code"
+        description: Comma-separated hourly forecast variables
+        in: query
+      - name: forecast_hours
+        type: integer
+        default: "24"
+        description: Number of forecast hours
+        in: query
+      - name: temperature_unit
+        type: string
+        default: celsius
+        description: "Temperature unit: celsius or fahrenheit"
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.hourly"

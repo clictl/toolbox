@@ -1,0 +1,91 @@
+name: terraform-cli
+description: Terraform infrastructure as code CLI. Validate configurations, plan changes, inspect state, and apply or destroy infrastructure
+version: "1.0"
+category: devops
+tags: [terraform, iac, infrastructure, devops, hashicorp, destructive]
+protocol: cli
+tool_type: cli
+owner_name: HashiCorp
+website: https://terraform.io
+support_url: https://developer.hashicorp.com/terraform/docs
+
+connection:
+  shell: /bin/sh
+  requires:
+    - name: terraform
+      url: https://developer.hashicorp.com/terraform/install
+      check: "terraform --version"
+
+auth:
+  - type: none
+
+actions:
+  - name: plan
+    description: Generate and show an execution plan for infrastructure changes without applying them
+    run: "terraform plan -no-color"
+    params: []
+
+  - name: validate
+    description: Validate the Terraform configuration files for syntax and consistency errors
+    run: "terraform validate -json"
+    params: []
+
+  - name: state_list
+    description: List all resources tracked in the current Terraform state
+    run: "terraform state list"
+    params: []
+
+  - name: state_show
+    description: Show detailed attributes of a single resource in the Terraform state
+    run: "terraform state show {{address}}"
+    params:
+      - name: address
+        type: string
+        required: true
+        description: Resource address (e.g., aws_instance.web, module.vpc.aws_subnet.public)
+
+  - name: providers
+    description: List the providers required by the current configuration and their versions
+    run: "terraform providers"
+    params: []
+
+  - name: apply
+    description: Apply the planned changes to create, update, or delete infrastructure resources
+    run: "terraform apply -auto-approve -no-color"
+    params: []
+
+  - name: destroy
+    description: Destroy all infrastructure resources managed by the current Terraform configuration
+    run: "terraform destroy -auto-approve -no-color"
+    params: []
+
+  - name: import
+    description: Import an existing infrastructure resource into the Terraform state
+    run: "terraform import -no-color {{address}} {{id}}"
+    params:
+      - name: address
+        type: string
+        required: true
+        description: Terraform resource address to import into (e.g., aws_instance.web)
+      - name: id
+        type: string
+        required: true
+        description: Provider-specific resource ID to import (e.g., i-1234567890abcdef0)
+
+  - name: taint
+    description: Mark a resource as tainted, forcing it to be destroyed and recreated on the next apply
+    run: "terraform taint {{address}}"
+    params:
+      - name: address
+        type: string
+        required: true
+        description: Resource address to taint (e.g., aws_instance.web)
+
+  - name: untaint
+    description: Remove the tainted state from a resource, preventing forced recreation
+    run: "terraform untaint {{address}}"
+    params:
+      - name: address
+        type: string
+        required: true
+        description: Resource address to untaint (e.g., aws_instance.web)

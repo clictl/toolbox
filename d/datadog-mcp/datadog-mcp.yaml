@@ -1,0 +1,102 @@
+name: datadog-mcp
+description: Official Datadog MCP server for observability, monitors, metrics, and incident management
+version: "1.0"
+category: monitoring
+tags: [mcp, datadog, monitoring, metrics, observability, alerts, apm]
+protocol: mcp
+owner_name: Datadog
+website: https://github.com/datadog-labs/mcp-server
+support_url: https://github.com/datadog-labs/mcp-server/issues
+pricing_model: paid
+license: Apache-2.0
+
+transport:
+  type: http
+  url: https://mcp.datadoghq.com/api/unstable/mcp-server/mcp
+  timeout: 30s
+
+auth:
+  - type: api_key
+    key_env: DD_API_KEY
+    inject:
+      location: header
+      param: DD-API-KEY
+
+tools:
+  expose:
+    - name: list_monitors
+      description: "List Datadog monitors with optional filtering"
+      params:
+        - name: query
+          type: string
+          required: false
+          description: "Filter query for monitors"
+    - name: get_monitor
+      description: "Get details of a specific monitor"
+      params:
+        - name: monitor_id
+          type: int
+          required: true
+          description: "Monitor ID"
+    - name: query_metrics
+      description: "Query time series metric data"
+      params:
+        - name: query
+          type: string
+          required: true
+          description: "Metrics query string"
+        - name: from
+          type: int
+          required: true
+          description: "Start time as Unix epoch seconds"
+        - name: to
+          type: int
+          required: true
+          description: "End time as Unix epoch seconds"
+    - name: list_dashboards
+      description: "List Datadog dashboards"
+    - name: get_dashboard
+      description: "Get details of a specific dashboard"
+      params:
+        - name: dashboard_id
+          type: string
+          required: true
+          description: "Dashboard ID"
+    - name: list_incidents
+      description: "List active incidents"
+    - name: search_logs
+      description: "Search log entries"
+      params:
+        - name: query
+          type: string
+          required: true
+          description: "Log search query"
+        - name: from
+          type: string
+          required: false
+          description: "Start time (ISO format)"
+        - name: to
+          type: string
+          required: false
+          description: "End time (ISO format)"
+    - name: get_host_info
+      description: "Get information about monitored hosts"
+      params:
+        - name: filter
+          type: string
+          required: false
+          description: "Filter hosts by tag or name"
+
+prompts:
+  system: |
+    This server provides access to Datadog observability tools. Use it for
+    querying metrics, checking monitors, viewing dashboards, and managing
+    incidents. Correlate errors with deployment events when debugging.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true

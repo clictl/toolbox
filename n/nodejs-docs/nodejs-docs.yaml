@@ -1,0 +1,58 @@
+name: nodejs-docs
+description: Official Node.js API documentation covering core modules, globals, and runtime APIs
+version: "1.0"
+category: documentation
+tags: [documentation, nodejs, javascript, runtime, api]
+protocol: rest
+tool_type: website
+owner_name: OpenJS Foundation
+website: https://nodejs.org
+support_url: https://github.com/nodejs/node/issues
+pricing_model: free
+
+site:
+  url: https://nodejs.org/docs/latest/api
+  sitemap: https://nodejs.org/sitemap.xml
+  content_type: documentation
+  preferred_format: html
+
+access:
+  method: fetch
+  robots_txt: respected
+
+connection:
+  base_url: https://nodejs.org/docs/latest/api
+  headers:
+    Accept: application/json
+
+auth:
+  - type: none
+
+actions:
+  - name: get_module
+    description: Fetch documentation for a specific Node.js core module
+    method: GET
+    path: /{module}.json
+    params:
+      - name: module
+        type: string
+        required: true
+        description: Core module name (e.g., fs, http, path, stream, child_process)
+        in: path
+
+  - name: get_page
+    description: Fetch an HTML documentation page for a Node.js core module
+    method: GET
+    path: /{module}.html
+    params:
+      - name: module
+        type: string
+        required: true
+        description: Core module name (e.g., fs, http, path, stream, child_process)
+        in: path
+
+  - name: index
+    description: Fetch the documentation index listing all available modules
+    method: GET
+    path: /index.json
+    params: []

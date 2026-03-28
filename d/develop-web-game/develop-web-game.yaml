@@ -1,0 +1,52 @@
+name: develop-web-game
+description: Build or iterate on a web game (HTML/JS) with a reliable development and testing loop
+version: "1.0"
+category: developer
+tags:
+- skill
+- game-development
+- html
+- javascript
+- web-game
+protocol: skill
+owner_name: OpenAI
+namespace: openai
+website: https://github.com/openai/skills
+support_url: https://github.com/openai/skills/issues
+pricing_model: free
+license: MIT
+source:
+  type: github
+  repo: openai/skills
+  path: skills/.curated/develop-web-game/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: SKILL.md
+  - name: agents/openai.yaml
+  - name: assets/game-small.svg
+  - name: assets/game.png
+  - name: references/action_payloads.json
+  - name: scripts/web_game_playwright_client.js
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: openai
+  version: '1.0'
+auth:
+- type: none
+requires_system:
+- name: node
+  check: node --version
+  brew: node

@@ -1,0 +1,103 @@
+name: supabase-mcp
+description: MCP server for Supabase database management, auth, storage, and edge functions
+version: "1.0"
+category: developer
+tags: [mcp, supabase, database, postgres, auth, storage, serverless]
+protocol: mcp
+owner_name: Supabase
+website: https://github.com/supabase-community/supabase-mcp
+support_url: https://github.com/supabase-community/supabase-mcp/issues
+pricing_model: freemium
+license: Apache-2.0
+
+package:
+  registry: npm
+  name: "@supabase/mcp-server-supabase"
+  version: "0.7.0"
+  manager: npx
+
+auth:
+  - type: api_key
+    key_env: SUPABASE_ACCESS_TOKEN
+    inject:
+      location: env
+      param: SUPABASE_ACCESS_TOKEN
+
+tools:
+  expose:
+    - name: list_projects
+      description: "List Supabase projects"
+    - name: get_project
+      description: "Get details of a Supabase project"
+      params:
+        - name: project_id
+          type: string
+          required: true
+          description: "Supabase project ID"
+    - name: execute_sql
+      description: "Execute a SQL query against the database"
+      params:
+        - name: project_id
+          type: string
+          required: true
+          description: "Supabase project ID"
+        - name: sql
+          type: string
+          required: true
+          description: "SQL query to execute"
+    - name: list_tables
+      description: "List tables in the database"
+      params:
+        - name: project_id
+          type: string
+          required: true
+          description: "Supabase project ID"
+    - name: apply_migration
+      description: "Apply a database migration"
+      destructive: true
+      params:
+        - name: project_id
+          type: string
+          required: true
+          description: "Supabase project ID"
+        - name: sql
+          type: string
+          required: true
+          description: "Migration SQL"
+        - name: name
+          type: string
+          required: true
+          description: "Migration name"
+    - name: list_functions
+      description: "List edge functions"
+      params:
+        - name: project_id
+          type: string
+          required: true
+          description: "Supabase project ID"
+    - name: get_logs
+      description: "Get project logs"
+      params:
+        - name: project_id
+          type: string
+          required: true
+          description: "Supabase project ID"
+        - name: service
+          type: string
+          required: false
+          description: "Service name to filter logs"
+
+prompts:
+  system: |
+    This server provides access to Supabase projects. Use it for database
+    queries, managing auth users, storage buckets, and edge functions.
+    Always confirm destructive operations with the user.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s

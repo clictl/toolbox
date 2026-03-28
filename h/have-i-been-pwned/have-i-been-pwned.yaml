@@ -1,0 +1,95 @@
+name: have-i-been-pwned
+description: Have I Been Pwned API for checking email breaches, paste dumps, and data breach details
+version: "1.0"
+category: security
+tags: [hibp, breaches, security, passwords, email, privacy]
+protocol: rest
+owner_name: Have I Been Pwned
+website: https://haveibeenpwned.com
+support_url: https://haveibeenpwned.com/API/v3
+pricing_model: paid
+
+connection:
+  base_url: https://haveibeenpwned.com/api/v3
+  timeout: 15s
+  headers:
+    Accept: application/json
+
+auth:
+  - type: api_key
+    key_env: HIBP_API_KEY
+    inject:
+      location: header
+      param: hibp-api-key
+
+actions:
+  - name: breaches-for-account
+    description: Get all breaches that an email address has appeared in
+    method: GET
+    path: /breachedaccount/{{email}}
+    params:
+      - name: email
+        type: string
+        required: true
+        description: The email address to check
+        in: path
+      - name: truncateResponse
+        type: string
+        description: Set to 'true' to return only breach names without full metadata
+        in: query
+      - name: includeUnverified
+        type: string
+        description: Set to 'true' to include unverified breaches
+        in: query
+    assert:
+      - status: [200, 404]
+    transform:
+      - extract: "$"
+      - truncate: { max_items: 20 }
+
+  - name: list-breaches
+    description: Get the complete list of all breaches in the HIBP system
+    method: GET
+    path: /breaches
+    params:
+      - name: domain
+        type: string
+        description: Filter breaches by domain name
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+      - truncate: { max_items: 20 }
+
+  - name: get-breach
+    description: Get details for a single breach by its name
+    method: GET
+    path: /breach/{{name}}
+    params:
+      - name: name
+        type: string
+        required: true
+        description: "The breach name (pascalCase), e.g. 'Adobe' or 'LinkedIn'"
+        in: path
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+      - select: ["Name", "Title", "Domain", "BreachDate", "PwnCount", "Description", "DataClasses", "IsVerified"]
+
+  - name: pastes-for-account
+    description: Get all paste dumps that an email address has appeared in
+    method: GET
+    path: /pasteaccount/{{email}}
+    params:
+      - name: email
+        type: string
+        required: true
+        description: The email address to check
+        in: path
+    assert:
+      - status: [200, 404]
+    transform:
+      - extract: "$"
+      - truncate: { max_items: 20 }

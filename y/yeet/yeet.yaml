@@ -1,0 +1,53 @@
+name: yeet
+description: Stage, commit, push, and open a GitHub pull request in one flow using the GitHub CLI
+version: "1.0"
+category: developer
+tags:
+- skill
+- github
+- git
+- pull-request
+- workflow
+protocol: skill
+owner_name: OpenAI
+namespace: openai
+website: https://github.com/openai/skills
+support_url: https://github.com/openai/skills/issues
+pricing_model: free
+license: MIT
+source:
+  type: github
+  repo: openai/skills
+  path: skills/.curated/yeet/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: SKILL.md
+  - name: agents/openai.yaml
+  - name: assets/yeet-small.svg
+  - name: assets/yeet.png
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: openai
+  version: '1.0'
+auth:
+- type: none
+requires_system:
+- name: gh
+  check: gh --version
+  brew: gh
+- name: git
+  check: git --version
+  brew: git

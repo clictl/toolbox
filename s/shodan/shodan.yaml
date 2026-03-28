@@ -1,0 +1,76 @@
+name: shodan
+description: Shodan API for searching internet-connected devices, open ports, and network intelligence
+version: "1.0"
+category: security
+tags: [shodan, security, network, scanning, iot, reconnaissance]
+protocol: rest
+owner_name: Shodan
+website: https://www.shodan.io
+support_url: https://developer.shodan.io
+pricing_model: freemium
+
+connection:
+  base_url: https://api.shodan.io
+  timeout: 15s
+  headers:
+    Accept: application/json
+
+auth:
+  - type: api_key
+    key_env: SHODAN_API_KEY
+    inject:
+      location: query
+      param: key
+
+actions:
+  - name: host
+    description: Get all available information about a host IP, including open ports, banners, and location
+    method: GET
+    path: /shodan/host/{{ip}}
+    params:
+      - name: ip
+        type: string
+        required: true
+        description: "IP address to look up, e.g. '8.8.8.8'"
+        in: path
+      - name: minify
+        type: string
+        default: "true"
+        description: Return only basic host info (ports, hostnames, location) when true
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+      - select: ["ip_str", "hostnames", "ports", "org", "os", "city", "country_name", "vulns"]
+
+  - name: search
+    description: Search for devices matching a Shodan query filter
+    method: GET
+    path: /shodan/host/search
+    params:
+      - name: query
+        type: string
+        required: true
+        description: "Shodan search query, e.g. 'apache country:US' or 'port:22 org:google'"
+        in: query
+      - name: page
+        type: int
+        default: "1"
+        description: Page number for results pagination
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.matches"
+      - truncate: { max_items: 20 }
+
+  - name: info
+    description: Check your API plan, credits remaining, and usage limits
+    method: GET
+    path: /api-info
+    params: []
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"

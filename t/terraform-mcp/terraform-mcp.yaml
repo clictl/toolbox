@@ -1,0 +1,118 @@
+name: terraform-mcp
+description: Official HashiCorp MCP server for Terraform Registry, HCP Terraform, and IaC development
+version: "1.0"
+category: devops
+tags: [mcp, terraform, iac, infrastructure, hashicorp, hcp, devops]
+protocol: mcp
+owner_name: HashiCorp
+website: https://github.com/hashicorp/terraform-mcp-server
+support_url: https://github.com/hashicorp/terraform-mcp-server/issues
+pricing_model: free
+license: MPL-2.0
+
+transport:
+  type: stdio
+  command: terraform-mcp-server
+  args: []
+  requires:
+    - name: terraform-mcp-server
+      url: https://github.com/hashicorp/terraform-mcp-server
+      check: "terraform-mcp-server --version"
+
+auth:
+  - type: api_key
+    key_env: TFE_TOKEN
+    inject:
+      location: env
+      param: TFE_TOKEN
+
+tools:
+  expose:
+    - name: search_providers
+      description: "Search the Terraform Registry for providers"
+      params:
+        - name: query
+          type: string
+          required: true
+          description: "Provider search query"
+    - name: get_provider
+      description: "Get details of a Terraform provider"
+      params:
+        - name: namespace
+          type: string
+          required: true
+          description: "Provider namespace (e.g. hashicorp)"
+        - name: name
+          type: string
+          required: true
+          description: "Provider name (e.g. aws)"
+    - name: get_provider_docs
+      description: "Get documentation for a provider resource"
+      params:
+        - name: namespace
+          type: string
+          required: true
+          description: "Provider namespace"
+        - name: name
+          type: string
+          required: true
+          description: "Provider name"
+        - name: resource
+          type: string
+          required: true
+          description: "Resource type name"
+    - name: search_modules
+      description: "Search the Terraform Registry for modules"
+      params:
+        - name: query
+          type: string
+          required: true
+          description: "Module search query"
+    - name: get_module
+      description: "Get details of a Terraform module"
+      params:
+        - name: namespace
+          type: string
+          required: true
+          description: "Module namespace"
+        - name: name
+          type: string
+          required: true
+          description: "Module name"
+        - name: provider
+          type: string
+          required: true
+          description: "Provider name"
+    - name: list_workspaces
+      description: "List HCP Terraform workspaces"
+      params:
+        - name: organization
+          type: string
+          required: true
+          description: "HCP Terraform organization name"
+    - name: get_workspace
+      description: "Get details of an HCP Terraform workspace"
+      params:
+        - name: organization
+          type: string
+          required: true
+          description: "Organization name"
+        - name: workspace
+          type: string
+          required: true
+          description: "Workspace name"
+
+prompts:
+  system: |
+    This server provides access to the Terraform ecosystem. Use it for
+    browsing the Terraform Registry, managing HCP Terraform workspaces,
+    and getting provider documentation for IaC development.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s

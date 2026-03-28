@@ -1,0 +1,41 @@
+name: react-docs
+description: Official React documentation including API reference, guides, hooks, and component patterns
+version: "1.0"
+category: documentation
+tags: [documentation, react, javascript, frontend, meta]
+protocol: rest
+tool_type: website
+owner_name: Meta
+website: https://react.dev
+support_url: https://github.com/reactjs/react.dev/issues
+pricing_model: free
+
+site:
+  url: https://react.dev
+  sitemap: https://react.dev/sitemap.xml
+  content_type: documentation
+  preferred_format: html
+
+access:
+  method: fetch
+  robots_txt: respected
+
+connection:
+  base_url: https://react.dev
+  headers:
+    Accept: text/html
+
+auth:
+  - type: none
+
+actions:
+  - name: get_page
+    description: Fetch a specific React documentation page by path
+    method: GET
+    path: /{path}
+    params:
+      - name: path
+        type: string
+        required: true
+        description: Documentation path (e.g., reference/react/useState, learn/thinking-in-react)
+        in: path

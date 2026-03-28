@@ -1,0 +1,106 @@
+name: binance-ws
+description: Binance real-time market data streams via WebSocket. Live prices, order book depth, and trades
+version: "1.0"
+category: crypto
+tags: [crypto, trading, real-time, websocket, binance, prices, orderbook]
+protocol: websocket
+owner_name: Binance
+website: https://binance.com
+support_url: https://developers.binance.com
+
+connection:
+  url: wss://stream.binance.com:9443/ws
+  ping_interval: 30s
+  reconnect: true
+
+auth:
+  - type: none
+
+actions:
+  - name: ticker
+    description: Subscribe to real-time 24hr price ticker updates for a trading pair
+    send:
+      type: json
+      template: |
+        {
+          "method": "SUBSCRIBE",
+          "params": ["{{symbol}}@ticker"],
+          "id": 1
+        }
+    params:
+      - name: symbol
+        type: string
+        required: true
+        description: "Trading pair in lowercase, e.g. 'btcusdt', 'ethusdt', 'solusdt'"
+    listen:
+      format: json
+      duration: 30s
+      transform:
+        extract: "$.data"
+
+  - name: trades
+    description: Subscribe to real-time trade execution stream for a trading pair
+    send:
+      type: json
+      template: |
+        {
+          "method": "SUBSCRIBE",
+          "params": ["{{symbol}}@trade"],
+          "id": 1
+        }
+    params:
+      - name: symbol
+        type: string
+        required: true
+        description: "Trading pair in lowercase, e.g. 'btcusdt'"
+    listen:
+      format: json
+      count: 20
+      transform:
+        extract: "$.data"
+
+  - name: depth
+    description: Subscribe to order book depth updates showing best bid/ask prices
+    send:
+      type: json
+      template: |
+        {
+          "method": "SUBSCRIBE",
+          "params": ["{{symbol}}@depth{{#levels}}{{levels}}{{/levels}}"],
+          "id": 1
+        }
+    params:
+      - name: symbol
+        type: string
+        required: true
+        description: Trading pair in lowercase
+      - name: levels
+        type: string
+        default: "5"
+        description: "Depth levels: 5, 10, or 20"
+    listen:
+      format: json
+      count: 10
+
+  - name: kline
+    description: Subscribe to candlestick/kline data for charting
+    send:
+      type: json
+      template: |
+        {
+          "method": "SUBSCRIBE",
+          "params": ["{{symbol}}@kline_{{interval}}"],
+          "id": 1
+        }
+    params:
+      - name: symbol
+        type: string
+        required: true
+        description: Trading pair in lowercase
+      - name: interval
+        type: string
+        required: true
+        description: "Candlestick interval: 1m, 5m, 15m, 1h, 4h, 1d, 1w"
+    listen:
+      format: json
+      count: 10

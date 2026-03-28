@@ -1,0 +1,196 @@
+# clictl Registry
+
+> Official tool registry for clictl - the package manager for your Agent. Curated specs for APIs, CLIs, websites, MCP servers, and skills.
+
+This registry contains YAML spec files that describe tools. Agents use these specs to call APIs, run CLI commands, query websites, connect to MCP servers, and install skills.
+
+## How to create a spec
+
+Read SPEC_SCHEMA.md for the complete schema reference with templates and examples.
+
+## File structure
+
+- `specs/{first-letter}/<tool-name>/<tool-name>.yaml` - All tool specs (APIs, CLIs, websites, MCP servers, skills)
+- `SPEC_SCHEMA.md` - Complete spec schema reference (read this first)
+- `README.md` - Overview and contributing guide
+
+## Key rules
+
+- Every API/CLI action must have `assert` (at least `status: [200]`) and `transform`
+- POST actions that are read-only must include `safe: true`
+- Auth is an array: `auth: [{ type: api_key, key_env: FOO, inject: { location: header, param: Authorization, prefix: "Bearer" } }]`
+- Destructive actions (DELETE, state-changing CLI commands) must include `destructive` in tags
+- Destructive actions are controlled by workspace ACL security rules
+- No em dashes in any content
+
+## Valid categories
+
+ai, cloud, communication, crypto, data, data-portal, developer, devops, documentation, finance, geo, ip, knowledge-base, media, monitoring, news, productivity, reference, search, security, text, weather
+
+## Spec format summary
+
+```yaml
+name: tool-name
+description: One line description
+version: "1.0"
+category: developer
+tags: [tag1, tag2]
+protocol: http
+owner_name: Company
+website: https://example.com
+support_url: https://docs.example.com
+pricing_model: freemium
+connection:
+  base_url: https://api.example.com
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+  - type: api_key
+    key_env: EXAMPLE_KEY
+    inject:
+      location: header
+      param: Authorization
+      prefix: "Bearer"
+actions:
+  - name: get-data
+    description: Fetch data
+    method: GET
+    path: /data
+    params:
+      - name: q
+        type: string
+        required: true
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.data"
+      - truncate: { max_items: 20 }
+```
+
+## MCP spec format summary
+
+MCP specs use `protocol: mcp` and define a `transport` block instead of `connection`, and a `tools` block instead of `actions`.
+
+```yaml
+name: my-mcp-server
+description: One line description
+version: "1.0"
+category: developer
+tags: [mcp, tag1, tag2]
+protocol: mcp
+owner_name: Author Name
+website: https://example.com
+support_url: https://github.com/org/repo/issues
+pricing_model: free
+
+transport:
+  type: stdio                     # stdio or http
+  command: npx
+  args: ["-y", "@scope/mcp-server"]
+  requires:
+    - name: node
+      url: https://nodejs.org
+      check: "node --version"
+
+auth:
+  - type: none
+
+tools:
+  expose:                          # all, or list of tools
+    - name: tool_name
+      description: "What the tool does"
+    - name: dangerous_tool
+      destructive: true            # Requires ACL approval
+  deny:                            # Block specific tools
+    - name: blocked_tool
+  tool_transforms:                 # Output transforms per tool
+    tool_name:
+      - truncate: { max_length: 8000 }
+
+prompts:
+  system: |
+    Instructions for the agent when using this server.
+  tool_instructions:
+    tool_name: "Additional context for this tool."
+
+resources:
+  expose: all                      # all, or list of URI patterns
+
+install_mode:
+  default: both                    # skill | mcp | both
+  allow_mcp: true
+  allow_skill: true
+```
+
+## MCP key rules
+
+- MCP specs must have `protocol: mcp` and a `transport` block
+- MCP specs must have a `tools` block (expose: all, or a list of tool names)
+- Tools marked `destructive: true` are controlled by workspace ACL rules
+- Tools in the `deny` list are never exposed regardless of ACL
+- `prompts.system` is injected when the server is active
+- `prompts.tool_instructions` are appended to individual tool descriptions
+- `install_mode` controls whether the server is installed as a clictl skill (proxied), native MCP, or both
+
+## Skill spec format summary
+
+Skill specs use `protocol: skill` and define a `source` block (where to get the SKILL.md) and `platforms` block (which platforms support it). No `connection` or `actions` needed.
+
+```yaml
+name: my-skill
+description: What this skill teaches the agent to do
+version: "1.0"
+category: developer
+tags: [skill, tag1, tag2]
+protocol: skill
+owner_name: Author Name
+website: https://github.com/org/repo
+support_url: https://github.com/org/repo/issues
+pricing_model: free
+license: Apache-2.0
+
+source:
+  type: github                     # github, npm, or inline
+  repo: org/skills-repo
+  path: skills/my-skill/SKILL.md
+  ref: main
+
+platforms:
+  - name: claude-code
+    install_method: skill
+    config_path: .claude/skills/
+  - name: cursor
+    install_method: skill
+    config_path: .cursor/skills/
+  - name: vscode
+    install_method: copy
+    config_path: .github/skills/
+
+skill_metadata:
+  author: org-name
+  version: "1.0"
+
+auth:
+  - type: none
+
+requires_tools: [bash, read, write]    # Agent tools the skill expects
+requires_mcp: [filesystem-server]      # MCP servers the skill needs (optional)
+```
+
+## Skill key rules
+
+- Skill specs must have `protocol: skill` and a `source` block
+- Skill specs must have a `platforms` block listing supported platforms
+- `source.type` is one of: `github`, `npm`, `inline`
+- For `github` source: `repo` (org/repo) and `path` (path to SKILL.md) are required
+- `requires_tools` lists agent tools the skill expects to be available
+- `requires_mcp` lists MCP servers the skill depends on (resolved during install)
+- Skills don't use `connection` or `actions` blocks (they are instruction-based, not function-based)
+
+## Validation
+
+```bash
+uv run pytest tests/test_schema_all.py -k "<tool-name>" -v
+```

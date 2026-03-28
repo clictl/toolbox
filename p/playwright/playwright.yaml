@@ -1,0 +1,54 @@
+name: playwright
+description: Automate a real browser from the terminal for navigation, form filling, snapshots, screenshots, and data extraction
+version: "1.0"
+category: developer
+tags:
+- skill
+- browser
+- automation
+- testing
+- playwright
+protocol: skill
+owner_name: OpenAI
+namespace: openai
+website: https://github.com/openai/skills
+support_url: https://github.com/openai/skills/issues
+pricing_model: free
+license: MIT
+source:
+  type: github
+  repo: openai/skills
+  path: skills/.curated/playwright/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: NOTICE.txt
+  - name: SKILL.md
+  - name: agents/openai.yaml
+  - name: assets/playwright-small.svg
+  - name: assets/playwright.png
+  - name: references/cli.md
+  - name: references/workflows.md
+  - name: scripts/playwright_cli.sh
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: openai
+  version: '1.0'
+auth:
+- type: none
+requires_system:
+- name: node
+  check: node --version
+  brew: node

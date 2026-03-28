@@ -1,0 +1,101 @@
+name: homebrew
+description: Homebrew package manager for macOS and Linux. Search, inspect, list, install, upgrade, and uninstall packages
+version: "1.0"
+category: developer
+tags: [homebrew, brew, package-manager, macos, linux, destructive]
+protocol: cli
+tool_type: cli
+owner_name: Homebrew
+website: https://brew.sh
+support_url: https://docs.brew.sh
+
+connection:
+  shell: /bin/sh
+  requires:
+    - name: brew
+      url: https://brew.sh
+      check: "brew --version"
+
+auth:
+  - type: none
+
+actions:
+  - name: search
+    description: Search for available formulae and casks by name or pattern
+    run: "brew search {{query}}"
+    params:
+      - name: query
+        type: string
+        required: true
+        description: Search term or regex pattern
+
+  - name: info
+    description: Show detailed information about a formula including version, dependencies, and install options
+    run: "brew info {{formula}}"
+    params:
+      - name: formula
+        type: string
+        required: true
+        description: Formula or cask name
+
+  - name: list
+    description: List all installed formulae and casks
+    run: "brew list"
+    params: []
+
+  - name: outdated
+    description: List installed formulae that have newer versions available
+    run: "brew outdated"
+    params: []
+
+  - name: deps
+    description: Show the dependency tree for a given formula
+    run: "brew deps {{formula}} {{#tree}}--tree{{/tree}}"
+    params:
+      - name: formula
+        type: string
+        required: true
+        description: Formula name to show dependencies for
+      - name: tree
+        type: bool
+        description: Display dependencies as a tree structure
+
+  - name: install
+    description: Install a formula or cask
+    run: "brew install {{#cask}}--cask{{/cask}} {{formula}}"
+    params:
+      - name: formula
+        type: string
+        required: true
+        description: Formula or cask name to install
+      - name: cask
+        type: bool
+        description: Install as a cask (GUI application) instead of a formula
+
+  - name: upgrade
+    description: Upgrade an installed formula or all outdated formulae
+    run: "brew upgrade {{formula}}"
+    params:
+      - name: formula
+        type: string
+        description: Formula name to upgrade (omit to upgrade all outdated formulae)
+
+  - name: uninstall
+    description: Uninstall a formula or cask
+    run: "brew uninstall {{formula}}"
+    params:
+      - name: formula
+        type: string
+        required: true
+        description: Formula or cask name to remove
+
+  - name: cleanup
+    description: Remove stale lock files, outdated downloads, and old versions of installed formulae
+    run: "brew cleanup {{#dry_run}}-n{{/dry_run}} {{#prune_all}}-s{{/prune_all}}"
+    params:
+      - name: dry_run
+        type: bool
+        description: Show what would be removed without actually deleting anything
+      - name: prune_all
+        type: bool
+        description: Scrub the cache and remove all downloads, including the latest versions

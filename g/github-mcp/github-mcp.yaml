@@ -1,0 +1,434 @@
+name: github-mcp
+description: MCP server for GitHub API access with repository, issue, pull request, and code search tools
+version: "1.0"
+category: developer
+tags: [mcp, github, git, repos, issues, pull-requests, code-search]
+protocol: mcp
+owner_name: GitHub
+website: https://github.com/modelcontextprotocol/servers
+support_url: https://github.com/modelcontextprotocol/servers/issues
+pricing_model: free
+license: MIT
+
+package:
+  registry: npm
+  name: "@modelcontextprotocol/server-github"
+  version: "0.6.2"
+  manager: npx
+
+auth:
+  - type: api_key
+    key_env: GITHUB_PERSONAL_ACCESS_TOKEN
+    inject:
+      location: env
+      param: GITHUB_PERSONAL_ACCESS_TOKEN
+
+tools:
+  expose:
+    - name: create_or_update_file
+      description: "Create or update a single file in a repository"
+      destructive: true
+      params:
+        - name: owner
+          type: string
+          required: true
+          description: "Repository owner"
+        - name: repo
+          type: string
+          required: true
+          description: "Repository name"
+        - name: path
+          type: string
+          required: true
+          description: "File path in the repository"
+        - name: content
+          type: string
+          required: true
+          description: "File content"
+        - name: message
+          type: string
+          required: true
+          description: "Commit message"
+        - name: branch
+          type: string
+          required: false
+          description: "Branch name"
+        - name: sha
+          type: string
+          required: false
+          description: "Current file SHA for updates"
+    - name: search_repositories
+      description: "Search for GitHub repositories"
+      params:
+        - name: query
+          type: string
+          required: true
+          description: "Search query (e.g. 'language:go stars:>100')"
+        - name: page
+          type: int
+          required: false
+          description: "Page number for pagination"
+    - name: create_repository
+      description: "Create a new GitHub repository"
+      destructive: true
+      params:
+        - name: name
+          type: string
+          required: true
+          description: "Repository name"
+        - name: description
+          type: string
+          required: false
+          description: "Repository description"
+        - name: private
+          type: bool
+          required: false
+          description: "Whether the repository is private"
+    - name: get_file_contents
+      description: "Get contents of a file or directory from a repository"
+      params:
+        - name: owner
+          type: string
+          required: true
+          description: "Repository owner"
+        - name: repo
+          type: string
+          required: true
+          description: "Repository name"
+        - name: path
+          type: string
+          required: true
+          description: "File or directory path"
+        - name: branch
+          type: string
+          required: false
+          description: "Branch name (default: main)"
+    - name: push_files
+      description: "Push multiple files to a repository in a single commit"
+      destructive: true
+      params:
+        - name: owner
+          type: string
+          required: true
+          description: "Repository owner"
+        - name: repo
+          type: string
+          required: true
+          description: "Repository name"
+        - name: branch
+          type: string
+          required: true
+          description: "Branch to push to"
+        - name: files
+          type: string
+          required: true
+          description: "JSON array of file objects with path and content"
+        - name: message
+          type: string
+          required: true
+          description: "Commit message"
+    - name: create_issue
+      description: "Create a new issue in a repository"
+      destructive: true
+      params:
+        - name: owner
+          type: string
+          required: true
+          description: "Repository owner"
+        - name: repo
+          type: string
+          required: true
+          description: "Repository name"
+        - name: title
+          type: string
+          required: true
+          description: "Issue title"
+        - name: body
+          type: string
+          required: false
+          description: "Issue body"
+        - name: labels
+          type: string
+          required: false
+          description: "Comma-separated labels"
+    - name: create_pull_request
+      description: "Create a new pull request"
+      destructive: true
+      params:
+        - name: owner
+          type: string
+          required: true
+          description: "Repository owner"
+        - name: repo
+          type: string
+          required: true
+          description: "Repository name"
+        - name: title
+          type: string
+          required: true
+          description: "Pull request title"
+        - name: body
+          type: string
+          required: false
+          description: "Pull request body"
+        - name: head
+          type: string
+          required: true
+          description: "Source branch"
+        - name: base
+          type: string
+          required: true
+          description: "Target branch"
+    - name: fork_repository
+      description: "Fork a repository to your account"
+      destructive: true
+      params:
+        - name: owner
+          type: string
+          required: true
+          description: "Repository owner"
+        - name: repo
+          type: string
+          required: true
+          description: "Repository name"
+        - name: organization
+          type: string
+          required: false
+          description: "Organization to fork into"
+    - name: create_branch
+      description: "Create a new branch in a repository"
+      destructive: true
+      params:
+        - name: owner
+          type: string
+          required: true
+          description: "Repository owner"
+        - name: repo
+          type: string
+          required: true
+          description: "Repository name"
+        - name: branch
+          type: string
+          required: true
+          description: "New branch name"
+        - name: from_branch
+          type: string
+          required: false
+          description: "Source branch to create from"
+    - name: list_issues
+      description: "List issues in a repository with filtering options"
+      params:
+        - name: owner
+          type: string
+          required: true
+          description: "Repository owner"
+        - name: repo
+          type: string
+          required: true
+          description: "Repository name"
+        - name: state
+          type: string
+          required: false
+          description: "Filter by state: open, closed, or all"
+        - name: labels
+          type: string
+          required: false
+          description: "Comma-separated labels to filter by"
+        - name: sort
+          type: string
+          required: false
+          description: "Sort field (created, updated, comments)"
+    - name: update_issue
+      description: "Update an existing issue"
+      destructive: true
+      params:
+        - name: owner
+          type: string
+          required: true
+          description: "Repository owner"
+        - name: repo
+          type: string
+          required: true
+          description: "Repository name"
+        - name: issue_number
+          type: int
+          required: true
+          description: "Issue number"
+        - name: title
+          type: string
+          required: false
+          description: "Updated issue title"
+        - name: body
+          type: string
+          required: false
+          description: "Updated issue body"
+        - name: state
+          type: string
+          required: false
+          description: "Issue state: open or closed"
+        - name: labels
+          type: string
+          required: false
+          description: "Comma-separated labels"
+    - name: add_issue_comment
+      description: "Add a comment to an issue or pull request"
+      destructive: true
+      params:
+        - name: owner
+          type: string
+          required: true
+          description: "Repository owner"
+        - name: repo
+          type: string
+          required: true
+          description: "Repository name"
+        - name: issue_number
+          type: int
+          required: true
+          description: "Issue or pull request number"
+        - name: body
+          type: string
+          required: true
+          description: "Comment body"
+    - name: search_code
+      description: "Search for code across GitHub repositories"
+      params:
+        - name: query
+          type: string
+          required: true
+          description: "Code search query"
+    - name: search_issues
+      description: "Search for issues and pull requests"
+      params:
+        - name: query
+          type: string
+          required: true
+          description: "Issue search query"
+    - name: search_users
+      description: "Search for GitHub users"
+      params:
+        - name: query
+          type: string
+          required: true
+          description: "User search query"
+    - name: list_commits
+      description: "List commits in a repository branch"
+      params:
+        - name: owner
+          type: string
+          required: true
+          description: "Repository owner"
+        - name: repo
+          type: string
+          required: true
+          description: "Repository name"
+        - name: sha
+          type: string
+          required: false
+          description: "Branch name or commit SHA to list from"
+    - name: get_issue
+      description: "Get details of a specific issue"
+      params:
+        - name: owner
+          type: string
+          required: true
+          description: "Repository owner"
+        - name: repo
+          type: string
+          required: true
+          description: "Repository name"
+        - name: issue_number
+          type: int
+          required: true
+          description: "Issue number"
+    - name: get_pull_request
+      description: "Get details of a specific pull request"
+      params:
+        - name: owner
+          type: string
+          required: true
+          description: "Repository owner"
+        - name: repo
+          type: string
+          required: true
+          description: "Repository name"
+        - name: pull_number
+          type: int
+          required: true
+          description: "Pull request number"
+    - name: list_pull_requests
+      description: "List pull requests in a repository"
+      params:
+        - name: owner
+          type: string
+          required: true
+          description: "Repository owner"
+        - name: repo
+          type: string
+          required: true
+          description: "Repository name"
+        - name: state
+          type: string
+          required: false
+          description: "Filter by state: open, closed, or all"
+    - name: create_pull_request_review
+      description: "Create a review on a pull request"
+      destructive: true
+      params:
+        - name: owner
+          type: string
+          required: true
+          description: "Repository owner"
+        - name: repo
+          type: string
+          required: true
+          description: "Repository name"
+        - name: pull_number
+          type: int
+          required: true
+          description: "Pull request number"
+        - name: body
+          type: string
+          required: true
+          description: "Review comment"
+        - name: event
+          type: string
+          required: true
+          description: "Review action: APPROVE, REQUEST_CHANGES, or COMMENT"
+  tool_transforms:
+    search_repositories:
+      - truncate: { max_items: 20 }
+    search_code:
+      - truncate: { max_items: 30 }
+    search_issues:
+      - truncate: { max_items: 20 }
+    list_issues:
+      - truncate: { max_items: 30 }
+    list_commits:
+      - truncate: { max_items: 30 }
+    list_pull_requests:
+      - truncate: { max_items: 20 }
+
+permissions:
+  network:
+    - "api.github.com"
+  env:
+    - "GITHUB_PERSONAL_ACCESS_TOKEN"
+
+prompts:
+  system: |
+    This server provides GitHub API access. Use search tools to find
+    repositories and code before making changes. When creating issues
+    or pull requests, write clear titles and descriptions.
+  tool_instructions:
+    create_pull_request: "Include a descriptive title and summary of changes."
+    push_files: "Always create a branch first. Never push directly to main."
+
+resources:
+  expose: all
+
+install_mode:
+  default: both
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s

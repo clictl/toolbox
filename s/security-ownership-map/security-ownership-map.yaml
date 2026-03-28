@@ -1,0 +1,61 @@
+name: security-ownership-map
+description: Analyze git repositories to build a security ownership topology, compute bus factor and sensitive-code ownership, and export CSV/JSON
+version: "1.0"
+category: security
+tags:
+- skill
+- security
+- ownership
+- bus-factor
+- analytics
+protocol: skill
+owner_name: OpenAI
+namespace: openai
+website: https://github.com/openai/skills
+support_url: https://github.com/openai/skills/issues
+pricing_model: free
+license: MIT
+source:
+  type: github
+  repo: openai/skills
+  path: skills/.curated/security-ownership-map/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: SKILL.md
+  - name: agents/openai.yaml
+  - name: references/neo4j-import.md
+  - name: scripts/build_ownership_map.py
+  - name: scripts/community_maintainers.py
+  - name: scripts/query_ownership.py
+  - name: scripts/run_ownership_map.py
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: openai
+  version: '1.0'
+auth:
+- type: none
+requires_system:
+- name: git
+  check: git --version
+  brew: git
+- name: python3
+  check: python3 --version
+  brew: python3
+runtime:
+  language: python
+  manager: pip
+  dependencies:
+  - networkx

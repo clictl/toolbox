@@ -1,0 +1,80 @@
+name: deepl
+description: DeepL Translation API for high-quality machine translation across 30+ languages
+version: "1.0"
+category: ai
+tags: [deepl, translation, language, localization, nlp]
+protocol: rest
+owner_name: DeepL
+website: https://www.deepl.com
+support_url: https://developers.deepl.com/docs
+pricing_model: freemium
+
+connection:
+  base_url: https://api-free.deepl.com/v2
+  timeout: 15s
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+
+auth:
+  - type: api_key
+    key_env: DEEPL_API_KEY
+    inject:
+      location: header
+      key: Authorization
+      prefix: "DeepL-Auth-Key "
+
+actions:
+  - name: translate
+    description: Translate text into a target language with automatic source language detection
+    method: POST
+    path: /translate
+    safe: true
+    params:
+      - name: text
+        type: string
+        required: true
+        description: Text to translate (multiple sentences supported)
+        in: body
+      - name: target_lang
+        type: string
+        required: true
+        description: "Target language code, e.g. 'EN', 'DE', 'FR', 'ES', 'JA', 'ZH'"
+        in: body
+      - name: source_lang
+        type: string
+        description: "Source language code (auto-detected if omitted), e.g. 'EN', 'DE', 'FR'"
+        in: body
+      - name: formality
+        type: string
+        description: "Formality level: 'default', 'more', 'less', 'prefer_more', 'prefer_less'"
+        in: body
+    assert:
+      - status: [200]
+      - exists: "$.translations"
+    transform:
+      - extract: "$.translations"
+
+  - name: languages
+    description: List all supported languages for translation
+    method: GET
+    path: /languages
+    params:
+      - name: type
+        type: string
+        description: "Filter by language type: 'source' or 'target'"
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+
+  - name: usage
+    description: Check current API usage and character limits for your account
+    method: GET
+    path: /usage
+    params: []
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"

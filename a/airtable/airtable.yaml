@@ -1,0 +1,128 @@
+name: airtable
+description: Airtable API for listing bases, reading table records, and viewing table schemas
+version: "1.0"
+category: productivity
+tags: [airtable, database, spreadsheet, records, nocode]
+protocol: rest
+owner_name: Airtable
+website: https://airtable.com
+support_url: https://airtable.com/developers/web/api
+pricing_model: freemium
+
+connection:
+  base_url: https://api.airtable.com/v0
+  timeout: 15s
+  headers:
+    Accept: application/json
+
+auth:
+  - type: api_key
+    key_env: AIRTABLE_TOKEN
+    inject:
+      location: header
+      param: Authorization
+      prefix: "Bearer"
+
+actions:
+  - name: list-bases
+    description: List all bases (databases) accessible to your Airtable account
+    method: GET
+    path: /meta/bases
+    params:
+      - name: offset
+        type: string
+        description: Pagination cursor from a previous response
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.bases"
+      - truncate: { max_items: 20 }
+
+  - name: list-tables
+    description: List all tables and their field schemas in a specific base
+    method: GET
+    path: /meta/bases/{{base_id}}/tables
+    params:
+      - name: base_id
+        type: string
+        required: true
+        description: The Airtable base ID (starts with 'app')
+        in: path
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.tables"
+      - truncate: { max_items: 20 }
+
+  - name: list-records
+    description: List records from a table in a specific base
+    method: GET
+    path: /{{base_id}}/{{table_name}}
+    params:
+      - name: base_id
+        type: string
+        required: true
+        description: The Airtable base ID
+        in: path
+      - name: table_name
+        type: string
+        required: true
+        description: The table name or ID
+        in: path
+      - name: maxRecords
+        type: int
+        default: "20"
+        description: Maximum number of records to return
+        in: query
+      - name: view
+        type: string
+        description: Name or ID of a view to filter and sort records
+        in: query
+      - name: filterByFormula
+        type: string
+        description: "Airtable formula to filter records, e.g. \"{Status} = 'Done'\""
+        in: query
+      - name: sort[0][field]
+        type: string
+        description: Field name to sort by
+        in: query
+      - name: sort[0][direction]
+        type: string
+        description: "'asc' or 'desc'"
+        in: query
+      - name: offset
+        type: string
+        description: Pagination cursor from a previous response
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.records"
+      - truncate: { max_items: 20 }
+
+  - name: get-record
+    description: Get a single record by its ID from a table
+    method: GET
+    path: /{{base_id}}/{{table_name}}/{{record_id}}
+    params:
+      - name: base_id
+        type: string
+        required: true
+        description: The Airtable base ID
+        in: path
+      - name: table_name
+        type: string
+        required: true
+        description: The table name or ID
+        in: path
+      - name: record_id
+        type: string
+        required: true
+        description: The record ID (starts with 'rec')
+        in: path
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+      - select: ["id", "fields", "createdTime"]

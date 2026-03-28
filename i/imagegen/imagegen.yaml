@@ -1,0 +1,62 @@
+name: imagegen
+description: Generate or edit raster images with AI-created bitmap visuals such as photos, illustrations, textures, sprites, and mockups
+version: "1.0"
+category: ai
+tags:
+- skill
+- image-generation
+- ai
+- design
+- graphics
+protocol: skill
+owner_name: OpenAI
+namespace: openai
+website: https://github.com/openai/skills
+support_url: https://github.com/openai/skills/issues
+pricing_model: free
+license: MIT
+source:
+  type: github
+  repo: openai/skills
+  path: skills/.curated/imagegen/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: SKILL.md
+  - name: agents/openai.yaml
+  - name: assets/imagegen-small.svg
+  - name: assets/imagegen.png
+  - name: references/cli.md
+  - name: references/codex-network.md
+  - name: references/image-api.md
+  - name: references/prompting.md
+  - name: references/sample-prompts.md
+  - name: scripts/image_gen.py
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: openai
+  version: '1.0'
+auth:
+- type: none
+requires_system:
+- name: python3
+  check: python3 --version
+  brew: python3
+runtime:
+  language: python
+  manager: uvx
+  dependencies:
+  - openai
+  - Pillow

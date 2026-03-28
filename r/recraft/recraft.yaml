@@ -1,0 +1,96 @@
+name: recraft
+description: Recraft AI API for generating and transforming images with multiple artistic styles
+version: "1.0"
+category: ai
+tags: [ai, image-generation, recraft]
+protocol: rest
+owner_name: Recraft AI
+website: https://www.recraft.ai
+support_url: https://www.recraft.ai/docs
+pricing_model: paid
+
+connection:
+  base_url: https://external.api.recraft.ai/v1
+  timeout: 60s
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+
+auth:
+  - type: bearer
+    key_env: RECRAFT_API_KEY
+    inject:
+      location: header
+      key: Authorization
+      prefix: "Bearer "
+
+actions:
+  - name: generate
+    description: Generate an image from a text prompt
+    method: POST
+    path: /images/generations
+    params:
+      - name: prompt
+        type: string
+        required: true
+        description: Text description of the image to generate
+        in: body
+      - name: style
+        type: string
+        default: "realistic_image"
+        description: "Style preset: realistic_image, digital_illustration, vector_illustration, icon"
+        in: body
+      - name: size
+        type: string
+        default: "1024x1024"
+        description: "Image dimensions, e.g. 1024x1024, 1365x1024, 1024x1365"
+        in: body
+      - name: n
+        type: int
+        default: "1"
+        description: Number of images to generate (1-4)
+        in: body
+    body:
+      prompt: "{{prompt}}"
+      style: "{{style}}"
+      size: "{{size}}"
+      n: "{{n}}"
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.data"
+      - select: ["url", "b64_json"]
+
+  - name: vectorize
+    description: Convert a raster image to SVG vector format
+    method: POST
+    path: /images/vectorize
+    params:
+      - name: image_url
+        type: string
+        required: true
+        description: URL of the image to vectorize
+        in: body
+    body:
+      image_url: "{{image_url}}"
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.data"
+
+  - name: remove-background
+    description: Remove the background from an image
+    method: POST
+    path: /images/removeBackground
+    params:
+      - name: image_url
+        type: string
+        required: true
+        description: URL of the image to process
+        in: body
+    body:
+      image_url: "{{image_url}}"
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.data"

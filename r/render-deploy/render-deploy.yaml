@@ -1,0 +1,66 @@
+name: render-deploy
+description: Deploy applications to Render by analyzing codebases, generating render.yaml Blueprints, and providing Dashboard deeplinks
+version: "1.0"
+category: devops
+tags:
+- skill
+- render
+- deployment
+- hosting
+- cloud
+protocol: skill
+owner_name: OpenAI
+namespace: openai
+website: https://github.com/openai/skills
+support_url: https://github.com/openai/skills/issues
+pricing_model: free
+license: MIT
+source:
+  type: github
+  repo: openai/skills
+  path: skills/.curated/render-deploy/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: SKILL.md
+  - name: agents/openai.yaml
+  - name: assets/docker.yaml
+  - name: assets/go-api.yaml
+  - name: assets/nextjs-postgres.yaml
+  - name: assets/node-express.yaml
+  - name: assets/python-django.yaml
+  - name: assets/render-small.svg
+  - name: assets/render.png
+  - name: assets/static-site.yaml
+  - name: references/blueprint-spec.md
+  - name: references/codebase-analysis.md
+  - name: references/configuration-guide.md
+  - name: references/deployment-details.md
+  - name: references/direct-creation.md
+  - name: references/error-patterns.md
+  - name: references/post-deploy-checks.md
+  - name: references/runtimes.md
+  - name: references/service-types.md
+  - name: references/troubleshooting-basics.md
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: openai
+  version: '1.0'
+auth:
+- type: none
+requires_system:
+- name: git
+  check: git --version
+  brew: git

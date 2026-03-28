@@ -1,0 +1,128 @@
+name: git-mcp
+description: MCP server for Git repository operations including reading history, diffs, branches, and file contents
+version: "1.0"
+category: developer
+tags: [mcp, git, version-control, repos, diff, branches, commits]
+protocol: mcp
+owner_name: Anthropic
+website: https://github.com/modelcontextprotocol/servers
+support_url: https://github.com/modelcontextprotocol/servers/issues
+pricing_model: free
+license: MIT
+
+package:
+  registry: npm
+  name: "@anthropic/git-mcp"
+  version: "0.1.0"
+  manager: npx
+
+auth:
+  - type: none
+
+tools:
+  expose:
+    - name: git_status
+      description: "Show the working tree status of the repository"
+    - name: git_diff_unstaged
+      description: "Show changes in the working directory not yet staged"
+    - name: git_diff_staged
+      description: "Show changes staged for the next commit"
+    - name: git_diff
+      description: "Show differences between two branches or commits"
+      params:
+        - name: target
+          type: string
+          required: true
+          description: "Branch name or commit hash to diff against"
+    - name: git_commit
+      description: "Create a new commit with staged changes"
+      destructive: true
+      params:
+        - name: message
+          type: string
+          required: true
+          description: "Commit message"
+    - name: git_add
+      description: "Stage files for the next commit"
+      destructive: true
+      params:
+        - name: files
+          type: string
+          required: true
+          description: "File paths to stage, space-separated"
+    - name: git_reset
+      description: "Unstage files from the staging area"
+      destructive: true
+      params:
+        - name: files
+          type: string
+          required: false
+          description: "File paths to unstage, or all if empty"
+    - name: git_log
+      description: "Show the commit history"
+      params:
+        - name: max_count
+          type: int
+          required: false
+          description: "Maximum number of commits to show"
+    - name: git_create_branch
+      description: "Create a new branch"
+      destructive: true
+      params:
+        - name: branch_name
+          type: string
+          required: true
+          description: "Name for the new branch"
+        - name: start_point
+          type: string
+          required: false
+          description: "Commit or branch to start from"
+    - name: git_checkout
+      description: "Switch to a different branch"
+      destructive: true
+      params:
+        - name: ref
+          type: string
+          required: true
+          description: "Branch name or commit hash to switch to"
+    - name: git_show
+      description: "Show the contents of a commit"
+      params:
+        - name: ref
+          type: string
+          required: true
+          description: "Commit hash to show"
+    - name: git_init
+      description: "Initialize a new Git repository"
+      destructive: true
+      params:
+        - name: path
+          type: string
+          required: false
+          description: "Directory path, defaults to current directory"
+  tool_transforms:
+    git_log:
+      - truncate: { max_items: 50 }
+    git_diff:
+      - truncate: { max_length: 15000 }
+    git_diff_unstaged:
+      - truncate: { max_length: 15000 }
+
+prompts:
+  system: |
+    This server provides Git repository access. Use git_status and
+    git_log to understand the current state before making changes.
+    Always review diffs before committing. Create descriptive commit
+    messages that explain the why, not just the what.
+  tool_instructions:
+    git_commit: "Write clear, descriptive commit messages. Review staged changes with git_diff_staged first."
+    git_checkout: "Check git_status for uncommitted changes before switching branches."
+
+resources:
+  expose: all
+
+install_mode:
+  default: both
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s

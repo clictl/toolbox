@@ -1,0 +1,59 @@
+name: mdn-web-docs
+description: Mozilla Developer Network web technology reference and guides
+version: "1.0"
+category: documentation
+tags: [documentation, web, html, css, javascript, reference]
+protocol: rest
+tool_type: website
+owner_name: Mozilla
+website: https://developer.mozilla.org
+support_url: https://github.com/mdn/content/issues
+pricing_model: free
+
+site:
+  url: https://developer.mozilla.org
+  sitemap: https://developer.mozilla.org/sitemap.xml
+  content_type: documentation
+  preferred_format: markdown
+
+access:
+  method: fetch
+  robots_txt: respected
+
+connection:
+  base_url: https://developer.mozilla.org
+  headers:
+    Accept: application/json
+
+auth:
+  - type: none
+
+actions:
+  - name: search
+    description: Search MDN documentation for web technologies
+    method: GET
+    path: /api/v1/search
+    params:
+      - name: q
+        type: string
+        required: true
+        description: Search query (e.g., flex-direction, addEventListener)
+        in: query
+      - name: locale
+        type: string
+        default: en-us
+        description: Locale for results
+        in: query
+    transform:
+      - extract: "$.documents"
+
+  - name: get_page
+    description: Fetch a specific MDN documentation page as JSON
+    method: GET
+    path: /{path}/index.json
+    params:
+      - name: path
+        type: string
+        required: true
+        description: Documentation path (e.g., en-US/docs/Web/CSS/display)
+        in: path

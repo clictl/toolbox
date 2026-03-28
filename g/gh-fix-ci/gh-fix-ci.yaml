@@ -1,0 +1,57 @@
+name: gh-fix-ci
+description: Debug and fix failing GitHub PR checks that run in GitHub Actions
+version: "1.0"
+category: developer
+tags:
+- skill
+- github
+- ci
+- github-actions
+- debugging
+protocol: skill
+owner_name: OpenAI
+namespace: openai
+website: https://github.com/openai/skills
+support_url: https://github.com/openai/skills/issues
+pricing_model: free
+license: MIT
+source:
+  type: github
+  repo: openai/skills
+  path: skills/.curated/gh-fix-ci/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: SKILL.md
+  - name: agents/openai.yaml
+  - name: assets/github-small.svg
+  - name: assets/github.png
+  - name: scripts/inspect_pr_checks.py
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: openai
+  version: '1.0'
+auth:
+- type: none
+requires_system:
+- name: gh
+  check: gh --version
+  brew: gh
+- name: git
+  check: git --version
+  brew: git
+- name: python3
+  check: python3 --version
+  brew: python3

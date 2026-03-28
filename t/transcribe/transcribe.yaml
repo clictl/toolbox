@@ -1,0 +1,57 @@
+name: transcribe
+description: Transcribe audio files to text with optional diarization and known-speaker hints
+version: "1.0"
+category: media
+tags:
+- skill
+- transcription
+- audio
+- speech-to-text
+- diarization
+protocol: skill
+owner_name: OpenAI
+namespace: openai
+website: https://github.com/openai/skills
+support_url: https://github.com/openai/skills/issues
+pricing_model: free
+license: MIT
+source:
+  type: github
+  repo: openai/skills
+  path: skills/.curated/transcribe/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: SKILL.md
+  - name: agents/openai.yaml
+  - name: assets/transcribe-small.svg
+  - name: assets/transcribe.png
+  - name: references/api.md
+  - name: scripts/transcribe_diarize.py
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: openai
+  version: '1.0'
+auth:
+- type: none
+requires_system:
+- name: python3
+  check: python3 --version
+  brew: python3
+runtime:
+  language: python
+  manager: uvx
+  dependencies:
+  - openai

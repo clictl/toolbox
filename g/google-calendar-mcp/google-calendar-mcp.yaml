@@ -1,0 +1,148 @@
+name: google-calendar-mcp
+description: MCP server for Google Calendar with event management, scheduling, and free/busy queries
+version: "1.0"
+category: productivity
+tags: [mcp, google-calendar, calendar, scheduling, events, google]
+protocol: mcp
+owner_name: Community
+website: https://github.com/nspady/google-calendar-mcp
+support_url: https://github.com/nspady/google-calendar-mcp/issues
+pricing_model: free
+license: MIT
+
+package:
+  registry: npm
+  name: "@cocal/google-calendar-mcp"
+  version: "2.6.1"
+  manager: npx
+
+auth:
+  - type: oauth2
+    authorization_url: https://accounts.google.com/o/oauth2/v2/auth
+    token_url: https://oauth2.googleapis.com/token
+    scopes: [https://www.googleapis.com/auth/calendar]
+
+tools:
+  expose:
+    - name: list_events
+      description: "List calendar events within a date range"
+      params:
+        - name: calendar_id
+          type: string
+          required: false
+          description: "Calendar ID (defaults to primary)"
+        - name: time_min
+          type: string
+          required: false
+          description: "Start time (ISO format)"
+        - name: time_max
+          type: string
+          required: false
+          description: "End time (ISO format)"
+        - name: max_results
+          type: int
+          required: false
+          description: "Maximum number of events to return"
+    - name: get_event
+      description: "Get details of a specific event"
+      params:
+        - name: calendar_id
+          type: string
+          required: false
+          description: "Calendar ID"
+        - name: event_id
+          type: string
+          required: true
+          description: "Event ID"
+    - name: create_event
+      description: "Create a new calendar event"
+      destructive: true
+      params:
+        - name: calendar_id
+          type: string
+          required: false
+          description: "Calendar ID (defaults to primary)"
+        - name: summary
+          type: string
+          required: true
+          description: "Event title"
+        - name: start
+          type: string
+          required: true
+          description: "Start time (ISO format)"
+        - name: end
+          type: string
+          required: true
+          description: "End time (ISO format)"
+        - name: description
+          type: string
+          required: false
+          description: "Event description"
+        - name: attendees
+          type: string
+          required: false
+          description: "Comma-separated email addresses of attendees"
+    - name: update_event
+      description: "Update an existing calendar event"
+      destructive: true
+      params:
+        - name: calendar_id
+          type: string
+          required: false
+          description: "Calendar ID"
+        - name: event_id
+          type: string
+          required: true
+          description: "Event ID"
+        - name: summary
+          type: string
+          required: false
+          description: "Updated event title"
+        - name: start
+          type: string
+          required: false
+          description: "Updated start time"
+        - name: end
+          type: string
+          required: false
+          description: "Updated end time"
+    - name: delete_event
+      description: "Delete a calendar event"
+      destructive: true
+      params:
+        - name: calendar_id
+          type: string
+          required: false
+          description: "Calendar ID"
+        - name: event_id
+          type: string
+          required: true
+          description: "Event ID"
+    - name: list_calendars
+      description: "List all calendars"
+    - name: find_free_time
+      description: "Find available time slots"
+      params:
+        - name: time_min
+          type: string
+          required: true
+          description: "Start of time range (ISO format)"
+        - name: time_max
+          type: string
+          required: true
+          description: "End of time range (ISO format)"
+
+prompts:
+  system: |
+    This server provides access to Google Calendar. Use it for viewing
+    events, creating meetings, checking availability, and managing
+    schedules. Always confirm before creating or modifying events.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s

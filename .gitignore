@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build
+*.egg-info/
+dist/
+build/
+
+# clictl vault (do not commit)
+.clictl/
+
+# Generated index (no longer used - BM25 builds from YAML directly)
+index.json

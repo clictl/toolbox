@@ -1,0 +1,85 @@
+name: figma-mcp
+description: Official Figma MCP server for bringing design context to AI coding agents via Dev Mode
+version: "1.0"
+category: developer
+tags: [mcp, figma, design, ui, frontend, prototyping, dev-mode]
+protocol: mcp
+owner_name: Figma
+website: https://github.com/figma/mcp-server-guide
+support_url: https://github.com/figma/mcp-server-guide/issues
+pricing_model: freemium
+
+transport:
+  type: http
+  url: https://mcp.figma.com/mcp
+  timeout: 30s
+
+auth:
+  - type: oauth2
+    authorization_url: https://www.figma.com/oauth
+    token_url: https://api.figma.com/v1/oauth/token
+    scopes: [file_dev_resources:read]
+
+tools:
+  expose:
+    - name: get_file
+      description: "Get a Figma file by key"
+      params:
+        - name: file_key
+          type: string
+          required: true
+          description: "Figma file key"
+    - name: get_node
+      description: "Get a specific node from a Figma file"
+      params:
+        - name: file_key
+          type: string
+          required: true
+          description: "Figma file key"
+        - name: node_id
+          type: string
+          required: true
+          description: "Node ID within the file"
+    - name: get_styles
+      description: "Get design styles from a Figma file"
+      params:
+        - name: file_key
+          type: string
+          required: true
+          description: "Figma file key"
+    - name: get_components
+      description: "Get components from a Figma file"
+      params:
+        - name: file_key
+          type: string
+          required: true
+          description: "Figma file key"
+    - name: get_images
+      description: "Export images from a Figma file"
+      params:
+        - name: file_key
+          type: string
+          required: true
+          description: "Figma file key"
+        - name: node_ids
+          type: string
+          required: true
+          description: "Comma-separated node IDs to export"
+        - name: format
+          type: string
+          required: false
+          description: "Export format: png, jpg, svg, or pdf"
+
+prompts:
+  system: |
+    This server provides access to Figma designs via Dev Mode.
+    Use it to get design context, inspect components, extract
+    styles, and understand layout structure for implementation.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true

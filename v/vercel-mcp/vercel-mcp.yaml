@@ -1,0 +1,101 @@
+name: vercel-mcp
+description: Official Vercel MCP server for project, deployment, and domain management
+version: "1.0"
+category: developer
+tags: [mcp, vercel, deployments, hosting, serverless, frontend, ci-cd]
+protocol: mcp
+owner_name: Vercel
+website: https://github.com/vercel/vercel-mcp-overview
+support_url: https://github.com/vercel/vercel-mcp-overview/issues
+pricing_model: freemium
+
+transport:
+  type: http
+  url: https://mcp.vercel.com
+  timeout: 30s
+
+auth:
+  - type: api_key
+    key_env: VERCEL_TOKEN
+    inject:
+      location: header
+      param: Authorization
+      prefix: "Bearer"
+
+tools:
+  expose:
+    - name: list_projects
+      description: "List all Vercel projects"
+      params:
+        - name: limit
+          type: int
+          required: false
+          description: "Maximum number of projects to return"
+    - name: get_project
+      description: "Get details of a specific project"
+      params:
+        - name: project_id
+          type: string
+          required: true
+          description: "Project ID or name"
+    - name: list_deployments
+      description: "List deployments for a project"
+      params:
+        - name: project_id
+          type: string
+          required: true
+          description: "Project ID or name"
+        - name: limit
+          type: int
+          required: false
+          description: "Maximum number of deployments to return"
+    - name: get_deployment
+      description: "Get details of a specific deployment"
+      params:
+        - name: deployment_id
+          type: string
+          required: true
+          description: "Deployment ID or URL"
+    - name: list_domains
+      description: "List domains for a project"
+      params:
+        - name: project_id
+          type: string
+          required: true
+          description: "Project ID or name"
+    - name: get_deployment_logs
+      description: "Get build logs for a deployment"
+      params:
+        - name: deployment_id
+          type: string
+          required: true
+          description: "Deployment ID"
+    - name: create_deployment
+      description: "Trigger a new deployment"
+      destructive: true
+      params:
+        - name: project_id
+          type: string
+          required: true
+          description: "Project ID or name"
+    - name: list_env_vars
+      description: "List environment variables for a project"
+      params:
+        - name: project_id
+          type: string
+          required: true
+          description: "Project ID or name"
+
+prompts:
+  system: |
+    This server provides access to Vercel projects and deployments.
+    Use it for checking deployment status, managing domains, viewing
+    build logs, and configuring project settings.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true

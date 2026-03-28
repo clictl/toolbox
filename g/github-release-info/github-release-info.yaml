@@ -1,0 +1,95 @@
+name: github-release-info
+description: Get the latest release details for any GitHub repository including assets and changelog
+version: "1.0"
+category: developer
+tags: [github, releases, changelog, composite, pipeline]
+protocol: composite
+owner_name: clictl
+website: https://github.com/clictl/registry
+support_url: https://github.com/clictl/registry/issues
+pricing_model: free
+
+connection:
+  base_url: ""
+
+auth:
+  - type: none
+
+actions:
+  - name: latest
+    description: Get the latest release for a GitHub repo including tag, release notes, and downloadable assets
+    composite: true
+    params:
+      - name: owner
+        type: string
+        required: true
+        description: "Repository owner (user or organization), e.g. 'cli'"
+      - name: repo
+        type: string
+        required: true
+        description: "Repository name, e.g. 'cli'"
+
+    steps:
+      - id: release
+        tool: github
+        action: repo
+        params:
+          owner: "{{params.owner}}"
+          repo: "{{params.repo}}"
+        transform:
+          - extract: "$.full_name"
+
+      - id: latest-release
+        method: GET
+        url: "https://api.github.com/repos/{{params.owner}}/{{params.repo}}/releases/latest"
+        headers:
+          Accept: application/vnd.github+json
+        depends_on: [release]
+        on_error: fail
+        transform:
+          - select: ["tag_name", "name", "body", "published_at", "html_url", "assets"]
+
+      - id: readme
+        method: GET
+        url: "https://api.github.com/repos/{{params.owner}}/{{params.repo}}/readme"
+        headers:
+          Accept: application/vnd.github+json
+        depends_on: [release]
+        on_error: skip
+        transform:
+          - extract: "$.download_url"
+
+    transform:
+      - template: |
+          Repository: {{params.owner}}/{{params.repo}}
+          Latest Release: {{steps.latest-release.output.name}} ({{steps.latest-release.output.tag_name}})
+          Published: {{steps.latest-release.output.published_at}}
+          URL: {{steps.latest-release.output.html_url}}
+
+          Release Notes:
+          {{steps.latest-release.output.body}}
+
+          Assets:
+          {{range steps.latest-release.output.assets}}
+          - {{.name}} ({{.size}} bytes): {{.browser_download_url}}
+          {{end}}
+
+test:
+  actions:
+    - action: latest
+      params:
+        owner: cli
+        repo: cli
+      timeout: 30
+      steps:
+        - id: release
+          expect_status: 200
+          expect_fields: [full_name, description, stargazers_count]
+        - id: latest-release
+          expect_status: 200
+          expect_fields: [tag_name, name, published_at, html_url]
+        - id: readme
+          expect_status: 200
+          optional: true
+      expect:
+        output_contains: ["Latest Release:", "Published:"]

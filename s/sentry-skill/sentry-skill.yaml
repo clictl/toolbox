@@ -1,0 +1,51 @@
+name: sentry-skill
+description: Inspect Sentry issues or events, summarize recent production errors, or pull basic Sentry health data via the Sentry API
+version: "1.0"
+category: developer
+tags:
+- skill
+- sentry
+- error-tracking
+- monitoring
+- debugging
+protocol: skill
+owner_name: OpenAI
+namespace: openai
+website: https://github.com/openai/skills
+support_url: https://github.com/openai/skills/issues
+pricing_model: free
+license: MIT
+source:
+  type: github
+  repo: openai/skills
+  path: skills/.curated/sentry/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: SKILL.md
+  - name: agents/openai.yaml
+  - name: assets/sentry-small.svg
+  - name: assets/sentry.png
+  - name: scripts/sentry_api.py
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: openai
+  version: '1.0'
+auth:
+- type: none
+requires_system:
+- name: python3
+  check: python3 --version
+  brew: python3

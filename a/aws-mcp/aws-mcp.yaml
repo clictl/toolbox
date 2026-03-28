@@ -1,0 +1,90 @@
+name: aws-mcp
+description: MCP server suite for AWS services including documentation, IaC, EKS, and core APIs
+version: "1.0"
+category: cloud
+tags: [mcp, aws, cloud, infrastructure, iac, documentation, amazon]
+protocol: mcp
+owner_name: AWS Labs
+website: https://github.com/awslabs/mcp
+support_url: https://github.com/awslabs/mcp/issues
+pricing_model: free
+license: Apache-2.0
+
+transport:
+  type: stdio
+  command: uvx
+  args: ["awslabs.aws-documentation-mcp-server@latest"]
+  requires:
+    - name: uv
+      url: https://docs.astral.sh/uv/
+      check: "uv --version"
+
+auth:
+  - type: api_key
+    key_env: AWS_ACCESS_KEY_ID
+    inject:
+      location: env
+      param: AWS_ACCESS_KEY_ID
+
+tools:
+  expose:
+    - name: search_documentation
+      description: "Search AWS documentation"
+      params:
+        - name: query
+          type: string
+          required: true
+          description: "Search query for AWS docs"
+        - name: service
+          type: string
+          required: false
+          description: "AWS service to scope search to"
+    - name: get_documentation
+      description: "Get a specific AWS documentation page"
+      params:
+        - name: url
+          type: string
+          required: true
+          description: "AWS documentation URL"
+    - name: list_services
+      description: "List available AWS services"
+    - name: get_service_info
+      description: "Get information about an AWS service"
+      params:
+        - name: service
+          type: string
+          required: true
+          description: "AWS service name"
+    - name: get_best_practices
+      description: "Get best practices for an AWS service"
+      params:
+        - name: service
+          type: string
+          required: true
+          description: "AWS service name"
+    - name: generate_iac
+      description: "Generate infrastructure-as-code templates"
+      params:
+        - name: description
+          type: string
+          required: true
+          description: "Description of the infrastructure to generate"
+        - name: format
+          type: string
+          required: false
+          description: "Output format: cloudformation or terraform"
+
+prompts:
+  system: |
+    This server provides access to AWS documentation and services.
+    Use it for looking up AWS API docs, best practices, and service
+    configurations. For infrastructure changes, always confirm with the user.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s

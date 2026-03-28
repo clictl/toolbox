@@ -1,0 +1,90 @@
+name: dbt-mcp
+description: Official dbt MCP server for model building, SQL generation, and dbt CLI access
+version: "1.0"
+category: data
+tags: [mcp, dbt, data, sql, analytics, transformation, modeling]
+protocol: mcp
+owner_name: dbt Labs
+website: https://github.com/dbt-labs/dbt-mcp
+support_url: https://github.com/dbt-labs/dbt-mcp/issues
+pricing_model: free
+license: Apache-2.0
+
+transport:
+  type: stdio
+  command: uvx
+  args: ["dbt-mcp"]
+  requires:
+    - name: uv
+      url: https://docs.astral.sh/uv/
+      check: "uv --version"
+
+auth:
+  - type: api_key
+    key_env: DBT_TOKEN
+    inject:
+      location: env
+      param: DBT_TOKEN
+
+tools:
+  expose:
+    - name: run_model
+      description: "Run a dbt model"
+      destructive: true
+      params:
+        - name: model
+          type: string
+          required: true
+          description: "Model name or selector to run"
+    - name: test_model
+      description: "Run tests for a dbt model"
+      params:
+        - name: model
+          type: string
+          required: false
+          description: "Model name or selector to test"
+    - name: list_models
+      description: "List all dbt models in the project"
+    - name: get_model
+      description: "Get details of a specific dbt model"
+      params:
+        - name: model
+          type: string
+          required: true
+          description: "Model name"
+    - name: compile_sql
+      description: "Compile a SQL query using dbt context"
+      params:
+        - name: sql
+          type: string
+          required: true
+          description: "SQL query to compile"
+    - name: run_query
+      description: "Execute a query against the data warehouse"
+      params:
+        - name: sql
+          type: string
+          required: true
+          description: "SQL query to execute"
+    - name: get_lineage
+      description: "Get the dependency lineage for a model"
+      params:
+        - name: model
+          type: string
+          required: true
+          description: "Model name to get lineage for"
+
+prompts:
+  system: |
+    This server provides access to dbt for data transformation. Use it
+    for building models, generating SQL, running tests, and accessing
+    the dbt Discovery API and Semantic Layer.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s

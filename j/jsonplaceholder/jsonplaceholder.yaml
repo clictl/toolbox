@@ -1,0 +1,92 @@
+name: jsonplaceholder
+description: Free fake REST API for testing and prototyping with users, posts, comments, todos, and more
+version: "1.0"
+category: data
+tags: [testing, mock, fake, placeholder, rest, demo]
+protocol: rest
+owner_name: JSONPlaceholder
+website: https://jsonplaceholder.typicode.com
+support_url: https://github.com/typicode/jsonplaceholder
+
+connection:
+  base_url: https://jsonplaceholder.typicode.com
+  timeout: 10s
+  headers:
+    Accept: application/json
+
+auth:
+  - type: none
+
+actions:
+  - name: posts
+    description: List all posts or get a specific post by ID
+    method: GET
+    path: /posts/{{#id}}{{id}}{{/id}}
+    transform:
+      - truncate:
+          max_items: 10
+      - select: ["id", "title", "userId"]
+    params:
+      - name: id
+        type: int
+        description: Post ID (omit to list all posts)
+      - name: userId
+        type: int
+        description: Filter posts by user ID
+        in: query
+
+  - name: create_post
+    description: Create a new post (simulated, returns the created object with an ID)
+    method: POST
+    safe: true
+    path: /posts
+    params:
+      - name: title
+        type: string
+        required: true
+        description: Post title
+        in: body
+      - name: body
+        type: string
+        required: true
+        description: Post content
+        in: body
+      - name: userId
+        type: int
+        required: true
+        description: Author user ID
+        in: body
+
+  - name: comments
+    description: Get comments on a specific post
+    method: GET
+    path: /posts/{{postId}}/comments
+    params:
+      - name: postId
+        type: int
+        required: true
+        description: Post ID to get comments for
+        in: path
+
+  - name: users
+    description: List all users or get a specific user by ID
+    method: GET
+    path: /users/{{#id}}{{id}}{{/id}}
+    params:
+      - name: id
+        type: int
+        description: User ID (omit to list all users)
+
+  - name: todos
+    description: List all todos or filter by completion status
+    method: GET
+    path: /todos
+    params:
+      - name: completed
+        type: string
+        description: "Filter by status: 'true' or 'false'"
+        in: query
+      - name: userId
+        type: int
+        description: Filter todos by user ID
+        in: query

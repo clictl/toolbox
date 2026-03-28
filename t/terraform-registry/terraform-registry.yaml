@@ -1,0 +1,106 @@
+name: terraform-registry
+description: Terraform Registry API for searching modules and providers used in infrastructure-as-code
+version: "1.0"
+category: developer
+tags: [terraform, iac, infrastructure, modules, providers, hashicorp]
+protocol: rest
+owner_name: HashiCorp
+website: https://registry.terraform.io
+support_url: https://developer.hashicorp.com/terraform/registry
+pricing_model: free
+
+connection:
+  base_url: https://registry.terraform.io/v1
+  timeout: 15s
+  headers:
+    Accept: application/json
+
+auth:
+  - type: none
+
+actions:
+  - name: search-modules
+    description: Search the Terraform Registry for reusable infrastructure modules
+    method: GET
+    path: /modules/search
+    params:
+      - name: q
+        type: string
+        required: true
+        description: Search query for module name or keyword
+        in: query
+      - name: limit
+        type: int
+        default: "10"
+        description: Number of results to return
+        in: query
+      - name: offset
+        type: int
+        default: "0"
+        description: Offset for pagination
+        in: query
+      - name: provider
+        type: string
+        description: "Filter by provider, e.g. 'aws', 'google', 'azurerm'"
+        in: query
+      - name: verified
+        type: boolean
+        description: Filter to only show verified modules
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.modules"
+      - truncate: { max_items: 20 }
+
+  - name: module-info
+    description: Get detailed information about a specific Terraform module
+    method: GET
+    path: /modules/{{namespace}}/{{name}}/{{provider}}
+    params:
+      - name: namespace
+        type: string
+        required: true
+        description: Module namespace (typically the publisher)
+        in: path
+      - name: name
+        type: string
+        required: true
+        description: Module name
+        in: path
+      - name: provider
+        type: string
+        required: true
+        description: "Target provider, e.g. 'aws', 'google', 'azurerm'"
+        in: path
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+      - select: ["id", "name", "namespace", "provider", "description", "version", "source", "published_at", "downloads", "verified"]
+
+  - name: search-providers
+    description: Search for Terraform providers (plugins for managing infrastructure resources)
+    method: GET
+    path: /providers/search
+    params:
+      - name: q
+        type: string
+        required: true
+        description: Search query for provider name or keyword
+        in: query
+      - name: limit
+        type: int
+        default: "10"
+        description: Number of results to return
+        in: query
+      - name: offset
+        type: int
+        default: "0"
+        description: Offset for pagination
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.providers"
+      - truncate: { max_items: 20 }

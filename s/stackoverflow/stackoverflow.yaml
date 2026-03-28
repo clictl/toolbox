@@ -1,0 +1,129 @@
+name: stackoverflow
+description: Stack Overflow Q&A platform. Search programming questions and retrieve answers via the Stack Exchange API
+version: "1.0"
+category: knowledge-base
+tags: [stackoverflow, qa, programming, knowledge-base, stack-exchange]
+protocol: rest
+tool_type: website
+owner_name: Stack Exchange
+website: https://stackoverflow.com
+support_url: https://meta.stackoverflow.com
+pricing_model: free
+
+site:
+  url: https://stackoverflow.com
+  sitemap: https://stackoverflow.com/sitemap.xml
+  content_type: knowledge-base
+  preferred_format: json
+
+access:
+  method: api
+  robots_txt: respected
+  auth:
+    type: api_key
+    required: false
+    description: Optional API key for higher rate limits. Without a key, requests are limited to 300 per day per IP
+    in: query
+    param_name: key
+
+connection:
+  base_url: https://api.stackexchange.com/2.3
+  headers:
+    Accept: application/json
+
+auth:
+  - type: none
+
+actions:
+  - name: search
+    description: Search Stack Overflow questions by title keywords, sorted by relevance
+    method: GET
+    path: /search
+    params:
+      - name: intitle
+        type: string
+        required: true
+        description: Search term to match in question titles
+        in: query
+      - name: tagged
+        type: string
+        description: Semicolon-separated tags to filter results (e.g., python;django)
+        in: query
+      - name: order
+        type: string
+        default: desc
+        description: Sort order (asc or desc)
+        in: query
+      - name: sort
+        type: string
+        default: relevance
+        description: Sort criteria (relevance, activity, votes, creation)
+        in: query
+      - name: site
+        type: string
+        default: stackoverflow
+        description: Stack Exchange site to search
+        in: query
+      - name: pagesize
+        type: int
+        default: "10"
+        description: Number of results per page
+        in: query
+    transform:
+      - extract: "$.items"
+
+  - name: question
+    description: Retrieve a specific question by its ID including body and metadata
+    method: GET
+    path: /questions/{id}
+    params:
+      - name: id
+        type: int
+        required: true
+        description: Question ID
+        in: path
+      - name: site
+        type: string
+        default: stackoverflow
+        description: Stack Exchange site
+        in: query
+      - name: filter
+        type: string
+        default: withbody
+        description: Response filter to include question body
+        in: query
+    transform:
+      - extract: "$.items[0]"
+
+  - name: answers
+    description: Retrieve all answers for a specific question, sorted by votes
+    method: GET
+    path: /questions/{id}/answers
+    params:
+      - name: id
+        type: int
+        required: true
+        description: Question ID to get answers for
+        in: path
+      - name: site
+        type: string
+        default: stackoverflow
+        description: Stack Exchange site
+        in: query
+      - name: order
+        type: string
+        default: desc
+        description: Sort order (asc or desc)
+        in: query
+      - name: sort
+        type: string
+        default: votes
+        description: Sort criteria (activity, votes, creation)
+        in: query
+      - name: filter
+        type: string
+        default: withbody
+        description: Response filter to include answer bodies
+        in: query
+    transform:
+      - extract: "$.items"

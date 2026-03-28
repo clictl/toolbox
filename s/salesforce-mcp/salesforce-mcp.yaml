@@ -1,0 +1,104 @@
+name: salesforce-mcp
+description: Official MCP server for Salesforce CRM with SOQL queries, object management, and metadata access
+version: "1.0"
+category: productivity
+tags: [mcp, salesforce, crm, soql, enterprise, sales, automation]
+protocol: mcp
+owner_name: Salesforce
+website: https://github.com/salesforcecli/mcp
+support_url: https://github.com/salesforcecli/mcp/issues
+pricing_model: paid
+license: Apache-2.0
+
+package:
+  registry: npm
+  name: "@salesforce/mcp"
+  version: "0.29.2"
+  manager: npx
+
+auth:
+  - type: api_key
+    key_env: SALESFORCE_ACCESS_TOKEN
+    inject:
+      location: env
+      param: SALESFORCE_ACCESS_TOKEN
+
+tools:
+  expose:
+    - name: query
+      description: "Execute a SOQL query"
+      params:
+        - name: soql
+          type: string
+          required: true
+          description: "SOQL query string"
+    - name: get_object
+      description: "Get a Salesforce object by ID"
+      params:
+        - name: object_type
+          type: string
+          required: true
+          description: "Object type (e.g. Account, Contact, Opportunity)"
+        - name: record_id
+          type: string
+          required: true
+          description: "Record ID"
+    - name: create_object
+      description: "Create a new Salesforce object"
+      destructive: true
+      params:
+        - name: object_type
+          type: string
+          required: true
+          description: "Object type"
+        - name: fields
+          type: string
+          required: true
+          description: "JSON object of field values"
+    - name: update_object
+      description: "Update an existing Salesforce object"
+      destructive: true
+      params:
+        - name: object_type
+          type: string
+          required: true
+          description: "Object type"
+        - name: record_id
+          type: string
+          required: true
+          description: "Record ID"
+        - name: fields
+          type: string
+          required: true
+          description: "JSON object of field values to update"
+    - name: describe_object
+      description: "Get metadata about a Salesforce object type"
+      params:
+        - name: object_type
+          type: string
+          required: true
+          description: "Object type to describe"
+    - name: list_objects
+      description: "List available Salesforce object types"
+    - name: search
+      description: "Search across Salesforce using SOSL"
+      params:
+        - name: sosl
+          type: string
+          required: true
+          description: "SOSL search query"
+
+prompts:
+  system: |
+    This server provides access to Salesforce instances. Use it for
+    querying CRM data, managing objects, and accessing metadata.
+    Always confirm write operations with the user.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s

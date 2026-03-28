@@ -1,0 +1,42 @@
+name: claude-code
+description: Anthropic's agentic coding tool that lives in your terminal
+version: "1.0"
+category: ai
+tags: [ai, claude, coding, agent, anthropic, llm]
+protocol: cli
+tool_type: cli
+owner_name: Anthropic
+website: https://docs.anthropic.com/en/docs/claude-code
+support_url: https://github.com/anthropics/claude-code/issues
+pricing_model: paid
+
+auth:
+  - type: none
+
+actions:
+  - name: chat
+    description: Start an interactive coding session with Claude
+    method: command
+    path: claude
+    params:
+      - name: prompt
+        type: string
+        required: false
+        description: Initial prompt to send to Claude
+        in: arg
+
+  - name: run
+    description: Run a single prompt non-interactively and exit
+    method: command
+    path: claude
+    params:
+      - name: prompt
+        type: string
+        required: true
+        description: The prompt to execute
+        in: arg
+      - name: print
+        type: bool
+        required: false
+        description: Print the response without interactive mode
+        in: flag

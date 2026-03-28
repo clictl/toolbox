@@ -1,0 +1,98 @@
+name: serena-mcp
+description: MCP server for semantic code retrieval and editing with full project understanding
+version: "1.0"
+category: developer
+tags: [mcp, code, semantic, editing, retrieval, refactoring, coding-agent]
+protocol: mcp
+owner_name: Oraios AI
+website: https://github.com/oraios/serena
+support_url: https://github.com/oraios/serena/issues
+pricing_model: free
+license: MIT
+
+transport:
+  type: stdio
+  command: uvx
+  args: ["--from", "git+https://github.com/oraios/serena", "serena"]
+  requires:
+    - name: uv
+      url: https://docs.astral.sh/uv/
+      check: "uv --version"
+
+auth:
+  - type: none
+
+tools:
+  expose:
+    - name: find_symbol
+      description: "Find a symbol (function, class, variable) by name"
+      params:
+        - name: name
+          type: string
+          required: true
+          description: "Symbol name to search for"
+    - name: get_definition
+      description: "Get the definition of a symbol"
+      params:
+        - name: file
+          type: string
+          required: true
+          description: "File path"
+        - name: line
+          type: int
+          required: true
+          description: "Line number of the symbol"
+    - name: get_references
+      description: "Find all references to a symbol"
+      params:
+        - name: file
+          type: string
+          required: true
+          description: "File path"
+        - name: line
+          type: int
+          required: true
+          description: "Line number of the symbol"
+    - name: read_file
+      description: "Read the contents of a file"
+      params:
+        - name: path
+          type: string
+          required: true
+          description: "File path to read"
+    - name: edit_file
+      description: "Make semantic edits to a file"
+      destructive: true
+      params:
+        - name: path
+          type: string
+          required: true
+          description: "File path to edit"
+        - name: edits
+          type: string
+          required: true
+          description: "Edit instructions"
+    - name: get_project_structure
+      description: "Get the project file and directory structure"
+    - name: search_code
+      description: "Search for code patterns across the project"
+      params:
+        - name: pattern
+          type: string
+          required: true
+          description: "Search pattern or regex"
+
+prompts:
+  system: |
+    Serena provides semantic code understanding and editing capabilities.
+    Use it for navigating codebases, understanding project structure,
+    and making precise code modifications with full context awareness.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s

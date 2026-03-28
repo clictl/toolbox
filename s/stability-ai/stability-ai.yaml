@@ -1,0 +1,137 @@
+name: stability-ai
+description: Stability AI API for image generation, upscaling, and editing using Stable Diffusion models
+version: "1.0"
+category: ai
+tags: [ai, image-generation, stable-diffusion, stability]
+protocol: rest
+owner_name: Stability AI
+website: https://stability.ai
+support_url: https://platform.stability.ai/docs/api-reference
+pricing_model: paid
+
+connection:
+  base_url: https://api.stability.ai/v2beta
+  timeout: 60s
+  headers:
+    Accept: application/json
+
+auth:
+  - type: bearer
+    key_env: STABILITY_API_KEY
+    inject:
+      location: header
+      key: Authorization
+      prefix: "Bearer "
+
+actions:
+  - name: generate
+    description: Generate an image from a text prompt using Stable Image Core
+    method: POST
+    path: /stable-image/generate/core
+    params:
+      - name: prompt
+        type: string
+        required: true
+        description: Text description of the image to generate
+        in: body
+      - name: output_format
+        type: string
+        default: "png"
+        description: "Output format: png, jpeg, webp"
+        in: body
+      - name: aspect_ratio
+        type: string
+        default: "1:1"
+        description: "Aspect ratio: 1:1, 16:9, 21:9, 2:3, 3:2, 4:5, 5:4, 9:16, 9:21"
+        in: body
+      - name: negative_prompt
+        type: string
+        description: Text describing what to exclude from the image
+        in: body
+    body:
+      prompt: "{{prompt}}"
+      output_format: "{{output_format}}"
+      aspect_ratio: "{{aspect_ratio}}"
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+
+  - name: generate-ultra
+    description: Generate a high-quality image using Stable Image Ultra
+    method: POST
+    path: /stable-image/generate/ultra
+    params:
+      - name: prompt
+        type: string
+        required: true
+        description: Text description of the image to generate
+        in: body
+      - name: output_format
+        type: string
+        default: "png"
+        description: "Output format: png, jpeg, webp"
+        in: body
+      - name: aspect_ratio
+        type: string
+        default: "1:1"
+        description: "Aspect ratio: 1:1, 16:9, 21:9, 2:3, 3:2, 4:5, 5:4, 9:16, 9:21"
+        in: body
+      - name: negative_prompt
+        type: string
+        description: Text describing what to exclude from the image
+        in: body
+    body:
+      prompt: "{{prompt}}"
+      output_format: "{{output_format}}"
+      aspect_ratio: "{{aspect_ratio}}"
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+
+  - name: upscale
+    description: Upscale an image using fast upscaling
+    method: POST
+    path: /stable-image/upscale/fast
+    params:
+      - name: image
+        type: string
+        required: true
+        description: Base64-encoded image data or image URL to upscale
+        in: body
+      - name: output_format
+        type: string
+        default: "png"
+        description: "Output format: png, jpeg, webp"
+        in: body
+    body:
+      image: "{{image}}"
+      output_format: "{{output_format}}"
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+
+  - name: remove-background
+    description: Remove the background from an image
+    method: POST
+    path: /stable-image/edit/remove-background
+    params:
+      - name: image
+        type: string
+        required: true
+        description: Base64-encoded image data or image URL
+        in: body
+      - name: output_format
+        type: string
+        default: "png"
+        description: "Output format: png, webp"
+        in: body
+    body:
+      image: "{{image}}"
+      output_format: "{{output_format}}"
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"

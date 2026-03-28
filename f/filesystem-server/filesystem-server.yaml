@@ -1,0 +1,161 @@
+name: filesystem-server
+description: MCP server for secure local filesystem access with file reading, writing, and directory operations
+version: "1.0"
+category: developer
+tags: [mcp, filesystem, files, directories, read, write, destructive]
+protocol: mcp
+owner_name: Anthropic
+website: https://github.com/modelcontextprotocol/servers
+support_url: https://github.com/modelcontextprotocol/servers/issues
+pricing_model: free
+license: MIT
+
+package:
+  registry: npm
+  name: "@modelcontextprotocol/server-filesystem"
+  version: "0.6.2"
+  manager: npx
+
+auth:
+  - type: none
+
+tools:
+  expose:
+    - name: read_file
+      description: "Read the complete contents of a file"
+      params:
+        - name: path
+          type: string
+          required: true
+          description: "Absolute path to the file to read"
+    - name: read_multiple_files
+      description: "Read contents of multiple files simultaneously"
+      params:
+        - name: paths
+          type: string
+          required: true
+          description: "Comma-separated list of absolute file paths to read"
+    - name: write_file
+      description: "Create or overwrite a file with new content"
+      destructive: true
+      params:
+        - name: path
+          type: string
+          required: true
+          description: "Absolute path to the file to write"
+        - name: content
+          type: string
+          required: true
+          description: "Content to write to the file"
+    - name: edit_file
+      description: "Make line-based edits to a text file"
+      destructive: true
+      params:
+        - name: path
+          type: string
+          required: true
+          description: "Absolute path to the file to edit"
+        - name: edits
+          type: string
+          required: true
+          description: "Line-based edit instructions to apply"
+        - name: dry_run
+          type: bool
+          required: false
+          description: "Preview changes without applying them"
+    - name: create_directory
+      description: "Create a new directory or nested directories"
+      destructive: true
+      params:
+        - name: path
+          type: string
+          required: true
+          description: "Absolute path of the directory to create"
+    - name: list_directory
+      description: "List files and directories at a given path"
+      params:
+        - name: path
+          type: string
+          required: true
+          description: "Absolute path of the directory to list"
+    - name: directory_tree
+      description: "Get a recursive tree view of files and directories"
+      params:
+        - name: path
+          type: string
+          required: true
+          description: "Absolute path of the root directory"
+        - name: depth
+          type: int
+          required: false
+          description: "Maximum recursion depth"
+    - name: move_file
+      description: "Move or rename files and directories"
+      destructive: true
+      params:
+        - name: source
+          type: string
+          required: true
+          description: "Absolute path of the file or directory to move"
+        - name: destination
+          type: string
+          required: true
+          description: "Absolute path of the destination"
+    - name: search_files
+      description: "Recursively search for files matching a pattern"
+      params:
+        - name: path
+          type: string
+          required: true
+          description: "Absolute path of the directory to search in"
+        - name: pattern
+          type: string
+          required: true
+          description: "Glob pattern to match files against"
+        - name: exclude_patterns
+          type: string
+          required: false
+          description: "Comma-separated glob patterns to exclude from results"
+    - name: get_file_info
+      description: "Get detailed metadata about a file or directory"
+      params:
+        - name: path
+          type: string
+          required: true
+          description: "Absolute path to the file or directory"
+  tool_transforms:
+    read_file:
+      - truncate: { max_length: 10000 }
+    read_multiple_files:
+      - truncate: { max_length: 20000 }
+    directory_tree:
+      - truncate: { max_length: 8000 }
+    search_files:
+      - truncate: { max_items: 100 }
+
+permissions:
+  filesystem:
+    - read: "/home"
+    - write: "/home"
+
+prompts:
+  system: |
+    This server provides filesystem access scoped to the allowed directories.
+    Always confirm with the user before writing, editing, or moving files.
+    Use read_file to inspect contents before making modifications.
+  tool_instructions:
+    write_file: "Confirm with the user before overwriting existing files."
+    edit_file: "Prefer edit_file over write_file for modifying existing files."
+    move_file: "Verify the destination does not already exist."
+
+resources:
+  expose: all
+  resource_transforms:
+    "file://**":
+      - truncate: { max_length: 10000 }
+
+install_mode:
+  default: both
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s

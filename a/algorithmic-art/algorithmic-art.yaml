@@ -1,0 +1,47 @@
+name: algorithmic-art
+description: Create generative algorithmic art using p5.js with emergent behavior,
+  seeded randomness, and mathematical beauty
+version: "1.0"
+category: design
+tags:
+- skill
+- art
+- generative
+- p5js
+- creative-coding
+- algorithmic
+protocol: skill
+owner_name: Anthropic
+namespace: anthropic
+website: https://github.com/anthropics/skills
+support_url: https://github.com/anthropics/skills/issues
+pricing_model: free
+license: Apache-2.0
+source:
+  type: github
+  repo: anthropics/skills
+  path: skills/algorithmic-art/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: SKILL.md
+  - name: templates/generator_template.js
+  - name: templates/viewer.html
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: anthropic
+  version: '1.0'
+auth:
+- type: none

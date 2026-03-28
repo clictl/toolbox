@@ -1,0 +1,89 @@
+name: wikipedia
+description: Free encyclopedia with structured articles and data exports
+version: "1.0"
+category: knowledge-base
+tags: [encyclopedia, knowledge, reference, open-data]
+protocol: rest
+tool_type: website
+owner_name: Wikimedia Foundation
+website: https://wikipedia.org
+support_url: https://en.wikipedia.org/wiki/Help:Contents
+pricing_model: free
+
+site:
+  url: https://en.wikipedia.org
+  sitemap: https://en.wikipedia.org/sitemap.xml
+  feeds:
+    - url: https://en.wikipedia.org/w/api.php
+      format: json
+  content_type: knowledge-base
+  preferred_format: markdown
+
+access:
+  method: api
+  rate_limit: 200/minute
+  robots_txt: respected
+
+connection:
+  base_url: https://en.wikipedia.org/w
+  headers:
+    Accept: application/json
+
+auth:
+  - type: none
+
+actions:
+  - name: search
+    description: Search Wikipedia articles by keyword
+    method: GET
+    path: /api.php
+    params:
+      - name: search
+        type: string
+        required: true
+        description: Search query
+        in: query
+      - name: action
+        type: string
+        default: opensearch
+        in: query
+      - name: format
+        type: string
+        default: json
+        in: query
+      - name: limit
+        type: int
+        default: "10"
+        description: Maximum number of results
+        in: query
+
+  - name: get_summary
+    description: Get a short summary of a Wikipedia article
+    method: GET
+    path: /api.php
+    params:
+      - name: titles
+        type: string
+        required: true
+        description: Article title
+        in: query
+      - name: action
+        type: string
+        default: query
+        in: query
+      - name: prop
+        type: string
+        default: extracts
+        in: query
+      - name: exintro
+        type: boolean
+        default: "true"
+        in: query
+      - name: explaintext
+        type: boolean
+        default: "true"
+        in: query
+      - name: format
+        type: string
+        default: json
+        in: query

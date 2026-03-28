@@ -1,0 +1,79 @@
+name: fd
+description: Fast and user-friendly file finder. A modern alternative to the find command that respects .gitignore
+version: "1.0"
+category: developer
+tags: [files, find, search]
+protocol: cli
+tool_type: cli
+owner_name: sharkdp
+website: https://github.com/sharkdp/fd
+support_url: https://github.com/sharkdp/fd#how-to-use
+
+connection:
+  shell: /bin/sh
+  requires:
+    - name: fd
+      url: https://github.com/sharkdp/fd#installation
+      check: "fd --version"
+
+auth:
+  - type: none
+
+actions:
+  - name: find
+    description: Find files and directories matching a regex pattern
+    run: "fd {{#hidden}}--hidden{{/hidden}} '{{pattern}}' {{path}}"
+    params:
+      - name: pattern
+        type: string
+        required: true
+        description: Regex pattern to match against file and directory names
+      - name: path
+        type: string
+        description: Base directory to start searching from
+      - name: hidden
+        type: bool
+        description: Include hidden files and directories in results
+
+  - name: find_extension
+    description: Find files with a specific file extension
+    run: "fd -e {{extension}} {{path}}"
+    params:
+      - name: extension
+        type: string
+        required: true
+        description: "File extension to search for (e.g., py, ts, go)"
+      - name: path
+        type: string
+        description: Base directory to start searching from
+
+  - name: find_type
+    description: Find only files or only directories matching a pattern
+    run: "fd -t {{type}} '{{pattern}}' {{path}}"
+    params:
+      - name: pattern
+        type: string
+        description: Regex pattern to match against names
+      - name: type
+        type: string
+        required: true
+        description: "Type filter: f (file), d (directory), l (symlink), x (executable)"
+      - name: path
+        type: string
+        description: Base directory to start searching from
+
+  - name: find_exec
+    description: Find files matching a pattern and execute a command on each result
+    run: "fd '{{pattern}}' {{path}} --exec {{command}}"
+    params:
+      - name: pattern
+        type: string
+        required: true
+        description: Regex pattern to match against file names
+      - name: path
+        type: string
+        description: Base directory to start searching from
+      - name: command
+        type: string
+        required: true
+        description: "Command to run on each result. Use {} as placeholder for the path"

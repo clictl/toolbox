@@ -1,0 +1,100 @@
+name: twilio
+description: Twilio API for listing SMS/MMS messages and performing phone number lookups
+version: "1.0"
+category: communication
+tags: [twilio, sms, messaging, phone, lookup, communication]
+protocol: rest
+owner_name: Twilio
+website: https://www.twilio.com
+support_url: https://www.twilio.com/docs
+pricing_model: paid
+
+connection:
+  base_url: https://api.twilio.com/2010-04-01
+  timeout: 15s
+  headers:
+    Accept: application/json
+
+auth:
+  - type: api_key
+    key_env: TWILIO_AUTH_TOKEN
+    inject:
+      location: header
+      param: Authorization
+      prefix: "Basic"
+
+actions:
+  - name: list-messages
+    description: List SMS and MMS messages for your Twilio account
+    method: GET
+    path: /Accounts/{{account_sid}}/Messages.json
+    params:
+      - name: account_sid
+        type: string
+        required: true
+        description: Your Twilio Account SID
+        in: path
+      - name: To
+        type: string
+        description: Filter by recipient phone number
+        in: query
+      - name: From
+        type: string
+        description: Filter by sender phone number
+        in: query
+      - name: DateSent
+        type: string
+        description: "Filter by date sent, e.g. '2024-01-15'"
+        in: query
+      - name: PageSize
+        type: int
+        default: "20"
+        description: Number of results per page (max 1000)
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.messages"
+      - truncate: { max_items: 20 }
+
+  - name: get-message
+    description: Get details for a specific message by its SID
+    method: GET
+    path: /Accounts/{{account_sid}}/Messages/{{message_sid}}.json
+    params:
+      - name: account_sid
+        type: string
+        required: true
+        description: Your Twilio Account SID
+        in: path
+      - name: message_sid
+        type: string
+        required: true
+        description: The unique message SID to retrieve
+        in: path
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+      - select: ["sid", "to", "from", "body", "status", "date_sent", "direction", "price", "error_code"]
+
+  - name: lookup-phone
+    description: Look up information about a phone number using the Twilio Lookup API
+    method: GET
+    path: /PhoneNumbers/{{phone_number}}
+    safe: true
+    params:
+      - name: phone_number
+        type: string
+        required: true
+        description: "Phone number in E.164 format, e.g. '+15558675310'"
+        in: path
+      - name: Type
+        type: string
+        description: "Type of information to return: 'carrier' or 'caller-name'"
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$"
+      - select: ["phone_number", "country_code", "national_format", "carrier", "caller_name"]

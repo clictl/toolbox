@@ -1,0 +1,66 @@
+name: data-gov
+description: US government open data portal with thousands of datasets
+version: "1.0"
+category: data-portal
+tags: [government, open-data, datasets, usa, public]
+protocol: rest
+tool_type: website
+owner_name: US Government
+website: https://data.gov
+support_url: https://data.gov/contact
+pricing_model: free
+
+site:
+  url: https://data.gov
+  sitemap: https://data.gov/sitemap.xml
+  content_type: data-portal
+  preferred_format: json
+
+access:
+  method: fetch
+  robots_txt: respected
+
+connection:
+  base_url: https://catalog.data.gov
+  headers:
+    Accept: application/json
+
+auth:
+  - type: none
+
+actions:
+  - name: search_datasets
+    description: Search for datasets in the US government open data catalog
+    method: GET
+    path: /api/3/action/package_search
+    params:
+      - name: q
+        type: string
+        required: true
+        description: Search query
+        in: query
+      - name: rows
+        type: int
+        default: "10"
+        description: Number of results to return
+        in: query
+      - name: start
+        type: int
+        default: "0"
+        description: Offset for pagination
+        in: query
+    transform:
+      - extract: "$.result.results"
+
+  - name: get_dataset
+    description: Get details of a specific dataset by ID
+    method: GET
+    path: /api/3/action/package_show
+    params:
+      - name: id
+        type: string
+        required: true
+        description: Dataset ID or name
+        in: query
+    transform:
+      - extract: "$.result"

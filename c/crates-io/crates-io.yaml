@@ -1,0 +1,82 @@
+name: crates-io
+description: Crates.io API for searching Rust crates, viewing crate metadata, and listing versions
+version: "1.0"
+category: developer
+tags: [rust, crates, cargo, packages, registry]
+protocol: rest
+owner_name: Rust Foundation
+website: https://crates.io
+support_url: https://crates.io/policies
+pricing_model: free
+
+connection:
+  base_url: https://crates.io/api/v1
+  timeout: 15s
+  headers:
+    Accept: application/json
+    User-Agent: clictl/1.0 (https://github.com/clictl)
+
+auth:
+  - type: none
+
+actions:
+  - name: search
+    description: Search for Rust crates by keyword with sorting and pagination
+    method: GET
+    path: /crates
+    params:
+      - name: q
+        type: string
+        required: true
+        description: Search query string
+        in: query
+      - name: per_page
+        type: int
+        default: "10"
+        description: Number of results per page (max 100)
+        in: query
+      - name: page
+        type: int
+        default: "1"
+        description: Page number for pagination
+        in: query
+      - name: sort
+        type: string
+        description: "Sort by: relevance, downloads, recent-downloads, recent-updates, new"
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.crates"
+      - truncate: { max_items: 20 }
+
+  - name: crate-info
+    description: Get detailed information about a specific Rust crate including description, downloads, and links
+    method: GET
+    path: /crates/{{name}}
+    params:
+      - name: name
+        type: string
+        required: true
+        description: Crate name as published on crates.io
+        in: path
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.crate"
+
+  - name: crate-versions
+    description: List all published versions of a Rust crate with download counts and metadata
+    method: GET
+    path: /crates/{{name}}/versions
+    params:
+      - name: name
+        type: string
+        required: true
+        description: Crate name
+        in: path
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.versions"
+      - truncate: { max_items: 20 }

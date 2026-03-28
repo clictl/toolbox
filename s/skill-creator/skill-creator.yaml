@@ -1,0 +1,64 @@
+name: skill-creator
+description: Create new skills, modify and improve existing skills, and measure
+  skill performance
+version: "1.0"
+category: developer
+tags:
+- skill
+- skill-creation
+- testing
+- evaluation
+- meta
+protocol: skill
+owner_name: Anthropic
+namespace: anthropic
+website: https://github.com/anthropics/skills
+support_url: https://github.com/anthropics/skills/issues
+pricing_model: free
+license: Apache-2.0
+source:
+  type: github
+  repo: anthropics/skills
+  path: skills/skill-creator/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: SKILL.md
+  - name: agents/analyzer.md
+  - name: agents/comparator.md
+  - name: agents/grader.md
+  - name: assets/eval_review.html
+  - name: eval-viewer/generate_review.py
+  - name: eval-viewer/viewer.html
+  - name: references/schemas.md
+  - name: scripts/__init__.py
+  - name: scripts/aggregate_benchmark.py
+  - name: scripts/generate_report.py
+  - name: scripts/improve_description.py
+  - name: scripts/package_skill.py
+  - name: scripts/quick_validate.py
+  - name: scripts/run_eval.py
+  - name: scripts/run_loop.py
+  - name: scripts/utils.py
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: anthropic
+  version: '1.0'
+auth:
+- type: none
+requires_system:
+- name: python3
+  check: "python3 --version"
+  brew: python3

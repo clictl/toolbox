@@ -1,0 +1,75 @@
+name: archive-org
+description: Internet Archive API for searching the digital library and checking Wayback Machine availability
+version: "1.0"
+category: data
+tags: [archive, wayback, books, media, web-history, preservation]
+protocol: rest
+owner_name: Internet Archive
+website: https://archive.org
+support_url: https://help.archive.org
+pricing_model: free
+
+connection:
+  base_url: https://archive.org
+  timeout: 30s
+  headers:
+    Accept: application/json
+
+auth:
+  - type: none
+
+actions:
+  - name: search
+    description: Search the Internet Archive catalog for books, videos, audio, software, and other media
+    method: GET
+    path: /advancedsearch.php
+    params:
+      - name: q
+        type: string
+        required: true
+        description: "Search query using Lucene syntax, e.g. 'title:python AND mediatype:texts'"
+        in: query
+      - name: output
+        type: string
+        default: json
+        description: Output format (always use json)
+        in: query
+      - name: rows
+        type: int
+        default: "10"
+        description: Number of results to return
+        in: query
+      - name: page
+        type: int
+        default: "1"
+        description: Page number for pagination
+        in: query
+      - name: fl
+        type: string
+        default: "identifier,title,creator,date,mediatype,description"
+        description: Comma-separated list of fields to return
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.response.docs"
+      - truncate: { max_items: 20 }
+
+  - name: wayback
+    description: Check if a URL has been archived by the Wayback Machine and get the most recent snapshot
+    method: GET
+    path: /wayback/available
+    params:
+      - name: url
+        type: string
+        required: true
+        description: "URL to check for archived snapshots, e.g. 'example.com'"
+        in: query
+      - name: timestamp
+        type: string
+        description: "Timestamp to find the closest snapshot to, format YYYYMMDD or YYYYMMDDhhmmss"
+        in: query
+    assert:
+      - status: [200]
+    transform:
+      - extract: "$.archived_snapshots"

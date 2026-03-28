@@ -1,0 +1,120 @@
+name: jira-mcp
+description: Official Atlassian MCP server for Jira and Confluence with issue tracking and documentation access
+version: "1.0"
+category: productivity
+tags: [mcp, jira, atlassian, confluence, issues, project-management, agile]
+protocol: mcp
+owner_name: Atlassian
+website: https://github.com/atlassian/atlassian-mcp-server
+support_url: https://github.com/atlassian/atlassian-mcp-server/issues
+pricing_model: freemium
+
+transport:
+  type: http
+  url: https://mcp.atlassian.com/v1/sse
+  timeout: 30s
+
+auth:
+  - type: oauth2
+    authorization_url: https://auth.atlassian.com/authorize
+    token_url: https://auth.atlassian.com/oauth/token
+    scopes: [read:jira-work, write:jira-work, read:confluence-content.all]
+
+tools:
+  expose:
+    - name: search_issues
+      description: "Search for Jira issues using JQL"
+      params:
+        - name: jql
+          type: string
+          required: true
+          description: "JQL query string"
+        - name: max_results
+          type: int
+          required: false
+          description: "Maximum number of results to return"
+    - name: get_issue
+      description: "Get details of a specific issue"
+      params:
+        - name: issue_key
+          type: string
+          required: true
+          description: "Issue key (e.g. PROJ-123)"
+    - name: create_issue
+      description: "Create a new Jira issue"
+      destructive: true
+      params:
+        - name: project_key
+          type: string
+          required: true
+          description: "Project key"
+        - name: summary
+          type: string
+          required: true
+          description: "Issue summary"
+        - name: issue_type
+          type: string
+          required: true
+          description: "Issue type (e.g. Bug, Story, Task)"
+        - name: description
+          type: string
+          required: false
+          description: "Issue description"
+    - name: update_issue
+      description: "Update an existing issue"
+      destructive: true
+      params:
+        - name: issue_key
+          type: string
+          required: true
+          description: "Issue key"
+        - name: summary
+          type: string
+          required: false
+          description: "Updated summary"
+        - name: status
+          type: string
+          required: false
+          description: "Transition to a new status"
+    - name: add_comment
+      description: "Add a comment to an issue"
+      destructive: true
+      params:
+        - name: issue_key
+          type: string
+          required: true
+          description: "Issue key"
+        - name: body
+          type: string
+          required: true
+          description: "Comment body"
+    - name: list_projects
+      description: "List accessible Jira projects"
+    - name: search_confluence
+      description: "Search Confluence pages"
+      params:
+        - name: query
+          type: string
+          required: true
+          description: "Search query string"
+    - name: get_confluence_page
+      description: "Get a Confluence page by ID"
+      params:
+        - name: page_id
+          type: string
+          required: true
+          description: "Confluence page ID"
+
+prompts:
+  system: |
+    This server provides access to Jira and Confluence. Use it for
+    viewing and managing issues, searching projects, and accessing
+    Confluence documentation. Confirm before creating or updating issues.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true

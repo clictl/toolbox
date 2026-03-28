@@ -1,0 +1,53 @@
+name: security-best-practices
+description: Perform language and framework specific security best-practice reviews and suggest improvements
+version: "1.0"
+category: security
+tags:
+- skill
+- security
+- code-review
+- best-practices
+protocol: skill
+owner_name: OpenAI
+namespace: openai
+website: https://github.com/openai/skills
+support_url: https://github.com/openai/skills/issues
+pricing_model: free
+license: MIT
+source:
+  type: github
+  repo: openai/skills
+  path: skills/.curated/security-best-practices/
+  ref: main
+  files:
+  - name: LICENSE.txt
+  - name: SKILL.md
+  - name: agents/openai.yaml
+  - name: references/golang-general-backend-security.md
+  - name: references/javascript-express-web-server-security.md
+  - name: references/javascript-general-web-frontend-security.md
+  - name: references/javascript-jquery-web-frontend-security.md
+  - name: references/javascript-typescript-nextjs-web-server-security.md
+  - name: references/javascript-typescript-react-web-frontend-security.md
+  - name: references/javascript-typescript-vue-web-frontend-security.md
+  - name: references/python-django-web-server-security.md
+  - name: references/python-fastapi-web-server-security.md
+  - name: references/python-flask-web-server-security.md
+platforms:
+- name: claude-code
+  install_method: skill
+  config_path: .claude/skills/
+- name: cursor
+  install_method: skill
+  config_path: .cursor/skills/
+- name: codex
+  install_method: skill
+  config_path: .codex/skills/
+- name: vscode
+  install_method: copy
+  config_path: .github/skills/
+skill_metadata:
+  author: openai
+  version: '1.0'
+auth:
+- type: none

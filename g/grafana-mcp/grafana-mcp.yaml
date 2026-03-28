@@ -1,0 +1,93 @@
+name: grafana-mcp
+description: MCP server for Grafana dashboards, datasources, alerts, incidents, and log searching
+version: "1.0"
+category: monitoring
+tags: [mcp, grafana, dashboards, monitoring, alerts, observability, logs]
+protocol: mcp
+owner_name: Grafana Labs
+website: https://github.com/grafana/mcp-grafana
+support_url: https://github.com/grafana/mcp-grafana/issues
+pricing_model: free
+license: Apache-2.0
+
+transport:
+  type: stdio
+  command: uvx
+  args: ["mcp-grafana"]
+  requires:
+    - name: uv
+      url: https://docs.astral.sh/uv/
+      check: "uv --version"
+
+auth:
+  - type: api_key
+    key_env: GRAFANA_API_KEY
+    inject:
+      location: env
+      param: GRAFANA_API_KEY
+
+tools:
+  expose:
+    - name: list_dashboards
+      description: "List Grafana dashboards"
+      params:
+        - name: query
+          type: string
+          required: false
+          description: "Search query to filter dashboards"
+    - name: get_dashboard
+      description: "Get details of a specific dashboard"
+      params:
+        - name: uid
+          type: string
+          required: true
+          description: "Dashboard UID"
+    - name: list_datasources
+      description: "List configured data sources"
+    - name: query_prometheus
+      description: "Execute a Prometheus query"
+      params:
+        - name: query
+          type: string
+          required: true
+          description: "PromQL query"
+        - name: start
+          type: string
+          required: false
+          description: "Start time (ISO format)"
+        - name: end
+          type: string
+          required: false
+          description: "End time (ISO format)"
+    - name: list_alerts
+      description: "List alert rules"
+    - name: search_logs
+      description: "Search logs using Loki or other log sources"
+      params:
+        - name: query
+          type: string
+          required: true
+          description: "Log query (LogQL for Loki)"
+        - name: limit
+          type: int
+          required: false
+          description: "Maximum number of log lines to return"
+    - name: list_incidents
+      description: "List incidents from Grafana Incident"
+    - name: get_oncall_schedule
+      description: "Get the on-call schedule"
+
+prompts:
+  system: |
+    This server provides access to Grafana instances. Use it for
+    querying dashboards, checking alerts, searching logs, and managing
+    incidents and on-call schedules.
+
+resources:
+  expose: all
+
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s

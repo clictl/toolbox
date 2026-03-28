@@ -1,0 +1,73 @@
+name: openai
+description: OpenAI API for chat completions, embeddings, and models
+version: "1.0"
+category: ai
+tags: [openai, gpt, ai, llm, chat, embeddings]
+protocol: rest
+owner_name: OpenAI
+website: https://openai.com
+support_url: https://platform.openai.com/docs
+
+connection:
+  base_url: https://api.openai.com/v1
+  timeout: 60s
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+
+auth:
+  - type: bearer
+    key_env: OPENAI_API_KEY
+    inject:
+      location: header
+      key: Authorization
+      prefix: "Bearer "
+
+actions:
+  - name: models
+    description: List all available models
+    method: GET
+    path: /models
+    params: []
+    transform:
+      extract: "$.data"
+
+  - name: chat
+    description: Create a chat completion with a model
+    method: POST
+    safe: true
+    path: /chat/completions
+    assert:
+      - status: 200
+      - exists: "$.choices"
+    params:
+      - name: model
+        type: string
+        required: true
+        default: gpt-4o
+        description: "Model ID, e.g. 'gpt-4o', 'gpt-4o-mini'"
+        in: body
+      - name: messages
+        type: string
+        required: true
+        description: "JSON array of message objects, e.g. [{\"role\":\"user\",\"content\":\"Hello\"}]"
+        in: body
+
+  - name: embeddings
+    description: Create vector embeddings for text input
+    method: POST
+    safe: true
+    path: /embeddings
+    params:
+      - name: input
+        type: string
+        required: true
+        description: Text to generate embeddings for
+        in: body
+      - name: model
+        type: string
+        default: text-embedding-3-small
+        description: "Embedding model, e.g. 'text-embedding-3-small', 'text-embedding-3-large'"
+        in: body
+    transform:
+      extract: "$.data"
