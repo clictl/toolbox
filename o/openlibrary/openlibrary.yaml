@@ -1,0 +1,104 @@
+spec: '1.0'
+name: openlibrary
+description: Open Library API for searching books, retrieving work details, and looking up author information
+protocol: http
+version: '1.0'
+category: data
+tags:
+- books
+- library
+- reading
+- authors
+- isbn
+- literature
+server:
+  url: https://openlibrary.org
+  timeout: 15s
+  headers:
+    Accept: application/json
+actions:
+- name: search
+  description: Search for books by title, author, subject, or general keyword
+  output: text
+  method: GET
+  path: /search.json
+  params:
+  - name: q
+    type: string
+    required: true
+    description: General search query
+    example: dune
+    in: query
+  - name: limit
+    type: int
+    default: '10'
+    description: Number of results to return
+    in: query
+  assert:
+  - type: status
+    values:
+    - 200
+  transform:
+  - extract: $.docs
+  - type: json
+    select:
+    - title
+    - author_name
+    - first_publish_year
+    - edition_count
+  - type: truncate
+    max_items: 10
+  - type: format
+    template: '- {title} by {author_name} ({first_publish_year}, {edition_count} editions)'
+- name: book
+  description: Get detailed information about a specific work by its Open Library ID
+  output: json
+  method: GET
+  path: /works/{{olid}}.json
+  params:
+  - name: olid
+    type: string
+    required: true
+    description: Open Library work ID, e.g. 'OL45883W'
+    example: OL45883W
+    in: path
+  assert:
+  - type: status
+    values:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - title
+    - description
+    - subjects
+    - covers
+    - first_publish_date
+    - authors
+- name: author
+  description: Get information about an author by their Open Library ID
+  output: json
+  method: GET
+  path: /authors/{{olid}}.json
+  params:
+  - name: olid
+    type: string
+    required: true
+    description: Open Library author ID, e.g. 'OL34184A'
+    example: OL34184A
+    in: path
+  assert:
+  - type: status
+    values:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - name
+    - birth_date
+    - death_date
+    - bio
+    - links
+    - wikipedia

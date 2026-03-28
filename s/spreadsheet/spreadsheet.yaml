@@ -1,0 +1,45 @@
+spec: '1.0'
+name: spreadsheet
+description: Create, edit, analyze, or format spreadsheets (.xlsx, .csv, .tsv)
+protocol: skill
+version: '1.0'
+category: productivity
+tags:
+- skill
+- spreadsheet
+- xlsx
+- csv
+- data
+source:
+  repo: openai/skills
+  path: skills/.curated/spreadsheet/
+  ref: main
+  files:
+  - sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
+    path: LICENSE.txt
+  - sha256: 36baea99e96c77c13d15d24f9d53cd072ccbc120e810bf4e68049edb5b0f1d65
+    path: SKILL.md
+  - sha256: 47a60ed62c8f9c58583af95c51fc82f713c58f13e0848a060c78c7ebc00db90d
+    path: agents/openai.yaml
+  - sha256: 403c95e0cea6f994221d3b6281ea4eb2ab15a0dd2c1156f2d412b4744df62f6b
+    path: assets/spreadsheet-small.svg
+  - sha256: a5771930cd28ff46e6ed53aa8a08a25902ed71178d1cac642c178f659638d7aa
+    path: assets/spreadsheet.png
+  - sha256: 7c291b6230c9809145c8f7f216fd2b7d099b16b89d3fae0ab4d5a3d990c05418
+    path: references/examples/openpyxl/create_basic_spreadsheet.py
+  - sha256: fbfd41b9eca17f0f274f4ce7bd8ead6bc9292d764fe3bc325a1fca57dbe954ea
+    path: references/examples/openpyxl/create_spreadsheet_with_styling.py
+  - sha256: cf2f24d90174d92bd9044e95035ab4cf2e34a5faa355a2fa1898e49088e9ad02
+    path: references/examples/openpyxl/read_existing_spreadsheet.py
+  - sha256: 5427ca11beb2b408a5dede6af1fa868fa131ad2a435d40bb88e52c4a8de7bc67
+    path: references/examples/openpyxl/styling_spreadsheet.py
+requires_system:
+- name: python3
+  check: python3 --version
+  brew: python3
+runtime:
+  language: python
+  manager: uvx
+  dependencies:
+  - openpyxl
+  - pandas

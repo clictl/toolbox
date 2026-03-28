@@ -1,0 +1,191 @@
+spec: '1.0'
+name: notion-mcp
+description: Official Notion MCP server for reading, searching, creating, and updating pages, databases, and comments
+protocol: mcp
+version: '1.0'
+category: productivity
+tags:
+- mcp
+- notion
+- wiki
+- pages
+- databases
+- knowledge-management
+- notes
+auth:
+  env: NOTION_API_KEY
+pricing:
+  model: freemium
+package:
+  registry: npm
+  name: '@notionhq/mcp-server'
+  version: 0.1.0
+  manager: npx
+sandbox:
+  network:
+    allow:
+    - api.notion.com
+  env:
+    allow:
+    - NOTION_API_KEY
+prompts:
+  system: 'This server provides access to Notion workspaces. Use notion_search
+
+    to find existing pages before creating new ones. When querying
+
+    databases, use filters to narrow results. Respect the workspace
+
+    structure and naming conventions.
+
+    '
+  tool_instructions:
+    notion_create_page: Search for the parent page or database first.
+    notion_delete_block: Confirm deletion with the user. This cannot be undone.
+resources:
+  expose: all
+install_mode:
+  default: both
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s
+actions:
+- name: notion_search
+  description: Search across all pages and databases in the workspace
+  params:
+  - name: query
+    type: string
+    required: true
+    description: Search text
+  - name: filter_type
+    type: string
+    required: false
+    description: Filter by type - page or database
+- name: notion_get_page
+  description: Retrieve a page and its content by ID
+  params:
+  - name: page_id
+    type: string
+    required: true
+    description: The ID of the page to retrieve
+- name: notion_create_page
+  description: Create a new page in a parent page or database
+  params:
+  - name: parent_id
+    type: string
+    required: true
+    description: Parent page or database ID
+  - name: title
+    type: string
+    required: true
+    description: Page title
+  - name: content
+    type: string
+    required: false
+    description: Page content in markdown
+  mutable: true
+- name: notion_update_page
+  description: Update page properties
+  params:
+  - name: page_id
+    type: string
+    required: true
+    description: The ID of the page to update
+  - name: properties
+    type: string
+    required: true
+    description: JSON object of properties to update
+  mutable: true
+- name: notion_get_database
+  description: Retrieve a database schema by ID
+  params:
+  - name: database_id
+    type: string
+    required: true
+    description: The ID of the database to retrieve
+- name: notion_query_database
+  description: Query a database with filters and sorts
+  params:
+  - name: database_id
+    type: string
+    required: true
+    description: The ID of the database to query
+  - name: filter
+    type: string
+    required: false
+    description: JSON filter object
+  - name: sort
+    type: string
+    required: false
+    description: JSON sort object
+- name: notion_create_database
+  description: Create a new database
+  params:
+  - name: parent_id
+    type: string
+    required: true
+    description: Parent page ID
+  - name: title
+    type: string
+    required: true
+    description: Database title
+  - name: properties
+    type: string
+    required: true
+    description: JSON schema of database properties
+  mutable: true
+- name: notion_get_block_children
+  description: Get child blocks of a page or block
+  params:
+  - name: block_id
+    type: string
+    required: true
+    description: Page or block ID
+- name: notion_append_block_children
+  description: Append content blocks to a page or block
+  params:
+  - name: block_id
+    type: string
+    required: true
+    description: The ID of the page or block to append to
+  - name: children
+    type: string
+    required: true
+    description: JSON array of block objects to append
+  mutable: true
+- name: notion_delete_block
+  description: Delete a block
+  params:
+  - name: block_id
+    type: string
+    required: true
+    description: The ID of the block to delete
+  mutable: true
+- name: notion_get_comments
+  description: Get comments on a page or block
+  params:
+  - name: block_id
+    type: string
+    required: true
+    description: The ID of the page or block
+- name: notion_create_comment
+  description: Add a comment to a page
+  params:
+  - name: page_id
+    type: string
+    required: true
+    description: The ID of the page to comment on
+  - name: body
+    type: string
+    required: true
+    description: Comment text
+  mutable: true
+transforms:
+  notion_search:
+  - truncate:
+      max_items: 20
+  notion_query_database:
+  - truncate:
+      max_items: 30
+  notion_get_block_children:
+  - truncate:
+      max_items: 50

@@ -1,0 +1,70 @@
+spec: '1.0'
+name: wolfram-alpha
+description: Wolfram Alpha computational knowledge engine for math, science, and factual queries
+protocol: http
+version: '1.0'
+category: ai
+tags:
+- wolfram
+- math
+- computation
+- knowledge
+- science
+- calculator
+pricing:
+  model: freemium
+server:
+  url: https://api.wolframalpha.com/v2
+  timeout: 30s
+  headers:
+    Accept: application/json
+auth:
+  env: WOLFRAM_APP_ID
+  param: appid
+actions:
+- name: query
+  description: Submit a full query to Wolfram Alpha and get structured pods with results, plots, and computations
+  method: GET
+  path: /query
+  params:
+  - name: input
+    type: string
+    required: true
+    description: Natural language query, e.g. 'integrate x^2 dx' or 'population of France'
+    in: query
+  - name: output
+    type: string
+    default: json
+    description: Output format (use json for structured results)
+    in: query
+  - name: format
+    type: string
+    default: plaintext
+    description: 'Pod content format: ''plaintext'', ''image'', or ''plaintext,image'''
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.queryresult.pods
+  - type: truncate
+    max_items: 20
+- name: short-answer
+  description: Get a single-line text answer to a factual question
+  method: GET
+  path: /result
+  params:
+  - name: i
+    type: string
+    required: true
+    description: Natural language question, e.g. 'distance from Earth to Mars'
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $

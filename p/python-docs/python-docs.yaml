@@ -1,0 +1,37 @@
+spec: '1.0'
+name: python-docs
+description: Official Python 3 documentation including standard library reference, tutorials, and language specification
+version: '1.0'
+category: documentation
+tags:
+- documentation
+- python
+- stdlib
+- reference
+- tutorial
+server:
+  url: https://docs.python.org/3
+  headers:
+    Accept: text/html
+actions:
+- name: search
+  description: Search the Python documentation using the built-in search endpoint
+  params:
+  - name: q
+    type: string
+    required: true
+    description: Search query (e.g., asyncio, dataclasses, pathlib)
+    in: query
+  method: GET
+  path: /search.html
+- name: get_page
+  description: Fetch a specific Python documentation page
+  params:
+  - name: path
+    type: string
+    required: true
+    description: Documentation path (e.g., library/os.html, tutorial/classes.html)
+    in: path
+  method: GET
+  path: /{path}
+protocol: http

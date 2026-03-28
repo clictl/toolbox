@@ -1,0 +1,131 @@
+spec: '1.0'
+name: alpha-vantage
+description: Alpha Vantage API for stock quotes, time-series data, and market intelligence
+protocol: http
+version: '1.0'
+category: finance
+tags:
+- stocks
+- finance
+- market
+- quotes
+- trading
+- timeseries
+pricing:
+  model: freemium
+server:
+  url: https://www.alphavantage.co
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+  env: ALPHA_VANTAGE_KEY
+  param: apikey
+actions:
+- name: quote
+  description: Get the latest price quote for a stock symbol
+  method: GET
+  path: /query
+  params:
+  - name: function
+    type: string
+    required: true
+    default: GLOBAL_QUOTE
+    description: The API function to call (use GLOBAL_QUOTE for price quotes)
+    in: query
+  - name: symbol
+    type: string
+    required: true
+    description: The stock ticker symbol, e.g. 'AAPL' or 'MSFT'
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.Global Quote
+- name: daily
+  description: Get daily time-series stock price data (open, high, low, close, volume)
+  method: GET
+  path: /query
+  params:
+  - name: function
+    type: string
+    required: true
+    default: TIME_SERIES_DAILY
+    description: The API function (use TIME_SERIES_DAILY)
+    in: query
+  - name: symbol
+    type: string
+    required: true
+    description: The stock ticker symbol
+    in: query
+  - name: outputsize
+    type: string
+    default: compact
+    description: '''compact'' returns last 100 data points, ''full'' returns up to 20 years'
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - Meta Data
+    - Time Series (Daily)
+- name: search
+  description: Search for stock symbols and company names by keyword
+  method: GET
+  path: /query
+  params:
+  - name: function
+    type: string
+    required: true
+    default: SYMBOL_SEARCH
+    description: The API function (use SYMBOL_SEARCH)
+    in: query
+  - name: keywords
+    type: string
+    required: true
+    description: The search keywords to match against symbols and company names
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.bestMatches
+  - type: truncate
+    max_items: 20
+- name: exchange-rate
+  description: Get the current exchange rate between two currencies
+  method: GET
+  path: /query
+  params:
+  - name: function
+    type: string
+    required: true
+    default: CURRENCY_EXCHANGE_RATE
+    description: The API function (use CURRENCY_EXCHANGE_RATE)
+    in: query
+  - name: from_currency
+    type: string
+    required: true
+    description: The source currency code, e.g. 'USD' or 'BTC'
+    in: query
+  - name: to_currency
+    type: string
+    required: true
+    description: The target currency code, e.g. 'EUR' or 'JPY'
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.Realtime Currency Exchange Rate

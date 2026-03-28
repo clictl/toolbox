@@ -1,0 +1,75 @@
+spec: '1.0'
+name: wikipedia
+description: Free encyclopedia with structured articles and data exports
+protocol: http
+version: '1.0'
+category: knowledge-base
+tags:
+- encyclopedia
+- knowledge
+- reference
+- open-data
+server:
+  url: https://en.wikipedia.org/w
+  headers:
+    Accept: application/json
+actions:
+- name: search
+  description: Search Wikipedia articles by keyword
+  output: text
+  method: GET
+  path: /api.php
+  params:
+  - name: search
+    type: string
+    required: true
+    description: Search query
+    example: rust programming
+    in: query
+  - name: action
+    default: opensearch
+    in: query
+  - name: format
+    default: json
+    in: query
+  - name: limit
+    type: int
+    default: '10'
+    description: Maximum number of results
+    in: query
+  transform:
+  - extract: $[1]
+  - type: truncate
+    max_items: 10
+- name: get_summary
+  description: Get a short summary of a Wikipedia article
+  output: json
+  method: GET
+  path: /api.php
+  params:
+  - name: titles
+    type: string
+    required: true
+    description: Article title
+    example: Python (programming language)
+    in: query
+  - name: action
+    type: string
+    default: query
+    in: query
+  - name: prop
+    type: string
+    default: extracts
+    in: query
+  - name: exintro
+    type: boolean
+    default: 'true'
+    in: query
+  - name: explaintext
+    type: boolean
+    default: 'true'
+    in: query
+  - name: format
+    type: string
+    default: json
+    in: query

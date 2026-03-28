@@ -1,0 +1,125 @@
+spec: '1.0'
+name: stackoverflow
+description: Stack Overflow Q&A platform. Search programming questions and retrieve answers via the Stack Exchange API
+protocol: http
+version: '1.0'
+category: knowledge-base
+tags:
+- stackoverflow
+- qa
+- programming
+- knowledge-base
+- stack-exchange
+server:
+  url: https://api.stackexchange.com/2.3
+  headers:
+    Accept: application/json
+actions:
+- name: search
+  description: Search Stack Overflow questions by title keywords, sorted by relevance
+  output: text
+  method: GET
+  path: /search
+  params:
+  - name: intitle
+    type: string
+    required: true
+    description: Search term to match in question titles
+    example: how to parse JSON
+    in: query
+  - name: tagged
+    type: string
+    description: Semicolon-separated tags to filter results (e.g., python;django)
+    example: python
+    in: query
+  - name: order
+    type: string
+    default: desc
+    description: Sort order (asc or desc)
+    in: query
+  - name: sort
+    type: string
+    default: relevance
+    description: Sort criteria (relevance, activity, votes, creation)
+    in: query
+  - name: site
+    type: string
+    default: stackoverflow
+    description: Stack Exchange site to search
+    in: query
+  - name: pagesize
+    type: int
+    default: '10'
+    description: Number of results per page
+    in: query
+  transform:
+  - extract: $.items
+  - type: json
+    select:
+    - title
+    - score
+    - answer_count
+    - is_answered
+    - link
+  - type: truncate
+    max_items: 10
+  - type: format
+    template: "- [{score} votes, {answer_count} answers] {title}\n  {link}"
+- name: question
+  description: Retrieve a specific question by its ID including body and metadata
+  output: json
+  method: GET
+  path: /questions/{id}
+  params:
+  - name: id
+    type: int
+    required: true
+    description: Question ID
+    example: 11227809
+    in: path
+  - name: site
+    type: string
+    default: stackoverflow
+    description: Stack Exchange site
+    in: query
+  - name: filter
+    type: string
+    default: withbody
+    description: Response filter to include question body
+    in: query
+  transform:
+  - extract: $.items[0]
+- name: answers
+  description: Retrieve all answers for a specific question, sorted by votes
+  output: json
+  method: GET
+  path: /questions/{id}/answers
+  params:
+  - name: id
+    type: int
+    required: true
+    description: Question ID to get answers for
+    example: 11227809
+    in: path
+  - name: site
+    type: string
+    default: stackoverflow
+    description: Stack Exchange site
+    in: query
+  - name: order
+    type: string
+    default: desc
+    description: Sort order (asc or desc)
+    in: query
+  - name: sort
+    type: string
+    default: votes
+    description: Sort criteria (activity, votes, creation)
+    in: query
+  - name: filter
+    type: string
+    default: withbody
+    description: Response filter to include answer bodies
+    in: query
+  transform:
+  - extract: $.items

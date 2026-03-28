@@ -1,0 +1,177 @@
+spec: '1.0'
+name: reddit
+description: Reddit API for searching posts, browsing subreddits, and reading comments
+protocol: http
+version: '1.0'
+category: communication
+tags:
+- social
+- reddit
+- community
+- discussion
+server:
+  url: https://oauth.reddit.com
+  timeout: 15s
+  headers:
+    Accept: application/json
+    User-Agent: clictl:v1.0 (by /u/clictl)
+auth:
+  env: REDDIT_CLIENT_ID
+  secret_env: REDDIT_CLIENT_SECRET
+  token_url: https://www.reddit.com/api/v1/access_token
+  grant_type: client_credentials
+actions:
+- name: search
+  description: Search Reddit posts across all subreddits
+  method: GET
+  path: /search
+  params:
+  - name: q
+    type: string
+    required: true
+    description: Search query string
+    in: query
+  - name: sort
+    type: string
+    default: relevance
+    description: 'Sort order: relevance, hot, top, new, comments'
+    in: query
+  - name: t
+    type: string
+    default: all
+    description: 'Time filter: hour, day, week, month, year, all'
+    in: query
+  - name: limit
+    type: int
+    default: '25'
+    description: Number of results to return (max 100)
+    in: query
+  - name: type
+    type: string
+    default: link
+    description: 'Result type: link, sr (subreddit), user'
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.data.children[*].data
+    select:
+    - title
+    - subreddit
+    - selftext
+    - url
+    - score
+    - num_comments
+    - created_utc
+    - author
+  - type: truncate
+    max_items: 25
+- name: subreddit-posts
+  description: Get posts from a specific subreddit
+  method: GET
+  path: /r/{{subreddit}}/{{listing}}
+  params:
+  - name: subreddit
+    type: string
+    required: true
+    description: Subreddit name without the r/ prefix
+    in: path
+  - name: listing
+    type: string
+    default: hot
+    description: 'Listing type: hot, new, top, rising, controversial'
+    in: path
+  - name: t
+    type: string
+    default: day
+    description: 'Time filter for top/controversial: hour, day, week, month, year, all'
+    in: query
+  - name: limit
+    type: int
+    default: '25'
+    description: Number of posts to return (max 100)
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.data.children[*].data
+    select:
+    - title
+    - selftext
+    - url
+    - score
+    - num_comments
+    - created_utc
+    - author
+  - type: truncate
+    max_items: 25
+- name: comments
+  description: Get comments for a specific post
+  method: GET
+  path: /r/{{subreddit}}/comments/{{post_id}}
+  params:
+  - name: subreddit
+    type: string
+    required: true
+    description: Subreddit name without the r/ prefix
+    in: path
+  - name: post_id
+    type: string
+    required: true
+    description: Reddit post ID (the alphanumeric ID from the URL)
+    in: path
+  - name: sort
+    type: string
+    default: best
+    description: 'Sort order: best, top, new, controversial, old, qa'
+    in: query
+  - name: limit
+    type: int
+    default: '25'
+    description: Number of top-level comments to return
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $[1].data.children[*].data
+    select:
+    - author
+    - body
+    - score
+    - created_utc
+    - replies
+  - type: truncate
+    max_items: 25
+- name: subreddit-about
+  description: Get information about a subreddit
+  method: GET
+  path: /r/{{subreddit}}/about
+  params:
+  - name: subreddit
+    type: string
+    required: true
+    description: Subreddit name without the r/ prefix
+    in: path
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.data
+    select:
+    - display_name
+    - title
+    - public_description
+    - subscribers
+    - active_user_count
+    - created_utc

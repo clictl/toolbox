@@ -1,0 +1,126 @@
+spec: '1.0'
+name: google-trends
+description: Google Trends data via SerpAPI for tracking search interest, related queries, and trending topics
+protocol: http
+version: '1.0'
+category: data
+tags:
+- google
+- trends
+- data
+- research
+pricing:
+  model: freemium
+server:
+  url: https://serpapi.com
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+  env: SERPAPI_KEY
+  param: api_key
+actions:
+- name: trends
+  description: Get Google Trends interest over time for one or more search terms
+  method: GET
+  path: /search
+  params:
+  - name: q
+    type: string
+    required: true
+    description: Search term(s), comma-separated for comparison (e.g. 'python,javascript')
+    in: query
+  - name: engine
+    type: string
+    required: true
+    default: google_trends
+    description: Must be set to google_trends
+    in: query
+  - name: date
+    type: string
+    default: today 12-m
+    description: Time range, e.g. 'today 12-m', 'today 3-m', 'today 1-m', '2023-01-01 2024-01-01'
+    in: query
+  - name: geo
+    type: string
+    description: Country code to filter by, e.g. US, GB, DE
+    in: query
+  - name: data_type
+    type: string
+    default: TIMESERIES
+    description: 'Data type: TIMESERIES, GEO_MAP, GEO_MAP_0, RELATED_TOPICS, RELATED_QUERIES'
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - interest_over_time
+    - related_queries
+    - related_topics
+- name: related-queries
+  description: Get related search queries for a given term
+  method: GET
+  path: /search
+  params:
+  - name: q
+    type: string
+    required: true
+    description: Search term to find related queries for
+    in: query
+  - name: engine
+    type: string
+    required: true
+    default: google_trends
+    description: Must be set to google_trends
+    in: query
+  - name: data_type
+    type: string
+    required: true
+    default: RELATED_QUERIES
+    description: Must be set to RELATED_QUERIES
+    in: query
+  - name: geo
+    type: string
+    description: Country code to filter by, e.g. US, GB, DE
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.related_queries
+- name: trending-now
+  description: Get currently trending searches in a specific country
+  method: GET
+  path: /search
+  params:
+  - name: engine
+    type: string
+    required: true
+    default: google_trends_trending_now
+    description: Must be set to google_trends_trending_now
+    in: query
+  - name: geo
+    type: string
+    default: US
+    description: Country code, e.g. US, GB, DE, JP
+    in: query
+  - name: frequency
+    type: string
+    default: daily
+    description: 'Frequency: daily or realtime'
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.trending_searches
+  - type: truncate
+    max_items: 20

@@ -1,0 +1,224 @@
+spec: '1.0'
+name: worldbank
+description: World Bank API for querying country indicators, economic data, and development statistics
+protocol: http
+version: '1.0'
+category: data
+tags:
+- worldbank
+- economics
+- indicators
+- gdp
+- population
+- development
+server:
+  url: https://api.worldbank.org/v2
+  timeout: 15s
+  headers:
+    Accept: application/json
+actions:
+- name: list-countries
+  description: List all countries and regions available in the World Bank database
+  output: text
+  method: GET
+  path: /country
+  params:
+  - name: format
+    type: string
+    default: json
+    description: Response format
+    in: query
+  - name: per_page
+    type: int
+    default: '50'
+    description: Number of results per page
+    in: query
+  - name: page
+    type: int
+    default: '1'
+    description: Page number for pagination
+    in: query
+  assert:
+  - type: status
+    values:
+    - 200
+  transform:
+  - extract: $[1]
+  - type: json
+    select:
+    - id
+    - name
+    - incomeLevel.value
+    - region.value
+    rename:
+      incomeLevel.value: income
+      region.value: region
+  - type: truncate
+    max_items: 50
+  - type: format
+    template: '- {id} - {name} ({income}, {region})'
+- name: get-country
+  description: Get details for a specific country by its ISO code
+  output: text
+  method: GET
+  path: /country/{{country_code}}
+  params:
+  - name: country_code
+    type: string
+    required: true
+    description: ISO 3166-1 alpha-2 country code, e.g. 'US', 'GB', 'BR'
+    example: US
+    in: path
+  - name: format
+    type: string
+    default: json
+    description: Response format
+    in: query
+  assert:
+  - type: status
+    values:
+    - 200
+  transform:
+  - extract: $[1][0]
+  - type: json
+    select:
+    - id
+    - name
+    - capitalCity
+    - incomeLevel.value
+    - region.value
+    - lendingType.value
+    rename:
+      incomeLevel.value: income
+      region.value: region
+      lendingType.value: lending
+  - type: format
+    template: '# {name} ({id})
+
+      Capital: {capitalCity}
+
+      Income: {income}
+
+      Region: {region}
+
+      Lending: {lending}
+
+      '
+- name: get-indicator
+  description: Get time-series data for a specific indicator and country
+  output: text
+  method: GET
+  path: /country/{{country_code}}/indicator/{{indicator_code}}
+  params:
+  - name: country_code
+    type: string
+    required: true
+    description: ISO country code or 'all' for all countries, e.g. 'US', 'BR;IN' for multiple
+    example: US
+    in: path
+  - name: indicator_code
+    type: string
+    required: true
+    description: World Bank indicator code, e.g. 'NY.GDP.MKTP.CD' (GDP), 'SP.POP.TOTL' (population)
+    example: NY.GDP.MKTP.CD
+    in: path
+  - name: date
+    type: string
+    description: Year range filter, e.g. '2020' or '2010:2020'
+    in: query
+  - name: format
+    type: string
+    default: json
+    description: Response format
+    in: query
+  - name: per_page
+    type: int
+    default: '50'
+    description: Number of results per page
+    in: query
+  - name: page
+    type: int
+    default: '1'
+    description: Page number
+    in: query
+  assert:
+  - type: status
+    values:
+    - 200
+  transform:
+  - extract: $[1]
+  - type: json
+    select:
+    - country.value
+    - date
+    - value
+    - indicator.value
+    rename:
+      country.value: country
+      indicator.value: indicator
+  - type: truncate
+    max_items: 20
+  - type: format
+    template: '- {country} ({date}): {value} - {indicator}'
+- name: list-indicators
+  description: Search and browse available indicators in the World Bank database
+  output: text
+  method: GET
+  path: /indicator
+  params:
+  - name: format
+    type: string
+    default: json
+    description: Response format
+    in: query
+  - name: per_page
+    type: int
+    default: '20'
+    description: Number of results per page
+    in: query
+  - name: page
+    type: int
+    default: '1'
+    description: Page number
+    in: query
+  assert:
+  - type: status
+    values:
+    - 200
+  transform:
+  - extract: $[1]
+  - type: json
+    select:
+    - id
+    - name
+    - sourceNote
+  - type: truncate
+    max_items: 20
+  - type: format
+    template: '- {id} - {name}'
+- name: list-topics
+  description: List all topic categories used to organize World Bank indicators
+  output: text
+  method: GET
+  path: /topic
+  params:
+  - name: format
+    type: string
+    default: json
+    description: Response format
+    in: query
+  assert:
+  - type: status
+    values:
+    - 200
+  transform:
+  - extract: $[1]
+  - type: json
+    select:
+    - id
+    - value
+    - sourceNote
+  - type: truncate
+    max_items: 20
+  - type: format
+    template: '- {id}. {value}'

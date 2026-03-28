@@ -1,0 +1,25 @@
+spec: '1.0'
+name: tailwind-docs
+description: Tailwind CSS utility-first framework documentation
+version: '1.0'
+category: documentation
+tags:
+- documentation
+- css
+- tailwind
+- frontend
+- reference
+server:
+  url: https://tailwindcss.com
+actions:
+- name: get_page
+  description: Fetch a specific Tailwind CSS documentation page
+  params:
+  - name: topic
+    type: string
+    required: true
+    description: Documentation topic slug (e.g., display, flex, padding, installation)
+    in: path
+  method: GET
+  path: /docs/{topic}
+protocol: http

@@ -1,0 +1,65 @@
+spec: '1.0'
+name: exchangerate
+description: Free exchange rate API for currency conversion
+protocol: http
+version: '1.0'
+category: finance
+tags:
+- currency
+- exchange-rate
+- forex
+- conversion
+server:
+  url: https://v6.exchangerate-api.com
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+  env: EXCHANGE_RATE_API_KEY
+  path: api_key
+actions:
+- name: latest
+  description: Get latest exchange rates for a base currency
+  method: GET
+  path: /v6/{{api_key}}/latest/{{base}}
+  params:
+  - name: base
+    type: string
+    required: true
+    description: Base currency code, e.g. 'USD', 'EUR', 'GBP'
+    in: path
+  transform:
+  - type: json
+    extract: $
+    select:
+    - base_code
+    - conversion_rates
+    - time_last_update_utc
+- name: pair
+  description: Convert between two currencies with a specific amount
+  method: GET
+  path: /v6/{{api_key}}/pair/{{from}}/{{to}}/{{amount}}
+  params:
+  - name: from
+    type: string
+    required: true
+    description: Source currency code, e.g. 'USD'
+    in: path
+  - name: to
+    type: string
+    required: true
+    description: Target currency code, e.g. 'EUR'
+    in: path
+  - name: amount
+    type: string
+    required: true
+    description: Amount to convert, e.g. '100'
+    in: path
+  transform:
+  - type: json
+    extract: $
+    select:
+    - base_code
+    - target_code
+    - conversion_rate
+    - conversion_result

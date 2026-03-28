@@ -1,0 +1,49 @@
+spec: '1.0'
+name: serena-mcp
+description: MCP server for semantic code retrieval and editing with full project understanding
+protocol: mcp
+version: '1.0'
+category: developer
+tags:
+- code
+- semantic
+- editing
+- retrieval
+- refactoring
+- coding-agent
+server:
+  command: uvx
+  args:
+  - --from
+  - git+https://github.com/oraios/serena
+  - serena
+  requires:
+  - name: uv
+    url: https://docs.astral.sh/uv/
+    check: uv --version
+  keep_alive: 300s
+instructions: 'Serena provides semantic code understanding and editing capabilities.
+
+  Use it for navigating codebases, understanding project structure,
+
+  and making precise code modifications with full context awareness.
+
+  '
+actions:
+- name: find_symbol
+  description: Find a symbol (function, class, variable) by name
+- name: get_definition
+  description: Get the definition of a symbol
+- name: get_references
+  description: Find all references to a symbol
+- name: read_file
+  description: Read the contents of a file
+- name: edit_file
+  description: Make semantic edits to a file
+  mutable: true
+- name: get_project_structure
+  description: Get the project file and directory structure
+- name: search_code
+  description: Search for code patterns across the project
+resources:
+  expose: all

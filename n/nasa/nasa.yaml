@@ -1,0 +1,104 @@
+spec: '1.0'
+name: nasa
+description: NASA public APIs for astronomy photos, Mars rover imagery, and near-Earth object tracking
+protocol: http
+version: '1.0'
+category: data
+tags:
+- nasa
+- space
+- astronomy
+- mars
+- asteroids
+- photos
+server:
+  url: https://api.nasa.gov
+  timeout: 30s
+  headers:
+    Accept: application/json
+auth:
+  env: NASA_API_KEY
+  param: api_key
+actions:
+- name: apod
+  description: Get the Astronomy Picture of the Day with explanation, title, and image URL
+  method: GET
+  path: /planetary/apod
+  params:
+  - name: date
+    type: string
+    description: Date for the APOD in YYYY-MM-DD format (default is today)
+    in: query
+  - name: thumbs
+    type: boolean
+    default: 'true'
+    description: Return thumbnail URL for video content
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - title
+    - date
+    - explanation
+    - url
+    - hdurl
+    - media_type
+    - copyright
+- name: mars-photos
+  description: Get photos taken by the Curiosity Mars rover on a specific sol (Martian day)
+  method: GET
+  path: /mars-photos/api/v1/rovers/curiosity/photos
+  params:
+  - name: sol
+    type: int
+    required: true
+    description: Martian sol (day) number to retrieve photos from
+    in: query
+  - name: camera
+    type: string
+    description: 'Camera abbreviation to filter by: FHAZ, RHAZ, MAST, CHEMCAM, MAHLI, MARDI, NAVCAM'
+    in: query
+  - name: page
+    type: int
+    default: '1'
+    description: Page number for pagination (25 items per page)
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.photos
+  - type: truncate
+    max_items: 20
+- name: neo
+  description: Get a list of near-Earth objects (asteroids) approaching Earth within a date range
+  method: GET
+  path: /neo/rest/v1/feed
+  params:
+  - name: start_date
+    type: string
+    required: true
+    description: Start date for the search in YYYY-MM-DD format
+    in: query
+  - name: end_date
+    type: string
+    required: true
+    description: End date for the search in YYYY-MM-DD format (max 7 days from start)
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - element_count
+    - near_earth_objects

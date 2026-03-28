@@ -1,0 +1,101 @@
+spec: '1.0'
+name: perplexity
+description: Perplexity AI search API for grounded answers with citations using the Sonar model family
+protocol: http
+version: '1.0'
+category: ai
+tags:
+- ai
+- search
+- perplexity
+- citations
+pricing:
+  model: paid
+server:
+  url: https://api.perplexity.ai
+  timeout: 30s
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+auth:
+  env: PERPLEXITY_API_KEY
+  header: 'Authorization: Bearer ${PERPLEXITY_API_KEY}'
+actions:
+- name: search
+  description: Search the web and get a grounded answer with citations using the Sonar model
+  method: POST
+  path: /chat/completions
+  params:
+  - name: query
+    type: string
+    required: true
+    description: The search question or query to answer
+    in: body
+    map_to: messages[0].content
+  body:
+    model: sonar
+    messages:
+    - role: user
+      content: '{{query}}'
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - choices
+    - citations
+- name: search-pro
+  description: Deep search with the Sonar Pro model for complex, multi-step research queries
+  method: POST
+  path: /chat/completions
+  params:
+  - name: query
+    type: string
+    required: true
+    description: The research question or complex query to answer
+    in: body
+    map_to: messages[0].content
+  body:
+    model: sonar-pro
+    messages:
+    - role: user
+      content: '{{query}}'
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - choices
+    - citations
+- name: search-reasoning
+  description: Search with the Sonar Reasoning model for queries requiring step-by-step analysis
+  method: POST
+  path: /chat/completions
+  params:
+  - name: query
+    type: string
+    required: true
+    description: The query requiring reasoning and analysis
+    in: body
+    map_to: messages[0].content
+  body:
+    model: sonar-reasoning
+    messages:
+    - role: user
+      content: '{{query}}'
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - choices
+    - citations

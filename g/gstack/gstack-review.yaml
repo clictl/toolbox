@@ -1,0 +1,13 @@
+name: gstack-review
+description: Staff engineer code review that flags bugs, completeness gaps, and auto-fixes
+version: "0.1.0"
+category: developer
+tags: [gstack, review, skill]
+protocol: skill
+source:
+  repo: garrytan/gstack
+  path: review
+  ref: main
+  files:
+    - path: SKILL.md
+      sha256: 93b250d0d509f2d167ba7ec75a5464ca0d27c7bf350c9c876667e56158097df4

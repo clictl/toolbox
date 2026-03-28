@@ -1,0 +1,40 @@
+name: Validate Specs
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * 1'
+
+jobs:
+  schema-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pytest pyyaml pytest-timeout
+      - run: pytest tests/test_schema_all.py -v --timeout=10
+
+  safety-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pytest pyyaml pytest-timeout
+      - run: pytest tests/test_schema_all.py -v -k "destructive or safety" --timeout=10
+
+  count-specs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Count specs
+        run: |
+          count=$(find . -path './tests' -prune -o -name '*.yaml' -print | wc -l | tr -d ' ')
+          echo "## Toolbox Stats" >> $GITHUB_STEP_SUMMARY
+          echo "- **${count}** tool specs" >> $GITHUB_STEP_SUMMARY
+          echo "- Categories: $(find . -path './tests' -prune -o -name '*.yaml' -print -exec grep -h '^category:' {} \; | sort -u | wc -l | tr -d ' ')" >> $GITHUB_STEP_SUMMARY

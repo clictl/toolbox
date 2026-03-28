@@ -1,0 +1,45 @@
+spec: '1.0'
+name: desktop-commander-mcp
+description: MCP server for terminal control, file system search, and diff-based file editing
+protocol: mcp
+version: '1.0'
+category: developer
+tags:
+- terminal
+- filesystem
+- editing
+- commands
+- desktop
+package:
+  registry: npm
+  name: '@wonderwhy-er/desktop-commander'
+  version: 0.2.38
+server:
+  keep_alive: 300s
+instructions: 'This server provides terminal control and file system operations.
+
+  Use it for running commands, searching files, and making diff-based
+
+  edits. Be careful with destructive commands and confirm with the user.
+
+  '
+actions:
+- name: execute_command
+  description: Execute a terminal command
+  mutable: true
+- name: read_file
+  description: Read the contents of a file
+- name: write_file
+  description: Write content to a file
+  mutable: true
+- name: edit_file
+  description: Make diff-based edits to a file
+  mutable: true
+- name: search_files
+  description: Search for files matching a pattern
+- name: search_content
+  description: Search file contents using regex
+- name: list_directory
+  description: List contents of a directory
+resources:
+  expose: all

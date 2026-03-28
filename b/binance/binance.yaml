@@ -1,0 +1,98 @@
+spec: '1.0'
+name: binance
+description: Binance real-time market data via WebSocket for live price tickers, order book depth, and trade streams
+protocol: http
+version: '1.0'
+category: finance
+tags:
+- binance
+- crypto
+- websocket
+- trading
+- real-time
+- market-data
+server:
+  url: wss://stream.binance.com:9443/ws
+actions:
+- name: ticker
+  description: Get a real-time price ticker snapshot for a trading pair
+  message: '{"method": "SUBSCRIBE", "params": ["${symbol}@ticker"], "id": 1}'
+  wait: 5s
+  collect: 2
+  params:
+  - name: symbol
+    type: string
+    required: true
+    description: Trading pair in lowercase (e.g., btcusdt, ethusdt)
+    example: btcusdt
+  transform:
+  - type: json
+    select:
+    - s
+    - c
+    - h
+    - l
+    - v
+    - q
+- name: depth
+  description: Get order book depth snapshot for a trading pair
+  message: '{"method": "SUBSCRIBE", "params": ["${symbol}@depth5"], "id": 1}'
+  wait: 5s
+  collect: 2
+  params:
+  - name: symbol
+    type: string
+    required: true
+    description: Trading pair in lowercase (e.g., btcusdt)
+    example: btcusdt
+- name: trades
+  description: Stream recent trades for a trading pair
+  message: '{"method": "SUBSCRIBE", "params": ["${symbol}@trade"], "id": 1}'
+  wait: 10s
+  collect: 5
+  params:
+  - name: symbol
+    type: string
+    required: true
+    description: Trading pair in lowercase (e.g., ethusdt)
+    example: ethusdt
+  transform:
+  - type: json
+    select:
+    - s
+    - p
+    - q
+    - T
+    - m
+- name: klines
+  description: Get candlestick/kline data stream for a trading pair
+  message: '{"method": "SUBSCRIBE", "params": ["${symbol}@kline_${interval}"], "id": 1}'
+  wait: 10s
+  collect: 2
+  params:
+  - name: symbol
+    type: string
+    required: true
+    description: Trading pair in lowercase (e.g., btcusdt)
+    example: btcusdt
+  - name: interval
+    type: string
+    required: true
+    description: Kline interval (1m, 3m, 5m, 15m, 30m, 1h, 4h, 1d, 1w)
+    example: 1h
+    values:
+    - 1m
+    - 3m
+    - 5m
+    - 15m
+    - 30m
+    - 1h
+    - 2h
+    - 4h
+    - 6h
+    - 8h
+    - 12h
+    - 1d
+    - 3d
+    - 1w
+    - 1M

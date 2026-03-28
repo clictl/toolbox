@@ -1,0 +1,153 @@
+spec: '1.0'
+name: stripe
+description: Stripe API for payment processing, customer management, and subscription billing (read-only)
+protocol: http
+version: '1.0'
+category: finance
+tags:
+- stripe
+- payments
+- billing
+- subscriptions
+- customers
+- finance
+pricing:
+  model: paid
+server:
+  url: https://api.stripe.com/v1
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+  env: STRIPE_SECRET_KEY
+  header: 'Authorization: Bearer ${STRIPE_SECRET_KEY}'
+actions:
+- name: list-customers
+  description: List all customers, sorted by creation date (newest first)
+  output: json
+  method: GET
+  path: /customers
+  params:
+  - name: limit
+    type: int
+    default: '20'
+    description: Maximum number of customers to return (1-100)
+    in: query
+  - name: email
+    type: string
+    description: Filter customers by exact email address
+    in: query
+  - name: starting_after
+    type: string
+    description: Cursor for pagination, pass the ID of the last customer from the previous page
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.data
+  - type: truncate
+    max_items: 20
+- name: customer
+  description: Retrieve a specific customer by their ID
+  output: json
+  method: GET
+  path: /customers/{{customer_id}}
+  params:
+  - name: customer_id
+    type: string
+    required: true
+    description: Stripe customer ID, e.g. 'cus_ABC123'
+    example: cus_ABC123
+    in: path
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - id
+    - email
+    - name
+    - description
+    - created
+    - currency
+    - default_source
+    - subscriptions
+- name: list-charges
+  description: List recent charges, sorted by creation date (newest first)
+  output: json
+  method: GET
+  path: /charges
+  params:
+  - name: limit
+    type: int
+    default: '20'
+    description: Maximum number of charges to return (1-100)
+    in: query
+  - name: customer
+    type: string
+    description: Filter charges by customer ID
+    in: query
+  - name: starting_after
+    type: string
+    description: Cursor for pagination, pass the ID of the last charge from the previous page
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.data
+  - type: truncate
+    max_items: 20
+- name: list-subscriptions
+  description: List active and past subscriptions
+  output: json
+  method: GET
+  path: /subscriptions
+  params:
+  - name: limit
+    type: int
+    default: '20'
+    description: Maximum number of subscriptions to return (1-100)
+    in: query
+  - name: customer
+    type: string
+    description: Filter subscriptions by customer ID
+    in: query
+  - name: status
+    type: string
+    description: 'Filter by status: active, past_due, canceled, unpaid, trialing, all'
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.data
+  - type: truncate
+    max_items: 20
+- name: balance
+  description: Retrieve the current account balance, showing pending and available amounts
+  output: json
+  method: GET
+  path: /balance
+  params: []
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - available
+    - pending
+    - livemode

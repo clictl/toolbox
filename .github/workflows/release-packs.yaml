@@ -1,0 +1,94 @@
+name: Build and Release Packs
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g. v1.0.0)'
+        required: true
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install pyyaml httpx cryptography
+
+      - name: Validate signing key
+        run: |
+          if [ -z "${{ secrets.SIGNING_PRIVATE_KEY }}" ]; then
+            echo "::error::SIGNING_PRIVATE_KEY secret is not set."
+            echo "Generate with: python -c \"from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey; import base64; k=Ed25519PrivateKey.generate(); print(base64.b64encode(k.private_bytes_raw()).decode())\""
+            exit 1
+          fi
+
+      - name: Build packs
+        run: python scripts/build_packs.py
+
+      - name: Sign packs
+        env:
+          SIGNING_PRIVATE_KEY: ${{ secrets.SIGNING_PRIVATE_KEY }}
+        run: python scripts/sign_packs.py
+
+      - name: Export public key
+        env:
+          SIGNING_PRIVATE_KEY: ${{ secrets.SIGNING_PRIVATE_KEY }}
+        run: |
+          python3 -c "
+          import base64, os
+          from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+          pk = Ed25519PrivateKey.from_private_bytes(base64.b64decode(os.environ['SIGNING_PRIVATE_KEY']))
+          pub = base64.b64encode(pk.public_key().public_bytes_raw()).decode()
+          open('packs/PUBLIC_KEY', 'w').write(pub + '\n')
+          print(f'Public key: {pub}')
+          "
+
+      - name: Verify all packs
+        run: |
+          export SIGNING_PUBLIC_KEY=$(cat packs/PUBLIC_KEY | tr -d '\n')
+          python scripts/sign_packs.py --verify
+
+      - name: Determine version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "tag=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Release on clictl/packs
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PAT }}
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.version.outputs.tag }}"
+
+          # Create release on clictl/packs repo
+          gh release create "${VERSION}" \
+            --repo clictl/packs \
+            --title "Skill Packs ${VERSION}" \
+            --notes "Signed skill packs built from clictl/toolbox.
+
+          **Public key:** See \`PUBLIC_KEY\` attached to this release.
+
+          ## Install
+          \`\`\`
+          clictl install <tool-name>
+          \`\`\`
+          The CLI automatically downloads and verifies signed packs." \
+            packs/skills/*.tar.gz \
+            packs/skills/*.sig \
+            packs/skills/*.sha256 \
+            packs/checksums.txt \
+            packs/PUBLIC_KEY \
+          || echo "Warning: release creation failed, may already exist"

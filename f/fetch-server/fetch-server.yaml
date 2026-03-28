@@ -1,0 +1,37 @@
+spec: '1.0'
+name: fetch-server
+description: MCP server for fetching and converting web content to markdown for agent consumption
+protocol: mcp
+version: '1.0'
+category: data
+tags:
+- fetch
+- web
+- http
+- scraping
+- markdown
+- content
+package:
+  registry: npm
+  name: '@modelcontextprotocol/server-fetch'
+  version: 0.6.2
+server:
+  keep_alive: 120s
+instructions: 'This server fetches web pages and converts them to markdown.
+
+  Respect robots.txt and rate limits. Do not use this to scrape
+
+  private or authenticated content.
+
+  '
+actions:
+- name: fetch
+  description: Fetch a URL and return its content as markdown
+  instructions: Use for reading documentation, articles, and public web pages.
+transforms:
+  fetch:
+  - truncate:
+      max_length: 20000
+  - html_to_markdown: {}
+resources:
+  expose: all

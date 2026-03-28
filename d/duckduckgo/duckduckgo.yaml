@@ -1,0 +1,49 @@
+spec: '1.0'
+name: duckduckgo
+description: DuckDuckGo Instant Answer API for search results
+protocol: http
+version: '1.0'
+category: search
+tags:
+- search
+- web
+- answers
+- instant
+server:
+  url: https://api.duckduckgo.com
+  timeout: 15s
+  headers:
+    Accept: application/json
+actions:
+- name: search
+  description: Search for instant answers including summaries, related topics, and source links
+  output: json
+  method: GET
+  path: /
+  params:
+  - name: q
+    type: string
+    required: true
+    description: Search query string
+    example: python programming language
+    in: query
+  - name: format
+    type: string
+    default: json
+    description: Response format
+    in: query
+  - name: no_html
+    type: int
+    default: '1'
+    description: Strip HTML from results (1 = yes, 0 = no)
+    in: query
+  transform:
+  - extract: $.RelatedTopics
+  - type: json
+    select:
+    - Text
+    - FirstURL
+  - type: truncate
+    max_items: 10
+  - type: format
+    template: "- {Text}\n  {FirstURL}"

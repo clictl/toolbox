@@ -1,0 +1,45 @@
+spec: '1.0'
+name: aws-s3
+description: AWS S3 API for object storage operations
+protocol: http
+version: '1.0'
+category: cloud
+tags:
+- aws
+- s3
+- storage
+- cloud
+- objects
+- buckets
+server:
+  url: https://s3.amazonaws.com
+  timeout: 30s
+  headers:
+    Accept: application/xml
+auth:
+  env: AWS_ACCESS_KEY_ID
+actions:
+- name: list_buckets
+  description: List all S3 buckets in the account
+  method: GET
+  path: /
+  params: []
+- name: list_objects
+  description: List objects in a specific S3 bucket
+  method: GET
+  path: /{{bucket}}
+  params:
+  - name: bucket
+    type: string
+    required: true
+    description: S3 bucket name
+    in: path
+  - name: prefix
+    type: string
+    description: Filter objects by key prefix
+    in: query
+  - name: max-keys
+    type: int
+    default: '100'
+    description: Maximum number of objects to return (max 1000)
+    in: query

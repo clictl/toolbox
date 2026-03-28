@@ -1,0 +1,56 @@
+spec: '1.0'
+name: coinmarketcap
+description: Cryptocurrency market data, rankings, and metadata
+protocol: http
+version: '1.0'
+category: finance
+tags:
+- crypto
+- market-data
+- prices
+- rankings
+server:
+  url: https://pro-api.coinmarketcap.com
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+  env: CMC_API_KEY
+  header: 'X-CMC_PRO_API_KEY: ${CMC_API_KEY}'
+actions:
+- name: listings
+  description: Get top cryptocurrencies ranked by market cap
+  method: GET
+  path: /v1/cryptocurrency/listings/latest
+  params:
+  - name: limit
+    type: int
+    default: '10'
+    description: Number of results to return (max 5000)
+    in: query
+  - name: convert
+    type: string
+    default: USD
+    description: Target currency for price conversion, e.g. 'USD', 'EUR', 'BTC'
+    in: query
+  transform:
+  - type: json
+    extract: $.data
+- name: quotes
+  description: Get price quotes for specific cryptocurrencies by symbol
+  method: GET
+  path: /v2/cryptocurrency/quotes/latest
+  params:
+  - name: symbol
+    type: string
+    required: true
+    description: Comma-separated cryptocurrency symbols, e.g. 'BTC,ETH,SOL'
+    in: query
+  - name: convert
+    type: string
+    default: USD
+    description: Target currency for price conversion
+    in: query
+  transform:
+  - type: json
+    extract: $.data

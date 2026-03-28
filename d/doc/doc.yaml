@@ -1,0 +1,45 @@
+spec: '1.0'
+name: doc
+description: Read, create, or edit .docx documents with formatting and layout fidelity
+protocol: skill
+version: '1.0'
+category: productivity
+tags:
+- skill
+- documents
+- docx
+- word
+- writing
+source:
+  repo: openai/skills
+  path: skills/.curated/doc/
+  ref: main
+  files:
+  - sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
+    path: LICENSE.txt
+  - sha256: 0a635585817d1ac96e8e512114d08258b70f9e54ce0052078a258291ac13a8ed
+    path: SKILL.md
+  - sha256: b77d452b23dfa0bef7788728317254f07bddcd5f2be1d6678d5c3cf754b833ae
+    path: agents/openai.yaml
+  - sha256: bd5415fbbfe72c66c1527411d61625731fdd2f75b25d1542510b6ddef699ebe0
+    path: assets/doc-small.svg
+  - sha256: 7eadf1088e5062f681dba6596173a1df13bbfbcddd8a8a9bb78fd2071947dcf8
+    path: assets/doc.png
+  - sha256: 52b3c3158913ebcad2ada7b8193970b70453239e255054aa2d60c1683af08751
+    path: scripts/render_docx.py
+requires_system:
+- name: python3
+  check: python3 --version
+  brew: python3
+- name: soffice
+  check: soffice --version
+  brew: libreoffice
+- name: pdftoppm
+  check: pdftoppm -v
+  brew: poppler
+runtime:
+  language: python
+  manager: uvx
+  dependencies:
+  - python-docx
+  - pdf2image

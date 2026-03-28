@@ -1,0 +1,69 @@
+spec: '1.0'
+name: uptimerobot
+description: UptimeRobot API for website and server uptime monitoring and status checks
+protocol: http
+version: '1.0'
+category: monitoring
+tags:
+- uptimerobot
+- monitoring
+- uptime
+- alerts
+- status
+- availability
+pricing:
+  model: freemium
+server:
+  url: https://api.uptimerobot.com/v2
+  timeout: 15s
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+auth:
+  env: UPTIMEROBOT_API_KEY
+  body: api_key
+actions:
+- name: get-monitors
+  description: List all monitors with their current status, uptime ratio, and response times
+  method: POST
+  path: /getMonitors
+  params:
+  - name: monitors
+    type: string
+    description: Comma-separated list of monitor IDs to filter (returns all if omitted)
+    in: body
+  - name: statuses
+    type: string
+    description: 'Filter by status: 0 (paused), 1 (not checked), 2 (up), 8 (seems down), 9 (down)'
+    in: body
+  - name: custom_uptime_ratios
+    type: string
+    default: 1-7-30
+    description: Uptime ratio periods in days, e.g. '1-7-30' for 1-day, 7-day, and 30-day ratios
+    in: body
+  - name: logs
+    type: int
+    default: '0'
+    description: Set to 1 to include log entries for each monitor
+    in: body
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.monitors
+  - type: truncate
+    max_items: 20
+- name: get-account
+  description: Get account details including monitor limits and current usage
+  method: POST
+  path: /getAccountDetails
+  params: []
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.account

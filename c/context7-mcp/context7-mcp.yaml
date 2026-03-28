@@ -1,0 +1,40 @@
+spec: '1.0'
+name: context7-mcp
+description: MCP server that fetches up-to-date documentation and code examples for libraries and frameworks
+protocol: mcp
+version: '1.0'
+category: documentation
+tags:
+- documentation
+- libraries
+- frameworks
+- code-examples
+- reference
+package:
+  registry: npm
+  name: context7-mcp
+  version: 1.0.0
+server:
+  keep_alive: 120s
+instructions: 'This server provides up-to-date documentation for programming
+
+  libraries. Always use resolve-library-id first to find the correct
+
+  library ID, then get-library-docs for the documentation. This
+
+  provides accurate, current information that avoids hallucination.
+
+  '
+actions:
+- name: resolve-library-id
+  description: Resolve a library name to its Context7 compatible library ID
+  instructions: Search with the common library name (e.g., 'react', 'nextjs', 'express').
+- name: get-library-docs
+  description: Fetch documentation for a library using its Context7 ID
+  instructions: Use the topic parameter to get specific sections of documentation.
+transforms:
+  get-library-docs:
+  - truncate:
+      max_length: 20000
+resources:
+  expose: all

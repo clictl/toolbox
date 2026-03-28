@@ -1,0 +1,99 @@
+spec: '1.0'
+name: playwright-mcp
+description: MCP server for browser automation using Playwright with structured accessibility snapshots instead of screenshots
+protocol: mcp
+version: '1.0'
+category: developer
+tags:
+- browser
+- automation
+- testing
+- playwright
+- web
+- scraping
+- accessibility
+package:
+  registry: npm
+  name: '@playwright/mcp'
+  version: 0.0.68
+docs:
+  api_reference: https://playwright.dev/docs/api/class-playwright
+server:
+  keep_alive: 300s
+instructions: 'This server controls a browser via Playwright. Use browser_snapshot
+
+  (accessibility tree) instead of screenshots for understanding page
+
+  structure. Reference elements by their accessibility ref attribute.
+
+  Take a snapshot after navigation to verify page state.
+
+  '
+actions:
+- name: browser_navigate
+  description: Navigate the browser to a URL
+  instructions: Take a snapshot after navigating to understand the page structure.
+- name: browser_snapshot
+  description: Capture an accessibility snapshot of the current page
+- name: browser_click
+  description: Click an element on the page using its accessibility ref
+  mutable: true
+  instructions: Use the ref attribute from browser_snapshot to identify elements.
+- name: browser_type
+  description: Type text into an input element
+  mutable: true
+  instructions: Click the input field first if it is not focused.
+- name: browser_select_option
+  description: Select an option from a dropdown
+  mutable: true
+- name: browser_hover
+  description: Hover over an element on the page
+- name: browser_tab_list
+  description: List all open browser tabs
+- name: browser_tab_new
+  description: Open a new browser tab
+- name: browser_tab_select
+  description: Switch to a specific browser tab
+- name: browser_tab_close
+  description: Close the current browser tab
+  mutable: true
+- name: browser_console_messages
+  description: Get browser console log messages
+- name: browser_network_requests
+  description: Get network requests made by the page
+- name: browser_screenshot
+  description: Take a screenshot of the current page
+- name: browser_wait
+  description: Wait for a specified amount of time
+- name: browser_pdf_save
+  description: Save the current page as a PDF
+- name: browser_close
+  description: Close the browser
+  mutable: true
+- name: browser_resize
+  description: Resize the browser window
+- name: browser_handle_dialog
+  description: Handle a browser dialog (alert, confirm, prompt)
+  mutable: true
+- name: browser_file_upload
+  description: Upload files to a file input element
+  mutable: true
+- name: browser_press_key
+  description: Press a keyboard key
+  mutable: true
+transforms:
+  browser_snapshot:
+  - truncate:
+      max_length: 15000
+  browser_console_messages:
+  - truncate:
+      max_items: 100
+  browser_network_requests:
+  - truncate:
+      max_items: 50
+permissions:
+  filesystem:
+    read:
+    - .
+resources:
+  expose: all

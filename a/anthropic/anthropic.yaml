@@ -1,0 +1,52 @@
+spec: '1.0'
+name: anthropic
+description: Anthropic API for Claude chat completions
+protocol: http
+version: '1.0'
+category: ai
+tags:
+- anthropic
+- claude
+- ai
+- llm
+- chat
+server:
+  url: https://api.anthropic.com/v1
+  timeout: 60s
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+    anthropic-version: '2023-06-01'
+auth:
+  env: ANTHROPIC_API_KEY
+  header: 'x-api-key: ${ANTHROPIC_API_KEY}'
+actions:
+- name: messages
+  description: Create a message with Claude
+  output: json
+  method: POST
+  path: /messages
+  assert:
+  - type: status
+    status: 200
+  - type: exists
+    path: $.content
+  params:
+  - name: model
+    type: string
+    required: true
+    default: claude-sonnet-4-20250514
+    description: Model ID, e.g. 'claude-sonnet-4-20250514', 'claude-haiku-4-20250414'
+    in: body
+  - name: max_tokens
+    type: int
+    required: true
+    default: '1024'
+    description: Maximum number of tokens to generate
+    in: body
+- name: models
+  description: List available Claude models
+  output: json
+  method: GET
+  path: /models
+  params: []

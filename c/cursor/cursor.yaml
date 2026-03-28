@@ -1,0 +1,23 @@
+spec: '1.0'
+name: cursor
+description: AI-powered code editor with built-in chat and code generation
+protocol: command
+version: '1.0'
+category: ai
+tags:
+- ai
+- cursor
+- editor
+- coding
+- llm
+pricing:
+  model: freemium
+actions:
+- name: open
+  description: Open a file or directory in Cursor
+  params:
+  - name: path
+    type: string
+    required: false
+    description: File or directory to open
+    in: arg

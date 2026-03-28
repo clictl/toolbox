@@ -1,0 +1,75 @@
+spec: '1.0'
+name: exa-mcp
+description: MCP server for Exa real-time web search with configurable results and live crawling
+protocol: mcp
+version: '1.0'
+category: search
+tags:
+- mcp
+- exa
+- search
+- web
+- real-time
+- crawling
+auth:
+  env: EXA_API_KEY
+pricing:
+  model: freemium
+package:
+  registry: npm
+  name: exa-mcp-server
+  version: 1.0.0
+  manager: npx
+prompts:
+  system: 'This server provides real-time web search via Exa. Use it for
+
+    finding up-to-date information, researching topics, and discovering
+
+    relevant web content with semantic search capabilities.
+
+    '
+resources:
+  expose: all
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s
+actions:
+- name: search
+  description: Search the web using Exa semantic search
+  params:
+  - name: query
+    type: string
+    required: true
+    description: Search query string
+  - name: num_results
+    type: int
+    required: false
+    description: Number of results to return
+  - name: type
+    type: string
+    required: false
+    description: 'Search type: neural, keyword, or auto'
+  - name: start_published_date
+    type: string
+    required: false
+    description: Filter results published after this date (ISO format)
+- name: get_contents
+  description: Get the full contents of a URL
+  params:
+  - name: urls
+    type: string
+    required: true
+    description: URLs to retrieve content from
+- name: find_similar
+  description: Find pages similar to a given URL
+  params:
+  - name: url
+    type: string
+    required: true
+    description: URL to find similar pages for
+  - name: num_results
+    type: int
+    required: false
+    description: Number of results to return

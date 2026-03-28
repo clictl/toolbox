@@ -1,0 +1,80 @@
+spec: '1.0'
+name: cloudflare
+description: Cloudflare API for DNS, zones, and security settings
+protocol: http
+version: '1.0'
+category: cloud
+tags:
+- cloudflare
+- dns
+- cdn
+- security
+- zones
+server:
+  url: https://api.cloudflare.com/client/v4
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+  env: CLOUDFLARE_TOKEN
+  header: 'Authorization: Bearer ${CLOUDFLARE_TOKEN}'
+actions:
+- name: zones
+  description: List zones (domains) in the account
+  output: json
+  method: GET
+  path: /zones
+  params:
+  - name: name
+    type: string
+    description: Filter by domain name
+    in: query
+  - name: page
+    type: int
+    default: '1'
+    description: Page number
+    in: query
+  - name: per_page
+    type: int
+    default: '20'
+    description: Number of results per page (max 50)
+    in: query
+  transform:
+  - type: json
+    extract: $.result
+- name: dns_records
+  description: List DNS records for a zone
+  output: json
+  method: GET
+  path: /zones/{{zone_id}}/dns_records
+  params:
+  - name: zone_id
+    type: string
+    required: true
+    description: Cloudflare zone ID
+    in: path
+  - name: type
+    type: string
+    description: 'Filter by record type: A, AAAA, CNAME, MX, TXT, etc.'
+    in: query
+  - name: name
+    type: string
+    description: Filter by record name
+    in: query
+  transform:
+  - type: json
+    extract: $.result
+- name: zone_detail
+  description: Get detailed information about a specific zone
+  output: json
+  method: GET
+  path: /zones/{{zone_id}}
+  params:
+  - name: zone_id
+    type: string
+    required: true
+    description: Cloudflare zone ID
+    in: path
+  transform:
+  - type: json
+    extract: $.result

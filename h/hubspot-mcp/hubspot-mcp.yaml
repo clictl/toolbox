@@ -1,0 +1,117 @@
+spec: '1.0'
+name: hubspot-mcp
+description: Official HubSpot MCP server for CRM data access, contacts, deals, and company management
+protocol: mcp
+version: '1.0'
+category: productivity
+tags:
+- mcp
+- hubspot
+- crm
+- contacts
+- deals
+- marketing
+- sales
+auth:
+  env: HUBSPOT_ACCESS_TOKEN
+pricing:
+  model: freemium
+package:
+  registry: npm
+  name: '@hubspot/mcp-server'
+  version: 0.4.0
+  manager: npx
+prompts:
+  system: 'This server provides access to HubSpot CRM data. Use it for
+
+    managing contacts, deals, companies, and marketing assets.
+
+    Always confirm before creating or modifying CRM records.
+
+    '
+resources:
+  expose: all
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s
+actions:
+- name: list_contacts
+  description: List CRM contacts with optional filtering
+  params:
+  - name: limit
+    type: int
+    required: false
+    description: Maximum number of contacts to return
+- name: get_contact
+  description: Get details of a specific contact
+  params:
+  - name: contact_id
+    type: string
+    required: true
+    description: Contact ID
+- name: create_contact
+  description: Create a new contact
+  params:
+  - name: email
+    type: string
+    required: true
+    description: Contact email address
+  - name: firstname
+    type: string
+    required: false
+    description: First name
+  - name: lastname
+    type: string
+    required: false
+    description: Last name
+  mutable: true
+- name: list_deals
+  description: List CRM deals
+  params:
+  - name: limit
+    type: int
+    required: false
+    description: Maximum number of deals to return
+- name: get_deal
+  description: Get details of a specific deal
+  params:
+  - name: deal_id
+    type: string
+    required: true
+    description: Deal ID
+- name: create_deal
+  description: Create a new deal
+  params:
+  - name: dealname
+    type: string
+    required: true
+    description: Deal name
+  - name: pipeline
+    type: string
+    required: false
+    description: Pipeline ID
+  - name: dealstage
+    type: string
+    required: false
+    description: Deal stage ID
+  mutable: true
+- name: list_companies
+  description: List CRM companies
+  params:
+  - name: limit
+    type: int
+    required: false
+    description: Maximum number of companies to return
+- name: search_crm
+  description: Search across CRM objects
+  params:
+  - name: object_type
+    type: string
+    required: true
+    description: 'Object type: contacts, deals, or companies'
+  - name: query
+    type: string
+    required: true
+    description: Search query

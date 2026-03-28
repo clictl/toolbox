@@ -1,0 +1,104 @@
+spec: '1.0'
+name: nominatim
+description: Free geocoding service powered by OpenStreetMap data. Convert addresses to coordinates and vice versa
+protocol: http
+version: '1.0'
+category: geo
+tags:
+- geocoding
+- maps
+- location
+- address
+- coordinates
+- openstreetmap
+server:
+  url: https://nominatim.openstreetmap.org
+  timeout: 10s
+  headers:
+    Accept: application/json
+    User-Agent: clictl/1.0
+actions:
+- name: search
+  description: Forward geocode an address or place name to get coordinates and structured location data
+  output: text
+  method: GET
+  path: /search
+  params:
+  - name: q
+    type: string
+    required: true
+    description: Free-form address or place name, e.g. '1600 Pennsylvania Ave, Washington DC'
+    example: 1600 Pennsylvania Ave, Washington DC
+    in: query
+  - name: format
+    type: string
+    default: jsonv2
+    in: query
+  - name: limit
+    type: int
+    default: '5'
+    description: Maximum number of results (1-50)
+    in: query
+  - name: addressdetails
+    type: int
+    default: '1'
+    description: Include a breakdown of the address into elements (0 or 1)
+    in: query
+  transform:
+  - type: json
+    select:
+    - display_name
+    - lat
+    - lon
+    - type
+  - type: truncate
+    max_items: 5
+  - type: format
+    template: '- {display_name} ({lat}, {lon}) [{type}]'
+- name: reverse
+  description: Reverse geocode coordinates to get the address at that location
+  output: json
+  method: GET
+  path: /reverse
+  params:
+  - name: lat
+    type: float
+    required: true
+    description: Latitude coordinate
+    example: 38.8977
+    in: query
+  - name: lon
+    type: float
+    required: true
+    description: Longitude coordinate
+    example: -77.0365
+    in: query
+  - name: format
+    type: string
+    default: jsonv2
+    in: query
+  - name: zoom
+    type: int
+    default: '18'
+    description: Level of detail (0=country, 10=city, 18=building)
+    in: query
+- name: lookup
+  description: Look up address details for one or more OpenStreetMap objects by their IDs
+  output: json
+  method: GET
+  path: /lookup
+  params:
+  - name: osm_ids
+    type: string
+    required: true
+    description: Comma-separated OSM IDs with type prefix, e.g. 'R146656,W104393803,N240109189'
+    example: R146656,W104393803
+    in: query
+  - name: format
+    type: string
+    default: jsonv2
+    in: query
+  - name: addressdetails
+    type: int
+    default: '1'
+    in: query

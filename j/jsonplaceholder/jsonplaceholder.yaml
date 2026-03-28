@@ -1,0 +1,146 @@
+spec: '1.0'
+name: jsonplaceholder
+description: Free fake REST API for testing and prototyping with users, posts, comments, todos, and more
+protocol: http
+version: '1.0'
+category: data
+tags:
+- testing
+- mock
+- fake
+- placeholder
+- rest
+- demo
+server:
+  url: https://jsonplaceholder.typicode.com
+  timeout: 10s
+  headers:
+    Accept: application/json
+actions:
+- name: posts
+  description: List all posts with title and user ID
+  output: text
+  method: GET
+  path: /posts
+  params:
+  - name: userId
+    type: int
+    description: Filter posts by user ID
+    example: 1
+    in: query
+  transform:
+  - type: truncate
+    max_items: 10
+  - type: json
+    select:
+    - id
+    - title
+    - userId
+  - type: format
+    template: '- [{id}] {title} (user {userId})'
+- name: post
+  description: Get a specific post by ID
+  output: text
+  method: GET
+  path: /posts/{{id}}
+  params:
+  - name: id
+    type: int
+    required: true
+    description: Post ID
+    example: 1
+    in: path
+  transform:
+  - type: json
+    select:
+    - id
+    - title
+    - body
+    - userId
+  - type: format
+    template: '[{id}] {title}
+
+      Author: user {userId}
+
+
+      {body}
+
+      '
+- name: create_post
+  description: Create a new post (simulated, returns the created object with an ID)
+  output: json
+  safe: true
+  method: POST
+  path: /posts
+  params:
+  - name: title
+    type: string
+    required: true
+    description: Post title
+    example: Hello World
+    in: body
+  - name: body
+    type: string
+    required: true
+    description: Post content
+    example: This is a test post.
+    in: body
+  - name: userId
+    type: int
+    required: true
+    description: Author user ID
+    example: 1
+    in: body
+- name: comments
+  description: Get comments on a specific post
+  output: json
+  method: GET
+  path: /posts/{{postId}}/comments
+  params:
+  - name: postId
+    type: int
+    required: true
+    description: Post ID to get comments for
+    example: 1
+    in: path
+- name: users
+  description: List all users
+  output: text
+  method: GET
+  path: /users
+  params: []
+  transform:
+  - type: json
+    select:
+    - id
+    - name
+    - email
+    - company.name
+  - type: format
+    template: '- [{id}] {name} ({email})'
+- name: user
+  description: Get a specific user by ID
+  output: json
+  method: GET
+  path: /users/{{id}}
+  params:
+  - name: id
+    type: int
+    required: true
+    description: User ID
+    example: 1
+    in: path
+- name: todos
+  description: List all todos or filter by completion status
+  output: json
+  method: GET
+  path: /todos
+  params:
+  - name: completed
+    type: string
+    description: 'Filter by status: ''true'' or ''false'''
+    in: query
+  - name: userId
+    type: int
+    description: Filter todos by user ID
+    in: query

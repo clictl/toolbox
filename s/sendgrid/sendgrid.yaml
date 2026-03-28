@@ -1,0 +1,129 @@
+spec: '1.0'
+name: sendgrid
+description: SendGrid API for viewing email templates, checking delivery statistics, and managing email operations
+protocol: http
+version: '1.0'
+category: communication
+tags:
+- sendgrid
+- email
+- templates
+- analytics
+- delivery
+pricing:
+  model: freemium
+server:
+  url: https://api.sendgrid.com/v3
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+  env: SENDGRID_API_KEY
+  header: 'Authorization: Bearer ${SENDGRID_API_KEY}'
+actions:
+- name: list-templates
+  description: List all transactional email templates in your SendGrid account
+  method: GET
+  path: /templates
+  params:
+  - name: generations
+    type: string
+    default: dynamic
+    description: 'Template generation filter: ''legacy'' or ''dynamic'''
+    in: query
+  - name: page_size
+    type: int
+    default: '20'
+    description: Number of templates per page
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.result
+  - type: truncate
+    max_items: 20
+- name: get-template
+  description: Get details and versions for a specific email template
+  method: GET
+  path: /templates/{{template_id}}
+  params:
+  - name: template_id
+    type: string
+    required: true
+    description: The ID of the template to retrieve
+    in: path
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - id
+    - name
+    - generation
+    - updated_at
+    - versions
+- name: global-stats
+  description: Get global email delivery statistics for a date range
+  method: GET
+  path: /stats
+  params:
+  - name: start_date
+    type: string
+    required: true
+    description: Start date in YYYY-MM-DD format
+    in: query
+  - name: end_date
+    type: string
+    description: End date in YYYY-MM-DD format
+    in: query
+  - name: aggregated_by
+    type: string
+    description: 'Aggregation period: ''day'', ''week'', or ''month'''
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+  - type: truncate
+    max_items: 20
+- name: list-suppressions
+  description: List all email addresses on the global suppression (unsubscribe) list
+  method: GET
+  path: /suppression/unsubscribes
+  params:
+  - name: start_time
+    type: int
+    description: Start of the time range as a Unix timestamp
+    in: query
+  - name: end_time
+    type: int
+    description: End of the time range as a Unix timestamp
+    in: query
+  - name: limit
+    type: int
+    default: '20'
+    description: Maximum number of results to return
+    in: query
+  - name: offset
+    type: int
+    default: '0'
+    description: Pagination offset
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+  - type: truncate
+    max_items: 20

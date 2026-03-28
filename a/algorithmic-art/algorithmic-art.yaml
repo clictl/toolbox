@@ -1,0 +1,26 @@
+spec: '1.0'
+name: algorithmic-art
+description: Create generative algorithmic art using p5.js with emergent behavior, seeded randomness, and mathematical beauty
+protocol: skill
+version: '1.0'
+category: design
+tags:
+- skill
+- art
+- generative
+- p5js
+- creative-coding
+- algorithmic
+source:
+  repo: anthropics/skills
+  path: skills/algorithmic-art/
+  ref: main
+  files:
+  - sha256: 58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd
+    path: LICENSE.txt
+  - sha256: 3bc4092c09804853186524c826bc0621b940bb6122c05b84496dff95388e6eef
+    path: SKILL.md
+  - sha256: 9ee0f1da52ef8f7bbfde1917123654880890d43f2d388642d71eab6dd78f94c4
+    path: templates/generator_template.js
+  - sha256: 86c79d7ce97d2599ebe4bd9b97fdeb7295c9d3ed61ceeb513cbe1b2bb5d1ce29
+    path: templates/viewer.html

@@ -1,0 +1,13 @@
+name: gstack-health
+description: System health check and diagnostics
+version: "0.1.0"
+category: developer
+tags: [gstack, debugging, skill]
+protocol: skill
+source:
+  repo: garrytan/gstack
+  path: health
+  ref: main
+  files:
+    - path: SKILL.md
+      sha256: 12b87ea0aa0987d54e290a92f239e9fc81ed048fb1f76f673b92556f48106007

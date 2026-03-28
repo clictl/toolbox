@@ -1,0 +1,184 @@
+# clictl Toolbox
+
+> Official tool registry for clictl - the package manager for AI agents. 220+ curated specs for APIs, MCP servers, skills, websites, and CLI tools.
+
+## Spec format
+
+Every spec uses the clictl Tool Spec 1.0 format. Four required fields:
+
+```yaml
+spec: "1.0"
+name: tool-name
+protocol: http          # http, mcp, skill, website, command
+description: What this tool does
+```
+
+Full reference: https://clictl.dev/spec
+JSON Schema: https://clictl.dev/spec/1.0/schema.json
+
+## File structure
+
+- `toolbox/{first-letter}/{tool-name}/{tool-name}.yaml` - All tool specs
+- `CONTRIBUTING.md` - How to write a spec (decision tree, examples for each protocol)
+
+## HTTP API spec
+
+```yaml
+spec: "1.0"
+name: my-api
+protocol: http
+description: My API tool
+version: "1.0"
+category: developer
+tags: [api, example]
+
+server:
+  url: https://api.example.com
+
+auth:
+  env: API_KEY
+  header: "Authorization: Bearer ${API_KEY}"
+
+actions:
+  - name: get-data
+    description: Fetch data
+    path: /data
+    params:
+      - name: q
+        type: string
+        required: true
+    transform:
+      - extract: "$.data"
+      - type: truncate
+        max_items: 20
+```
+
+## MCP server spec
+
+```yaml
+spec: "1.0"
+name: my-mcp
+protocol: mcp
+description: MCP server tool
+version: "1.0"
+category: developer
+tags: [mcp]
+
+package:
+  registry: npm
+  name: "@org/mcp-server"
+  version: 1.0.0
+
+auth:
+  env: API_TOKEN
+
+actions:
+  - name: search
+    description: Search for items
+    params:
+      - name: query
+        type: string
+        required: true
+
+deny:
+  - "delete_*"
+
+transforms:
+  search:
+    - type: truncate
+      max_items: 20
+```
+
+## Skill spec
+
+```yaml
+spec: "1.0"
+name: my-skill
+protocol: skill
+description: What this skill does
+version: "1.0"
+category: developer
+
+source:
+  repo: org/repo
+  path: skills/my-skill
+  files:
+    - path: SKILL.md
+```
+
+## Website spec
+
+```yaml
+spec: "1.0"
+name: my-scraper
+protocol: website
+description: Scrape a site as markdown
+version: "1.0"
+
+server:
+  url: https://example.com
+
+actions:
+  - name: get-page
+    description: Get front page
+    path: /
+    transform:
+      - type: html_to_markdown
+```
+
+## Command spec
+
+```yaml
+spec: "1.0"
+name: my-cli
+protocol: command
+description: Wrap a CLI tool
+version: "1.0"
+
+actions:
+  - name: status
+    description: Show status
+    run: my-tool status
+```
+
+## Auth format
+
+```yaml
+# Header injection
+auth:
+  env: API_KEY
+  header: "Authorization: Bearer ${API_KEY}"
+
+# Query parameter
+auth:
+  env: API_KEY
+  param: key
+
+# MCP env passthrough
+auth:
+  env: TOKEN
+```
+
+## Key rules
+
+- `spec: "1.0"` is required
+- `protocol` is required: http, mcp, skill, website, command
+- Auth uses header template format: `header: "Name: ${VAR}"`
+- MCP tools are discovered at runtime. Actions in the spec are metadata for search.
+- No em dashes in any content
+
+## Valid categories
+
+ai, cloud, communication, data, developer, devops, finance, media, monitoring, news, productivity, search, security, weather
+
+## Validation
+
+```bash
+clictl toolbox validate
+```
+
+## Links
+
+- Spec reference: https://clictl.dev/spec
+- Browse tools: https://clictl.dev/browse
+- CLI source: https://github.com/clictl/cli

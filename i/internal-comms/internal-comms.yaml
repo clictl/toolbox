@@ -1,0 +1,30 @@
+spec: '1.0'
+name: internal-comms
+description: Write internal communications like team updates, newsletters, and incident reports using company formatting guidelines
+protocol: skill
+version: '1.0'
+category: productivity
+tags:
+- skill
+- communications
+- writing
+- templates
+- business
+- internal
+source:
+  repo: anthropics/skills
+  path: skills/internal-comms/
+  ref: main
+  files:
+  - sha256: 58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd
+    path: LICENSE.txt
+  - sha256: 067b7587a344a928fc6534ef66b1bcd591fc7c26d207ea7ca3334aeb678d6475
+    path: SKILL.md
+  - sha256: 087e4363c0f3513728a7e695eeb9ead5c3ecd12a4681b59340691180e65b68fc
+    path: examples/3p-updates.md
+  - sha256: 30f81cfbdb03858a006169c72169024089c7c5d3d32611d337782da4f38c86b5
+    path: examples/company-newsletter.md
+  - sha256: 5ecd3356cd6666937f2ebefa753253edfdbdca15e368d07baf398bfcced72484
+    path: examples/faq-answers.md
+  - sha256: 4d3a4bb198a77626bcf018e96b2b45a2dbabed172d4ade0fcd70d23ae8a47a47
+    path: examples/general-comms.md

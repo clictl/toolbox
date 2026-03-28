@@ -1,0 +1,30 @@
+spec: '1.0'
+name: time-mcp
+description: MCP server for current time retrieval and timezone conversion with DST awareness
+protocol: mcp
+version: '1.0'
+category: developer
+tags:
+- time
+- timezone
+- conversion
+- dst
+- clock
+package:
+  registry: pypi
+  name: mcp-server-time
+  version: 2026.1.26
+server:
+  keep_alive: 120s
+instructions: 'This server provides time and timezone utilities. Use IANA timezone
+
+  names (e.g., America/New_York, Europe/London, Asia/Tokyo).
+
+  '
+actions:
+- name: get_current_time
+  description: Get the current time in a specified IANA timezone
+- name: convert_time
+  description: Convert a time between two IANA timezones with DST awareness
+resources:
+  expose: all

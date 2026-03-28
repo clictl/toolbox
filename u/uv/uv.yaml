@@ -1,0 +1,55 @@
+spec: '1.0'
+name: uv
+description: Extremely fast Python package and project manager. Handles dependencies, virtual environments, and script execution
+protocol: command
+version: '1.0'
+category: developer
+tags:
+- python
+- package-manager
+- pip
+server:
+  shell: /bin/sh
+  requires:
+  - name: uv
+    url: https://docs.astral.sh/uv/getting-started/installation/
+    check: uv --version
+actions:
+- name: run
+  description: Run a Python script or command within the project environment
+  run: uv run {{script}}
+  params:
+  - name: script
+    type: string
+    required: true
+    description: Python script path or command to execute
+- name: install
+  description: Install a Python package into the current environment
+  run: uv pip install {{package}}
+  params:
+  - name: package
+    type: string
+    required: true
+    description: Package name and optional version specifier (e.g., requests, flask>=3.0)
+- name: init
+  description: Initialize a new Python project with a pyproject.toml file
+  run: uv init {{#name}}{{name}}{{/name}}
+  params:
+  - name: name
+    type: string
+    description: Project name (defaults to the current directory name)
+- name: sync
+  description: Sync the project environment with the declared dependencies in pyproject.toml
+  run: uv sync
+  params: []
+- name: add
+  description: Add a dependency to the project and install it
+  run: uv add {{#dev}}--dev{{/dev}} {{package}}
+  params:
+  - name: package
+    type: string
+    required: true
+    description: Package name to add (e.g., requests, pytest)
+  - name: dev
+    type: bool
+    description: Add as a development dependency

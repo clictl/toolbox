@@ -1,0 +1,40 @@
+spec: '1.0'
+name: netlify-deploy
+description: Deploy web projects to Netlify using the Netlify CLI
+protocol: skill
+version: '1.0'
+category: devops
+tags:
+- skill
+- netlify
+- deployment
+- hosting
+- frontend
+source:
+  repo: openai/skills
+  path: skills/.curated/netlify-deploy/
+  ref: main
+  files:
+  - sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
+    path: LICENSE.txt
+  - sha256: bb2c29bf599a043cade932f60cc64f632ca100e8767ccdfa2ba1a42c8d43958f
+    path: SKILL.md
+  - sha256: 7d3acb1ee5376c98f3366401cd413200a4aab82af48bbe97382565dcdd04870f
+    path: agents/openai.yaml
+  - sha256: a2d9b9b5087c840247eb8e8360120ce9a20780c5470519b7703f49e920f780cd
+    path: assets/netlify-small.svg
+  - sha256: ffbeef6d0af29a9c52f84297630f57c2c8ae86c1771458b24ad19795c4811160
+    path: assets/netlify.png
+  - sha256: a24b08401b8c796e4a58933a71441b3341b61afc840d690d9127b27ab00cfe05
+    path: references/cli-commands.md
+  - sha256: fdb8c3b96fe03099826e4207b4933df3ff97571415f5e283567979bdc86cdc85
+    path: references/deployment-patterns.md
+  - sha256: 436ea3c2e0ce04abb34895db993d91b8660423977d9c52a89f2dfa014cad0b9c
+    path: references/netlify-toml.md
+requires_system:
+- name: git
+  check: git --version
+  brew: git
+- name: node
+  check: node --version
+  brew: node

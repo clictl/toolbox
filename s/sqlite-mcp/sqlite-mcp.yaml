@@ -1,0 +1,51 @@
+spec: '1.0'
+name: sqlite-mcp
+description: MCP server for SQLite database access with query execution, schema inspection, and business intelligence
+protocol: mcp
+version: '1.0'
+category: data
+tags:
+- sqlite
+- database
+- sql
+- query
+- analytics
+package:
+  registry: pypi
+  name: mcp-server-sqlite
+  version: 2025.4.25
+server:
+  keep_alive: 600s
+instructions: 'This server provides SQLite database access. Use list_tables and
+
+  describe_table to understand the schema before writing queries.
+
+  Use LIMIT clauses on SELECT queries to avoid returning too many rows.
+
+  Record interesting findings with append_insight for future reference.
+
+  '
+actions:
+- name: read_query
+  description: Execute a SELECT query on the SQLite database
+  instructions: Always include a LIMIT clause. Use describe_table first to understand column types.
+- name: list_tables
+  description: List all tables in the database
+- name: describe_table
+  description: Show the schema of a specific table
+- name: append_insight
+  description: Record a business intelligence insight from data analysis
+  mutable: true
+transforms:
+  read_query:
+  - truncate:
+      max_items: 100
+      max_length: 10000
+  list_tables:
+  - truncate:
+      max_items: 200
+resources:
+  expose:
+  - uri_pattern: sqlite://schema/**
+    description: Database schema information
+    read_only: true

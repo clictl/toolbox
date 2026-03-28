@@ -1,0 +1,132 @@
+spec: '1.0'
+name: huggingface
+description: Hugging Face Hub API for discovering models, datasets, and machine learning resources
+protocol: http
+version: '1.0'
+category: ai
+tags:
+- huggingface
+- models
+- datasets
+- machine-learning
+- transformers
+- nlp
+pricing:
+  model: freemium
+server:
+  url: https://huggingface.co/api
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+  env: HF_TOKEN
+  header: 'Authorization: Bearer ${HF_TOKEN}'
+actions:
+- name: search-models
+  description: Search for machine learning models by keyword, task, or library
+  method: GET
+  path: /models
+  params:
+  - name: search
+    type: string
+    required: true
+    description: Search query to filter models by name or description
+    in: query
+  - name: filter
+    type: string
+    description: Filter by task, e.g. 'text-generation', 'image-classification'
+    in: query
+  - name: sort
+    type: string
+    default: downloads
+    description: 'Sort order: downloads, likes, trending, created'
+    in: query
+  - name: limit
+    type: int
+    default: '20'
+    description: Maximum number of results to return
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: truncate
+    max_items: 20
+- name: model-info
+  description: Get detailed information about a specific model including tags, downloads, and card data
+  method: GET
+  path: /models/{{model_id}}
+  params:
+  - name: model_id
+    type: string
+    required: true
+    description: Full model ID including namespace, e.g. 'meta-llama/Llama-2-7b'
+    in: path
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - modelId
+    - pipeline_tag
+    - tags
+    - downloads
+    - likes
+    - lastModified
+    - author
+- name: search-datasets
+  description: Search for datasets by keyword or task type
+  method: GET
+  path: /datasets
+  params:
+  - name: search
+    type: string
+    required: true
+    description: Search query to filter datasets by name or description
+    in: query
+  - name: sort
+    type: string
+    default: downloads
+    description: 'Sort order: downloads, likes, trending, created'
+    in: query
+  - name: limit
+    type: int
+    default: '20'
+    description: Maximum number of results to return
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: truncate
+    max_items: 20
+- name: dataset-info
+  description: Get detailed information about a specific dataset
+  method: GET
+  path: /datasets/{{dataset_id}}
+  params:
+  - name: dataset_id
+    type: string
+    required: true
+    description: Full dataset ID including namespace, e.g. 'squad' or 'huggingface/documentation-images'
+    in: path
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - id
+    - description
+    - tags
+    - downloads
+    - likes
+    - lastModified
+    - author

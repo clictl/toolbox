@@ -1,0 +1,37 @@
+spec: '1.0'
+name: go-docs
+description: Go package discovery and documentation site. Search for modules and view package documentation
+version: '1.0'
+category: documentation
+tags:
+- documentation
+- go
+- golang
+- packages
+- modules
+server:
+  url: https://pkg.go.dev
+  headers:
+    Accept: text/html
+actions:
+- name: search
+  description: Search for Go packages and modules by name or keyword
+  params:
+  - name: q
+    type: string
+    required: true
+    description: Search query (e.g., http router, json parser, context)
+    in: query
+  method: GET
+  path: /search
+- name: package
+  description: View documentation for a specific Go module or package
+  params:
+  - name: module
+    type: string
+    required: true
+    description: Full module path (e.g., net/http, github.com/gin-gonic/gin)
+    in: path
+  method: GET
+  path: /{module}
+protocol: http

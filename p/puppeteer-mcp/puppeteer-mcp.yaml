@@ -1,0 +1,48 @@
+spec: '1.0'
+name: puppeteer-mcp
+description: MCP server for browser automation with Puppeteer for navigation, screenshots, and interaction
+protocol: mcp
+version: '1.0'
+category: developer
+tags:
+- puppeteer
+- browser
+- automation
+- screenshots
+- testing
+package:
+  registry: npm
+  name: '@modelcontextprotocol/server-puppeteer'
+  version: 2025.5.12
+server:
+  keep_alive: 300s
+instructions: 'This server controls a headless browser via Puppeteer. Use
+
+  puppeteer_navigate to load pages, puppeteer_screenshot to see
+
+  the current state, and interaction tools to fill forms and click
+
+  elements. Always take a screenshot after navigation to verify
+
+  the page loaded correctly.
+
+  '
+actions:
+- name: puppeteer_navigate
+  description: Navigate the browser to a URL
+  instructions: Take a screenshot after navigating to verify the page loaded.
+- name: puppeteer_screenshot
+  description: Take a screenshot of the current page or a specific element
+- name: puppeteer_click
+  description: Click an element on the page using CSS selector
+  mutable: true
+- name: puppeteer_fill
+  description: Fill in an input field with text
+  mutable: true
+- name: puppeteer_select
+  description: Select a value from a dropdown element
+  mutable: true
+- name: puppeteer_hover
+  description: Hover over an element on the page
+resources:
+  expose: all

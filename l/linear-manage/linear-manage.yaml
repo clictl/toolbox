@@ -1,0 +1,31 @@
+spec: '1.0'
+name: linear-manage
+description: Skill that teaches agents to manage Linear issues, create tickets, update status, and triage bugs
+protocol: skill
+version: '1.0'
+category: productivity
+tags:
+- skill
+- linear
+- issues
+- project-management
+- triage
+- tickets
+- workflow
+source:
+  repo: openai/skills
+  path: skills/.curated/linear/
+  ref: main
+  files:
+  - sha256: 58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd
+    path: LICENSE.txt
+  - sha256: ce0f39c95b6c9190f8ea33614393cdb556b2684dd8388ded394e9cb915f42601
+    path: SKILL.md
+  - sha256: 9e6f164960e3dd0bc56456538abdf196d9e4fd8b4273be06fe1ef0110fbab9cb
+    path: agents/openai.yaml
+  - sha256: 6af9dbc5e58a51e80fcbcee47e5f9bd196a997cc5985c2147a89c908831d327f
+    path: assets/linear-small.svg
+  - sha256: be13bf3f97e4437e67cda80979759998fb4f4dcace3cdd6a220ba6a75e1c2a82
+    path: assets/linear.png
+depends:
+- linear-mcp

@@ -1,0 +1,141 @@
+spec: '1.0'
+name: datadog
+description: Datadog API for listing monitors, querying metrics, and checking service health
+protocol: http
+version: '1.0'
+category: monitoring
+tags:
+- datadog
+- monitoring
+- metrics
+- alerts
+- observability
+- apm
+pricing:
+  model: paid
+server:
+  url: https://api.datadoghq.com/api/v1
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+  env: DD_API_KEY
+  header: 'DD-API-KEY: ${DD_API_KEY}'
+actions:
+- name: list-monitors
+  description: List all monitors in your Datadog account with their current status
+  output: json
+  method: GET
+  path: /monitor
+  params:
+  - name: group_states
+    type: string
+    description: 'Comma-separated list of group states to filter on: ''alert'', ''warn'', ''no data'', ''ok'''
+    in: query
+  - name: name
+    type: string
+    description: Filter monitors by name substring
+    in: query
+  - name: tags
+    type: string
+    description: Comma-separated list of tags to filter on, e.g. 'env:prod,service:web'
+    in: query
+  - name: page
+    type: int
+    default: '0'
+    description: Page number for pagination
+    in: query
+  - name: page_size
+    type: int
+    default: '20'
+    description: Number of monitors per page
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+  - type: truncate
+    max_items: 20
+- name: get-monitor
+  description: Get details for a specific monitor by its ID
+  output: json
+  method: GET
+  path: /monitor/{{monitor_id}}
+  params:
+  - name: monitor_id
+    type: string
+    required: true
+    description: The numeric ID of the monitor
+    in: path
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - id
+    - name
+    - type
+    - query
+    - message
+    - overall_state
+    - tags
+    - created
+    - modified
+- name: query-metrics
+  description: Query time-series metric data points from Datadog
+  output: json
+  method: GET
+  path: /query
+  params:
+  - name: from
+    type: int
+    required: true
+    description: Start time as a Unix epoch timestamp (seconds)
+    example: 1700000000
+    in: query
+  - name: to
+    type: int
+    required: true
+    description: End time as a Unix epoch timestamp (seconds)
+    example: 1700003600
+    in: query
+  - name: query
+    type: string
+    required: true
+    description: Datadog metrics query string, e.g. 'avg:system.cpu.user{host:myhost}'
+    example: avg:system.cpu.user{*}
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - status
+    - res_type
+    - series
+    - from_date
+    - to_date
+- name: list-dashboards
+  description: List all dashboards in your Datadog account
+  output: json
+  method: GET
+  path: /dashboard/lists/manual
+  params: []
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.dashboard_lists
+  - type: truncate
+    max_items: 20

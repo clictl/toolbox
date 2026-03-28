@@ -1,0 +1,44 @@
+spec: '1.0'
+name: theme-factory
+description: Toolkit for styling artifacts like slides, docs, reports, and HTML landing pages with a consistent theme
+protocol: skill
+version: '1.0'
+category: design
+tags:
+- skill
+- theming
+- styling
+- slides
+- documents
+- landing-pages
+source:
+  repo: anthropics/skills
+  path: skills/theme-factory/
+  ref: main
+  files:
+  - sha256: 58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd
+    path: LICENSE.txt
+  - sha256: c35893e221e28895c52143cc11bf30e41a44817796b39d4b15727dadc9796552
+    path: SKILL.md
+  - sha256: 3e126eca9fe99088051f7cb984c97cedb31c7d9e09ce0ba5d61bd01e70a0d253
+    path: theme-showcase.pdf
+  - sha256: 868a75a8fb5b2a61d0f0ab87c437fe632d3cbab6371c418f06aa2816ac109ae0
+    path: themes/arctic-frost.md
+  - sha256: 222cb8e7496abc9b75b29453c809fb9839e7e4b01fa45deecdd896b38d087765
+    path: themes/botanical-garden.md
+  - sha256: bd065b8629be3b64655183927e248e3d892a27b8d184b009cfba89c96102744f
+    path: themes/desert-rose.md
+  - sha256: ecb722efa24688e808b5bf323c334ca2349e989cfddd72ce8400ce5d4c4bd3e7
+    path: themes/forest-canopy.md
+  - sha256: 3444a00df971d3c2f06b665e21a2e9eb5d7d7d6f6281f2758773b8345776a139
+    path: themes/golden-hour.md
+  - sha256: 0e134c4c0324df41e34ac314269aa6829cd378cf3c304b31858d0cd158d2f944
+    path: themes/midnight-galaxy.md
+  - sha256: b8bc572b75948d4df69c401af703b9262ed6820a3ceb270da30a529e92763614
+    path: themes/modern-minimalist.md
+  - sha256: a7ad8eec85341dbfcb2665da827a4b6a4baee08ab3335ac02421f18e6b46b2e2
+    path: themes/ocean-depths.md
+  - sha256: 658af11ab04be4923692571081ffb42a428141ae537703117b9236d9f8ee22a3
+    path: themes/sunset-boulevard.md
+  - sha256: 183648163026dd5eeba3df5effa335b55ba333c3ee1fe215278605e55f40a52a
+    path: themes/tech-innovation.md

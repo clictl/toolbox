@@ -1,0 +1,74 @@
+spec: '1.0'
+name: claude-api
+description: Skill that teaches agents to build applications with the Claude API and Anthropic SDKs across Python, TypeScript,
+  and more
+protocol: skill
+version: '1.0'
+category: ai
+tags:
+- skill
+- claude
+- anthropic
+- api
+- sdk
+- llm
+- ai
+- python
+- typescript
+source:
+  repo: anthropics/skills
+  path: skills/claude-api/
+  ref: main
+  files:
+  - sha256: 58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd
+    path: LICENSE.txt
+  - sha256: bdbd2080d675adb18d961a46d1bd6e3a3d26806bfda7c6cd36e6de638d18f6ac
+    path: SKILL.md
+  - sha256: c17ddeb20330f54d8fbf9af3e1225ab0370396b86d211cf71b1f8a5008c39e5f
+    path: csharp/claude-api.md
+  - sha256: 4a587cbc1bc26e97d14c5f2abeb98a11cd7ffd10eabcdb32512b22dd55dde508
+    path: curl/examples.md
+  - sha256: 79730feb26fde385d351e269ff5dec022e9d2f88f1b94230c48b18db1b3e1a9b
+    path: go/claude-api.md
+  - sha256: dba7d2e9539ba370b66c8163a8186d3fcd49cbcd4a2b943e8643ff4f0b232e39
+    path: java/claude-api.md
+  - sha256: 059a14b04a7c73d88b7072c24322b4503b716e5722b378084ef6644826c7f165
+    path: php/claude-api.md
+  - sha256: f06fc8a83a16e28183f66733e08eb7e2633f6e31348fcfe384ae2389c185bab6
+    path: python/agent-sdk/README.md
+  - sha256: 1a42261beea4f9dce4884931b311a88123b4b0981c7a303b10513c8796218303
+    path: python/agent-sdk/patterns.md
+  - sha256: 78c6ea2ef13d2880f50527bea1f88042ac18944d03bb18f292866cc25fdcbe42
+    path: python/claude-api/README.md
+  - sha256: 576101d29343fe3e687a646bda8991663e45305f03c4a3053ddd38c60657c0d7
+    path: python/claude-api/batches.md
+  - sha256: 796918347e487d7aca473a9cc58a51c9858ace3fa848141caeca3bc4d91655ad
+    path: python/claude-api/files-api.md
+  - sha256: 8b508b756f5340ff9c3e79f7ace600348ff298915f55d6f76d8a07bf5b3080d1
+    path: python/claude-api/streaming.md
+  - sha256: 35b2b5bdd79fc2d880b28bd98abe0d169c0031d6883c9ea991689744778be54c
+    path: python/claude-api/tool-use.md
+  - sha256: 51a56bba19696d7f35c35305c1b3e0ff80485fc441ec49cb9224a753bcaac292
+    path: ruby/claude-api.md
+  - sha256: 590f6539f223a46e9ddff391a09cf2646b05c59bb679955d060f26a898c5091b
+    path: shared/error-codes.md
+  - sha256: d17fb1079dfc177df8dc6e9d46a8fd4604395345c10cc7dae830a0d3659fb2f3
+    path: shared/live-sources.md
+  - sha256: 2a18cf78b18d7e62e6e64810f4d3f28225e024fd1cfa4928dcb5d23dcc50d4d9
+    path: shared/models.md
+  - sha256: edd1ff670170d6720491d4ee7dc64c20e59ed097af4d7a082d1620d894025b65
+    path: shared/tool-use-concepts.md
+  - sha256: 8b887efb720def6c51303d169e79ae94b6d78f8bbf81c66791543c77329f39c2
+    path: typescript/agent-sdk/README.md
+  - sha256: 8a47275106399f7274ff5db2978a8ea7addb1ac5d81086abebd42a5a620c7619
+    path: typescript/agent-sdk/patterns.md
+  - sha256: bc48c999d4b6117945f7abc0c2031f0902c59d61911697fd6a628bbbea077a78
+    path: typescript/claude-api/README.md
+  - sha256: 8a9b31d7008e63f717d9647ec2b5c3a499c7af9e64793a799c53ae4569747f39
+    path: typescript/claude-api/batches.md
+  - sha256: b876ca554b262f5b02d7afb844e61daa2bb51b1c953a5c1e3546a4bc52232798
+    path: typescript/claude-api/files-api.md
+  - sha256: 886ae9a8daaecb042411c7544100d91265c0a9edd2b24b118783762ee7dfcb95
+    path: typescript/claude-api/streaming.md
+  - sha256: a8d49b7b2a6d9b87d0baf007006682ade8ead22ee864a90473b8ac0dac9fa474
+    path: typescript/claude-api/tool-use.md

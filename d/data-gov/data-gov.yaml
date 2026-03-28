@@ -1,0 +1,92 @@
+spec: '1.0'
+name: data-gov
+description: US government open data portal with thousands of datasets
+protocol: http
+version: '1.0'
+category: data
+tags:
+- government
+- open-data
+- datasets
+- usa
+- public
+server:
+  url: https://catalog.data.gov
+  headers:
+    Accept: application/json
+actions:
+- name: search_datasets
+  description: Search for datasets in the US government open data catalog
+  output: text
+  method: GET
+  path: /api/3/action/package_search
+  params:
+  - name: q
+    type: string
+    required: true
+    description: Search query
+    example: climate change
+    in: query
+  - name: rows
+    type: int
+    default: '10'
+    description: Number of results to return
+    in: query
+  - name: start
+    type: int
+    default: '0'
+    description: Offset for pagination
+    in: query
+  transform:
+  - extract: $.result.results
+  - type: json
+    select:
+    - title
+    - notes
+    - organization.title
+    - num_resources
+    rename:
+      organization.title: org
+  - type: truncate
+    max_items: 20
+  - type: format
+    template: '- {title} - {org} ({num_resources} resources)'
+- name: get_dataset
+  description: Get details of a specific dataset by ID
+  output: text
+  method: GET
+  path: /api/3/action/package_show
+  params:
+  - name: id
+    type: string
+    required: true
+    description: Dataset ID or name
+    in: query
+  transform:
+  - extract: $.result
+  - type: json
+    select:
+    - title
+    - notes
+    - organization.title
+    - maintainer
+    - metadata_created
+    - num_resources
+    - resources
+    rename:
+      organization.title: org
+  - type: format
+    template: '# {title}
+
+      Organization: {org}
+
+      Maintainer: {maintainer}
+
+      Created: {metadata_created}
+
+      Resources: {num_resources}
+
+
+      {notes}
+
+      '

@@ -1,0 +1,71 @@
+spec: '1.0'
+name: postgres-mcp
+description: MCP server for read-only PostgreSQL database access with schema inspection and query tools
+protocol: mcp
+version: '1.0'
+category: data
+tags:
+- mcp
+- postgres
+- postgresql
+- database
+- sql
+- query
+auth:
+  env: POSTGRES_CONNECTION_STRING
+package:
+  registry: pypi
+  name: mcp-server-postgres
+  version: 0.5.0
+  manager: uvx
+sandbox:
+  env:
+    allow:
+    - POSTGRES_URL
+prompts:
+  system: 'This server provides read-only access to a PostgreSQL database.
+
+    Always use list_tables and describe_table to understand the schema
+
+    before writing queries. Use LIMIT clauses to avoid returning too
+
+    many rows. Never attempt INSERT, UPDATE, DELETE, or DDL statements.
+
+    '
+  tool_instructions:
+    query: Always include a LIMIT clause. Use describe_table first to understand column types.
+resources:
+  expose:
+  - uri_pattern: postgres://schema/**
+    description: Database schema information
+    read_only: true
+install_mode:
+  default: skill
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 600s
+actions:
+- name: query
+  description: Execute a read-only SQL query against the database
+  params:
+  - name: sql
+    type: string
+    required: true
+    description: Read-only SQL query to execute
+- name: list_tables
+  description: List all tables in the database
+- name: describe_table
+  description: Get the schema of a specific table including columns and types
+  params:
+  - name: table_name
+    type: string
+    required: true
+    description: Name of the table to describe
+transforms:
+  query:
+  - truncate:
+      max_items: 100
+      max_length: 10000
+  list_tables:
+  - truncate:
+      max_items: 200

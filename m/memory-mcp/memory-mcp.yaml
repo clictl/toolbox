@@ -1,0 +1,63 @@
+spec: '1.0'
+name: memory-mcp
+description: MCP server for persistent memory using a knowledge graph with entities, relations, and observations
+protocol: mcp
+version: '1.0'
+category: ai
+tags:
+- memory
+- knowledge-graph
+- entities
+- persistence
+- context
+package:
+  registry: npm
+  name: '@modelcontextprotocol/server-memory'
+  version: 2026.1.26
+server:
+  keep_alive: 600s
+instructions: 'This server provides persistent memory through a knowledge graph.
+
+  Use it to remember important information about the user, their
+
+  preferences, projects, and ongoing work. Proactively store useful
+
+  context and retrieve it when relevant.
+
+  '
+actions:
+- name: create_entities
+  description: Create new entities in the knowledge graph
+  mutable: true
+  instructions: Use descriptive entity names and types. Group related information.
+- name: create_relations
+  description: Create relations between entities in the knowledge graph
+  mutable: true
+- name: add_observations
+  description: Add observations to existing entities
+  mutable: true
+- name: delete_entities
+  description: Delete entities and their relations from the knowledge graph
+  mutable: true
+- name: delete_observations
+  description: Delete specific observations from entities
+  mutable: true
+- name: delete_relations
+  description: Delete relations between entities
+  mutable: true
+- name: read_graph
+  description: Read the entire knowledge graph
+- name: search_nodes
+  description: Search for entities by name or content
+  instructions: Search before creating to avoid duplicate entities.
+- name: open_nodes
+  description: Open specific entities by name
+transforms:
+  read_graph:
+  - truncate:
+      max_length: 20000
+  search_nodes:
+  - truncate:
+      max_items: 50
+resources:
+  expose: all

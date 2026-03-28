@@ -1,0 +1,5 @@
+# clictl Official Toolbox
+# Specs are at the root level with letter-prefix directories (a-z).
+
+branches:
+  - main

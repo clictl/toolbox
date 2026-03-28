@@ -1,0 +1,115 @@
+spec: '1.0'
+name: bigquery-mcp
+description: Google Cloud managed MCP server for BigQuery data warehouse with schema inspection and SQL query execution
+protocol: mcp
+version: '1.0'
+category: data
+tags:
+- mcp
+- bigquery
+- google-cloud
+- sql
+- data-warehouse
+- analytics
+auth:
+  env: GCP_ACCESS_TOKEN
+pricing:
+  model: freemium
+package:
+  registry: npm
+  name: '@anthropic/bigquery-mcp'
+  version: 0.1.0
+  manager: npx
+prompts:
+  system: 'This server provides access to Google BigQuery. Always inspect
+
+    datasets and table schemas before writing queries. Use LIMIT
+
+    clauses to control result size. BigQuery charges per query based
+
+    on bytes scanned, so be efficient with column selection.
+
+    '
+  tool_instructions:
+    execute_sql: Always use LIMIT. Select only needed columns to minimize bytes scanned and cost.
+    get_table_info: Check schema before writing queries to understand column names and types.
+resources:
+  expose:
+  - uri_pattern: bq://schema/**
+    description: BigQuery schema information
+    read_only: true
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+actions:
+- name: list_dataset_ids
+  description: List all BigQuery dataset IDs in a GCP project
+  params:
+  - name: project_id
+    type: string
+    required: true
+    description: GCP project ID
+- name: get_dataset_info
+  description: Get metadata about a BigQuery dataset
+  params:
+  - name: project_id
+    type: string
+    required: true
+    description: GCP project ID
+  - name: dataset_id
+    type: string
+    required: true
+    description: BigQuery dataset ID
+- name: list_table_ids
+  description: List table IDs within a dataset
+  params:
+  - name: project_id
+    type: string
+    required: true
+    description: GCP project ID
+  - name: dataset_id
+    type: string
+    required: true
+    description: BigQuery dataset ID
+- name: get_table_info
+  description: Get schema and metadata for a specific table
+  params:
+  - name: project_id
+    type: string
+    required: true
+    description: GCP project ID
+  - name: dataset_id
+    type: string
+    required: true
+    description: BigQuery dataset ID
+  - name: table_id
+    type: string
+    required: true
+    description: BigQuery table ID
+- name: execute_sql
+  description: Execute a SQL query against BigQuery and return results
+  params:
+  - name: project_id
+    type: string
+    required: true
+    description: GCP project ID
+  - name: query
+    type: string
+    required: true
+    description: BigQuery SQL query
+  - name: max_results
+    type: int
+    required: false
+    description: Maximum number of rows to return
+transforms:
+  list_dataset_ids:
+  - truncate:
+      max_items: 100
+  list_table_ids:
+  - truncate:
+      max_items: 200
+  execute_sql:
+  - truncate:
+      max_items: 100
+      max_length: 15000

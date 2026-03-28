@@ -1,0 +1,122 @@
+spec: '1.0'
+name: jira
+description: Jira REST API for issue tracking, project management, and agile workflows
+protocol: http
+version: '1.0'
+category: productivity
+tags:
+- jira
+- issues
+- project-management
+- agile
+- atlassian
+- tickets
+pricing:
+  model: freemium
+server:
+  url: https://your-domain.atlassian.net/rest/api/3
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+  env: JIRA_API_TOKEN
+  header: 'Authorization: Bearer ${JIRA_API_TOKEN}'
+actions:
+- name: search-issues
+  description: Search for issues using JQL (Jira Query Language)
+  method: GET
+  path: /search
+  params:
+  - name: jql
+    type: string
+    required: true
+    description: JQL query string, e.g. 'project = PROJ AND status = Open'
+    in: query
+  - name: maxResults
+    type: int
+    default: '20'
+    description: Maximum number of issues to return
+    in: query
+  - name: fields
+    type: string
+    default: summary,status,assignee,priority,created
+    description: Comma-separated list of fields to include in the response
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.issues
+  - type: truncate
+    max_items: 20
+- name: issue
+  description: Get a single issue by its key, including summary, status, and description
+  method: GET
+  path: /issue/{{issue_key}}
+  params:
+  - name: issue_key
+    type: string
+    required: true
+    description: Issue key, e.g. 'PROJ-123'
+    in: path
+  - name: fields
+    type: string
+    description: Comma-separated list of fields to include
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.fields
+    select:
+    - summary
+    - status
+    - assignee
+    - priority
+    - description
+    - created
+    - updated
+- name: projects
+  description: List all projects visible to the authenticated user
+  method: GET
+  path: /project
+  params:
+  - name: maxResults
+    type: int
+    default: '20'
+    description: Maximum number of projects to return
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: truncate
+    max_items: 20
+- name: project
+  description: Get details for a specific project by key or ID
+  method: GET
+  path: /project/{{project_key}}
+  params:
+  - name: project_key
+    type: string
+    required: true
+    description: Project key or ID, e.g. 'PROJ'
+    in: path
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - key
+    - name
+    - description
+    - lead
+    - projectTypeKey

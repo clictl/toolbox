@@ -1,0 +1,132 @@
+spec: '1.0'
+name: bing-search
+description: Bing Web Search API v7 for web search, news search, and content discovery
+protocol: http
+version: '1.0'
+category: search
+tags:
+- search
+- bing
+- web
+- news
+- microsoft
+pricing:
+  model: freemium
+server:
+  url: https://api.bing.microsoft.com/v7.0
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+  env: BING_API_KEY
+  header: 'Ocp-Apim-Subscription-Key: ${BING_API_KEY}'
+actions:
+- name: search
+  description: Search the web using Bing Web Search
+  method: GET
+  path: /search
+  params:
+  - name: q
+    type: string
+    required: true
+    description: Search query string
+    in: query
+  - name: count
+    type: int
+    default: '10'
+    description: Number of results to return (1-50)
+    in: query
+  - name: offset
+    type: int
+    description: Number of results to skip for pagination
+    in: query
+  - name: mkt
+    type: string
+    default: en-US
+    description: Market code for results, e.g. en-US, en-GB, de-DE
+    in: query
+  - name: freshness
+    type: string
+    description: 'Filter by age: Day, Week, Month, or a date range like 2024-01-01..2024-12-31'
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.webPages.value
+    select:
+    - name
+    - url
+    - snippet
+    - dateLastCrawled
+  - type: truncate
+    max_items: 10
+- name: news
+  description: Search for news articles using Bing News Search
+  method: GET
+  path: /news/search
+  params:
+  - name: q
+    type: string
+    required: true
+    description: News search query string
+    in: query
+  - name: count
+    type: int
+    default: '10'
+    description: Number of results to return (1-100)
+    in: query
+  - name: mkt
+    type: string
+    default: en-US
+    description: Market code for results, e.g. en-US, en-GB
+    in: query
+  - name: freshness
+    type: string
+    description: 'Filter by age: Day, Week, Month'
+    in: query
+  - name: sortBy
+    type: string
+    description: 'Sort order: Date or Relevance'
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.value
+    select:
+    - name
+    - url
+    - description
+    - datePublished
+    - provider
+  - type: truncate
+    max_items: 10
+- name: trending
+  description: Get trending news topics
+  method: GET
+  path: /news/trendingtopics
+  params:
+  - name: mkt
+    type: string
+    default: en-US
+    description: Market code for trending topics
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.value
+    select:
+    - name
+    - query
+    - image
+    - newsSearchUrl
+  - type: truncate
+    max_items: 20

@@ -1,0 +1,46 @@
+spec: '1.0'
+name: mdn-web-docs
+description: Mozilla Developer Network web technology reference and guides
+version: '1.0'
+category: documentation
+tags:
+- documentation
+- web
+- html
+- css
+- javascript
+- reference
+server:
+  url: https://developer.mozilla.org
+  headers:
+    Accept: application/json
+actions:
+- name: search
+  description: Search MDN documentation for web technologies
+  params:
+  - name: q
+    type: string
+    required: true
+    description: Search query (e.g., flex-direction, addEventListener)
+    in: query
+  - name: locale
+    type: string
+    default: en-us
+    description: Locale for results
+    in: query
+  transform:
+  - type: extract
+    path: $.documents
+  method: GET
+  path: /api/v1/search
+- name: get_page
+  description: Fetch a specific MDN documentation page as JSON
+  params:
+  - name: path
+    type: string
+    required: true
+    description: Documentation path (e.g., en-US/docs/Web/CSS/display)
+    in: path
+  method: GET
+  path: /{path}/index.json
+protocol: http

@@ -1,0 +1,35 @@
+spec: '1.0'
+name: aider
+description: AI pair programming in your terminal, works with multiple LLM providers
+protocol: command
+version: '1.0'
+category: ai
+tags:
+- ai
+- coding
+- pair-programming
+- aider
+- llm
+- git
+actions:
+- name: chat
+  description: Start an interactive pair programming session
+  params:
+  - name: files
+    type: string
+    required: false
+    description: Files to include in the chat context
+    in: arg
+- name: run
+  description: Run a single prompt against specified files
+  params:
+  - name: message
+    type: string
+    required: true
+    description: The instruction to execute
+    in: flag
+  - name: files
+    type: string
+    required: false
+    description: Files to edit
+    in: arg

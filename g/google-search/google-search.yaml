@@ -1,0 +1,107 @@
+spec: '1.0'
+name: google-search
+description: Google Custom Search JSON API for web search, image search, and site-specific queries
+protocol: http
+version: '1.0'
+category: search
+tags:
+- search
+- google
+- web
+pricing:
+  model: freemium
+server:
+  url: https://www.googleapis.com/customsearch/v1
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+- env: GOOGLE_API_KEY
+  param: key
+- env: GOOGLE_CSE_ID
+  param: cx
+actions:
+- name: search
+  description: Search the web using Google Custom Search
+  method: GET
+  path: /
+  params:
+  - name: q
+    type: string
+    required: true
+    description: Search query string
+    in: query
+  - name: num
+    type: int
+    default: '10'
+    description: Number of results to return (1-10)
+    in: query
+  - name: start
+    type: int
+    description: Index of the first result to return (1-based, for pagination)
+    in: query
+  - name: dateRestrict
+    type: string
+    description: Restrict results by date, e.g. d5 (past 5 days), w2 (past 2 weeks), m1 (past month), y1 (past year)
+    in: query
+  - name: siteSearch
+    type: string
+    description: Restrict results to a specific site (e.g. example.com)
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.items
+    select:
+    - title
+    - link
+    - snippet
+    - displayLink
+  - type: truncate
+    max_items: 10
+- name: search-images
+  description: Search for images using Google Custom Search
+  method: GET
+  path: /
+  params:
+  - name: q
+    type: string
+    required: true
+    description: Image search query string
+    in: query
+  - name: searchType
+    type: string
+    required: true
+    default: image
+    description: Must be set to "image" for image search
+    in: query
+  - name: num
+    type: int
+    default: '10'
+    description: Number of results to return (1-10)
+    in: query
+  - name: imgSize
+    type: string
+    description: 'Filter by image size: huge, large, medium, small, icon'
+    in: query
+  - name: imgType
+    type: string
+    description: 'Filter by image type: face, photo, clipart, lineart, animated'
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.items
+    select:
+    - title
+    - link
+    - image
+    - displayLink
+  - type: truncate
+    max_items: 10

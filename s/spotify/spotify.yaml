@@ -1,0 +1,67 @@
+spec: '1.0'
+name: spotify
+description: Spotify Web API for music data, playlists, and playback
+protocol: http
+version: '1.0'
+category: media
+tags:
+- music
+- spotify
+- playlists
+- artists
+- albums
+server:
+  url: https://api.spotify.com/v1
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+  env: SPOTIFY_TOKEN
+  header: 'Authorization: Bearer ${SPOTIFY_TOKEN}'
+actions:
+- name: search
+  description: Search for tracks, artists, albums, or playlists
+  method: GET
+  path: /search
+  params:
+  - name: q
+    type: string
+    required: true
+    description: Search query, e.g. 'Bohemian Rhapsody' or 'artist:Queen'
+    in: query
+  - name: type
+    type: string
+    required: true
+    default: track
+    description: 'Content type to search: track, artist, album, playlist'
+    in: query
+  - name: limit
+    type: int
+    default: '10'
+    description: Maximum number of results (1-50)
+    in: query
+- name: artist
+  description: Get detailed information about an artist
+  method: GET
+  path: /artists/{{id}}
+  params:
+  - name: id
+    type: string
+    required: true
+    description: Spotify artist ID
+    in: path
+- name: top_tracks
+  description: Get an artist's top tracks by country
+  method: GET
+  path: /artists/{{id}}/top-tracks
+  params:
+  - name: id
+    type: string
+    required: true
+    description: Spotify artist ID
+    in: path
+  - name: market
+    type: string
+    default: US
+    description: ISO 3166-1 alpha-2 country code, e.g. 'US', 'GB', 'DE'
+    in: query

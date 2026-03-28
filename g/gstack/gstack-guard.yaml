@@ -1,0 +1,13 @@
+name: gstack-guard
+description: Combined careful and freeze for maximum production safety
+version: "0.1.0"
+category: developer
+tags: [gstack, safety, skill]
+protocol: skill
+source:
+  repo: garrytan/gstack
+  path: guard
+  ref: main
+  files:
+    - path: SKILL.md
+      sha256: 67bae4dfa80e5ec9d2ad56ea065cdc45e692a2cf3dbe4a69145dc0a2aed3ddcf

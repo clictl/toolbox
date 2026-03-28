@@ -1,0 +1,152 @@
+spec: '1.0'
+name: news-api
+description: NewsAPI.org for searching worldwide news articles and top headlines across 80,000+ sources
+protocol: http
+version: '1.0'
+category: news
+tags:
+- news
+- headlines
+- articles
+- media
+pricing:
+  model: freemium
+server:
+  url: https://newsapi.org/v2
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+  env: NEWS_API_KEY
+  header: 'X-Api-Key: ${NEWS_API_KEY}'
+actions:
+- name: top-headlines
+  description: Get top headlines by country, category, or source
+  method: GET
+  path: /top-headlines
+  params:
+  - name: country
+    type: string
+    default: us
+    description: 2-letter country code, e.g. us, gb, de, fr
+    in: query
+  - name: category
+    type: string
+    description: 'Category: business, entertainment, general, health, science, sports, technology'
+    in: query
+  - name: q
+    type: string
+    description: Keywords to filter headlines
+    in: query
+  - name: pageSize
+    type: int
+    default: '20'
+    description: Number of results per page (max 100)
+    in: query
+  - name: page
+    type: int
+    description: Page number for pagination
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.articles
+    select:
+    - title
+    - description
+    - url
+    - source
+    - publishedAt
+    - author
+  - type: truncate
+    max_items: 20
+- name: everything
+  description: Search all articles matching a query across all sources
+  method: GET
+  path: /everything
+  params:
+  - name: q
+    type: string
+    required: true
+    description: Keywords or phrases to search for
+    in: query
+  - name: from
+    type: string
+    description: Start date in ISO 8601 format, e.g. 2024-01-15
+    in: query
+  - name: to
+    type: string
+    description: End date in ISO 8601 format, e.g. 2024-01-31
+    in: query
+  - name: language
+    type: string
+    default: en
+    description: 2-letter language code, e.g. en, es, fr, de
+    in: query
+  - name: sortBy
+    type: string
+    default: publishedAt
+    description: 'Sort order: relevancy, popularity, or publishedAt'
+    in: query
+  - name: pageSize
+    type: int
+    default: '20'
+    description: Number of results per page (max 100)
+    in: query
+  - name: page
+    type: int
+    description: Page number for pagination
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.articles
+    select:
+    - title
+    - description
+    - url
+    - source
+    - publishedAt
+    - author
+  - type: truncate
+    max_items: 20
+- name: sources
+  description: List available news sources filtered by category, language, or country
+  method: GET
+  path: /top-headlines/sources
+  params:
+  - name: category
+    type: string
+    description: 'Category: business, entertainment, general, health, science, sports, technology'
+    in: query
+  - name: language
+    type: string
+    description: 2-letter language code, e.g. en, es, fr
+    in: query
+  - name: country
+    type: string
+    description: 2-letter country code, e.g. us, gb, de
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.sources
+    select:
+    - id
+    - name
+    - description
+    - url
+    - category
+    - language
+    - country
+  - type: truncate
+    max_items: 50

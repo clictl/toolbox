@@ -1,0 +1,79 @@
+spec: '1.0'
+name: brave-search-mcp
+description: MCP server for web and local search using the Brave Search API
+protocol: mcp
+version: '1.0'
+category: search
+tags:
+- mcp
+- search
+- brave
+- web-search
+- local-search
+auth:
+  env: BRAVE_API_KEY
+pricing:
+  model: freemium
+package:
+  registry: npm
+  name: '@modelcontextprotocol/server-brave-search'
+  version: 0.6.2
+  manager: npx
+sandbox:
+  network:
+    allow:
+    - api.search.brave.com
+  env:
+    allow:
+    - BRAVE_API_KEY
+prompts:
+  system: 'This server provides web and local search via Brave Search API.
+
+    Use brave_web_search for general information and brave_local_search
+
+    for finding nearby businesses and places. Cite sources when presenting
+
+    search results to the user.
+
+    '
+  tool_instructions:
+    brave_web_search: Use specific, well-formed queries. Cite the source URLs in your response.
+    brave_local_search: Include location context in queries for better results.
+resources:
+  expose: all
+install_mode:
+  default: both
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 120s
+actions:
+- name: brave_web_search
+  description: Search the web using Brave Search for general queries, news, and information
+  params:
+  - name: query
+    type: string
+    required: true
+    description: Search query string
+  - name: count
+    type: int
+    required: false
+    description: Number of results (default 10, max 20)
+- name: brave_local_search
+  description: Search for local businesses and places using Brave Search
+  params:
+  - name: query
+    type: string
+    required: true
+    description: Search query with location context (e.g. 'pizza near Times Square')
+  - name: count
+    type: int
+    required: false
+    description: Number of results (default 5)
+transforms:
+  brave_web_search:
+  - truncate:
+      max_items: 20
+      max_length: 8000
+  brave_local_search:
+  - truncate:
+      max_items: 15

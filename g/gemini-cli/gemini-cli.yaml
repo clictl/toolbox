@@ -1,0 +1,32 @@
+spec: '1.0'
+name: gemini-cli
+description: Google's AI-powered command-line coding agent
+protocol: command
+version: '1.0'
+category: ai
+tags:
+- ai
+- gemini
+- google
+- coding
+- agent
+- llm
+pricing:
+  model: freemium
+actions:
+- name: chat
+  description: Start an interactive coding session with Gemini
+  params:
+  - name: prompt
+    type: string
+    required: false
+    description: Initial prompt to send to Gemini
+    in: arg
+- name: run
+  description: Run a prompt non-interactively
+  params:
+  - name: prompt
+    type: string
+    required: true
+    description: The prompt to execute
+    in: arg

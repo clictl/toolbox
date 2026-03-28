@@ -1,0 +1,77 @@
+spec: '1.0'
+name: gcloud-mcp
+description: Official Google Cloud MCP server for interacting with GCP services via natural language through gcloud CLI
+protocol: mcp
+version: '1.0'
+category: cloud
+tags:
+- mcp
+- google-cloud
+- gcp
+- gcloud
+- infrastructure
+- cloud-management
+- destructive
+package:
+  registry: npm
+  name: '@anthropic/gcloud-mcp'
+  version: 0.1.0
+  manager: npx
+prompts:
+  system: 'This server provides Google Cloud Platform access via gcloud CLI.
+
+    Permissions are tied to the active gcloud account. Always verify
+
+    the active project and account before making changes. Use read
+
+    operations (describe, list) before write operations (create, delete).
+
+    '
+  tool_instructions:
+    gcloud: Check the active project with 'gcloud config get-value project' before running commands.
+resources:
+  expose: all
+install_mode:
+  default: both
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s
+actions:
+- name: gcloud
+  description: Execute a gcloud CLI command
+  params:
+  - name: command
+    type: string
+    required: true
+    description: gcloud command to execute (without 'gcloud' prefix)
+  mutable: true
+- name: list_projects
+  description: List GCP projects accessible to the current account
+- name: get_project
+  description: Get details of the current GCP project
+- name: list_instances
+  description: List Compute Engine instances
+  params:
+  - name: zone
+    type: string
+    required: false
+    description: Zone to list instances in
+- name: list_services
+  description: List enabled APIs and services
+- name: list_buckets
+  description: List Cloud Storage buckets
+- name: get_logs
+  description: Read log entries from Cloud Logging
+  params:
+  - name: filter
+    type: string
+    required: false
+    description: Log filter expression
+  - name: limit
+    type: int
+    required: false
+    description: Maximum number of entries to return
+transforms:
+  gcloud:
+  - truncate:
+      max_length: 15000

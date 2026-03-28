@@ -1,0 +1,32 @@
+spec: '1.0'
+name: copilot-cli
+description: GitHub Copilot in the CLI for command suggestions and explanations
+protocol: command
+version: '1.0'
+category: ai
+tags:
+- ai
+- github
+- copilot
+- coding
+- shell
+- suggestions
+pricing:
+  model: paid
+actions:
+- name: suggest
+  description: Get command suggestions for a task
+  params:
+  - name: prompt
+    type: string
+    required: true
+    description: Describe what you want to do
+    in: arg
+- name: explain
+  description: Explain a command
+  params:
+  - name: command
+    type: string
+    required: true
+    description: The command to explain
+    in: arg

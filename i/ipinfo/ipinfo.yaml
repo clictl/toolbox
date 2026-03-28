@@ -1,0 +1,49 @@
+spec: '1.0'
+name: ipinfo
+description: IP address geolocation, ASN, company, and privacy detection data
+protocol: http
+version: '1.0'
+category: security
+tags:
+- ip
+- geolocation
+- network
+- asn
+- vpn
+- privacy
+server:
+  url: https://ipinfo.io
+  timeout: 10s
+  headers:
+    Accept: application/json
+auth:
+  env: IPINFO_TOKEN
+  header: 'Authorization: Bearer ${IPINFO_TOKEN}'
+actions:
+- name: lookup
+  description: Get geolocation, ISP, and network info for an IP address (omit IP to look up your own)
+  instructions: Returns city, region, country, coordinates, ISP/org, ASN, timezone, and privacy info for any IP. Useful for
+    threat analysis, geo-targeting, or network diagnostics.
+  method: GET
+  path: /{{#ip}}{{ip}}{{/ip}}
+  params:
+  - name: ip
+    type: string
+    description: IP address to look up (omit to get your own IP info)
+  transform:
+  - type: json
+    extract: $
+    select:
+    - ip
+    - hostname
+    - city
+    - region
+    - country
+    - loc
+    - org
+    - timezone
+- name: my_ip
+  description: Get your own public IP address
+  method: GET
+  path: /ip
+  params: []

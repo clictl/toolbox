@@ -1,0 +1,60 @@
+spec: '1.0'
+name: everart-mcp
+description: MCP server for AI image generation using EverArt with multiple model support
+protocol: mcp
+version: '1.0'
+category: media
+tags:
+- mcp
+- image-generation
+- ai-art
+- everart
+- creative
+auth:
+  env: EVERART_API_KEY
+pricing:
+  model: freemium
+package:
+  registry: npm
+  name: '@modelcontextprotocol/server-everart'
+  version: 0.6.2
+  manager: npx
+prompts:
+  system: 'This server generates AI images using EverArt. Write detailed,
+
+    descriptive prompts for better results. When the user requests
+
+    an image, clarify the style and content before generating.
+
+    '
+  tool_instructions:
+    generate_image: Write detailed prompts. Include style, mood, lighting, and composition details.
+resources:
+  expose: all
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 120s
+actions:
+- name: generate_image
+  description: Generate an image from a text prompt using AI models
+  params:
+  - name: prompt
+    type: string
+    required: true
+    description: Text description of the image to generate
+  - name: model
+    type: string
+    required: false
+    description: Model ID to use
+  - name: width
+    type: integer
+    required: false
+    description: Image width
+  - name: height
+    type: integer
+    required: false
+    description: Image height
+- name: list_models
+  description: List available image generation models

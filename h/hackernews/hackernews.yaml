@@ -1,0 +1,105 @@
+spec: '1.0'
+name: hackernews
+description: Hacker News API for accessing top stories, new posts, comments, and user profiles
+protocol: http
+version: '1.0'
+category: news
+tags:
+- hackernews
+- news
+- tech
+- startups
+- stories
+- comments
+server:
+  url: https://hacker-news.firebaseio.com/v0
+  timeout: 10s
+actions:
+- name: top
+  description: Get the current top story IDs. Use 'item' action to fetch details for each ID.
+  output: json
+  instructions: 'Returns an array of story IDs. To get full stories, call the ''item'' action for each ID:
+
+    clictl run hackernews item --id <id>
+
+    '
+  method: GET
+  path: /topstories.json
+  transform:
+  - type: truncate
+    max_items: 10
+  - type: prompt
+    value: Use `clictl run hackernews item --id <id>` to fetch story details for any ID above.
+- name: new
+  description: Get the IDs of the newest stories
+  output: json
+  method: GET
+  path: /newstories.json
+  params: []
+  transform:
+  - type: truncate
+    max_items: 20
+- name: best
+  description: Get the IDs of the best stories
+  output: json
+  method: GET
+  path: /beststories.json
+  params: []
+  transform:
+  - type: truncate
+    max_items: 20
+- name: item
+  description: Get a specific item (story, comment, job, poll) by its ID
+  output: text
+  method: GET
+  path: /item/{{id}}.json
+  params:
+  - name: id
+    type: int
+    required: true
+    description: Item ID number
+    example: 8863
+    in: path
+  transform:
+  - type: json
+    select:
+    - title
+    - url
+    - score
+    - by
+    - descendants
+    - type
+  - type: format
+    template: '{title}
+
+      URL: {url}
+
+      Score: {score} points by {by} | {descendants} comments
+
+      Type: {type}
+
+      '
+- name: user
+  description: Get a Hacker News user profile by username
+  output: json
+  method: GET
+  path: /user/{{username}}.json
+  params:
+  - name: username
+    type: string
+    required: true
+    description: HN username
+    example: pg
+    in: path
+- name: ask
+  description: Get the IDs of the current Ask HN stories
+  output: json
+  method: GET
+  path: /askstories.json
+  params: []
+- name: show
+  description: Get the IDs of the current Show HN stories
+  output: json
+  method: GET
+  path: /showstories.json
+  params: []

@@ -1,0 +1,148 @@
+spec: '1.0'
+name: unsplash
+description: Unsplash API for searching and browsing high-quality photos and photographer profiles
+protocol: http
+version: '1.0'
+category: media
+tags:
+- unsplash
+- photos
+- images
+- stock
+- photography
+server:
+  url: https://api.unsplash.com
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+  env: UNSPLASH_ACCESS_KEY
+  header: 'Authorization: Client-ID ${UNSPLASH_ACCESS_KEY}'
+actions:
+- name: search-photos
+  description: Search for photos by keyword or phrase
+  method: GET
+  path: /search/photos
+  params:
+  - name: query
+    type: string
+    required: true
+    description: Search query string
+    in: query
+  - name: page
+    type: int
+    default: '1'
+    description: Page number for pagination
+    in: query
+  - name: per_page
+    type: int
+    default: '10'
+    description: Number of results per page (max 30)
+    in: query
+  - name: orientation
+    type: string
+    description: 'Filter by orientation: ''landscape'', ''portrait'', or ''squarish'''
+    in: query
+  - name: color
+    type: string
+    description: 'Filter by color tone: ''black_and_white'', ''black'', ''white'', ''yellow'', ''orange'', ''red'', ''purple'',
+      ''magenta'', ''green'', ''teal'', ''blue'''
+    in: query
+  - name: order_by
+    type: string
+    default: relevant
+    description: 'Sort order: ''relevant'' or ''latest'''
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.results
+  - type: truncate
+    max_items: 20
+- name: get-photo
+  description: Get full details for a specific photo by its ID
+  method: GET
+  path: /photos/{{photo_id}}
+  params:
+  - name: photo_id
+    type: string
+    required: true
+    description: The unique photo ID
+    in: path
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - id
+    - description
+    - alt_description
+    - urls
+    - width
+    - height
+    - likes
+    - user
+    - created_at
+    - tags
+- name: list-photos
+  description: Browse the editorial feed of curated photos
+  method: GET
+  path: /photos
+  params:
+  - name: page
+    type: int
+    default: '1'
+    description: Page number
+    in: query
+  - name: per_page
+    type: int
+    default: '10'
+    description: Number of results per page (max 30)
+    in: query
+  - name: order_by
+    type: string
+    default: latest
+    description: 'Sort order: ''latest'', ''oldest'', or ''popular'''
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+  - type: truncate
+    max_items: 20
+- name: get-user
+  description: Get a photographer's public profile and stats
+  method: GET
+  path: /users/{{username}}
+  params:
+  - name: username
+    type: string
+    required: true
+    description: The photographer's Unsplash username
+    in: path
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - id
+    - username
+    - name
+    - bio
+    - location
+    - total_photos
+    - total_likes
+    - total_collections
+    - portfolio_url

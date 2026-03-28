@@ -1,0 +1,72 @@
+spec: '1.0'
+name: groq
+description: Groq inference API for ultra-fast LLM chat completions
+protocol: http
+version: '1.0'
+category: ai
+tags:
+- groq
+- llm
+- ai
+- chat
+- inference
+- fast
+pricing:
+  model: freemium
+server:
+  url: https://api.groq.com/openai/v1
+  timeout: 60s
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+auth:
+  env: GROQ_API_KEY
+  header: 'Authorization: Bearer ${GROQ_API_KEY}'
+actions:
+- name: chat
+  description: Create a chat completion using Groq-hosted models with low latency
+  method: POST
+  path: /chat/completions
+  params:
+  - name: model
+    type: string
+    required: true
+    default: llama-3.3-70b-versatile
+    description: Model ID, e.g. 'llama-3.3-70b-versatile', 'mixtral-8x7b-32768', 'gemma2-9b-it'
+    in: body
+  - name: messages
+    type: string
+    required: true
+    description: JSON array of message objects, e.g. [{"role":"user","content":"Hello"}]
+    in: body
+  - name: temperature
+    type: float
+    default: '1.0'
+    description: Sampling temperature between 0 and 2
+    in: body
+  - name: max_tokens
+    type: int
+    default: '1024'
+    description: Maximum number of tokens to generate
+    in: body
+  assert:
+  - type: status
+    status:
+    - 200
+  - type: exists
+    path: $.choices
+  transform:
+  - type: json
+    extract: $.choices
+- name: models
+  description: List all available models on Groq
+  method: GET
+  path: /models
+  params: []
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.data

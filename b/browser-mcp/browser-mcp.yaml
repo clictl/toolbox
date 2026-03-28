@@ -1,0 +1,48 @@
+spec: '1.0'
+name: browser-mcp
+description: MCP server for AI web browser automation using Browserbase and Stagehand
+protocol: mcp
+version: '1.0'
+category: developer
+tags:
+- browser
+- automation
+- web
+- scraping
+- browserbase
+- stagehand
+package:
+  registry: npm
+  name: '@browserbasehq/mcp-server-browserbase'
+  version: 2.4.3
+auth:
+  env: BROWSERBASE_API_KEY
+server:
+  keep_alive: 300s
+instructions: 'This server provides browser automation via Browserbase cloud browsers.
+
+  Use it for web scraping, testing, and interacting with web pages.
+
+  Sessions run in the cloud so no local browser is needed.
+
+  '
+actions:
+- name: browserbase_create_session
+  description: Create a new cloud browser session
+- name: browserbase_navigate
+  description: Navigate the browser to a URL
+- name: browserbase_screenshot
+  description: Take a screenshot of the current page
+- name: browserbase_click
+  description: Click an element on the page
+  mutable: true
+- name: browserbase_fill
+  description: Fill in an input field
+  mutable: true
+- name: browserbase_get_content
+  description: Get the text content of the page
+- name: browserbase_close_session
+  description: Close the current browser session
+  mutable: true
+resources:
+  expose: all

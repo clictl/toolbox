@@ -1,0 +1,31 @@
+spec: '1.0'
+name: anthropic-docs
+description: Anthropic developer documentation for Claude APIs, SDKs, and guides
+version: '1.0'
+category: documentation
+tags:
+- documentation
+- claude
+- llm
+- ai
+- api-reference
+server:
+  url: https://platform.claude.com/docs
+  headers:
+    Accept: text/plain
+actions:
+- name: get_page
+  description: Fetch an Anthropic documentation page
+  output: text
+  method: GET
+  path: /en/{page_path}
+  params:
+  - name: page_path
+    type: string
+    required: true
+    description: Documentation page path (e.g., about-claude/models, build-with-claude/prompt-caching)
+    example: about-claude/models
+  transform:
+  - type: html_to_markdown
+    remove_images: true
+protocol: website

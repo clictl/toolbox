@@ -1,0 +1,94 @@
+spec: '1.0'
+name: firecrawl-mcp
+description: MCP server for Firecrawl web scraping with search, batch processing, and structured extraction
+protocol: mcp
+version: '1.0'
+category: data
+tags:
+- mcp
+- firecrawl
+- scraping
+- web
+- crawling
+- extraction
+- search
+auth:
+  env: FIRECRAWL_API_KEY
+pricing:
+  model: freemium
+package:
+  registry: npm
+  name: firecrawl-mcp
+  version: 3.11.0
+  manager: npx
+prompts:
+  system: 'This server provides web scraping and crawling via Firecrawl.
+
+    Use it to scrape web pages, search the web, extract structured data,
+
+    and perform batch crawling operations.
+
+    '
+resources:
+  expose: all
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s
+actions:
+- name: scrape_url
+  description: Scrape a single URL and return its content as markdown
+  params:
+  - name: url
+    type: string
+    required: true
+    description: URL to scrape
+  - name: formats
+    type: string
+    required: false
+    description: 'Output formats: markdown, html, or rawHtml'
+- name: crawl_url
+  description: Crawl a website starting from a URL
+  params:
+  - name: url
+    type: string
+    required: true
+    description: Starting URL for the crawl
+  - name: max_depth
+    type: int
+    required: false
+    description: Maximum crawl depth
+  - name: limit
+    type: int
+    required: false
+    description: Maximum number of pages to crawl
+- name: search
+  description: Search the web and return scraped results
+  params:
+  - name: query
+    type: string
+    required: true
+    description: Search query string
+  - name: limit
+    type: int
+    required: false
+    description: Number of results to return
+- name: map_url
+  description: Get a sitemap of URLs from a website
+  params:
+  - name: url
+    type: string
+    required: true
+    description: Website URL to map
+- name: extract
+  description: Extract structured data from a URL using a schema
+  params:
+  - name: url
+    type: string
+    required: true
+    description: URL to extract data from
+  - name: schema
+    type: string
+    required: true
+    description: JSON schema describing the data to extract

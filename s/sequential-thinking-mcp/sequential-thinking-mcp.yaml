@@ -1,0 +1,31 @@
+spec: '1.0'
+name: sequential-thinking-mcp
+description: MCP server for dynamic problem-solving through sequential thought chains with branching and revision
+protocol: mcp
+version: '1.0'
+category: ai
+tags:
+- thinking
+- reasoning
+- problem-solving
+- chain-of-thought
+package:
+  registry: npm
+  name: '@modelcontextprotocol/server-sequential-thinking'
+  version: 2025.12.18
+server:
+  keep_alive: 120s
+instructions: 'This server provides a structured thinking tool for complex problems.
+
+  Use it to break down multi-step reasoning, explore alternative
+
+  approaches, and revise earlier conclusions. Each thought can branch
+
+  or revise previous steps.
+
+  '
+actions:
+- name: sequentialthinking
+  description: Create a dynamic chain of thoughts for problem-solving with branching and revision support
+resources:
+  expose: all

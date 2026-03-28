@@ -1,0 +1,131 @@
+spec: '1.0'
+name: replicate
+description: Replicate API for browsing models, running predictions, and checking prediction status
+protocol: http
+version: '1.0'
+category: ai
+tags:
+- replicate
+- ai
+- ml
+- models
+- inference
+- predictions
+pricing:
+  model: paid
+server:
+  url: https://api.replicate.com/v1
+  timeout: 30s
+  headers:
+    Accept: application/json
+auth:
+  env: REPLICATE_API_TOKEN
+  header: 'Authorization: Bearer ${REPLICATE_API_TOKEN}'
+actions:
+- name: list-models
+  description: List public models available on Replicate
+  method: GET
+  path: /models
+  params:
+  - name: cursor
+    type: string
+    description: Pagination cursor from a previous response
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.results
+  - type: truncate
+    max_items: 20
+- name: get-model
+  description: Get details about a specific model including its latest version
+  method: GET
+  path: /models/{{owner}}/{{name}}
+  params:
+  - name: owner
+    type: string
+    required: true
+    description: The model owner username
+    in: path
+  - name: name
+    type: string
+    required: true
+    description: The model name
+    in: path
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - url
+    - owner
+    - name
+    - description
+    - visibility
+    - latest_version
+    - run_count
+- name: list-predictions
+  description: List your recent predictions and their statuses
+  method: GET
+  path: /predictions
+  params:
+  - name: cursor
+    type: string
+    description: Pagination cursor from a previous response
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.results
+  - type: truncate
+    max_items: 20
+- name: get-prediction
+  description: Get the status and output of a specific prediction
+  method: GET
+  path: /predictions/{{prediction_id}}
+  params:
+  - name: prediction_id
+    type: string
+    required: true
+    description: The unique prediction ID
+    in: path
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - id
+    - model
+    - version
+    - status
+    - input
+    - output
+    - created_at
+    - completed_at
+    - metrics
+- name: list-collections
+  description: List featured model collections on Replicate
+  method: GET
+  path: /collections
+  params: []
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $.results
+  - type: truncate
+    max_items: 20

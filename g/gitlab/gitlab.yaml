@@ -1,0 +1,164 @@
+spec: '1.0'
+name: gitlab
+description: GitLab REST API for browsing projects, issues, and merge requests on gitlab.com
+protocol: http
+version: '1.0'
+category: developer
+tags:
+- gitlab
+- git
+- code
+- repos
+- issues
+- merge-requests
+- ci-cd
+pricing:
+  model: freemium
+server:
+  url: https://gitlab.com/api/v4
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+  env: GITLAB_TOKEN
+  header: 'Authorization: Bearer ${GITLAB_TOKEN}'
+actions:
+- name: projects
+  description: Search for GitLab projects by keyword
+  output: json
+  method: GET
+  path: /projects
+  params:
+  - name: search
+    type: string
+    required: true
+    description: Search query for project name or path
+    example: gitlab-runner
+    in: query
+  - name: order_by
+    type: string
+    default: last_activity_at
+    description: 'Order by: id, name, path, created_at, updated_at, last_activity_at, similarity'
+    in: query
+  - name: sort
+    type: string
+    default: desc
+    description: 'Sort direction: asc or desc'
+    in: query
+  - name: per_page
+    type: int
+    default: '10'
+    description: Results per page (max 100)
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+  - type: truncate
+    max_items: 20
+- name: project
+  description: Get detailed information about a specific GitLab project by its numeric ID or URL-encoded path
+  output: json
+  method: GET
+  path: /projects/{{id}}
+  params:
+  - name: id
+    type: string
+    required: true
+    description: Project ID (numeric) or URL-encoded path, e.g. 'gitlab-org%2Fgitlab'
+    example: gitlab-org%2Fgitlab
+    in: path
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+    select:
+    - id
+    - name
+    - description
+    - web_url
+    - star_count
+    - forks_count
+    - default_branch
+    - topics
+    - last_activity_at
+- name: issues
+  description: List issues for a GitLab project
+  output: json
+  method: GET
+  path: /projects/{{id}}/issues
+  params:
+  - name: id
+    type: string
+    required: true
+    description: Project ID or URL-encoded path
+    example: gitlab-org%2Fgitlab
+    in: path
+  - name: state
+    type: string
+    default: opened
+    description: 'Filter by state: opened, closed, all'
+    in: query
+  - name: labels
+    type: string
+    description: Comma-separated list of label names to filter by
+    in: query
+  - name: search
+    type: string
+    description: Search issues by title or description
+    in: query
+  - name: per_page
+    type: int
+    default: '10'
+    description: Results per page (max 100)
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+  - type: truncate
+    max_items: 20
+- name: merge-requests
+  description: List merge requests for a GitLab project
+  output: json
+  method: GET
+  path: /projects/{{id}}/merge_requests
+  params:
+  - name: id
+    type: string
+    required: true
+    description: Project ID or URL-encoded path
+    example: gitlab-org%2Fgitlab
+    in: path
+  - name: state
+    type: string
+    default: opened
+    description: 'Filter by state: opened, closed, merged, all'
+    in: query
+  - name: search
+    type: string
+    description: Search merge requests by title or description
+    in: query
+  - name: per_page
+    type: int
+    default: '10'
+    description: Results per page (max 100)
+    in: query
+  assert:
+  - type: status
+    status:
+    - 200
+  transform:
+  - type: json
+    extract: $
+  - type: truncate
+    max_items: 20

@@ -1,0 +1,66 @@
+spec: '1.0'
+name: slack
+description: Slack Web API for messaging, channels, and user management
+protocol: http
+version: '1.0'
+category: communication
+tags:
+- slack
+- messaging
+- chat
+- notifications
+- team
+server:
+  url: https://slack.com/api
+  timeout: 15s
+  headers:
+    Accept: application/json
+auth:
+  env: SLACK_TOKEN
+  header: 'Authorization: Bearer ${SLACK_TOKEN}'
+actions:
+- name: post_message
+  description: Send a message to a Slack channel
+  output: json
+  method: POST
+  path: /chat.postMessage
+  params:
+  - name: channel
+    type: string
+    required: true
+    description: Channel ID or name, e.g. '#general' or 'C1234567890'
+    example: '#general'
+    in: query
+  - name: text
+    type: string
+    required: true
+    description: Message text to send
+    example: Hello from clictl!
+    in: query
+- name: channels
+  description: List channels in the workspace
+  output: json
+  method: GET
+  path: /conversations.list
+  params:
+  - name: limit
+    type: int
+    default: '20'
+    description: Maximum number of channels to return
+    in: query
+  - name: types
+    type: string
+    default: public_channel
+    description: 'Channel types to include: public_channel, private_channel, mpim, im'
+    in: query
+- name: users
+  description: List all users in the workspace
+  output: json
+  method: GET
+  path: /users.list
+  params:
+  - name: limit
+    type: int
+    default: '20'
+    description: Maximum number of users to return
+    in: query

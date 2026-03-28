@@ -1,0 +1,66 @@
+spec: '1.0'
+name: google-drive-mcp
+description: MCP server for Google Drive file search, read, and management
+protocol: mcp
+version: '1.0'
+category: productivity
+tags:
+- mcp
+- google-drive
+- files
+- cloud-storage
+- google
+- documents
+auth:
+  token_url: https://oauth2.googleapis.com/token
+package:
+  registry: npm
+  name: '@modelcontextprotocol/server-gdrive'
+  version: 2025.1.14
+  manager: npx
+prompts:
+  system: 'This server provides access to Google Drive. Use it to search for
+
+    files, read document contents, and browse folder structures.
+
+    '
+resources:
+  expose: all
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s
+actions:
+- name: search_files
+  description: Search for files in Google Drive
+  params:
+  - name: query
+    type: string
+    required: true
+    description: Search query string
+- name: get_file
+  description: Get a file's content from Google Drive
+  params:
+  - name: file_id
+    type: string
+    required: true
+    description: Google Drive file ID
+- name: list_files
+  description: List files in a folder
+  params:
+  - name: folder_id
+    type: string
+    required: false
+    description: Folder ID (defaults to root)
+  - name: page_size
+    type: int
+    required: false
+    description: Number of files to return
+- name: get_file_metadata
+  description: Get metadata for a file
+  params:
+  - name: file_id
+    type: string
+    required: true
+    description: Google Drive file ID

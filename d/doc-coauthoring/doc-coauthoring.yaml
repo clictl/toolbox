@@ -1,0 +1,20 @@
+spec: '1.0'
+name: doc-coauthoring
+description: Collaborative document creation through guided context gathering, refinement, and reader testing stages
+protocol: skill
+version: '1.0'
+category: productivity
+tags:
+- skill
+- documents
+- writing
+- collaboration
+- coauthoring
+source:
+  repo: anthropics/skills
+  path: skills/doc-coauthoring/
+  ref: main
+  files:
+  - sha256: 2e47d78846faeea4a56e9809c52700087a15a2155a3f293a3efbaded81398ef4
+    description: Skill instructions and examples
+    path: SKILL.md

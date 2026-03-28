@@ -1,0 +1,106 @@
+spec: '1.0'
+name: google-sheets-mcp
+description: MCP server for Google Sheets with read, write, and spreadsheet management
+protocol: mcp
+version: '1.0'
+category: productivity
+tags:
+- mcp
+- google-sheets
+- spreadsheet
+- data
+- google
+- sheets
+auth:
+  token_url: https://oauth2.googleapis.com/token
+package:
+  registry: npm
+  name: google-sheets-mcp
+  version: 1.2.0
+  manager: npx
+prompts:
+  system: 'This server provides access to Google Sheets. Use it for reading
+
+    and writing spreadsheet data, managing sheets, and querying cells.
+
+    Always confirm before writing or modifying data.
+
+    '
+resources:
+  expose: all
+install_mode:
+  default: mcp
+  allow_mcp: true
+  allow_skill: true
+  keep_alive: 300s
+actions:
+- name: get_spreadsheet
+  description: Get spreadsheet metadata and sheet list
+  params:
+  - name: spreadsheet_id
+    type: string
+    required: true
+    description: Google Sheets spreadsheet ID
+- name: read_range
+  description: Read values from a cell range
+  params:
+  - name: spreadsheet_id
+    type: string
+    required: true
+    description: Google Sheets spreadsheet ID
+  - name: range
+    type: string
+    required: true
+    description: Cell range in A1 notation (e.g. Sheet1!A1:C10)
+- name: write_range
+  description: Write values to a cell range
+  params:
+  - name: spreadsheet_id
+    type: string
+    required: true
+    description: Google Sheets spreadsheet ID
+  - name: range
+    type: string
+    required: true
+    description: Cell range in A1 notation
+  - name: values
+    type: string
+    required: true
+    description: JSON array of row arrays with cell values
+  mutable: true
+- name: append_rows
+  description: Append rows to a sheet
+  params:
+  - name: spreadsheet_id
+    type: string
+    required: true
+    description: Google Sheets spreadsheet ID
+  - name: range
+    type: string
+    required: true
+    description: Sheet name or range to append to
+  - name: values
+    type: string
+    required: true
+    description: JSON array of row arrays with cell values
+  mutable: true
+- name: create_spreadsheet
+  description: Create a new spreadsheet
+  params:
+  - name: title
+    type: string
+    required: true
+    description: Spreadsheet title
+  mutable: true
+- name: clear_range
+  description: Clear values from a cell range
+  params:
+  - name: spreadsheet_id
+    type: string
+    required: true
+    description: Google Sheets spreadsheet ID
+  - name: range
+    type: string
+    required: true
+    description: Cell range in A1 notation
+  mutable: true

@@ -1,0 +1,32 @@
+spec: '1.0'
+name: figma-implement-design
+description: Skill that teaches agents to convert Figma designs into production UI code with accurate layout and styling
+protocol: skill
+version: '1.0'
+category: developer
+tags:
+- skill
+- figma
+- design
+- ui
+- frontend
+- css
+- implementation
+- design-to-code
+source:
+  repo: openai/skills
+  path: skills/.curated/figma-implement-design/
+  ref: main
+  files:
+  - sha256: 36bdad8e8a43a282ba3a5af4ac022d8b117c5826b8b473fe6a32622e83856ae3
+    path: LICENSE.txt
+  - sha256: 63f3d12d444547bbf68c10a12982b1f42e0f6e26fc074324564a13184d4b15ad
+    path: SKILL.md
+  - sha256: 7765be0bb06c64610b4eae3bd2898d77aa2b03b799eb86c2f126103120080fea
+    path: agents/openai.yaml
+  - sha256: 6a38267efbd872bbc215d0227a395eb0b0093bc6441c44a39a43f3210549e5e9
+    path: assets/figma-small.svg
+  - sha256: 4d16e1b19ae7bdac7d601d0b3bf3c0ea4a018a8cb0e38d19e5b00971968ecada
+    path: assets/figma.png
+  - sha256: 8936c5dcd619c41f5a27f7c08e8c50b22e428069c36217e4aa872099d6cc2cf7
+    path: assets/icon.svg

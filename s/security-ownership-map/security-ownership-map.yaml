@@ -1,0 +1,46 @@
+spec: '1.0'
+name: security-ownership-map
+description: Analyze git repositories to build a security ownership topology, compute bus factor and sensitive-code ownership,
+  and export CSV/JSON
+protocol: skill
+version: '1.0'
+category: security
+tags:
+- skill
+- security
+- ownership
+- bus-factor
+- analytics
+source:
+  repo: openai/skills
+  path: skills/.curated/security-ownership-map/
+  ref: main
+  files:
+  - sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
+    path: LICENSE.txt
+  - sha256: f06c1a59247569326702c945f397af163ea96cf2ecfdf2dde280605bf89a3ec8
+    path: SKILL.md
+  - sha256: 40877a3cdb1753aa187fc85a83bc138a866a1edb74165e009c885cfb6a16e433
+    path: agents/openai.yaml
+  - sha256: 176d0ef2ed3588530ed65ccda7cb30ae322e4cbec5c374dba5d1685e2bb9dd02
+    path: references/neo4j-import.md
+  - sha256: c0454c47c7eb001b6e247cd7e473df1b28a3a148a2dca6b2fe88a74a7602cc9b
+    path: scripts/build_ownership_map.py
+  - sha256: 95adec5458cc85b41d0ae7965b0a17e4e8eaa6aaab274459324580d9a91cc3cc
+    path: scripts/community_maintainers.py
+  - sha256: 0f8d1a1ac3ef807a9b66939a8cdfd02564f4cda018489a3664d37f8c3a7b1b93
+    path: scripts/query_ownership.py
+  - sha256: 362b547d6133659eb5c4fe889b8b930bea790f31e412f3198671baae09eec692
+    path: scripts/run_ownership_map.py
+requires_system:
+- name: git
+  check: git --version
+  brew: git
+- name: python3
+  check: python3 --version
+  brew: python3
+runtime:
+  language: python
+  manager: pip
+  dependencies:
+  - networkx

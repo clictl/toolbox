@@ -1,0 +1,32 @@
+spec: '1.0'
+name: typescript-docs
+description: Official TypeScript documentation including handbook, reference, and configuration guides
+version: '1.0'
+category: documentation
+tags:
+- documentation
+- typescript
+- javascript
+- types
+- microsoft
+server:
+  url: https://www.typescriptlang.org
+  headers:
+    Accept: text/html
+actions:
+- name: get_page
+  description: Fetch a specific TypeScript documentation page
+  params:
+  - name: page
+    type: string
+    required: true
+    description: Handbook page path (e.g., 2/basic-types, 2/everyday-types, 2/narrowing)
+    in: path
+  method: GET
+  path: /docs/handbook/{page}
+- name: tsconfig_reference
+  description: Fetch the TSConfig reference page for compiler options
+  params: []
+  method: GET
+  path: /tsconfig
+protocol: http

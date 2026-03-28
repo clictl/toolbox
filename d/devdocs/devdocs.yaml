@@ -1,0 +1,62 @@
+spec: '1.0'
+name: devdocs
+description: Combined API documentation browser for programming languages and libraries
+version: '1.0'
+category: documentation
+tags:
+- reference
+- api-docs
+- programming
+- developer-tools
+server:
+  url: https://devdocs.io
+  headers:
+    Accept: application/json
+actions:
+- name: list_docs
+  description: List all available documentation sets with name, version, and slug
+  transform:
+  - type: select
+    fields:
+    - name
+    - slug
+    - version
+    - release
+  - type: truncate
+    max_items: 50
+  - type: template
+    content: '# Available Documentation Sets
+
+
+      {{range .}}- **{{.name}}** ({{.slug}}) v{{.version}}
+
+      {{end}}
+
+      '
+  method: GET
+  path: /docs/docs.json
+- name: search
+  description: Search entries within a specific documentation set by slug
+  params:
+  - name: doc
+    type: string
+    required: true
+    description: Documentation slug (e.g., javascript, python~3.12, react, css, go, ruby~3.3)
+    in: path
+  transform:
+  - type: extract
+    path: $.entries
+  - type: truncate
+    max_items: 30
+  - type: template
+    content: '# Documentation Entries
+
+
+      {{range .}}- **{{.name}}** - {{.type}} ([view](https://devdocs.io/{{.path}}))
+
+      {{end}}
+
+      '
+  method: GET
+  path: /docs/{doc}/index.json
+protocol: http
