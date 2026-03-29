@@ -1,6 +1,8 @@
+spec: '1.0'
 name: remotion
-description: Skill for programmatic video creation with Remotion, including composition patterns, animation, and rendering workflows
-version: "1.0"
+description: Skill for programmatic video creation with Remotion, including composition patterns, animation, and rendering
+  workflows
+version: '1.0'
 category: media
 tags:
 - skill
@@ -10,22 +12,3 @@ tags:
 - react
 - rendering
 - media
-protocol: skill
-owner_name: Remotion
-namespace: remotion
-website: https://github.com/remotion-dev/remotion
-support_url: https://github.com/remotion-dev/remotion/issues
-pricing_model: free
-license: MIT
-platforms:
-- name: claude-code
-  install_method: skill
-  config_path: .claude/skills/
-- name: cursor
-  install_method: skill
-  config_path: .cursor/skills/
-skill_metadata:
-  author: remotion
-  version: '1.0'
-auth:
-- type: none

@@ -1,7 +1,7 @@
+spec: '1.0'
 name: frontend-design
-description: Skill that teaches agents to create distinctive, production-grade frontend
-  interfaces with high design quality
-version: "1.0"
+description: Skill that teaches agents to create distinctive, production-grade frontend interfaces with high design quality
+version: '1.0'
 category: developer
 tags:
 - skill
@@ -12,35 +12,12 @@ tags:
 - typography
 - react
 - production
-protocol: skill
-owner_name: Anthropic
-namespace: anthropic
-website: https://github.com/anthropics/skills
-support_url: https://github.com/anthropics/skills/issues
-pricing_model: free
-license: Apache-2.0
 source:
-  type: github
   repo: anthropics/skills
   path: skills/frontend-design/
   ref: main
   files:
-  - name: LICENSE.txt
-    sha256: 0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594
-  - name: SKILL.md
-    sha256: b81e2ff87ed8fa4d6c377ccb127a7254c9e6a77e3ae94f21e6b514f7bb2945a0
-platforms:
-- name: claude-code
-  install_method: skill
-  config_path: .claude/skills/
-- name: cursor
-  install_method: skill
-  config_path: .cursor/skills/
-- name: vscode
-  install_method: copy
-  config_path: .github/skills/
-skill_metadata:
-  author: anthropic
-  version: '1.0'
-auth:
-- type: none
+  - sha256: 0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594
+    path: LICENSE.txt
+  - sha256: b81e2ff87ed8fa4d6c377ccb127a7254c9e6a77e3ae94f21e6b514f7bb2945a0
+    path: SKILL.md

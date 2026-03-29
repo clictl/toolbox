@@ -1,7 +1,7 @@
+spec: '1.0'
 name: internal-comms
-description: Write internal communications like team updates, newsletters, and
-  incident reports using company formatting guidelines
-version: "1.0"
+description: Write internal communications like team updates, newsletters, and incident reports using company formatting guidelines
+version: '1.0'
 category: productivity
 tags:
 - skill
@@ -10,46 +10,20 @@ tags:
 - templates
 - business
 - internal
-protocol: skill
-owner_name: Anthropic
-namespace: anthropic
-website: https://github.com/anthropics/skills
-support_url: https://github.com/anthropics/skills/issues
-pricing_model: free
-license: Apache-2.0
 source:
-  type: github
   repo: anthropics/skills
   path: skills/internal-comms/
   ref: main
   files:
-  - name: LICENSE.txt
-    sha256: 58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd
-  - name: SKILL.md
-    sha256: 067b7587a344a928fc6534ef66b1bcd591fc7c26d207ea7ca3334aeb678d6475
-  - name: examples/3p-updates.md
-    sha256: 087e4363c0f3513728a7e695eeb9ead5c3ecd12a4681b59340691180e65b68fc
-  - name: examples/company-newsletter.md
-    sha256: 30f81cfbdb03858a006169c72169024089c7c5d3d32611d337782da4f38c86b5
-  - name: examples/faq-answers.md
-    sha256: 5ecd3356cd6666937f2ebefa753253edfdbdca15e368d07baf398bfcced72484
-  - name: examples/general-comms.md
-    sha256: 4d3a4bb198a77626bcf018e96b2b45a2dbabed172d4ade0fcd70d23ae8a47a47
-platforms:
-- name: claude-code
-  install_method: skill
-  config_path: .claude/skills/
-- name: cursor
-  install_method: skill
-  config_path: .cursor/skills/
-- name: codex
-  install_method: skill
-  config_path: .codex/skills/
-- name: vscode
-  install_method: copy
-  config_path: .github/skills/
-skill_metadata:
-  author: anthropic
-  version: '1.0'
-auth:
-- type: none
+  - sha256: 58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd
+    path: LICENSE.txt
+  - sha256: 067b7587a344a928fc6534ef66b1bcd591fc7c26d207ea7ca3334aeb678d6475
+    path: SKILL.md
+  - sha256: 087e4363c0f3513728a7e695eeb9ead5c3ecd12a4681b59340691180e65b68fc
+    path: examples/3p-updates.md
+  - sha256: 30f81cfbdb03858a006169c72169024089c7c5d3d32611d337782da4f38c86b5
+    path: examples/company-newsletter.md
+  - sha256: 5ecd3356cd6666937f2ebefa753253edfdbdca15e368d07baf398bfcced72484
+    path: examples/faq-answers.md
+  - sha256: 4d3a4bb198a77626bcf018e96b2b45a2dbabed172d4ade0fcd70d23ae8a47a47
+    path: examples/general-comms.md

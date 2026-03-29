@@ -50,11 +50,13 @@ actions:
     description: List all items
     method: GET
     path: /items
+    output: json
     params:
       - name: limit
         type: int
         required: false
         description: Maximum number of items to return
+        example: "25"
         in: query
 ```
 

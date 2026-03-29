@@ -1,6 +1,7 @@
+spec: '1.0'
 name: netlify-deploy
 description: Deploy web projects to Netlify using the Netlify CLI
-version: "1.0"
+version: '1.0'
 category: devops
 tags:
 - skill
@@ -8,53 +9,27 @@ tags:
 - deployment
 - hosting
 - frontend
-protocol: skill
-owner_name: OpenAI
-namespace: openai
-website: https://github.com/openai/skills
-support_url: https://github.com/openai/skills/issues
-pricing_model: free
-license: MIT
 source:
-  type: github
   repo: openai/skills
   path: skills/.curated/netlify-deploy/
   ref: main
   files:
-  - name: LICENSE.txt
-    sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
-  - name: SKILL.md
-    sha256: bb2c29bf599a043cade932f60cc64f632ca100e8767ccdfa2ba1a42c8d43958f
-  - name: agents/openai.yaml
-    sha256: 7d3acb1ee5376c98f3366401cd413200a4aab82af48bbe97382565dcdd04870f
-  - name: assets/netlify-small.svg
-    sha256: a2d9b9b5087c840247eb8e8360120ce9a20780c5470519b7703f49e920f780cd
-  - name: assets/netlify.png
-    sha256: ffbeef6d0af29a9c52f84297630f57c2c8ae86c1771458b24ad19795c4811160
-  - name: references/cli-commands.md
-    sha256: a24b08401b8c796e4a58933a71441b3341b61afc840d690d9127b27ab00cfe05
-  - name: references/deployment-patterns.md
-    sha256: fdb8c3b96fe03099826e4207b4933df3ff97571415f5e283567979bdc86cdc85
-  - name: references/netlify-toml.md
-    sha256: 436ea3c2e0ce04abb34895db993d91b8660423977d9c52a89f2dfa014cad0b9c
-platforms:
-- name: claude-code
-  install_method: skill
-  config_path: .claude/skills/
-- name: cursor
-  install_method: skill
-  config_path: .cursor/skills/
-- name: codex
-  install_method: skill
-  config_path: .codex/skills/
-- name: vscode
-  install_method: copy
-  config_path: .github/skills/
-skill_metadata:
-  author: openai
-  version: '1.0'
-auth:
-- type: none
+  - sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
+    path: LICENSE.txt
+  - sha256: bb2c29bf599a043cade932f60cc64f632ca100e8767ccdfa2ba1a42c8d43958f
+    path: SKILL.md
+  - sha256: 7d3acb1ee5376c98f3366401cd413200a4aab82af48bbe97382565dcdd04870f
+    path: agents/openai.yaml
+  - sha256: a2d9b9b5087c840247eb8e8360120ce9a20780c5470519b7703f49e920f780cd
+    path: assets/netlify-small.svg
+  - sha256: ffbeef6d0af29a9c52f84297630f57c2c8ae86c1771458b24ad19795c4811160
+    path: assets/netlify.png
+  - sha256: a24b08401b8c796e4a58933a71441b3341b61afc840d690d9127b27ab00cfe05
+    path: references/cli-commands.md
+  - sha256: fdb8c3b96fe03099826e4207b4933df3ff97571415f5e283567979bdc86cdc85
+    path: references/deployment-patterns.md
+  - sha256: 436ea3c2e0ce04abb34895db993d91b8660423977d9c52a89f2dfa014cad0b9c
+    path: references/netlify-toml.md
 requires_system:
 - name: git
   check: git --version

@@ -1,7 +1,7 @@
+spec: '1.0'
 name: brand-guidelines
-description: Apply Anthropic's official brand colors and typography to artifacts
-  for a consistent look and feel
-version: "1.0"
+description: Apply Anthropic's official brand colors and typography to artifacts for a consistent look and feel
+version: '1.0'
 category: design
 tags:
 - skill
@@ -10,44 +10,18 @@ tags:
 - typography
 - styling
 - anthropic
-protocol: skill
-owner_name: Anthropic
-namespace: anthropic
-website: https://github.com/anthropics/skills
-support_url: https://github.com/anthropics/skills/issues
-pricing_model: free
-license: Apache-2.0
 source:
-  type: github
   repo: anthropics/skills
   path: skills/brand-guidelines/
   ref: main
   files:
-  - name: LICENSE.txt
-    sha256: 58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd
-  - name: SKILL.md
-    sha256: 1120b3769e2985cefb3d25be981b1f914abeba57ae079b83c20c666c164fa9fe
-platforms:
-- name: claude-code
-  install_method: skill
-  config_path: .claude/skills/
-- name: cursor
-  install_method: skill
-  config_path: .cursor/skills/
-- name: codex
-  install_method: skill
-  config_path: .codex/skills/
-- name: vscode
-  install_method: copy
-  config_path: .github/skills/
-skill_metadata:
-  author: anthropic
-  version: '1.0'
-auth:
-- type: none
+  - sha256: 58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd
+    path: LICENSE.txt
+  - sha256: 1120b3769e2985cefb3d25be981b1f914abeba57ae079b83c20c666c164fa9fe
+    path: SKILL.md
 requires_system:
 - name: python3
-  check: "python3 --version"
+  check: python3 --version
   brew: python3
 runtime:
   language: python

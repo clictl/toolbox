@@ -1,74 +1,67 @@
+spec: '1.0'
 name: gh
 description: GitHub CLI for interacting with GitHub repositories. View issues, pull requests, repo details, and workflow runs
-version: "1.0"
+version: '1.0'
 category: developer
-tags: [github, gh, git, pull-requests, issues, ci]
-protocol: cli
-tool_type: cli
-owner_name: GitHub
-website: https://cli.github.com
-support_url: https://cli.github.com/manual/
-
-connection:
+tags:
+- github
+- gh
+- git
+- pull-requests
+- issues
+- ci
+server:
+  type: command
   shell: /bin/sh
   requires:
-    - name: gh
-      url: https://cli.github.com
-      check: "gh --version"
-
-auth:
-  - type: none
-
+  - name: gh
+    url: https://cli.github.com
+    check: gh --version
 actions:
-  - name: issue_list
-    description: List open issues in the current repository
-    run: "gh issue list {{#label}}--label {{label}}{{/label}} {{#limit}}--limit {{limit}}{{/limit}}"
-    params:
-      - name: label
-        type: string
-        description: Filter issues by label
-      - name: limit
-        type: int
-        default: "30"
-        description: Maximum number of issues to list
-
-  - name: issue_view
-    description: View details of a specific issue including body, labels, and comments
-    run: "gh issue view {{number}}"
-    params:
-      - name: number
-        type: int
-        required: true
-        description: Issue number to view
-
-  - name: pr_list
-    description: List open pull requests in the current repository
-    run: "gh pr list {{#limit}}--limit {{limit}}{{/limit}}"
-    params:
-      - name: limit
-        type: int
-        default: "30"
-        description: Maximum number of pull requests to list
-
-  - name: pr_view
-    description: View details of a specific pull request including status, reviews, and checks
-    run: "gh pr view {{number}}"
-    params:
-      - name: number
-        type: int
-        required: true
-        description: Pull request number to view
-
-  - name: repo_view
-    description: View repository details including description, stars, and visibility
-    run: "gh repo view"
-    params: []
-
-  - name: run_list
-    description: List recent GitHub Actions workflow runs and their statuses
-    run: "gh run list {{#limit}}--limit {{limit}}{{/limit}}"
-    params:
-      - name: limit
-        type: int
-        default: "20"
-        description: Maximum number of workflow runs to list
+- name: issue_list
+  description: List open issues in the current repository
+  run: gh issue list {{#label}}--label {{label}}{{/label}} {{#limit}}--limit {{limit}}{{/limit}}
+  params:
+  - name: label
+    type: string
+    description: Filter issues by label
+  - name: limit
+    type: int
+    default: '30'
+    description: Maximum number of issues to list
+- name: issue_view
+  description: View details of a specific issue including body, labels, and comments
+  run: gh issue view {{number}}
+  params:
+  - name: number
+    type: int
+    required: true
+    description: Issue number to view
+- name: pr_list
+  description: List open pull requests in the current repository
+  run: gh pr list {{#limit}}--limit {{limit}}{{/limit}}
+  params:
+  - name: limit
+    type: int
+    default: '30'
+    description: Maximum number of pull requests to list
+- name: pr_view
+  description: View details of a specific pull request including status, reviews, and checks
+  run: gh pr view {{number}}
+  params:
+  - name: number
+    type: int
+    required: true
+    description: Pull request number to view
+- name: repo_view
+  description: View repository details including description, stars, and visibility
+  run: gh repo view
+  params: []
+- name: run_list
+  description: List recent GitHub Actions workflow runs and their statuses
+  run: gh run list {{#limit}}--limit {{limit}}{{/limit}}
+  params:
+  - name: limit
+    type: int
+    default: '20'
+    description: Maximum number of workflow runs to list

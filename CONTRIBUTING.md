@@ -13,54 +13,226 @@ All specs live under `{first-letter}/{tool-name}/` where `{first-letter}` is the
 Name the file `<tool-name>.yaml` using kebab-case.
 
 ```yaml
+spec: "2.0"
 name: my-tool
 description: Clear, one-line description of what it does
 version: "1.0"
 category: utilities
 tags: [api, utility, example]
-protocol: http
 
-connection:
-  base_url: https://api.example.com
+server:
+  type: http
+  url: https://api.example.com
   timeout: 15s
+
+auth:
+  env: MY_TOOL_API_KEY
+  header: Authorization
+  value: "Bearer ${MY_TOOL_API_KEY}"
+
+instructions: |
+  When to use this tool and what to watch out for.
 
 actions:
   - name: get-data
     description: What this action does
-    method: GET
-    path: /data
+    request:
+      method: GET
+      path: /data
     params:
       - name: query
-        type: string
         required: true
-        in: query
+        example: "search term"
+    response:
+      example: |
+        [{"id": 1, "name": "Example"}]
+    assert:
+      - type: status
+        values: [200]
+    transform:
+      - type: json
+        select: [id, name]
 ```
 
 ### 3. Add marketplace fields (optional but encouraged)
 
 ```yaml
-owner_name: Your Company
-website: https://example.com
-support_url: https://example.com/docs
-license: MIT
-pricing_model: free       # free, freemium, paid, contact
+pricing:
+  model: free             # free, freemium, paid, contact
+  url: https://example.com/pricing
+
+privacy:
+  local: true             # For CLI tools that don't send data externally
 ```
 
 ### 4. Submit a PR
 
 - One tool per PR
 - Test with `clictl info <name>` if possible
-- Include `owner_name` and `website` so users know who maintains the tool
-- Set `pricing_model` honestly
+- Set `pricing.model` honestly
 - If your spec uses transforms, test them: `clictl run <tool> <action> --raw | clictl transform --file your-transforms.yaml`
+
+## Spec Types
+
+### REST API
+
+Uses `server.type: http` with actions that have a `request` block containing `method` and `path`.
+
+```yaml
+server:
+  type: http
+  url: https://api.example.com
+
+actions:
+  - name: search
+    description: Search for items
+    request:
+      method: GET
+      path: /search
+    params:
+      - name: q
+        required: true
+    assert:
+      - type: status
+        values: [200]
+    transform:
+      - type: json
+        select: [name, status]
+```
+
+### CLI Wrapper
+
+Uses `server.type: command` with actions that have a `run` field.
+
+```yaml
+server:
+  type: command
+  shell: bash
+  requires:
+    - name: jq
+      check: "jq --version"
+      url: https://jqlang.github.io/jq/
+
+actions:
+  - name: filter
+    description: Filter JSON with a jq expression
+    output: json
+    run: "echo '{{input}}' | jq '{{filter}}'"
+    params:
+      - name: input
+        required: true
+      - name: filter
+        required: true
+        example: ".[] | {name, id}"
+```
+
+### MCP Server
+
+Uses `server.type: stdio` (or `http` for remote). Actions can be static, dynamic, or both.
+
+```yaml
+server:
+  type: stdio
+  command: npx
+  args: ["-y", "@modelcontextprotocol/server-filesystem", "/home"]
+
+actions:
+  discover: true
+  static:
+    - name: read_file
+      description: Read file contents
+      params:
+        - name: path
+          required: true
+
+deny:
+  - execute_command
+  - delete_file
+
+transforms:
+  "*":
+    - type: truncate
+      max_length: 16000
+```
+
+### Skill
+
+No `server` or `actions` blocks. Uses `source` to point to skill files.
+
+```yaml
+name: my-skill
+description: What this skill does
+version: "1.0"
+category: productivity
+tags: [skill, example]
+
+source:
+  repo: myorg/my-repo
+  path: skills/my-skill
+  ref: main
+  files:
+    - path: SKILL.md
+      sha256: abc123...
+
+sandbox:
+  bash_allow: [python3]
+  filesystem:
+    read: ["**/*.py"]
+```
 
 ## Requirements
 
 - `name`: unique, kebab-case
 - `description`: clear one-liner
-- At least one action with a working endpoint
-- No hardcoded credentials (use `key_env` for auth)
+- `version`: quoted string (e.g., `"1.0"`)
+- `category`: one of the standard categories
+- `tags`: at least 2-3 relevant search tags
+- At least one action with a working endpoint (for API/CLI specs)
+- No hardcoded credentials (use `auth.env` for vault references)
 - Prefer public, stable APIs
+- Actions that change state must set `mutable: true`
+- Every action should have `assert` and `transform` blocks
+
+## Auth
+
+Use the template model. `env` names the vault key. `value` is what gets sent.
+
+```yaml
+# Bearer token
+auth:
+  env: GITHUB_TOKEN
+  header: Authorization
+  value: "Bearer ${GITHUB_TOKEN}"
+
+# API key in custom header
+auth:
+  env: API_KEY
+  header: x-api-key
+  value: "${API_KEY}"
+
+# No auth: omit the auth block entirely
+```
+
+Never hardcode secrets. The `${KEY}` syntax references vault keys that the user sets with `clictl vault set`.
+
+## Transforms
+
+Every action should transform raw API responses into clean, focused output.
+
+```yaml
+transform:
+  # Extract nested data
+  - type: json
+    extract: "$.data.items"
+    select: [name, status, url]
+    rename: { stargazers_count: stars }
+
+  # Limit output size
+  - type: truncate
+    max_items: 20
+```
+
+See [Spec Reference](docs/spec-reference.md) for the complete transform catalog.
 
 ## Questions?
 

@@ -1,63 +1,55 @@
+spec: '1.0'
 name: mysql-mcp
 description: MCP server for MySQL database access with schema inspection and read-only queries
-version: "1.0"
+version: '1.0'
 category: data
-tags: [mcp, mysql, database, sql, queries, schema]
-protocol: mcp
-owner_name: Community
-website: https://github.com/benborla/mcp-server-mysql
-support_url: https://github.com/benborla/mcp-server-mysql/issues
-pricing_model: free
-license: MIT
-
+tags:
+- mcp
+- mysql
+- database
+- sql
+- queries
+- schema
+auth:
+  env: MYSQL_URL
+  inject: env
 package:
   registry: npm
-  name: "@benborla29/mcp-server-mysql"
-  version: "2.0.8"
+  name: '@benborla29/mcp-server-mysql'
+  version: 2.0.8
   manager: npx
-
-auth:
-  - type: api_key
-    key_env: MYSQL_URL
-    inject:
-      location: env
-      param: MYSQL_URL
-
 tools:
   expose:
-    - name: query
-      description: "Execute a read-only SQL query"
-      params:
-        - name: sql
-          type: string
-          required: true
-          description: "SQL SELECT query to execute"
-    - name: list_tables
-      description: "List all tables in the database"
-      params:
-        - name: database
-          type: string
-          required: false
-          description: "Database name"
-    - name: describe_table
-      description: "Get the schema of a table"
-      params:
-        - name: table
-          type: string
-          required: true
-          description: "Table name"
-    - name: list_databases
-      description: "List all available databases"
-
+  - name: query
+    description: Execute a read-only SQL query
+    params:
+    - name: sql
+      type: string
+      required: true
+      description: SQL SELECT query to execute
+  - name: list_tables
+    description: List all tables in the database
+    params:
+    - name: database
+      type: string
+      required: false
+      description: Database name
+  - name: describe_table
+    description: Get the schema of a table
+    params:
+    - name: table
+      type: string
+      required: true
+      description: Table name
+  - name: list_databases
+    description: List all available databases
 prompts:
   system: |
     This server provides read-only access to MySQL databases. Use it
     to inspect schemas, run SELECT queries, and explore database
     structure. Write operations are not supported by default.
-
 resources:
   expose: all
-
 install_mode:
   default: mcp
   allow_mcp: true

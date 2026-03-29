@@ -1,34 +1,31 @@
+spec: "1.0"
 name: sourcegraph
 description: Sourcegraph API for searching code across repositories and browsing file contents
 version: "1.0"
 category: developer
 tags: [sourcegraph, code-search, repositories, grep, developer]
-protocol: rest
-owner_name: Sourcegraph
-website: https://sourcegraph.com
-support_url: https://docs.sourcegraph.com/api
-pricing_model: freemium
 
-connection:
-  base_url: https://sourcegraph.com/.api
+pricing:
+  model: freemium
+
+server:
+  type: http
+  url: https://sourcegraph.com/.api
   timeout: 30s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: SRC_ACCESS_TOKEN
-    inject:
-      location: header
-      param: Authorization
-      prefix: "token"
+  env: SRC_ACCESS_TOKEN
+  header: Authorization
+  value: "token ${SRC_ACCESS_TOKEN}"
 
 actions:
   - name: search
     description: Search code across all indexed repositories using Sourcegraph query syntax
-    method: POST
-    path: /graphql
-    safe: true
+    request:
+      method: POST
+      path: /graphql
     params:
       - name: query
         type: string
@@ -36,16 +33,19 @@ actions:
         description: "Sourcegraph search query, e.g. 'repo:github.com/org/repo lang:go func main'"
         in: body
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data.search.results.results"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.data.search.results.results"
+      - type: truncate
+        max_items: 20
 
   - name: list-repos
     description: Search for repositories indexed on Sourcegraph
-    method: POST
-    path: /graphql
-    safe: true
+    request:
+      method: POST
+      path: /graphql
     params:
       - name: query
         type: string
@@ -53,16 +53,19 @@ actions:
         description: "Repository search query, e.g. 'repo:github.com/org/' or 'repo:.*kubernetes.*'"
         in: body
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data.repositories.nodes"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.data.repositories.nodes"
+      - type: truncate
+        max_items: 20
 
   - name: get-file
     description: Read the contents of a file from a specific repository and revision
-    method: POST
-    path: /graphql
-    safe: true
+    request:
+      method: POST
+      path: /graphql
     params:
       - name: repo
         type: string
@@ -80,15 +83,18 @@ actions:
         description: "File path within the repository, e.g. 'README.md'"
         in: body
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data.repository.commit.file"
-      - select: ["path", "content", "totalLines", "byteSize"]
+      - type: json
+        extract: "$.data.repository.commit.file"
+        select: ["path", "content", "totalLines", "byteSize"]
 
   - name: stream-search
     description: Search code using the streaming search API for faster results
-    method: GET
-    path: /search/stream
+    request:
+      method: GET
+      path: /search/stream
     params:
       - name: q
         type: string
@@ -101,7 +107,10 @@ actions:
         description: Maximum number of results to display
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$"
+      - type: truncate
+        max_items: 20

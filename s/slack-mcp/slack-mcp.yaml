@@ -1,159 +1,155 @@
+spec: '1.0'
 name: slack-mcp
 description: MCP server for Slack workspace access with channel management, messaging, and user tools
-version: "1.0"
+version: '1.0'
 category: communication
-tags: [mcp, slack, messaging, channels, workspace, communication]
-protocol: mcp
-owner_name: Anthropic
-website: https://github.com/modelcontextprotocol/servers
-support_url: https://github.com/modelcontextprotocol/servers/issues
-pricing_model: free
-license: MIT
-
+tags:
+- mcp
+- slack
+- messaging
+- channels
+- workspace
+- communication
+auth:
+  env: SLACK_BOT_TOKEN
+  inject: env
 package:
   registry: npm
-  name: "@modelcontextprotocol/server-slack"
-  version: "0.6.2"
+  name: '@modelcontextprotocol/server-slack'
+  version: 0.6.2
   manager: npx
-
-auth:
-  - type: api_key
-    key_env: SLACK_BOT_TOKEN
-    inject:
-      location: env
-      param: SLACK_BOT_TOKEN
-
 tools:
   expose:
-    - name: list_channels
-      description: "List public channels in the Slack workspace"
-      params:
-        - name: limit
-          type: int
-          required: false
-          description: "Maximum number of channels to return (default 100)"
-        - name: cursor
-          type: string
-          required: false
-          description: "Pagination cursor for next page of results"
-    - name: post_message
-      description: "Send a message to a Slack channel"
-      destructive: true
-      params:
-        - name: channel_id
-          type: string
-          required: true
-          description: "The ID of the channel to post to"
-        - name: text
-          type: string
-          required: true
-          description: "The message text to send"
-    - name: reply_to_thread
-      description: "Reply to a specific message thread"
-      destructive: true
-      params:
-        - name: channel_id
-          type: string
-          required: true
-          description: "The ID of the channel containing the thread"
-        - name: thread_ts
-          type: string
-          required: true
-          description: "Timestamp of the parent message to reply to"
-        - name: text
-          type: string
-          required: true
-          description: "The reply message text"
-    - name: add_reaction
-      description: "Add an emoji reaction to a message"
-      destructive: true
-      params:
-        - name: channel_id
-          type: string
-          required: true
-          description: "The ID of the channel containing the message"
-        - name: timestamp
-          type: string
-          required: true
-          description: "Timestamp of the message to react to"
-        - name: reaction
-          type: string
-          required: true
-          description: "Emoji name without colons (e.g. thumbsup, heart)"
-    - name: get_channel_history
-      description: "Get recent messages from a channel"
-      params:
-        - name: channel_id
-          type: string
-          required: true
-          description: "The ID of the channel to retrieve history from"
-        - name: limit
-          type: int
-          required: false
-          description: "Number of messages to return (default 10)"
-    - name: get_thread_replies
-      description: "Get all replies in a message thread"
-      params:
-        - name: channel_id
-          type: string
-          required: true
-          description: "The ID of the channel containing the thread"
-        - name: thread_ts
-          type: string
-          required: true
-          description: "Timestamp of the parent message"
-    - name: search_messages
-      description: "Search for messages across the workspace"
-      params:
-        - name: query
-          type: string
-          required: true
-          description: "Search query string"
-    - name: get_users
-      description: "List users in the workspace"
-      params:
-        - name: limit
-          type: int
-          required: false
-          description: "Maximum number of users to return (default 100)"
-        - name: cursor
-          type: string
-          required: false
-          description: "Pagination cursor for next page of results"
-    - name: get_user_profile
-      description: "Get detailed profile for a specific user"
-      params:
-        - name: user_id
-          type: string
-          required: true
-          description: "The Slack user ID to look up"
-  tool_transforms:
+  - name: list_channels
+    description: List public channels in the Slack workspace
+    params:
+    - name: limit
+      type: int
+      required: false
+      description: Maximum number of channels to return (default 100)
+    - name: cursor
+      type: string
+      required: false
+      description: Pagination cursor for next page of results
+  - name: post_message
+    description: Send a message to a Slack channel
+    params:
+    - name: channel_id
+      type: string
+      required: true
+      description: The ID of the channel to post to
+    - name: text
+      type: string
+      required: true
+      description: The message text to send
+    mutable: true
+  - name: reply_to_thread
+    description: Reply to a specific message thread
+    params:
+    - name: channel_id
+      type: string
+      required: true
+      description: The ID of the channel containing the thread
+    - name: thread_ts
+      type: string
+      required: true
+      description: Timestamp of the parent message to reply to
+    - name: text
+      type: string
+      required: true
+      description: The reply message text
+    mutable: true
+  - name: add_reaction
+    description: Add an emoji reaction to a message
+    params:
+    - name: channel_id
+      type: string
+      required: true
+      description: The ID of the channel containing the message
+    - name: timestamp
+      type: string
+      required: true
+      description: Timestamp of the message to react to
+    - name: reaction
+      type: string
+      required: true
+      description: Emoji name without colons (e.g. thumbsup, heart)
+    mutable: true
+  - name: get_channel_history
+    description: Get recent messages from a channel
+    params:
+    - name: channel_id
+      type: string
+      required: true
+      description: The ID of the channel to retrieve history from
+    - name: limit
+      type: int
+      required: false
+      description: Number of messages to return (default 10)
+  - name: get_thread_replies
+    description: Get all replies in a message thread
+    params:
+    - name: channel_id
+      type: string
+      required: true
+      description: The ID of the channel containing the thread
+    - name: thread_ts
+      type: string
+      required: true
+      description: Timestamp of the parent message
+  - name: search_messages
+    description: Search for messages across the workspace
+    params:
+    - name: query
+      type: string
+      required: true
+      description: Search query string
+  - name: get_users
+    description: List users in the workspace
+    params:
+    - name: limit
+      type: int
+      required: false
+      description: Maximum number of users to return (default 100)
+    - name: cursor
+      type: string
+      required: false
+      description: Pagination cursor for next page of results
+  - name: get_user_profile
+    description: Get detailed profile for a specific user
+    params:
+    - name: user_id
+      type: string
+      required: true
+      description: The Slack user ID to look up
+  transforms:
     get_channel_history:
-      - truncate: { max_items: 50 }
+    - truncate:
+        max_items: 50
     search_messages:
-      - truncate: { max_items: 30 }
+    - truncate:
+        max_items: 30
     get_users:
-      - truncate: { max_items: 100 }
-
-permissions:
+    - truncate:
+        max_items: 100
+sandbox:
   network:
-    - "slack.com"
+    allow:
+    - slack.com
   env:
-    - "SLACK_BOT_TOKEN"
-    - "SLACK_TEAM_ID"
-
+    allow:
+    - SLACK_BOT_TOKEN
+    - SLACK_TEAM_ID
 prompts:
   system: |
     This server provides Slack workspace access. Always confirm with the
     user before posting messages or reactions. Use search_messages and
     get_channel_history to find context before responding in threads.
   tool_instructions:
-    post_message: "Always confirm the channel and message content with the user first."
-    reply_to_thread: "Read the thread context with get_thread_replies before replying."
-
+    post_message: Always confirm the channel and message content with the user first.
+    reply_to_thread: Read the thread context with get_thread_replies before replying.
 resources:
   expose: all
-
 install_mode:
   default: both
   allow_mcp: true

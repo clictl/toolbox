@@ -1,33 +1,31 @@
+spec: "1.0"
 name: stability-ai
 description: Stability AI API for image generation, upscaling, and editing using Stable Diffusion models
 version: "1.0"
 category: ai
 tags: [ai, image-generation, stable-diffusion, stability]
-protocol: rest
-owner_name: Stability AI
-website: https://stability.ai
-support_url: https://platform.stability.ai/docs/api-reference
-pricing_model: paid
 
-connection:
-  base_url: https://api.stability.ai/v2beta
+pricing:
+  model: paid
+
+server:
+  type: http
+  url: https://api.stability.ai/v2beta
   timeout: 60s
   headers:
     Accept: application/json
 
 auth:
-  - type: bearer
-    key_env: STABILITY_API_KEY
-    inject:
-      location: header
-      key: Authorization
-      prefix: "Bearer "
+  env: STABILITY_API_KEY
+  header: Authorization
+  value: "Bearer ${STABILITY_API_KEY}"
 
 actions:
   - name: generate
     description: Generate an image from a text prompt using Stable Image Core
-    method: POST
-    path: /stable-image/generate/core
+    request:
+      method: POST
+      path: /stable-image/generate/core
     params:
       - name: prompt
         type: string
@@ -53,14 +51,17 @@ actions:
       output_format: "{{output_format}}"
       aspect_ratio: "{{aspect_ratio}}"
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
+      - type: json
+        extract: "$"
 
   - name: generate-ultra
     description: Generate a high-quality image using Stable Image Ultra
-    method: POST
-    path: /stable-image/generate/ultra
+    request:
+      method: POST
+      path: /stable-image/generate/ultra
     params:
       - name: prompt
         type: string
@@ -86,14 +87,17 @@ actions:
       output_format: "{{output_format}}"
       aspect_ratio: "{{aspect_ratio}}"
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
+      - type: json
+        extract: "$"
 
   - name: upscale
     description: Upscale an image using fast upscaling
-    method: POST
-    path: /stable-image/upscale/fast
+    request:
+      method: POST
+      path: /stable-image/upscale/fast
     params:
       - name: image
         type: string
@@ -109,14 +113,17 @@ actions:
       image: "{{image}}"
       output_format: "{{output_format}}"
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
+      - type: json
+        extract: "$"
 
   - name: remove-background
     description: Remove the background from an image
-    method: POST
-    path: /stable-image/edit/remove-background
+    request:
+      method: POST
+      path: /stable-image/edit/remove-background
     params:
       - name: image
         type: string
@@ -132,6 +139,8 @@ actions:
       image: "{{image}}"
       output_format: "{{output_format}}"
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
+      - type: json
+        extract: "$"

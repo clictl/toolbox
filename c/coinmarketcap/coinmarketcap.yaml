@@ -1,31 +1,28 @@
+spec: "1.0"
 name: coinmarketcap
 description: Cryptocurrency market data, rankings, and metadata
 version: "1.0"
 category: finance
 tags: [crypto, market-data, prices, rankings]
-protocol: rest
-owner_name: CoinMarketCap
-website: https://coinmarketcap.com
-support_url: https://coinmarketcap.com/api/documentation/v1/
 
-connection:
-  base_url: https://pro-api.coinmarketcap.com
+server:
+  type: http
+  url: https://pro-api.coinmarketcap.com
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: CMC_API_KEY
-    inject:
-      location: header
-      key: X-CMC_PRO_API_KEY
+  env: CMC_API_KEY
+  header: X-CMC_PRO_API_KEY
+  value: "${CMC_API_KEY}"
 
 actions:
   - name: listings
     description: Get top cryptocurrencies ranked by market cap
-    method: GET
-    path: /v1/cryptocurrency/listings/latest
+    request:
+      method: GET
+      path: /v1/cryptocurrency/listings/latest
     params:
       - name: limit
         type: int
@@ -38,12 +35,14 @@ actions:
         description: "Target currency for price conversion, e.g. 'USD', 'EUR', 'BTC'"
         in: query
     transform:
-      extract: "$.data"
+      - type: json
+        extract: "$.data"
 
   - name: quotes
     description: Get price quotes for specific cryptocurrencies by symbol
-    method: GET
-    path: /v2/cryptocurrency/quotes/latest
+    request:
+      method: GET
+      path: /v2/cryptocurrency/quotes/latest
     params:
       - name: symbol
         type: string
@@ -56,4 +55,5 @@ actions:
         description: Target currency for price conversion
         in: query
     transform:
-      extract: "$.data"
+      - type: json
+        extract: "$.data"

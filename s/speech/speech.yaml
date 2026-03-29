@@ -1,6 +1,7 @@
+spec: '1.0'
 name: speech
 description: Generate spoken audio for narration, product demo voiceover, IVR prompts, and accessibility reads
-version: "1.0"
+version: '1.0'
 category: media
 tags:
 - skill
@@ -8,69 +9,43 @@ tags:
 - audio
 - text-to-speech
 - voiceover
-protocol: skill
-owner_name: OpenAI
-namespace: openai
-website: https://github.com/openai/skills
-support_url: https://github.com/openai/skills/issues
-pricing_model: free
-license: MIT
 source:
-  type: github
   repo: openai/skills
   path: skills/.curated/speech/
   ref: main
   files:
-  - name: LICENSE.txt
-    sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
-  - name: SKILL.md
-    sha256: d6120efc03ea0e80204f687801cfaec8efc4519a3430b68e13e4ebd8e1c69b52
-  - name: agents/openai.yaml
-    sha256: 1a152d9e7e66b86100db33b8e6ff3327955bf107bb9e77044a1ad6dfb10d6e18
-  - name: assets/speech-small.svg
-    sha256: b879fe9fc476f183e1c9bfd0e2883b8b2c28c708ca3d90f409bed051fe6a173e
-  - name: assets/speech.png
-    sha256: b5abb383bba63a309f73a4da1060b50b6c92b1b5f974f44b8f609b3da10112f9
-  - name: references/accessibility.md
-    sha256: 34cd91bc6a3ef65c8da8997e312d163babcdfc3241f9e359418b3f5a76f15b76
-  - name: references/audio-api.md
-    sha256: dba58cfc0d5e125cf1ac13875193950233aa948639b268ed7799ca17bca66bfe
-  - name: references/cli.md
-    sha256: 77e6a0c01036ac0092cf37c3d5c88dc6800b223524c5b9c8920d10fc4f68e0cc
-  - name: references/codex-network.md
-    sha256: c956a51d3e67246cfb43982aa8c82065350fcce4ef7b94bd89e599c575c94d9c
-  - name: references/ivr.md
-    sha256: 2aaf225b7cea9277fe5413eb0360a845de035c00ea0d6f30348b5ce7138803fc
-  - name: references/narration.md
-    sha256: 3e68829fe4a5a47c3d37cbe9a1ed95ff3cedf1b303ff02a10501e56ad5e7c74a
-  - name: references/prompting.md
-    sha256: 2adcb001813be04e56918eb0d34d9a45f9326aa0fb240526ae74a926522b6554
-  - name: references/sample-prompts.md
-    sha256: c14e1b1c526f2fe555ab2dc86c0e8aead33d38238d2bfcfbf9de0c18d28bde03
-  - name: references/voice-directions.md
-    sha256: 5da0a4c59bdadb47d1795f51a9708b515fbf2901f0ca808cc5c66d83a336986d
-  - name: references/voiceover.md
-    sha256: a4bb96c31c8be6a62d35a103f9d7fc700b8004df2efd10595d00b63f0c096486
-  - name: scripts/text_to_speech.py
-    sha256: 0000014efdf1194512c017ffa0d0574ae65881f6a1340b7ed822053b6e3d3c44
-platforms:
-- name: claude-code
-  install_method: skill
-  config_path: .claude/skills/
-- name: cursor
-  install_method: skill
-  config_path: .cursor/skills/
-- name: codex
-  install_method: skill
-  config_path: .codex/skills/
-- name: vscode
-  install_method: copy
-  config_path: .github/skills/
-skill_metadata:
-  author: openai
-  version: '1.0'
-auth:
-- type: none
+  - sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
+    path: LICENSE.txt
+  - sha256: d6120efc03ea0e80204f687801cfaec8efc4519a3430b68e13e4ebd8e1c69b52
+    path: SKILL.md
+  - sha256: 1a152d9e7e66b86100db33b8e6ff3327955bf107bb9e77044a1ad6dfb10d6e18
+    path: agents/openai.yaml
+  - sha256: b879fe9fc476f183e1c9bfd0e2883b8b2c28c708ca3d90f409bed051fe6a173e
+    path: assets/speech-small.svg
+  - sha256: b5abb383bba63a309f73a4da1060b50b6c92b1b5f974f44b8f609b3da10112f9
+    path: assets/speech.png
+  - sha256: 34cd91bc6a3ef65c8da8997e312d163babcdfc3241f9e359418b3f5a76f15b76
+    path: references/accessibility.md
+  - sha256: dba58cfc0d5e125cf1ac13875193950233aa948639b268ed7799ca17bca66bfe
+    path: references/audio-api.md
+  - sha256: 77e6a0c01036ac0092cf37c3d5c88dc6800b223524c5b9c8920d10fc4f68e0cc
+    path: references/cli.md
+  - sha256: c956a51d3e67246cfb43982aa8c82065350fcce4ef7b94bd89e599c575c94d9c
+    path: references/codex-network.md
+  - sha256: 2aaf225b7cea9277fe5413eb0360a845de035c00ea0d6f30348b5ce7138803fc
+    path: references/ivr.md
+  - sha256: 3e68829fe4a5a47c3d37cbe9a1ed95ff3cedf1b303ff02a10501e56ad5e7c74a
+    path: references/narration.md
+  - sha256: 2adcb001813be04e56918eb0d34d9a45f9326aa0fb240526ae74a926522b6554
+    path: references/prompting.md
+  - sha256: c14e1b1c526f2fe555ab2dc86c0e8aead33d38238d2bfcfbf9de0c18d28bde03
+    path: references/sample-prompts.md
+  - sha256: 5da0a4c59bdadb47d1795f51a9708b515fbf2901f0ca808cc5c66d83a336986d
+    path: references/voice-directions.md
+  - sha256: a4bb96c31c8be6a62d35a103f9d7fc700b8004df2efd10595d00b63f0c096486
+    path: references/voiceover.md
+  - sha256: 0000014efdf1194512c017ffa0d0574ae65881f6a1340b7ed822053b6e3d3c44
+    path: scripts/text_to_speech.py
 requires_system:
 - name: python3
   check: python3 --version

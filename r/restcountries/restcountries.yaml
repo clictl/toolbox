@@ -1,25 +1,22 @@
+spec: "1.0"
 name: restcountries
 description: Information about countries including population, languages, currencies, flags, and borders
 version: "1.0"
 category: geo
 tags: [countries, geography, population, languages, currencies, flags]
-protocol: rest
-owner_name: REST Countries
-website: https://restcountries.com
-support_url: https://restcountries.com
 
-connection:
-  base_url: https://restcountries.com/v3.1
+server:
+  type: http
+  url: https://restcountries.com/v3.1
   timeout: 10s
-
-auth:
-  - type: none
 
 actions:
   - name: all
     description: List all countries with basic info
-    method: GET
-    path: /all
+    output: json
+    request:
+      method: GET
+      path: /all
     params:
       - name: fields
         type: string
@@ -28,13 +25,16 @@ actions:
 
   - name: name
     description: Search for countries by name (partial match supported)
-    method: GET
-    path: /name/{{name}}
+    output: json
+    request:
+      method: GET
+      path: /name/{{name}}
     params:
       - name: name
         type: string
         required: true
         description: "Country name or partial name, e.g. 'united', 'germany'"
+        example: "germany"
         in: path
       - name: fullText
         type: string
@@ -43,55 +43,70 @@ actions:
 
   - name: code
     description: Get a country by its ISO 3166-1 alpha-2 or alpha-3 code
-    method: GET
-    path: /alpha/{{code}}
+    output: json
+    request:
+      method: GET
+      path: /alpha/{{code}}
     params:
       - name: code
         type: string
         required: true
         description: "Country code, e.g. 'US', 'GB', 'DEU'"
+        example: "US"
         in: path
 
   - name: currency
     description: Search for countries that use a specific currency
-    method: GET
-    path: /currency/{{currency}}
+    output: json
+    request:
+      method: GET
+      path: /currency/{{currency}}
     params:
       - name: currency
         type: string
         required: true
         description: "Currency code, e.g. 'usd', 'eur', 'jpy'"
+        example: "eur"
         in: path
 
   - name: language
     description: Search for countries where a specific language is spoken
-    method: GET
-    path: /lang/{{language}}
+    output: json
+    request:
+      method: GET
+      path: /lang/{{language}}
     params:
       - name: language
         type: string
         required: true
         description: "Language code, e.g. 'spanish', 'french', 'por'"
+        example: "spanish"
         in: path
 
   - name: region
     description: Search for countries by region or subregion
-    method: GET
-    path: /region/{{region}}
+    output: json
+    request:
+      method: GET
+      path: /region/{{region}}
     params:
       - name: region
         type: string
         required: true
         description: "Region name: africa, americas, asia, europe, oceania"
+        example: "europe"
         in: path
 
   - name: capital
     description: Search for countries by capital city name
-    method: GET
-    path: /capital/{{capital}}
+    output: json
+    request:
+      method: GET
+      path: /capital/{{capital}}
     params:
       - name: capital
         type: string
         required: true
         description: "Capital city name, e.g. 'london', 'tokyo'"
+        example: "tokyo"
         in: path

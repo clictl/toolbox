@@ -1,27 +1,25 @@
+spec: "1.0"
 name: httpbin
 description: HTTP request and response testing service. Echoes back request details for debugging
 version: "1.0"
 category: data
 tags: [testing, debug, http, echo, headers, request]
-protocol: rest
-owner_name: httpbin
-website: https://httpbin.org
-support_url: https://github.com/postmanlabs/httpbin
 
-connection:
-  base_url: https://httpbin.org
+server:
+  type: http
+  url: https://httpbin.org
   timeout: 10s
-
-auth:
-  - type: none
 
 actions:
   - name: get
     description: Make a GET request and see what the server received (headers, args, origin IP)
-    method: GET
-    path: /get
+    output: json
+    request:
+      method: GET
+      path: /get
     assert:
-      - status: 200
+      - type: status
+        values: [200]
       - exists: "$.headers"
     params:
       - name: show_env
@@ -31,9 +29,10 @@ actions:
 
   - name: post
     description: Make a POST request and see the echoed body, headers, and form data
-    method: POST
-    safe: true
-    path: /post
+    output: json
+    request:
+      method: POST
+      path: /post
     params:
       - name: data
         type: string
@@ -42,44 +41,58 @@ actions:
 
   - name: headers
     description: Return the incoming request headers as JSON
-    method: GET
-    path: /headers
+    output: json
+    request:
+      method: GET
+      path: /headers
     params: []
 
   - name: ip
     description: Return the requester's IP address
-    method: GET
-    path: /ip
+    output: text
+    request:
+      method: GET
+      path: /ip
     params: []
     transform:
-      extract: "$.origin"
+      - type: json
+        extract: "$.origin"
 
   - name: status
     description: Return a response with the specified HTTP status code (useful for testing error handling)
-    method: GET
-    path: /status/{{code}}
+    output: text
+    request:
+      method: GET
+      path: /status/{{code}}
     params:
       - name: code
         type: int
         required: true
         description: "HTTP status code to return, e.g. 200, 404, 500"
+        example: 200
         in: path
 
   - name: delay
     description: Return a response after a specified delay (useful for timeout testing)
-    method: GET
-    path: /delay/{{seconds}}
+    output: json
+    request:
+      method: GET
+      path: /delay/{{seconds}}
     params:
       - name: seconds
         type: int
         required: true
         description: Number of seconds to delay (max 10)
+        example: 3
         in: path
 
   - name: uuid
     description: Generate and return a random UUID
-    method: GET
-    path: /uuid
+    output: text
+    request:
+      method: GET
+      path: /uuid
     params: []
     transform:
-      extract: "$.uuid"
+      - type: json
+        extract: "$.uuid"

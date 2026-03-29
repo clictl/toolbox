@@ -1,35 +1,32 @@
+spec: "1.0"
 name: groq
 description: Groq inference API for ultra-fast LLM chat completions
 version: "1.0"
 category: ai
 tags: [groq, llm, ai, chat, inference, fast]
-protocol: rest
-owner_name: Groq
-website: https://groq.com
-support_url: https://console.groq.com/docs
-pricing_model: freemium
 
-connection:
-  base_url: https://api.groq.com/openai/v1
+pricing:
+  model: freemium
+
+server:
+  type: http
+  url: https://api.groq.com/openai/v1
   timeout: 60s
   headers:
     Accept: application/json
     Content-Type: application/json
 
 auth:
-  - type: bearer
-    key_env: GROQ_API_KEY
-    inject:
-      location: header
-      key: Authorization
-      prefix: "Bearer "
+  env: GROQ_API_KEY
+  header: Authorization
+  value: "Bearer ${GROQ_API_KEY}"
 
 actions:
   - name: chat
     description: Create a chat completion using Groq-hosted models with low latency
-    method: POST
-    path: /chat/completions
-    safe: true
+    request:
+      method: POST
+      path: /chat/completions
     params:
       - name: model
         type: string
@@ -53,17 +50,23 @@ actions:
         description: Maximum number of tokens to generate
         in: body
     assert:
-      - status: [200]
-      - exists: "$.choices"
+      - type: status
+        status: [200]
+      - type: exists
+        path: "$.choices"
     transform:
-      - extract: "$.choices"
+      - type: json
+        extract: "$.choices"
 
   - name: models
     description: List all available models on Groq
-    method: GET
-    path: /models
+    request:
+      method: GET
+      path: /models
     params: []
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data"
+      - type: json
+        extract: "$.data"

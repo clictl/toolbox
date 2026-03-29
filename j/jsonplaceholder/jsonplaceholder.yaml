@@ -1,86 +1,98 @@
+spec: "1.0"
 name: jsonplaceholder
 description: Free fake REST API for testing and prototyping with users, posts, comments, todos, and more
 version: "1.0"
 category: data
 tags: [testing, mock, fake, placeholder, rest, demo]
-protocol: rest
-owner_name: JSONPlaceholder
-website: https://jsonplaceholder.typicode.com
-support_url: https://github.com/typicode/jsonplaceholder
 
-connection:
-  base_url: https://jsonplaceholder.typicode.com
+server:
+  type: http
+  url: https://jsonplaceholder.typicode.com
   timeout: 10s
   headers:
     Accept: application/json
 
-auth:
-  - type: none
-
 actions:
   - name: posts
     description: List all posts or get a specific post by ID
-    method: GET
-    path: /posts/{{#id}}{{id}}{{/id}}
+    output: json
+    request:
+      method: GET
+      path: /posts/{{#id}}{{id}}{{/id}}
     transform:
-      - truncate:
-          max_items: 10
-      - select: ["id", "title", "userId"]
+      - type: truncate
+        max_items: 10
+      - type: json
+        select: ["id", "title", "userId"]
     params:
       - name: id
         type: int
         description: Post ID (omit to list all posts)
+        example: 1
       - name: userId
         type: int
         description: Filter posts by user ID
+        example: 1
         in: query
 
   - name: create_post
     description: Create a new post (simulated, returns the created object with an ID)
-    method: POST
-    safe: true
-    path: /posts
+    output: json
+    request:
+      method: POST
+      path: /posts
     params:
       - name: title
         type: string
         required: true
         description: Post title
+        example: "Hello World"
         in: body
       - name: body
         type: string
         required: true
         description: Post content
+        example: "This is a test post."
         in: body
       - name: userId
         type: int
         required: true
         description: Author user ID
+        example: 1
         in: body
 
   - name: comments
     description: Get comments on a specific post
-    method: GET
-    path: /posts/{{postId}}/comments
+    output: json
+    request:
+      method: GET
+      path: /posts/{{postId}}/comments
     params:
       - name: postId
         type: int
         required: true
         description: Post ID to get comments for
+        example: 1
         in: path
 
   - name: users
     description: List all users or get a specific user by ID
-    method: GET
-    path: /users/{{#id}}{{id}}{{/id}}
+    output: json
+    request:
+      method: GET
+      path: /users/{{#id}}{{id}}{{/id}}
     params:
       - name: id
         type: int
         description: User ID (omit to list all users)
+        example: 1
 
   - name: todos
     description: List all todos or filter by completion status
-    method: GET
-    path: /todos
+    output: json
+    request:
+      method: GET
+      path: /todos
     params:
       - name: completed
         type: string

@@ -1,32 +1,28 @@
+spec: "1.0"
 name: spotify
 description: Spotify Web API for music data, playlists, and playback
 version: "1.0"
 category: media
 tags: [music, spotify, playlists, artists, albums]
-protocol: rest
-owner_name: Spotify
-website: https://spotify.com
-support_url: https://developer.spotify.com/documentation
 
-connection:
-  base_url: https://api.spotify.com/v1
+server:
+  type: http
+  url: https://api.spotify.com/v1
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: bearer
-    key_env: SPOTIFY_TOKEN
-    inject:
-      location: header
-      key: Authorization
-      prefix: "Bearer "
+  env: SPOTIFY_TOKEN
+  header: Authorization
+  value: "Bearer ${SPOTIFY_TOKEN}"
 
 actions:
   - name: search
     description: Search for tracks, artists, albums, or playlists
-    method: GET
-    path: /search
+    request:
+      method: GET
+      path: /search
     params:
       - name: q
         type: string
@@ -47,8 +43,9 @@ actions:
 
   - name: artist
     description: Get detailed information about an artist
-    method: GET
-    path: /artists/{{id}}
+    request:
+      method: GET
+      path: /artists/{{id}}
     params:
       - name: id
         type: string
@@ -58,8 +55,9 @@ actions:
 
   - name: top_tracks
     description: Get an artist's top tracks by country
-    method: GET
-    path: /artists/{{id}}/top-tracks
+    request:
+      method: GET
+      path: /artists/{{id}}/top-tracks
     params:
       - name: id
         type: string

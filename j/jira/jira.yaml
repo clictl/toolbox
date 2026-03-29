@@ -1,33 +1,31 @@
+spec: "1.0"
 name: jira
 description: Jira REST API for issue tracking, project management, and agile workflows
 version: "1.0"
 category: productivity
 tags: [jira, issues, project-management, agile, atlassian, tickets]
-protocol: rest
-owner_name: Atlassian
-website: https://www.atlassian.com/software/jira
-support_url: https://developer.atlassian.com/cloud/jira/platform/rest/v3
-pricing_model: freemium
 
-connection:
-  base_url: https://your-domain.atlassian.net/rest/api/3
+pricing:
+  model: freemium
+
+server:
+  type: http
+  url: https://your-domain.atlassian.net/rest/api/3
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: JIRA_API_TOKEN
-    inject:
-      location: header
-      key: Authorization
-      prefix: "Bearer "
+  env: JIRA_API_TOKEN
+  header: Authorization
+  value: "Bearer ${JIRA_API_TOKEN}"
 
 actions:
   - name: search-issues
     description: Search for issues using JQL (Jira Query Language)
-    method: GET
-    path: /search
+    request:
+      method: GET
+      path: /search
     params:
       - name: jql
         type: string
@@ -45,15 +43,19 @@ actions:
         description: Comma-separated list of fields to include in the response
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.issues"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.issues"
+      - type: truncate
+        max_items: 20
 
   - name: issue
     description: Get a single issue by its key, including summary, status, and description
-    method: GET
-    path: /issue/{{issue_key}}
+    request:
+      method: GET
+      path: /issue/{{issue_key}}
     params:
       - name: issue_key
         type: string
@@ -65,15 +67,18 @@ actions:
         description: Comma-separated list of fields to include
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.fields"
-      - select: ["summary", "status", "assignee", "priority", "description", "created", "updated"]
+      - type: json
+        extract: "$.fields"
+        select: ["summary", "status", "assignee", "priority", "description", "created", "updated"]
 
   - name: projects
     description: List all projects visible to the authenticated user
-    method: GET
-    path: /project
+    request:
+      method: GET
+      path: /project
     params:
       - name: maxResults
         type: int
@@ -81,14 +86,17 @@ actions:
         description: Maximum number of projects to return
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - truncate: { max_items: 20 }
+      - type: truncate
+        max_items: 20
 
   - name: project
     description: Get details for a specific project by key or ID
-    method: GET
-    path: /project/{{project_key}}
+    request:
+      method: GET
+      path: /project/{{project_key}}
     params:
       - name: project_key
         type: string
@@ -96,7 +104,9 @@ actions:
         description: "Project key or ID, e.g. 'PROJ'"
         in: path
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["key", "name", "description", "lead", "projectTypeKey"]
+      - type: json
+        extract: "$"
+        select: ["key", "name", "description", "lead", "projectTypeKey"]

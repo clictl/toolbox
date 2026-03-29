@@ -1,98 +1,93 @@
+spec: '1.0'
 name: snowflake-mcp
 description: Official Snowflake MCP server for Cortex AI, SQL orchestration, and object management
-version: "1.0"
+version: '1.0'
 category: data
-tags: [mcp, snowflake, data-warehouse, sql, cortex, analytics]
-protocol: mcp
-owner_name: Snowflake Labs
-website: https://github.com/Snowflake-Labs/mcp
-support_url: https://github.com/Snowflake-Labs/mcp/issues
-pricing_model: paid
-license: Apache-2.0
-
-transport:
-  type: stdio
-  command: uvx
-  args: ["snowflake-mcp-server"]
-  requires:
-    - name: uv
-      url: https://docs.astral.sh/uv/
-      check: "uv --version"
-
+tags:
+- mcp
+- snowflake
+- data-warehouse
+- sql
+- cortex
+- analytics
 auth:
-  - type: api_key
-    key_env: SNOWFLAKE_ACCOUNT
-    inject:
-      location: env
-      param: SNOWFLAKE_ACCOUNT
-
+  env: SNOWFLAKE_ACCOUNT
+  inject: env
+pricing:
+  model: paid
 tools:
   expose:
-    - name: run_query
-      description: "Execute a SQL query against Snowflake"
-      params:
-        - name: sql
-          type: string
-          required: true
-          description: "SQL query to execute"
-    - name: list_databases
-      description: "List all databases in the account"
-    - name: list_schemas
-      description: "List schemas in a database"
-      params:
-        - name: database
-          type: string
-          required: true
-          description: "Database name"
-    - name: list_tables
-      description: "List tables in a schema"
-      params:
-        - name: database
-          type: string
-          required: true
-          description: "Database name"
-        - name: schema
-          type: string
-          required: true
-          description: "Schema name"
-    - name: describe_table
-      description: "Get the schema of a table"
-      params:
-        - name: database
-          type: string
-          required: true
-          description: "Database name"
-        - name: schema
-          type: string
-          required: true
-          description: "Schema name"
-        - name: table
-          type: string
-          required: true
-          description: "Table name"
-    - name: cortex_complete
-      description: "Generate text using Snowflake Cortex AI"
-      params:
-        - name: prompt
-          type: string
-          required: true
-          description: "Prompt for the AI model"
-        - name: model
-          type: string
-          required: false
-          description: "Cortex model to use"
-
+  - name: run_query
+    description: Execute a SQL query against Snowflake
+    params:
+    - name: sql
+      type: string
+      required: true
+      description: SQL query to execute
+  - name: list_databases
+    description: List all databases in the account
+  - name: list_schemas
+    description: List schemas in a database
+    params:
+    - name: database
+      type: string
+      required: true
+      description: Database name
+  - name: list_tables
+    description: List tables in a schema
+    params:
+    - name: database
+      type: string
+      required: true
+      description: Database name
+    - name: schema
+      type: string
+      required: true
+      description: Schema name
+  - name: describe_table
+    description: Get the schema of a table
+    params:
+    - name: database
+      type: string
+      required: true
+      description: Database name
+    - name: schema
+      type: string
+      required: true
+      description: Schema name
+    - name: table
+      type: string
+      required: true
+      description: Table name
+  - name: cortex_complete
+    description: Generate text using Snowflake Cortex AI
+    params:
+    - name: prompt
+      type: string
+      required: true
+      description: Prompt for the AI model
+    - name: model
+      type: string
+      required: false
+      description: Cortex model to use
 prompts:
   system: |
     This server provides access to Snowflake data warehouse. Use it for
     running SQL queries, managing objects, and accessing Cortex AI features.
     Always confirm DDL and DML operations with the user.
-
 resources:
   expose: all
-
 install_mode:
   default: mcp
   allow_mcp: true
   allow_skill: true
   keep_alive: 300s
+transport:
+  type: stdio
+  command: uvx
+  args:
+  - snowflake-mcp-server
+  requires:
+  - name: uv
+    url: https://docs.astral.sh/uv/
+    check: uv --version

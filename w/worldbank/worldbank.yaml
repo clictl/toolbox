@@ -1,28 +1,24 @@
+spec: "1.0"
 name: worldbank
 description: World Bank API for querying country indicators, economic data, and development statistics
 version: "1.0"
 category: data
 tags: [worldbank, economics, indicators, gdp, population, development]
-protocol: rest
-owner_name: The World Bank
-website: https://www.worldbank.org
-support_url: https://datahelpdesk.worldbank.org/knowledgebase/articles/889392
-pricing_model: free
 
-connection:
-  base_url: https://api.worldbank.org/v2
+server:
+  type: http
+  url: https://api.worldbank.org/v2
   timeout: 15s
   headers:
     Accept: application/json
 
-auth:
-  - type: none
-
 actions:
   - name: list-countries
     description: List all countries and regions available in the World Bank database
-    method: GET
-    path: /country
+    output: json
+    request:
+      method: GET
+      path: /country
     params:
       - name: format
         type: string
@@ -40,20 +36,26 @@ actions:
         description: Page number for pagination
         in: query
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$[1]"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$[1]"
+      - type: truncate
+        max_items: 20
 
   - name: get-country
     description: Get details for a specific country by its ISO code
-    method: GET
-    path: /country/{{country_code}}
+    output: json
+    request:
+      method: GET
+      path: /country/{{country_code}}
     params:
       - name: country_code
         type: string
         required: true
         description: "ISO 3166-1 alpha-2 country code, e.g. 'US', 'GB', 'BR'"
+        example: "US"
         in: path
       - name: format
         type: string
@@ -61,24 +63,30 @@ actions:
         description: Response format
         in: query
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$[1][0]"
+      - type: json
+        extract: "$[1][0]"
 
   - name: get-indicator
     description: Get time-series data for a specific indicator and country
-    method: GET
-    path: /country/{{country_code}}/indicator/{{indicator_code}}
+    output: json
+    request:
+      method: GET
+      path: /country/{{country_code}}/indicator/{{indicator_code}}
     params:
       - name: country_code
         type: string
         required: true
         description: "ISO country code or 'all' for all countries, e.g. 'US', 'BR;IN' for multiple"
+        example: "US"
         in: path
       - name: indicator_code
         type: string
         required: true
         description: "World Bank indicator code, e.g. 'NY.GDP.MKTP.CD' (GDP), 'SP.POP.TOTL' (population)"
+        example: "NY.GDP.MKTP.CD"
         in: path
       - name: date
         type: string
@@ -100,15 +108,20 @@ actions:
         description: Page number
         in: query
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$[1]"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$[1]"
+      - type: truncate
+        max_items: 20
 
   - name: list-indicators
     description: Search and browse available indicators in the World Bank database
-    method: GET
-    path: /indicator
+    output: json
+    request:
+      method: GET
+      path: /indicator
     params:
       - name: format
         type: string
@@ -126,15 +139,20 @@ actions:
         description: Page number
         in: query
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$[1]"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$[1]"
+      - type: truncate
+        max_items: 20
 
   - name: list-topics
     description: List all topic categories used to organize World Bank indicators
-    method: GET
-    path: /topic
+    output: json
+    request:
+      method: GET
+      path: /topic
     params:
       - name: format
         type: string
@@ -142,7 +160,10 @@ actions:
         description: Response format
         in: query
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$[1]"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$[1]"
+      - type: truncate
+        max_items: 20

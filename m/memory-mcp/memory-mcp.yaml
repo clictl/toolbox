@@ -1,111 +1,58 @@
+spec: "1.0"
 name: memory-mcp
 description: MCP server for persistent memory using a knowledge graph with entities, relations, and observations
 version: "1.0"
 category: ai
-tags: [mcp, memory, knowledge-graph, entities, persistence, context]
-protocol: mcp
-owner_name: Anthropic
-website: https://github.com/modelcontextprotocol/servers
-support_url: https://github.com/modelcontextprotocol/servers/issues
-pricing_model: free
-license: MIT
+tags: [memory, knowledge-graph, entities, persistence, context]
 
 package:
   registry: npm
   name: "@modelcontextprotocol/server-memory"
   version: "0.6.2"
-  manager: npx
 
-auth:
-  - type: none
+server:
+  type: stdio
+  keep_alive: 600s
 
-tools:
-  expose:
-    - name: create_entities
-      description: "Create new entities in the knowledge graph"
-      destructive: true
-      params:
-        - name: entities
-          type: string
-          required: true
-          description: "JSON array of entities with name and entityType"
-    - name: create_relations
-      description: "Create relations between entities in the knowledge graph"
-      destructive: true
-      params:
-        - name: relations
-          type: string
-          required: true
-          description: "JSON array of relations with from, to, and relationType"
-    - name: add_observations
-      description: "Add observations to existing entities"
-      destructive: true
-      params:
-        - name: observations
-          type: string
-          required: true
-          description: "JSON array with entityName and contents"
-    - name: delete_entities
-      description: "Delete entities and their relations from the knowledge graph"
-      destructive: true
-      params:
-        - name: entityNames
-          type: string
-          required: true
-          description: "JSON array of entity names to delete"
-    - name: delete_observations
-      description: "Delete specific observations from entities"
-      destructive: true
-      params:
-        - name: deletions
-          type: string
-          required: true
-          description: "JSON array with entityName and observations to remove"
-    - name: delete_relations
-      description: "Delete relations between entities"
-      destructive: true
-      params:
-        - name: relations
-          type: string
-          required: true
-          description: "JSON array of relations to delete"
-    - name: read_graph
-      description: "Read the entire knowledge graph"
-    - name: search_nodes
-      description: "Search for entities by name or content"
-      params:
-        - name: query
-          type: string
-          required: true
-          description: "Search query to match against entity names and observations"
-    - name: open_nodes
-      description: "Open specific entities by name"
-      params:
-        - name: names
-          type: string
-          required: true
-          description: "JSON array of entity names to open"
-  tool_transforms:
-    read_graph:
-      - truncate: { max_length: 20000 }
-    search_nodes:
-      - truncate: { max_items: 50 }
+instructions: |
+  This server provides persistent memory through a knowledge graph.
+  Use it to remember important information about the user, their
+  preferences, projects, and ongoing work. Proactively store useful
+  context and retrieve it when relevant.
 
-prompts:
-  system: |
-    This server provides persistent memory through a knowledge graph.
-    Use it to remember important information about the user, their
-    preferences, projects, and ongoing work. Proactively store useful
-    context and retrieve it when relevant.
-  tool_instructions:
-    create_entities: "Use descriptive entity names and types. Group related information."
-    search_nodes: "Search before creating to avoid duplicate entities."
+actions:
+  - name: create_entities
+    description: "Create new entities in the knowledge graph"
+    mutable: true
+    instructions: "Use descriptive entity names and types. Group related information."
+  - name: create_relations
+    description: "Create relations between entities in the knowledge graph"
+    mutable: true
+  - name: add_observations
+    description: "Add observations to existing entities"
+    mutable: true
+  - name: delete_entities
+    description: "Delete entities and their relations from the knowledge graph"
+    mutable: true
+  - name: delete_observations
+    description: "Delete specific observations from entities"
+    mutable: true
+  - name: delete_relations
+    description: "Delete relations between entities"
+    mutable: true
+  - name: read_graph
+    description: "Read the entire knowledge graph"
+  - name: search_nodes
+    description: "Search for entities by name or content"
+    instructions: "Search before creating to avoid duplicate entities."
+  - name: open_nodes
+    description: "Open specific entities by name"
+
+transforms:
+  read_graph:
+    - truncate: { max_length: 20000 }
+  search_nodes:
+    - truncate: { max_items: 50 }
 
 resources:
   expose: all
-
-install_mode:
-  default: both
-  allow_mcp: true
-  allow_skill: true
-  keep_alive: 600s

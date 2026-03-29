@@ -1,22 +1,20 @@
+spec: "1.0"
 name: github-graphql
 description: GitHub GraphQL API for querying repositories, issues, pull requests, and user data with precise field selection
 version: "1.0"
 category: developer
 tags: [github, graphql, code, repos, issues, developer]
-protocol: graphql
 
-connection:
+server:
+  type: http
   url: https://api.github.com/graphql
   headers:
     Accept: application/json
 
 auth:
-  - type: bearer
-    key_env: GITHUB_TOKEN
-    inject:
-      location: header
-      key: Authorization
-      prefix: "Bearer "
+  env: GITHUB_TOKEN
+  header: Authorization
+  value: "Bearer ${GITHUB_TOKEN}"
 
 actions:
   - name: my_repos
@@ -46,7 +44,8 @@ actions:
         description: Number of repositories to return
         variable: first
     transform:
-      extract: "$.data.viewer.repositories.nodes"
+      - type: json
+        extract: "$.data.viewer.repositories.nodes"
 
   - name: repo_issues
     description: Get open issues for a specific repository with labels and authors
@@ -86,7 +85,8 @@ actions:
         description: "Issue states: OPEN, CLOSED"
         variable: states
     transform:
-      extract: "$.data.repository.issues.nodes"
+      - type: json
+        extract: "$.data.repository.issues.nodes"
 
   - name: user_profile
     description: Get a GitHub user's profile including contribution stats and pinned repos
@@ -125,7 +125,8 @@ actions:
         description: GitHub username
         variable: login
     transform:
-      extract: "$.data.user"
+      - type: json
+        extract: "$.data.user"
 
   - name: search_repos
     description: Search GitHub repositories by keyword with star counts and language
@@ -156,4 +157,5 @@ actions:
         default: "10"
         variable: first
     transform:
-      extract: "$.data.search.nodes"
+      - type: json
+        extract: "$.data.search.nodes"

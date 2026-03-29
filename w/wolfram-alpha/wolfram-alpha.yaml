@@ -1,32 +1,31 @@
+spec: "1.0"
 name: wolfram-alpha
 description: Wolfram Alpha computational knowledge engine for math, science, and factual queries
 version: "1.0"
 category: ai
 tags: [wolfram, math, computation, knowledge, science, calculator]
-protocol: rest
-owner_name: Wolfram Research
-website: https://www.wolframalpha.com
-support_url: https://products.wolframalpha.com/api/documentation
-pricing_model: freemium
 
-connection:
-  base_url: https://api.wolframalpha.com/v2
+pricing:
+  model: freemium
+
+server:
+  type: http
+  url: https://api.wolframalpha.com/v2
   timeout: 30s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: WOLFRAM_APP_ID
-    inject:
-      location: query
-      param: appid
+  env: WOLFRAM_APP_ID
+  param: appid
+  value: "${WOLFRAM_APP_ID}"
 
 actions:
   - name: query
     description: Submit a full query to Wolfram Alpha and get structured pods with results, plots, and computations
-    method: GET
-    path: /query
+    request:
+      method: GET
+      path: /query
     params:
       - name: input
         type: string
@@ -44,15 +43,19 @@ actions:
         description: "Pod content format: 'plaintext', 'image', or 'plaintext,image'"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.queryresult.pods"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.queryresult.pods"
+      - type: truncate
+        max_items: 20
 
   - name: short-answer
     description: Get a single-line text answer to a factual question
-    method: GET
-    path: /result
+    request:
+      method: GET
+      path: /result
     params:
       - name: i
         type: string
@@ -60,6 +63,8 @@ actions:
         description: "Natural language question, e.g. 'distance from Earth to Mars'"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
+      - type: json
+        extract: "$"

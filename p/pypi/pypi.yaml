@@ -1,40 +1,40 @@
+spec: "1.0"
 name: pypi
 description: Python Package Index API for looking up package metadata, versions, and download information
 version: "1.0"
 category: developer
 tags: [python, pypi, packages, pip, registry]
-protocol: rest
-owner_name: Python Software Foundation
-website: https://pypi.org
-support_url: https://pypi.org/help/
-pricing_model: free
 
-connection:
-  base_url: https://pypi.org
+server:
+  type: http
+  url: https://pypi.org
   timeout: 15s
   headers:
     Accept: application/json
 
-auth:
-  - type: none
-
 actions:
   - name: package-info
     description: Get full metadata for a Python package including latest version, description, author, and download URLs
-    method: GET
-    path: /pypi/{{name}}/json
+    output: markdown
+    request:
+      method: GET
+      path: /pypi/{{name}}/json
     params:
       - name: name
         type: string
         required: true
         description: Python package name as listed on PyPI
+        example: "requests"
         in: path
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$.info"
-      - select: ["name", "version", "summary", "author", "license", "home_page", "requires_python", "project_urls"]
-      - template: |
+      - type: json
+        extract: "$.info"
+        select: ["name", "version", "summary", "author", "license", "home_page", "requires_python", "project_urls"]
+      - type: format
+        template: |
           # {{.name}} {{.version}}
           {{.summary}}
 
@@ -45,25 +45,32 @@ actions:
 
   - name: package-version
     description: Get metadata for a specific version of a Python package
-    method: GET
-    path: /pypi/{{name}}/{{version}}/json
+    output: markdown
+    request:
+      method: GET
+      path: /pypi/{{name}}/{{version}}/json
     params:
       - name: name
         type: string
         required: true
         description: Python package name
+        example: "requests"
         in: path
       - name: version
         type: string
         required: true
         description: "Package version string, e.g. '3.1.0'"
+        example: "2.31.0"
         in: path
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$.info"
-      - select: ["name", "version", "summary", "author", "license", "requires_python", "requires_dist"]
-      - template: |
+      - type: json
+        extract: "$.info"
+        select: ["name", "version", "summary", "author", "license", "requires_python", "requires_dist"]
+      - type: format
+        template: |
           # {{.name}} {{.version}}
           {{.summary}}
 
@@ -73,15 +80,20 @@ actions:
 
   - name: package-releases
     description: Get all release versions for a Python package
-    method: GET
-    path: /pypi/{{name}}/json
+    output: json
+    request:
+      method: GET
+      path: /pypi/{{name}}/json
     params:
       - name: name
         type: string
         required: true
         description: Python package name
+        example: "flask"
         in: path
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$.releases"
+      - type: json
+        extract: "$.releases"

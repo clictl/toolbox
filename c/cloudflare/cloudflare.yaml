@@ -1,32 +1,29 @@
+spec: "1.0"
 name: cloudflare
 description: Cloudflare API for DNS, zones, and security settings
 version: "1.0"
 category: cloud
 tags: [cloudflare, dns, cdn, security, zones]
-protocol: rest
-owner_name: Cloudflare
-website: https://cloudflare.com
-support_url: https://developers.cloudflare.com
 
-connection:
-  base_url: https://api.cloudflare.com/client/v4
+server:
+  type: http
+  url: https://api.cloudflare.com/client/v4
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: bearer
-    key_env: CLOUDFLARE_TOKEN
-    inject:
-      location: header
-      key: Authorization
-      prefix: "Bearer "
+  env: CLOUDFLARE_TOKEN
+  header: Authorization
+  value: "Bearer ${CLOUDFLARE_TOKEN}"
 
 actions:
   - name: zones
     description: List zones (domains) in the account
-    method: GET
-    path: /zones
+    output: json
+    request:
+      method: GET
+      path: /zones
     params:
       - name: name
         type: string
@@ -43,12 +40,15 @@ actions:
         description: Number of results per page (max 50)
         in: query
     transform:
-      extract: "$.result"
+      - type: json
+        extract: "$.result"
 
   - name: dns_records
     description: List DNS records for a zone
-    method: GET
-    path: /zones/{{zone_id}}/dns_records
+    output: json
+    request:
+      method: GET
+      path: /zones/{{zone_id}}/dns_records
     params:
       - name: zone_id
         type: string
@@ -64,12 +64,15 @@ actions:
         description: Filter by record name
         in: query
     transform:
-      extract: "$.result"
+      - type: json
+        extract: "$.result"
 
   - name: zone_detail
     description: Get detailed information about a specific zone
-    method: GET
-    path: /zones/{{zone_id}}
+    output: json
+    request:
+      method: GET
+      path: /zones/{{zone_id}}
     params:
       - name: zone_id
         type: string
@@ -77,4 +80,5 @@ actions:
         description: Cloudflare zone ID
         in: path
     transform:
-      extract: "$.result"
+      - type: json
+        extract: "$.result"

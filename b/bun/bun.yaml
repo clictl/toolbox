@@ -1,70 +1,62 @@
+spec: '1.0'
 name: bun
 description: Fast all-in-one JavaScript and TypeScript runtime, bundler, test runner, and package manager
-version: "1.0"
+version: '1.0'
 category: developer
-tags: [javascript, typescript, runtime, node]
-protocol: cli
-tool_type: cli
-owner_name: Oven
-website: https://bun.sh
-support_url: https://bun.sh/docs
-
-connection:
+tags:
+- javascript
+- typescript
+- runtime
+- node
+server:
+  type: command
   shell: /bin/sh
   requires:
-    - name: bun
-      url: https://bun.sh/docs/installation
-      check: "bun --version"
-
-auth:
-  - type: none
-
+  - name: bun
+    url: https://bun.sh/docs/installation
+    check: bun --version
 actions:
-  - name: run
-    description: Run a JavaScript or TypeScript file, or a package.json script
-    run: "bun run {{script}}"
-    params:
-      - name: script
-        type: string
-        required: true
-        description: Script file path or package.json script name to execute
-
-  - name: install
-    description: Install all dependencies from package.json
-    run: "bun install {{#frozen}}--frozen-lockfile{{/frozen}}"
-    params:
-      - name: frozen
-        type: bool
-        description: Error if the lockfile needs to be updated (useful for CI)
-
-  - name: add
-    description: Add a package dependency to the project
-    run: "bun add {{#dev}}-d{{/dev}} {{package}}"
-    params:
-      - name: package
-        type: string
-        required: true
-        description: "Package name to install (e.g., express, @types/node)"
-      - name: dev
-        type: bool
-        description: Add as a development dependency
-
-  - name: test
-    description: Run tests using the built-in test runner
-    run: "bun test {{path}}"
-    params:
-      - name: path
-        type: string
-        description: File or directory to run tests from
-
-  - name: build
-    description: Bundle a TypeScript or JavaScript entry point for production
-    run: "bun build {{entrypoint}} --outdir {{#outdir}}{{outdir}}{{/outdir}}{{^outdir}}./dist{{/outdir}}"
-    params:
-      - name: entrypoint
-        type: string
-        required: true
-        description: Entry point file to bundle (e.g., src/index.ts)
-      - name: outdir
-        type: string
-        description: Output directory for the bundle (defaults to ./dist)
+- name: run
+  description: Run a JavaScript or TypeScript file, or a package.json script
+  run: bun run {{script}}
+  params:
+  - name: script
+    type: string
+    required: true
+    description: Script file path or package.json script name to execute
+- name: install
+  description: Install all dependencies from package.json
+  run: bun install {{#frozen}}--frozen-lockfile{{/frozen}}
+  params:
+  - name: frozen
+    type: bool
+    description: Error if the lockfile needs to be updated (useful for CI)
+- name: add
+  description: Add a package dependency to the project
+  run: bun add {{#dev}}-d{{/dev}} {{package}}
+  params:
+  - name: package
+    type: string
+    required: true
+    description: Package name to install (e.g., express, @types/node)
+  - name: dev
+    type: bool
+    description: Add as a development dependency
+- name: test
+  description: Run tests using the built-in test runner
+  run: bun test {{path}}
+  params:
+  - name: path
+    type: string
+    description: File or directory to run tests from
+- name: build
+  description: Bundle a TypeScript or JavaScript entry point for production
+  run: bun build {{entrypoint}} --outdir {{#outdir}}{{outdir}}{{/outdir}}{{^outdir}}./dist{{/outdir}}
+  params:
+  - name: entrypoint
+    type: string
+    required: true
+    description: Entry point file to bundle (e.g., src/index.ts)
+  - name: outdir
+    type: string
+    description: Output directory for the bundle (defaults to ./dist)

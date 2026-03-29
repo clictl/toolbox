@@ -1,44 +1,43 @@
+spec: "1.0"
 name: notion
 description: Notion API for pages, databases, and content blocks
 version: "1.0"
 category: productivity
 tags: [notion, notes, databases, wiki, productivity]
-protocol: rest
-owner_name: Notion
-website: https://notion.so
-support_url: https://developers.notion.com
 
-connection:
-  base_url: https://api.notion.com/v1
+server:
+  type: http
+  url: https://api.notion.com/v1
   timeout: 15s
   headers:
     Accept: application/json
     Notion-Version: "2022-06-28"
 
 auth:
-  - type: bearer
-    key_env: NOTION_TOKEN
-    inject:
-      location: header
-      key: Authorization
-      prefix: "Bearer "
+  env: NOTION_TOKEN
+  header: Authorization
+  value: "Bearer ${NOTION_TOKEN}"
 
 actions:
   - name: search
     description: Search across all pages and databases in the workspace
-    method: POST
-    safe: true
-    path: /search
+    output: json
+    request:
+      method: POST
+      path: /search
     params:
       - name: query
         type: string
         description: Search query string to filter results
+        example: "meeting notes"
         in: body
 
   - name: page
     description: Retrieve a page and its properties by ID
-    method: GET
-    path: /pages/{{page_id}}
+    output: json
+    request:
+      method: GET
+      path: /pages/{{page_id}}
     params:
       - name: page_id
         type: string
@@ -48,9 +47,10 @@ actions:
 
   - name: databases
     description: Query a database and return matching pages
-    method: POST
-    safe: true
-    path: /databases/{{database_id}}/query
+    output: json
+    request:
+      method: POST
+      path: /databases/{{database_id}}/query
     params:
       - name: database_id
         type: string

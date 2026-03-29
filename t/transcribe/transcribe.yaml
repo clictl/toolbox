@@ -1,6 +1,7 @@
+spec: '1.0'
 name: transcribe
 description: Transcribe audio files to text with optional diarization and known-speaker hints
-version: "1.0"
+version: '1.0'
 category: media
 tags:
 - skill
@@ -8,51 +9,25 @@ tags:
 - audio
 - speech-to-text
 - diarization
-protocol: skill
-owner_name: OpenAI
-namespace: openai
-website: https://github.com/openai/skills
-support_url: https://github.com/openai/skills/issues
-pricing_model: free
-license: MIT
 source:
-  type: github
   repo: openai/skills
   path: skills/.curated/transcribe/
   ref: main
   files:
-  - name: LICENSE.txt
-    sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
-  - name: SKILL.md
-    sha256: f530021da9f377362ee4214e0bc689cbb5404640d2eb88ee272d51d61f530a09
-  - name: agents/openai.yaml
-    sha256: fe7a20b9c03ce027e2f3023a4fd363c2d958ceeae1b7daaef77d1f6d055d97a4
-  - name: assets/transcribe-small.svg
-    sha256: 7d67890abf0f145a77f5fb87752bb6337b394fd4e26f5969c57d82d40e369a14
-  - name: assets/transcribe.png
-    sha256: 0860df58af6b9e58f4445a81baca7bfd94029a447742ae9b9e896e7c5b748688
-  - name: references/api.md
-    sha256: a2bf7e59d69aa127b176255c5c01afbafda4e3029b12b4413e75074233ffb36d
-  - name: scripts/transcribe_diarize.py
-    sha256: d623b1fed1491b7ca4b7b5b393089165e3581a83d90d5a57868241f1b2a5d951
-platforms:
-- name: claude-code
-  install_method: skill
-  config_path: .claude/skills/
-- name: cursor
-  install_method: skill
-  config_path: .cursor/skills/
-- name: codex
-  install_method: skill
-  config_path: .codex/skills/
-- name: vscode
-  install_method: copy
-  config_path: .github/skills/
-skill_metadata:
-  author: openai
-  version: '1.0'
-auth:
-- type: none
+  - sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
+    path: LICENSE.txt
+  - sha256: f530021da9f377362ee4214e0bc689cbb5404640d2eb88ee272d51d61f530a09
+    path: SKILL.md
+  - sha256: fe7a20b9c03ce027e2f3023a4fd363c2d958ceeae1b7daaef77d1f6d055d97a4
+    path: agents/openai.yaml
+  - sha256: 7d67890abf0f145a77f5fb87752bb6337b394fd4e26f5969c57d82d40e369a14
+    path: assets/transcribe-small.svg
+  - sha256: 0860df58af6b9e58f4445a81baca7bfd94029a447742ae9b9e896e7c5b748688
+    path: assets/transcribe.png
+  - sha256: a2bf7e59d69aa127b176255c5c01afbafda4e3029b12b4413e75074233ffb36d
+    path: references/api.md
+  - sha256: d623b1fed1491b7ca4b7b5b393089165e3581a83d90d5a57868241f1b2a5d951
+    path: scripts/transcribe_diarize.py
 requires_system:
 - name: python3
   check: python3 --version

@@ -1,107 +1,113 @@
+spec: '1.0'
 name: ip-intel
 description: Get comprehensive intelligence about an IP address - location, ISP, threat status
-version: "1.0"
+version: '1.0'
 category: ip
-tags: [ip, geolocation, security, threat, composite, pipeline]
-protocol: composite
-owner_name: clictl
-website: https://github.com/clictl/toolbox
-support_url: https://github.com/clictl/toolbox/issues
-pricing_model: free
-
-connection:
-  base_url: ""
-
+tags:
+- ip
+- geolocation
+- security
+- threat
+- composite
+- pipeline
 auth:
-  - type: none
-  - type: api_key
-    key_env: IPINFO_TOKEN
-    description: IPinfo API token for geolocation lookups (free at ipinfo.io)
-    required_by: ipinfo
-  - type: api_key
-    key_env: ABUSEIPDB_API_KEY
-    description: AbuseIPDB API key for threat data (optional, free at abuseipdb.com)
-    required_by: abuse-check
-
+- env: IPINFO_TOKEN
+  note: IPinfo API token for geolocation lookups (free at ipinfo.io)
+  required_by: ipinfo
+- env: ABUSEIPDB_API_KEY
+  note: AbuseIPDB API key for threat data (optional, free at abuseipdb.com)
+  required_by: abuse-check
 actions:
-  - name: check
-    description: Look up full intelligence for an IP address - resolves your public IP if none provided, then gets geo and threat data
-    composite: true
+- name: check
+  description: Look up full intelligence for an IP address - resolves your public IP if none provided, then gets geo and threat
+    data
+  composite: true
+  params:
+  - name: ip
+    type: string
+    description: IP address to investigate (omit to use your own public IP)
+  steps:
+  - id: resolve-ip
+    tool: ipinfo
+    action: my_ip
+    condition: '!params.ip'
+  - id: geo-lookup
+    tool: ipinfo
+    action: lookup
+    depends_on:
+    - resolve-ip
     params:
-      - name: ip
-        type: string
-        description: "IP address to investigate (omit to use your own public IP)"
-
-    steps:
-      - id: resolve-ip
-        tool: ipinfo
-        action: my_ip
-        condition: "!params.ip"
-
-      - id: geo-lookup
-        tool: ipinfo
-        action: lookup
-        depends_on: [resolve-ip]
-        params:
-          ip: "{{params.ip || steps.resolve-ip.output}}"
-
-      - id: reverse-dns
-        method: GET
-        url: "https://dns.google/resolve?name={{steps.geo-lookup.output.ip}}&type=PTR"
-        headers:
-          Accept: application/json
-        depends_on: [geo-lookup]
-        on_error: skip
-
-      - id: abuse-check
-        method: GET
-        url: "https://api.abuseipdb.com/api/v2/check"
-        headers:
-          Accept: application/json
-          Key: "{{env.ABUSEIPDB_API_KEY}}"
-        depends_on: [geo-lookup]
-        on_error: skip
-        params:
-          ipAddress: "{{steps.geo-lookup.output.ip}}"
-          maxAgeInDays: "90"
-        transform:
-          - extract: "$.data"
-          - select: ["abuseConfidenceScore", "totalReports", "countryCode", "isp", "domain", "isWhitelisted"]
-
+      ip: '{{params.ip || steps.resolve-ip.output}}'
+  - id: reverse-dns
+    method: GET
+    url: https://dns.google/resolve?name={{steps.geo-lookup.output.ip}}&type=PTR
+    headers:
+      Accept: application/json
+    depends_on:
+    - geo-lookup
+    on_error: skip
+  - id: abuse-check
+    method: GET
+    url: https://api.abuseipdb.com/api/v2/check
+    headers:
+      Accept: application/json
+      Key: '{{env.ABUSEIPDB_API_KEY}}'
+    depends_on:
+    - geo-lookup
+    on_error: skip
+    params:
+      ipAddress: '{{steps.geo-lookup.output.ip}}'
+      maxAgeInDays: '90'
     transform:
-      - template: |
-          IP Intelligence Report
-          =======================
-          IP: {{steps.geo-lookup.output.ip}}
-          Hostname: {{steps.geo-lookup.output.hostname}}
-          Organization: {{steps.geo-lookup.output.org}}
-          Location: {{steps.geo-lookup.output.city}}, {{steps.geo-lookup.output.region}}, {{steps.geo-lookup.output.country}}
-          Coordinates: {{steps.geo-lookup.output.loc}}
-          Timezone: {{steps.geo-lookup.output.timezone}}
+    - extract: $.data
+    - select:
+      - abuseConfidenceScore
+      - totalReports
+      - countryCode
+      - isp
+      - domain
+      - isWhitelisted
+  transform:
+  - type: template
+    content: |
+      IP Intelligence Report
+      =======================
+      IP: {{steps.geo-lookup.output.ip}}
+      Hostname: {{steps.geo-lookup.output.hostname}}
+      Organization: {{steps.geo-lookup.output.org}}
+      Location: {{steps.geo-lookup.output.city}}, {{steps.geo-lookup.output.region}}, {{steps.geo-lookup.output.country}}
+      Coordinates: {{steps.geo-lookup.output.loc}}
+      Timezone: {{steps.geo-lookup.output.timezone}}
 
-          Reverse DNS:
-          {{steps.reverse-dns.output.Answer[0].data}}
+      Reverse DNS:
+      {{steps.reverse-dns.output.Answer[0].data}}
 
-          Threat Assessment:
-          Abuse Confidence: {{steps.abuse-check.output.abuseConfidenceScore}}%
-          Total Reports: {{steps.abuse-check.output.totalReports}}
-          Whitelisted: {{steps.abuse-check.output.isWhitelisted}}
-
+      Threat Assessment:
+      Abuse Confidence: {{steps.abuse-check.output.abuseConfidenceScore}}%
+      Total Reports: {{steps.abuse-check.output.totalReports}}
+      Whitelisted: {{steps.abuse-check.output.isWhitelisted}}
 test:
   actions:
-    - action: check
-      params:
-        ip: "8.8.8.8"
-      timeout: 30
-      skip_unless_env: IPINFO_TOKEN
-      steps:
-        - id: geo-lookup
-          expect_status: 200
-          expect_fields: [ip, city, region, country, org]
-        - id: reverse-dns
-          expect_status: 200
-          optional: true
-        - id: abuse-check
-          optional: true
-      expect:
-        output_contains: ["IP Intelligence Report", "8.8.8.8"]
+  - action: check
+    params:
+      ip: 8.8.8.8
+    timeout: 30
+    skip_unless_env: IPINFO_TOKEN
+    steps:
+    - id: geo-lookup
+      expect_status: 200
+      expect_fields:
+      - ip
+      - city
+      - region
+      - country
+      - org
+    - id: reverse-dns
+      expect_status: 200
+      optional: true
+    - id: abuse-check
+      optional: true
+    expect:
+      output_contains:
+      - IP Intelligence Report
+      - 8.8.8.8

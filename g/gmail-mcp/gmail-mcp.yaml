@@ -1,98 +1,91 @@
+spec: '1.0'
 name: gmail-mcp
 description: MCP server for Gmail email search, reading, drafting, and management
-version: "1.0"
+version: '1.0'
 category: communication
-tags: [mcp, gmail, email, google, messaging, inbox]
-protocol: mcp
-owner_name: Community
-website: https://github.com/gongrzhe/server-gmail-autoauth-mcp
-support_url: https://github.com/gongrzhe/server-gmail-autoauth-mcp/issues
-pricing_model: free
-license: ISC
-
+tags:
+- mcp
+- gmail
+- email
+- google
+- messaging
+- inbox
+auth:
+  type: oauth2
+  token_url: https://oauth2.googleapis.com/token
 package:
   registry: npm
-  name: "@gongrzhe/server-gmail-autoauth-mcp"
-  version: "1.1.11"
+  name: '@gongrzhe/server-gmail-autoauth-mcp'
+  version: 1.1.11
   manager: npx
-
-auth:
-  - type: oauth2
-    authorization_url: https://accounts.google.com/o/oauth2/v2/auth
-    token_url: https://oauth2.googleapis.com/token
-    scopes: [https://www.googleapis.com/auth/gmail.modify]
-
 tools:
   expose:
-    - name: search_emails
-      description: "Search for emails using Gmail search syntax"
-      params:
-        - name: query
-          type: string
-          required: true
-          description: "Gmail search query (e.g. 'from:user@example.com subject:hello')"
-        - name: max_results
-          type: int
-          required: false
-          description: "Maximum number of results to return"
-    - name: read_email
-      description: "Read a specific email by ID"
-      params:
-        - name: message_id
-          type: string
-          required: true
-          description: "Email message ID"
-    - name: send_email
-      description: "Send a new email"
-      destructive: true
-      params:
-        - name: to
-          type: string
-          required: true
-          description: "Recipient email address"
-        - name: subject
-          type: string
-          required: true
-          description: "Email subject"
-        - name: body
-          type: string
-          required: true
-          description: "Email body"
-    - name: create_draft
-      description: "Create an email draft"
-      destructive: true
-      params:
-        - name: to
-          type: string
-          required: true
-          description: "Recipient email address"
-        - name: subject
-          type: string
-          required: true
-          description: "Email subject"
-        - name: body
-          type: string
-          required: true
-          description: "Email body"
-    - name: list_labels
-      description: "List Gmail labels"
-    - name: get_thread
-      description: "Get all messages in an email thread"
-      params:
-        - name: thread_id
-          type: string
-          required: true
-          description: "Thread ID"
-
+  - name: search_emails
+    description: Search for emails using Gmail search syntax
+    params:
+    - name: query
+      type: string
+      required: true
+      description: Gmail search query (e.g. 'from:user@example.com subject:hello')
+    - name: max_results
+      type: int
+      required: false
+      description: Maximum number of results to return
+  - name: read_email
+    description: Read a specific email by ID
+    params:
+    - name: message_id
+      type: string
+      required: true
+      description: Email message ID
+  - name: send_email
+    description: Send a new email
+    params:
+    - name: to
+      type: string
+      required: true
+      description: Recipient email address
+    - name: subject
+      type: string
+      required: true
+      description: Email subject
+    - name: body
+      type: string
+      required: true
+      description: Email body
+    mutable: true
+  - name: create_draft
+    description: Create an email draft
+    params:
+    - name: to
+      type: string
+      required: true
+      description: Recipient email address
+    - name: subject
+      type: string
+      required: true
+      description: Email subject
+    - name: body
+      type: string
+      required: true
+      description: Email body
+    mutable: true
+  - name: list_labels
+    description: List Gmail labels
+  - name: get_thread
+    description: Get all messages in an email thread
+    params:
+    - name: thread_id
+      type: string
+      required: true
+      description: Thread ID
 prompts:
   system: |
     This server provides access to Gmail. Use it to search emails,
     read messages, create drafts, and manage labels. Always confirm
     before sending emails or making changes.
-
 resources:
   expose: all
-
 install_mode:
   default: mcp
   allow_mcp: true

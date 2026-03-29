@@ -1,99 +1,88 @@
+spec: '1.0'
 name: elastic-mcp
 description: MCP server for Elasticsearch with full-text search, document retrieval, and index management
-version: "1.0"
+version: '1.0'
 category: data
-tags: [mcp, elasticsearch, elastic, search, full-text, indexing, analytics]
-protocol: mcp
-owner_name: Elastic
-website: https://github.com/elastic/elasticsearch-mcp-server
-support_url: https://github.com/elastic/elasticsearch-mcp-server/issues
-pricing_model: free
-license: Apache-2.0
-
+tags:
+- mcp
+- elasticsearch
+- elastic
+- search
+- full-text
+- indexing
+- analytics
+auth:
+  env: ELASTICSEARCH_API_KEY
+  inject: env
 package:
   registry: npm
-  name: "@elastic/elasticsearch-mcp-server"
-  version: "0.1.0"
+  name: '@elastic/elasticsearch-mcp-server'
+  version: 0.1.0
   manager: npx
-
-auth:
-  - type: api_key
-    key_env: ELASTICSEARCH_API_KEY
-    inject:
-      location: env
-      param: ELASTICSEARCH_API_KEY
-    additional_env:
-      - name: ELASTICSEARCH_URL
-        description: "Elasticsearch cluster URL (e.g. https://localhost:9200)"
-        required: true
-
 tools:
   expose:
-    - name: search
-      description: "Execute a search query against one or more indices"
-      params:
-        - name: index
-          type: string
-          required: true
-          description: "Index name or pattern (e.g. logs-*)"
-        - name: query
-          type: object
-          required: true
-          description: "Elasticsearch query DSL object"
-        - name: size
-          type: int
-          required: false
-          description: "Maximum number of hits to return"
-        - name: sort
-          type: array
-          required: false
-          description: "Sort criteria"
-    - name: get_document
-      description: "Retrieve a specific document by ID"
-      params:
-        - name: index
-          type: string
-          required: true
-          description: "Index name"
-        - name: id
-          type: string
-          required: true
-          description: "Document ID"
-    - name: list_indices
-      description: "List all indices with their health, status, and document count"
-      params:
-        - name: pattern
-          type: string
-          required: false
-          description: "Index name pattern filter"
-    - name: get_mapping
-      description: "Get the field mapping for an index"
-      params:
-        - name: index
-          type: string
-          required: true
-          description: "Index name"
-    - name: count
-      description: "Count documents matching a query"
-      params:
-        - name: index
-          type: string
-          required: true
-          description: "Index name or pattern"
-        - name: query
-          type: object
-          required: false
-          description: "Optional query filter"
-
+  - name: search
+    description: Execute a search query against one or more indices
+    params:
+    - name: index
+      type: string
+      required: true
+      description: Index name or pattern (e.g. logs-*)
+    - name: query
+      type: object
+      required: true
+      description: Elasticsearch query DSL object
+    - name: size
+      type: int
+      required: false
+      description: Maximum number of hits to return
+    - name: sort
+      type: array
+      required: false
+      description: Sort criteria
+  - name: get_document
+    description: Retrieve a specific document by ID
+    params:
+    - name: index
+      type: string
+      required: true
+      description: Index name
+    - name: id
+      type: string
+      required: true
+      description: Document ID
+  - name: list_indices
+    description: List all indices with their health, status, and document count
+    params:
+    - name: pattern
+      type: string
+      required: false
+      description: Index name pattern filter
+  - name: get_mapping
+    description: Get the field mapping for an index
+    params:
+    - name: index
+      type: string
+      required: true
+      description: Index name
+  - name: count
+    description: Count documents matching a query
+    params:
+    - name: index
+      type: string
+      required: true
+      description: Index name or pattern
+    - name: query
+      type: object
+      required: false
+      description: Optional query filter
 prompts:
   system: |
     This server provides access to Elasticsearch clusters. Use it for
     full-text search, document retrieval, and exploring index mappings.
     Be mindful of query performance on large indices.
-
 resources:
   expose: all
-
 install_mode:
   default: mcp
   allow_mcp: true

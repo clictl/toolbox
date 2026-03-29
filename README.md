@@ -13,10 +13,19 @@ curl -fsSL https://clictl.dev/install.sh | sh
 clictl search github
 ```
 
+## Documentation
+
+- **[Spec Reference](docs/spec-reference.md)** - Complete field reference (spec 1.0)
+- **[Quick Reference](docs/quick-reference.md)** - One-page cheat sheet
+- **[Creating Tools](docs/guides/creating-tools.md)** - Step-by-step guide
+- **[Customizing Tools](docs/guides/customizing-tools.md)** - Forks and overrides
+- **[Publishing Tools](docs/guides/publishing-tools.md)** - Publishing to the registry
+
 ## For AI Agents
 
 If you are an AI agent creating specs, read these:
-- **[SPEC_SCHEMA.md](SPEC_SCHEMA.md)** - complete schema reference with templates
+- **[Spec Reference](docs/spec-reference.md)** - complete schema reference with examples
+- **[Quick Reference](docs/quick-reference.md)** - defaults and common patterns
 - **[llms.txt](llms.txt)** - machine-readable summary
 
 ## What's Inside
@@ -69,7 +78,7 @@ MCP (Model Context Protocol) server specs define how to connect to servers that 
 - **Safety rules** -- destructive tools require ACL approval, deny lists block tools entirely
 - **Multi-client config** -- one spec generates config for Claude Desktop, Claude Code, Cursor, VS Code, Windsurf
 
-See [SPEC_SCHEMA.md](SPEC_SCHEMA.md) for the MCP spec schema.
+See [Spec Reference](docs/spec-reference.md) for the MCP spec schema.
 
 ### Skills
 
@@ -82,7 +91,7 @@ Skills follow the [agentskills.io](https://agentskills.io) standard (SKILL.md fi
 | **Infrastructure** | None (just a file) | Client-server protocol |
 | **Best for** | Workflows, conventions, best practices | Data access, APIs, system operations |
 
-See [SPEC_SCHEMA.md](SPEC_SCHEMA.md) for the skill spec schema.
+See [Spec Reference](docs/spec-reference.md) for the skill spec schema.
 
 ## CLI Usage
 
@@ -127,7 +136,7 @@ Use the [toolbox-example](https://github.com/clictl/toolbox-example) repo as a s
 clictl toolbox add https://github.com/youruser/my-toolbox
 ```
 
-See the [Spec Schema](SPEC_SCHEMA.md) for the full spec format reference.
+See the [Spec Reference](docs/spec-reference.md) for the full spec format reference.
 
 ## Transforms
 
@@ -137,37 +146,42 @@ Specs include transforms that clean up raw API responses before your Agent sees 
 # Raw API returns 50+ fields. Your Agent gets 3 clean lines.
 actions:
   - name: current
-    method: GET
-    path: /data/2.5/weather
+    description: Get current weather for a location
+    request:
+      method: GET
+      path: /data/2.5/weather
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$.main"
-      - template: |
+      - type: json
+        extract: "$.main"
+      - type: template
+        template: |
           Temperature: {{.temp}}C (feels like {{.feels_like}}C)
           Humidity: {{.humidity}}%
           Pressure: {{.pressure}} hPa
 ```
 
-**Response transforms:** `extract`, `select`, `template`, `truncate`, `rename`, `html_to_markdown`, `js`
+**Response transforms:** `json` (extract, select, rename), `template`, `truncate`, `format`, `html_to_markdown`, `sort`, `filter`, `unique`, `group`, `jq`, `js`, `pipe`
 
-**Pre-request transforms:** `default_params`, `rename_params`, `template_body`, `js`
+**Pre-request transforms:** `default_params`, `rename_params`, `template_body` (use `on: request`)
 
-**Assertions:** `status`, `exists`, `not_empty`, `equals`, `contains`, `js`
+**Assertions:** `status`, `json`, `jq`, `js`, `cel`, `contains`
 
 ## Contributing
 
 1. Fork this repo
-2. Add your spec under `specs/{first-letter}/` (e.g., `specs/s/my-tool/my-tool.yaml`)
-3. Required fields: name, description, version, category, protocol
+2. Add your spec under `{first-letter}/{tool-name}/` (e.g., `s/my-tool/my-tool.yaml`)
+3. Required fields: `name`, `description`, `version`, `category`, `tags`
 4. For API/CLI specs: every action must have `assert` and `transform`
-5. For MCP specs: must have `transport` and `tools` blocks
-6. For skill specs: must have `source` and `platforms` blocks
-7. POST actions that are read-only must include `safe: true`
+5. For MCP specs: must have `server` (type stdio or http) and `actions` blocks
+6. For skill specs: must have `source` and `sandbox` blocks
+7. Actions that change state must include `mutable: true`
 8. Destructive actions must be tagged with `destructive`
 9. Submit a PR
 
-See [SPEC_SCHEMA.md](SPEC_SCHEMA.md) for the complete schema reference with templates.
+See [Spec Reference](docs/spec-reference.md) for the complete schema reference with examples.
 
 ## Links
 

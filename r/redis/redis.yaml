@@ -1,116 +1,107 @@
+spec: '1.0'
 name: redis
 description: Redis in-memory data store. Get, set, delete keys, flush databases, and query server info
-version: "1.0"
+version: '1.0'
 category: devops
-tags: [redis, cache, database, tcp, key-value, in-memory, destructive]
-protocol: cli
-tool_type: cli
-owner_name: Redis
-website: https://redis.io
-support_url: https://redis.io/docs/latest/
-
-connection:
-  host: localhost
-  port: 6379
-  tls: false
-  delimiter: "\r\n"
+tags:
+- redis
+- cache
+- database
+- tcp
+- key-value
+- in-memory
+- destructive
+server:
+  type: command
   requires:
-    - name: redis-server
-      url: https://redis.io/download
-      check: "redis-cli --version"
-
+  - name: redis-server
+    url: https://redis.io/download
+    check: redis-cli --version
 auth:
-  - type: custom
-    key_env: REDIS_PASSWORD
-    inject:
-      handshake: "AUTH {{key}}\r\n"
-
+  type: custom
+  key_env: REDIS_PASSWORD
+  inject:
+    handshake: "AUTH {{key}}\r\n"
 actions:
-  - name: get
-    description: Get the value stored at a key
-    send:
-      template: "GET {{key}}\r\n"
-      encoding: resp
-    params:
-      - name: key
-        type: string
-        required: true
-        description: The key to retrieve
-    response:
-      encoding: resp
-
-  - name: keys
-    description: Find all keys matching a pattern
-    send:
-      template: "KEYS {{pattern}}\r\n"
-      encoding: resp
-    params:
-      - name: pattern
-        type: string
-        required: true
-        description: "Glob-style pattern, e.g. 'session:*', 'user:*', '*'"
-    response:
-      encoding: resp
-
-  - name: info
-    description: Get Redis server information and statistics
-    send:
-      template: "INFO{{#section}} {{section}}{{/section}}\r\n"
-      encoding: resp
-    params:
-      - name: section
-        type: string
-        description: "Info section: server, clients, memory, stats, replication, cpu, keyspace, all"
-    response:
-      encoding: resp
-
-  - name: ping
-    description: Test connectivity to the Redis server
-    send:
-      template: "PING\r\n"
-      encoding: resp
-    params: []
-    response:
-      encoding: resp
-
-  - name: set
-    description: Set a key to a value with optional expiration
-    send:
-      template: "SET {{key}} {{value}}{{#ttl}} EX {{ttl}}{{/ttl}}\r\n"
-      encoding: resp
-    params:
-      - name: key
-        type: string
-        required: true
-        description: Key name
-      - name: value
-        type: string
-        required: true
-        description: Value to store
-      - name: ttl
-        type: int
-        description: Time-to-live in seconds
-    response:
-      encoding: resp
-
-  - name: del
-    description: Delete one or more keys
-    send:
-      template: "DEL {{key}}\r\n"
-      encoding: resp
-    params:
-      - name: key
-        type: string
-        required: true
-        description: Key to delete
-    response:
-      encoding: resp
-
-  - name: flushdb
-    description: Remove all keys from the current database
-    send:
-      template: "FLUSHDB\r\n"
-      encoding: resp
-    params: []
-    response:
-      encoding: resp
+- name: get
+  description: Get the value stored at a key
+  send:
+    template: "GET {{key}}\r\n"
+    encoding: resp
+  params:
+  - name: key
+    type: string
+    required: true
+    description: The key to retrieve
+  response:
+    encoding: resp
+- name: keys
+  description: Find all keys matching a pattern
+  send:
+    template: "KEYS {{pattern}}\r\n"
+    encoding: resp
+  params:
+  - name: pattern
+    type: string
+    required: true
+    description: Glob-style pattern, e.g. 'session:*', 'user:*', '*'
+  response:
+    encoding: resp
+- name: info
+  description: Get Redis server information and statistics
+  send:
+    template: "INFO{{#section}} {{section}}{{/section}}\r\n"
+    encoding: resp
+  params:
+  - name: section
+    type: string
+    description: 'Info section: server, clients, memory, stats, replication, cpu, keyspace, all'
+  response:
+    encoding: resp
+- name: ping
+  description: Test connectivity to the Redis server
+  send:
+    template: "PING\r\n"
+    encoding: resp
+  params: []
+  response:
+    encoding: resp
+- name: set
+  description: Set a key to a value with optional expiration
+  send:
+    template: "SET {{key}} {{value}}{{#ttl}} EX {{ttl}}{{/ttl}}\r\n"
+    encoding: resp
+  params:
+  - name: key
+    type: string
+    required: true
+    description: Key name
+  - name: value
+    type: string
+    required: true
+    description: Value to store
+  - name: ttl
+    type: int
+    description: Time-to-live in seconds
+  response:
+    encoding: resp
+- name: del
+  description: Delete one or more keys
+  send:
+    template: "DEL {{key}}\r\n"
+    encoding: resp
+  params:
+  - name: key
+    type: string
+    required: true
+    description: Key to delete
+  response:
+    encoding: resp
+- name: flushdb
+  description: Remove all keys from the current database
+  send:
+    template: "FLUSHDB\r\n"
+    encoding: resp
+  params: []
+  response:
+    encoding: resp

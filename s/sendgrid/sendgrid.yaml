@@ -1,33 +1,31 @@
+spec: "1.0"
 name: sendgrid
 description: SendGrid API for viewing email templates, checking delivery statistics, and managing email operations
 version: "1.0"
 category: communication
 tags: [sendgrid, email, templates, analytics, delivery]
-protocol: rest
-owner_name: Twilio SendGrid
-website: https://sendgrid.com
-support_url: https://docs.sendgrid.com
-pricing_model: freemium
 
-connection:
-  base_url: https://api.sendgrid.com/v3
+pricing:
+  model: freemium
+
+server:
+  type: http
+  url: https://api.sendgrid.com/v3
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: SENDGRID_API_KEY
-    inject:
-      location: header
-      param: Authorization
-      prefix: "Bearer"
+  env: SENDGRID_API_KEY
+  header: Authorization
+  value: "Bearer ${SENDGRID_API_KEY}"
 
 actions:
   - name: list-templates
     description: List all transactional email templates in your SendGrid account
-    method: GET
-    path: /templates
+    request:
+      method: GET
+      path: /templates
     params:
       - name: generations
         type: string
@@ -40,15 +38,19 @@ actions:
         description: Number of templates per page
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.result"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.result"
+      - type: truncate
+        max_items: 20
 
   - name: get-template
     description: Get details and versions for a specific email template
-    method: GET
-    path: /templates/{{template_id}}
+    request:
+      method: GET
+      path: /templates/{{template_id}}
     params:
       - name: template_id
         type: string
@@ -56,15 +58,18 @@ actions:
         description: The ID of the template to retrieve
         in: path
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["id", "name", "generation", "updated_at", "versions"]
+      - type: json
+        extract: "$"
+        select: ["id", "name", "generation", "updated_at", "versions"]
 
   - name: global-stats
     description: Get global email delivery statistics for a date range
-    method: GET
-    path: /stats
+    request:
+      method: GET
+      path: /stats
     params:
       - name: start_date
         type: string
@@ -80,15 +85,19 @@ actions:
         description: "Aggregation period: 'day', 'week', or 'month'"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$"
+      - type: truncate
+        max_items: 20
 
   - name: list-suppressions
     description: List all email addresses on the global suppression (unsubscribe) list
-    method: GET
-    path: /suppression/unsubscribes
+    request:
+      method: GET
+      path: /suppression/unsubscribes
     params:
       - name: start_time
         type: int
@@ -109,7 +118,10 @@ actions:
         description: Pagination offset
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$"
+      - type: truncate
+        max_items: 20

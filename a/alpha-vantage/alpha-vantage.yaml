@@ -1,32 +1,31 @@
+spec: "1.0"
 name: alpha-vantage
 description: Alpha Vantage API for stock quotes, time-series data, and market intelligence
 version: "1.0"
 category: finance
 tags: [stocks, finance, market, quotes, trading, timeseries]
-protocol: rest
-owner_name: Alpha Vantage
-website: https://www.alphavantage.co
-support_url: https://www.alphavantage.co/documentation
-pricing_model: freemium
 
-connection:
-  base_url: https://www.alphavantage.co
+pricing:
+  model: freemium
+
+server:
+  type: http
+  url: https://www.alphavantage.co
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: ALPHA_VANTAGE_KEY
-    inject:
-      location: query
-      param: apikey
+  env: ALPHA_VANTAGE_KEY
+  param: apikey
+  value: "${ALPHA_VANTAGE_KEY}"
 
 actions:
   - name: quote
     description: Get the latest price quote for a stock symbol
-    method: GET
-    path: /query
+    request:
+      method: GET
+      path: /query
     params:
       - name: function
         type: string
@@ -40,14 +39,17 @@ actions:
         description: "The stock ticker symbol, e.g. 'AAPL' or 'MSFT'"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.Global Quote"
+      - type: json
+        extract: "$.Global Quote"
 
   - name: daily
     description: Get daily time-series stock price data (open, high, low, close, volume)
-    method: GET
-    path: /query
+    request:
+      method: GET
+      path: /query
     params:
       - name: function
         type: string
@@ -66,15 +68,18 @@ actions:
         description: "'compact' returns last 100 data points, 'full' returns up to 20 years"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["Meta Data", "Time Series (Daily)"]
+      - type: json
+        extract: "$"
+        select: ["Meta Data", "Time Series (Daily)"]
 
   - name: search
     description: Search for stock symbols and company names by keyword
-    method: GET
-    path: /query
+    request:
+      method: GET
+      path: /query
     params:
       - name: function
         type: string
@@ -88,15 +93,19 @@ actions:
         description: The search keywords to match against symbols and company names
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.bestMatches"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.bestMatches"
+      - type: truncate
+        max_items: 20
 
   - name: exchange-rate
     description: Get the current exchange rate between two currencies
-    method: GET
-    path: /query
+    request:
+      method: GET
+      path: /query
     params:
       - name: function
         type: string
@@ -115,6 +124,8 @@ actions:
         description: "The target currency code, e.g. 'EUR' or 'JPY'"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.Realtime Currency Exchange Rate"
+      - type: json
+        extract: "$.Realtime Currency Exchange Rate"

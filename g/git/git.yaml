@@ -1,131 +1,119 @@
+spec: '1.0'
 name: git
-description: Git version control. View repository status, history, diffs, branches, commit details, and perform write operations like push, reset, and merge
-version: "1.0"
+description: Git version control. View repository status, history, diffs, branches, commit details, and perform write operations
+  like push, reset, and merge
+version: '1.0'
 category: developer
-tags: [git, version-control, vcs, developer, destructive]
-protocol: cli
-tool_type: cli
-owner_name: Git
-website: https://git-scm.com
-support_url: https://git-scm.com/doc
-
-connection:
+tags:
+- git
+- version-control
+- vcs
+- developer
+- destructive
+server:
+  type: command
   shell: /bin/sh
   requires:
-    - name: git
-      url: https://git-scm.com
-      check: "git --version"
-
-auth:
-  - type: none
-
+  - name: git
+    url: https://git-scm.com
+    check: git --version
 actions:
-  - name: status
-    description: Show the working tree status including staged, unstaged, and untracked files
-    run: "git status"
-    params: []
-
-  - name: log
-    description: Show recent commit history in a compact one-line format
-    run: "git log --oneline -n {{count}}"
-    params:
-      - name: count
-        type: int
-        default: "10"
-        description: Number of recent commits to display
-
-  - name: diff
-    description: Show changes between the working tree and the index, or for a specific file
-    run: "git diff {{file}}"
-    params:
-      - name: file
-        type: string
-        description: Optional file path to limit the diff output
-
+- name: status
+  description: Show the working tree status including staged, unstaged, and untracked files
+  run: git status
+  params: []
+- name: log
+  description: Show recent commit history in a compact one-line format
+  run: git log --oneline -n {{count}}
+  params:
+  - name: count
+    type: int
+    default: '10'
+    description: Number of recent commits to display
+- name: diff
+  description: Show changes between the working tree and the index, or for a specific file
+  run: git diff {{file}}
+  params:
+  - name: file
+    type: string
+    description: Optional file path to limit the diff output
+- name: branch
+  description: List all local and remote branches
+  run: git branch -a
+  params: []
+- name: show
+  description: Show details and content changes for a specific commit or reference
+  run: git show {{ref}}
+  params:
+  - name: ref
+    type: string
+    default: HEAD
+    description: Commit hash, branch name, tag, or other git reference
+- name: push
+  description: Push local commits to a remote repository
+  run: git push {{remote}} {{branch}} {{#force}}--force-with-lease{{/force}}
+  params:
+  - name: remote
+    type: string
+    default: origin
+    description: Remote name to push to
   - name: branch
-    description: List all local and remote branches
-    run: "git branch -a"
-    params: []
-
-  - name: show
-    description: Show details and content changes for a specific commit or reference
-    run: "git show {{ref}}"
-    params:
-      - name: ref
-        type: string
-        default: "HEAD"
-        description: Commit hash, branch name, tag, or other git reference
-
-  - name: push
-    description: Push local commits to a remote repository
-    run: "git push {{remote}} {{branch}} {{#force}}--force-with-lease{{/force}}"
-    params:
-      - name: remote
-        type: string
-        default: "origin"
-        description: Remote name to push to
-      - name: branch
-        type: string
-        description: Branch name to push (defaults to current branch if omitted)
-      - name: force
-        type: bool
-        description: Use force-with-lease to safely overwrite remote history
-
-  - name: reset
-    description: Reset the current HEAD to a specified state
-    run: "git reset {{#hard}}--hard{{/hard}} {{#soft}}--soft{{/soft}} {{ref}}"
-    params:
-      - name: ref
-        type: string
-        default: "HEAD~1"
-        description: Commit reference to reset to
-      - name: hard
-        type: bool
-        description: Discard all changes in working tree and index
-      - name: soft
-        type: bool
-        description: Keep changes staged in the index
-
-  - name: rebase
-    description: Reapply commits on top of another base branch
-    run: "git rebase {{branch}}"
-    params:
-      - name: branch
-        type: string
-        required: true
-        description: The base branch to rebase onto
-
-  - name: stash_pop
-    description: Apply the most recent stash entry and remove it from the stash list
-    run: "git stash pop {{#index}}stash@{{{index}}}{{/index}}"
-    params:
-      - name: index
-        type: int
-        description: Stash index to pop (defaults to the most recent stash)
-
-  - name: checkout
-    description: Switch branches or restore working tree files
-    run: "git checkout {{#create}}-b{{/create}} {{target}}"
-    params:
-      - name: target
-        type: string
-        required: true
-        description: Branch name, tag, or file path to check out
-      - name: create
-        type: bool
-        description: Create a new branch with the given name
-
-  - name: merge
-    description: Join two or more development histories together
-    run: "git merge {{branch}} {{#no_ff}}--no-ff{{/no_ff}} {{#squash}}--squash{{/squash}}"
-    params:
-      - name: branch
-        type: string
-        required: true
-        description: Branch to merge into the current branch
-      - name: no_ff
-        type: bool
-        description: Create a merge commit even when fast-forward is possible
-      - name: squash
-        type: bool
-        description: Squash all commits into a single commit before merging
+    type: string
+    description: Branch name to push (defaults to current branch if omitted)
+  - name: force
+    type: bool
+    description: Use force-with-lease to safely overwrite remote history
+- name: reset
+  description: Reset the current HEAD to a specified state
+  run: git reset {{#hard}}--hard{{/hard}} {{#soft}}--soft{{/soft}} {{ref}}
+  params:
+  - name: ref
+    type: string
+    default: HEAD~1
+    description: Commit reference to reset to
+  - name: hard
+    type: bool
+    description: Discard all changes in working tree and index
+  - name: soft
+    type: bool
+    description: Keep changes staged in the index
+- name: rebase
+  description: Reapply commits on top of another base branch
+  run: git rebase {{branch}}
+  params:
+  - name: branch
+    type: string
+    required: true
+    description: The base branch to rebase onto
+- name: stash_pop
+  description: Apply the most recent stash entry and remove it from the stash list
+  run: git stash pop {{#index}}stash@{{{index}}}{{/index}}
+  params:
+  - name: index
+    type: int
+    description: Stash index to pop (defaults to the most recent stash)
+- name: checkout
+  description: Switch branches or restore working tree files
+  run: git checkout {{#create}}-b{{/create}} {{target}}
+  params:
+  - name: target
+    type: string
+    required: true
+    description: Branch name, tag, or file path to check out
+  - name: create
+    type: bool
+    description: Create a new branch with the given name
+- name: merge
+  description: Join two or more development histories together
+  run: git merge {{branch}} {{#no_ff}}--no-ff{{/no_ff}} {{#squash}}--squash{{/squash}}
+  params:
+  - name: branch
+    type: string
+    required: true
+    description: Branch to merge into the current branch
+  - name: no_ff
+    type: bool
+    description: Create a merge commit even when fast-forward is possible
+  - name: squash
+    type: bool
+    description: Squash all commits into a single commit before merging

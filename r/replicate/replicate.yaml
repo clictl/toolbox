@@ -1,48 +1,50 @@
+spec: "1.0"
 name: replicate
 description: Replicate API for browsing models, running predictions, and checking prediction status
 version: "1.0"
 category: ai
 tags: [replicate, ai, ml, models, inference, predictions]
-protocol: rest
-owner_name: Replicate
-website: https://replicate.com
-support_url: https://replicate.com/docs
-pricing_model: paid
 
-connection:
-  base_url: https://api.replicate.com/v1
+pricing:
+  model: paid
+
+server:
+  type: http
+  url: https://api.replicate.com/v1
   timeout: 30s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: REPLICATE_API_TOKEN
-    inject:
-      location: header
-      param: Authorization
-      prefix: "Bearer"
+  env: REPLICATE_API_TOKEN
+  header: Authorization
+  value: "Bearer ${REPLICATE_API_TOKEN}"
 
 actions:
   - name: list-models
     description: List public models available on Replicate
-    method: GET
-    path: /models
+    request:
+      method: GET
+      path: /models
     params:
       - name: cursor
         type: string
         description: Pagination cursor from a previous response
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.results"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.results"
+      - type: truncate
+        max_items: 20
 
   - name: get-model
     description: Get details about a specific model including its latest version
-    method: GET
-    path: /models/{{owner}}/{{name}}
+    request:
+      method: GET
+      path: /models/{{owner}}/{{name}}
     params:
       - name: owner
         type: string
@@ -55,30 +57,37 @@ actions:
         description: The model name
         in: path
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["url", "owner", "name", "description", "visibility", "latest_version", "run_count"]
+      - type: json
+        extract: "$"
+        select: ["url", "owner", "name", "description", "visibility", "latest_version", "run_count"]
 
   - name: list-predictions
     description: List your recent predictions and their statuses
-    method: GET
-    path: /predictions
+    request:
+      method: GET
+      path: /predictions
     params:
       - name: cursor
         type: string
         description: Pagination cursor from a previous response
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.results"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.results"
+      - type: truncate
+        max_items: 20
 
   - name: get-prediction
     description: Get the status and output of a specific prediction
-    method: GET
-    path: /predictions/{{prediction_id}}
+    request:
+      method: GET
+      path: /predictions/{{prediction_id}}
     params:
       - name: prediction_id
         type: string
@@ -86,18 +95,24 @@ actions:
         description: The unique prediction ID
         in: path
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["id", "model", "version", "status", "input", "output", "created_at", "completed_at", "metrics"]
+      - type: json
+        extract: "$"
+        select: ["id", "model", "version", "status", "input", "output", "created_at", "completed_at", "metrics"]
 
   - name: list-collections
     description: List featured model collections on Replicate
-    method: GET
-    path: /collections
+    request:
+      method: GET
+      path: /collections
     params: []
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.results"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.results"
+      - type: truncate
+        max_items: 20

@@ -1,83 +1,78 @@
+spec: '1.0'
 name: zapier-mcp
 description: MCP server for Zapier automation platform with workflow triggers and actions
-version: "1.0"
+version: '1.0'
 category: productivity
-tags: [mcp, zapier, automation, workflows, integrations, no-code]
-protocol: mcp
-owner_name: Zapier
-website: https://zapier.com
-support_url: https://help.zapier.com
-pricing_model: freemium
-
+tags:
+- mcp
+- zapier
+- automation
+- workflows
+- integrations
+- no-code
+auth:
+  env: ZAPIER_API_KEY
+  inject: env
+pricing:
+  model: freemium
 package:
   registry: npm
-  name: "@zapier/zapier-sdk-mcp"
-  version: "0.10.2"
+  name: '@zapier/zapier-sdk-mcp'
+  version: 0.10.2
   manager: npx
-
-auth:
-  - type: api_key
-    key_env: ZAPIER_API_KEY
-    inject:
-      location: env
-      param: ZAPIER_API_KEY
-
 tools:
   expose:
-    - name: list_zaps
-      description: "List all configured Zaps"
-      params:
-        - name: status
-          type: string
-          required: false
-          description: "Filter by status: on or off"
-    - name: get_zap
-      description: "Get details of a specific Zap"
-      params:
-        - name: zap_id
-          type: string
-          required: true
-          description: "Zap ID"
-    - name: enable_zap
-      description: "Enable a Zap"
-      destructive: true
-      params:
-        - name: zap_id
-          type: string
-          required: true
-          description: "Zap ID to enable"
-    - name: disable_zap
-      description: "Disable a Zap"
-      destructive: true
-      params:
-        - name: zap_id
-          type: string
-          required: true
-          description: "Zap ID to disable"
-    - name: list_actions
-      description: "List available actions for connected apps"
-    - name: run_action
-      description: "Execute a Zapier action"
-      destructive: true
-      params:
-        - name: action_id
-          type: string
-          required: true
-          description: "Action ID to execute"
-        - name: params
-          type: string
-          required: true
-          description: "JSON object of action parameters"
-
+  - name: list_zaps
+    description: List all configured Zaps
+    params:
+    - name: status
+      type: string
+      required: false
+      description: 'Filter by status: on or off'
+  - name: get_zap
+    description: Get details of a specific Zap
+    params:
+    - name: zap_id
+      type: string
+      required: true
+      description: Zap ID
+  - name: enable_zap
+    description: Enable a Zap
+    params:
+    - name: zap_id
+      type: string
+      required: true
+      description: Zap ID to enable
+    mutable: true
+  - name: disable_zap
+    description: Disable a Zap
+    params:
+    - name: zap_id
+      type: string
+      required: true
+      description: Zap ID to disable
+    mutable: true
+  - name: list_actions
+    description: List available actions for connected apps
+  - name: run_action
+    description: Execute a Zapier action
+    params:
+    - name: action_id
+      type: string
+      required: true
+      description: Action ID to execute
+    - name: params
+      type: string
+      required: true
+      description: JSON object of action parameters
+    mutable: true
 prompts:
   system: |
     This server provides access to Zapier automations. Use it to trigger
     workflows, manage zaps, and integrate with connected apps.
     Confirm any workflow triggers with the user before executing.
-
 resources:
   expose: all
-
 install_mode:
   default: mcp
   allow_mcp: true

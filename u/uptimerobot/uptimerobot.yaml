@@ -1,34 +1,32 @@
+spec: "1.0"
 name: uptimerobot
 description: UptimeRobot API for website and server uptime monitoring and status checks
 version: "1.0"
 category: monitoring
 tags: [uptimerobot, monitoring, uptime, alerts, status, availability]
-protocol: rest
-owner_name: UptimeRobot
-website: https://uptimerobot.com
-support_url: https://uptimerobot.com/api
-pricing_model: freemium
 
-connection:
-  base_url: https://api.uptimerobot.com/v2
+pricing:
+  model: freemium
+
+server:
+  type: http
+  url: https://api.uptimerobot.com/v2
   timeout: 15s
   headers:
     Accept: application/json
     Content-Type: application/json
 
 auth:
-  - type: api_key
-    key_env: UPTIMEROBOT_API_KEY
-    inject:
-      location: body
-      param: api_key
+  env: UPTIMEROBOT_API_KEY
+  body: api_key
+  value: "${UPTIMEROBOT_API_KEY}"
 
 actions:
   - name: get-monitors
     description: List all monitors with their current status, uptime ratio, and response times
-    method: POST
-    path: /getMonitors
-    safe: true
+    request:
+      method: POST
+      path: /getMonitors
     params:
       - name: monitors
         type: string
@@ -49,18 +47,23 @@ actions:
         description: Set to 1 to include log entries for each monitor
         in: body
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.monitors"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.monitors"
+      - type: truncate
+        max_items: 20
 
   - name: get-account
     description: Get account details including monitor limits and current usage
-    method: POST
-    path: /getAccountDetails
-    safe: true
+    request:
+      method: POST
+      path: /getAccountDetails
     params: []
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.account"
+      - type: json
+        extract: "$.account"

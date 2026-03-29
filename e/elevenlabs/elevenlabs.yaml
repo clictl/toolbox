@@ -1,43 +1,46 @@
+spec: "1.0"
 name: elevenlabs
 description: ElevenLabs API for browsing voices, models, and text-to-speech generation history
 version: "1.0"
 category: ai
 tags: [elevenlabs, tts, speech, voice, audio, ai]
-protocol: rest
-owner_name: ElevenLabs
-website: https://elevenlabs.io
-support_url: https://docs.elevenlabs.io
-pricing_model: freemium
 
-connection:
-  base_url: https://api.elevenlabs.io/v1
+pricing:
+  model: freemium
+
+server:
+  type: http
+  url: https://api.elevenlabs.io/v1
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: ELEVENLABS_API_KEY
-    inject:
-      location: header
-      param: xi-api-key
+  env: ELEVENLABS_API_KEY
+  header: xi-api-key
+  value: "${ELEVENLABS_API_KEY}"
 
 actions:
   - name: list-voices
     description: List all available voices including premade and custom cloned voices
-    method: GET
-    path: /voices
+    request:
+      method: GET
+      path: /voices
     params: []
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.voices"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.voices"
+      - type: truncate
+        max_items: 20
 
   - name: get-voice
     description: Get metadata and settings for a specific voice
-    method: GET
-    path: /voices/{{voice_id}}
+    request:
+      method: GET
+      path: /voices/{{voice_id}}
     params:
       - name: voice_id
         type: string
@@ -45,26 +48,33 @@ actions:
         description: The unique voice ID
         in: path
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["voice_id", "name", "category", "description", "labels", "preview_url", "settings"]
+      - type: json
+        extract: "$"
+        select: ["voice_id", "name", "category", "description", "labels", "preview_url", "settings"]
 
   - name: list-models
     description: List all available TTS models and their capabilities
-    method: GET
-    path: /models
+    request:
+      method: GET
+      path: /models
     params: []
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$"
+      - type: truncate
+        max_items: 20
 
   - name: get-history
     description: List your recent text-to-speech generation history
-    method: GET
-    path: /history
+    request:
+      method: GET
+      path: /history
     params:
       - name: page_size
         type: int
@@ -76,18 +86,24 @@ actions:
         description: Cursor for pagination - the ID of the last item from the previous page
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.history"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.history"
+      - type: truncate
+        max_items: 20
 
   - name: get-subscription
     description: Check your current subscription status and usage limits
-    method: GET
-    path: /user/subscription
+    request:
+      method: GET
+      path: /user/subscription
     params: []
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["tier", "character_count", "character_limit", "next_character_count_reset_unix", "status"]
+      - type: json
+        extract: "$"
+        select: ["tier", "character_count", "character_limit", "next_character_count_reset_unix", "status"]

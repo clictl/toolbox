@@ -1,48 +1,49 @@
+spec: "1.0"
 name: slack
 description: Slack Web API for messaging, channels, and user management
 version: "1.0"
 category: communication
 tags: [slack, messaging, chat, notifications, team]
-protocol: rest
-owner_name: Slack (Salesforce)
-website: https://slack.com
-support_url: https://api.slack.com
 
-connection:
-  base_url: https://slack.com/api
+server:
+  type: http
+  url: https://slack.com/api
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: bearer
-    key_env: SLACK_TOKEN
-    inject:
-      location: header
-      key: Authorization
-      prefix: "Bearer "
+  env: SLACK_TOKEN
+  header: Authorization
+  value: "Bearer ${SLACK_TOKEN}"
 
 actions:
   - name: post_message
     description: Send a message to a Slack channel
-    method: POST
-    path: /chat.postMessage
+    output: json
+    request:
+      method: POST
+      path: /chat.postMessage
     params:
       - name: channel
         type: string
         required: true
         description: "Channel ID or name, e.g. '#general' or 'C1234567890'"
+        example: "#general"
         in: query
       - name: text
         type: string
         required: true
         description: Message text to send
+        example: "Hello from clictl!"
         in: query
 
   - name: channels
     description: List channels in the workspace
-    method: GET
-    path: /conversations.list
+    output: json
+    request:
+      method: GET
+      path: /conversations.list
     params:
       - name: limit
         type: int
@@ -57,8 +58,10 @@ actions:
 
   - name: users
     description: List all users in the workspace
-    method: GET
-    path: /users.list
+    output: json
+    request:
+      method: GET
+      path: /users.list
     params:
       - name: limit
         type: int

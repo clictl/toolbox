@@ -1,32 +1,29 @@
+spec: "1.0"
 name: cve
 description: NIST National Vulnerability Database API for searching CVEs and viewing vulnerability details
 version: "1.0"
 category: security
 tags: [cve, nvd, vulnerabilities, security, nist, cpe]
-protocol: rest
-owner_name: NIST
-website: https://nvd.nist.gov
-support_url: https://nvd.nist.gov/developers
-pricing_model: free
 
-connection:
-  base_url: https://services.nvd.nist.gov/rest/json/cves/2.0
+server:
+  type: http
+  url: https://services.nvd.nist.gov/rest/json/cves/2.0
   timeout: 30s
   headers:
     Accept: application/json
 
-auth:
-  - type: none
-
 actions:
   - name: search
     description: Search the NVD for CVEs by keyword, date range, or severity
-    method: GET
-    path: /
+    output: text
+    request:
+      method: GET
+      path: /
     params:
       - name: keywordSearch
         type: string
         description: Keyword or phrase to search for in CVE descriptions
+        example: "log4j"
         in: query
       - name: cvssV3Severity
         type: string
@@ -51,30 +48,40 @@ actions:
         description: Index of the first result to return
         in: query
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$.vulnerabilities"
-      - truncate: { max_items: 20 }
-      - template: |
+      - type: json
+        extract: "$.vulnerabilities"
+      - type: truncate
+        max_items: 20
+      - type: format
+        template: |
           {{range .}}{{.cve.id}} {{if .cve.descriptions}}{{(index .cve.descriptions 0).value}}{{end}} {{if .cve.metrics}}{{if .cve.metrics.cvssMetricV31}}{{(index .cve.metrics.cvssMetricV31 0).cvssData.baseSeverity}}{{end}}{{end}}
           {{end}}
 
   - name: get-cve
     description: Get full details for a specific CVE by its ID
-    method: GET
-    path: /
+    output: text
+    request:
+      method: GET
+      path: /
     params:
       - name: cveId
         type: string
         required: true
         description: "The CVE identifier, e.g. 'CVE-2024-1234'"
+        example: "CVE-2021-44228"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$.vulnerabilities[0].cve"
-      - select: ["id", "descriptions", "metrics", "references", "published", "lastModified"]
-      - template: |
+      - type: json
+        extract: "$.vulnerabilities[0].cve"
+        select: ["id", "descriptions", "metrics", "references", "published", "lastModified"]
+      - type: format
+        template: |
           # {{.id}}
           Published: {{.published}}
 
@@ -82,13 +89,16 @@ actions:
 
   - name: search-by-cpe
     description: Search for CVEs affecting a specific product using its CPE name
-    method: GET
-    path: /
+    output: text
+    request:
+      method: GET
+      path: /
     params:
       - name: cpeName
         type: string
         required: true
         description: "CPE 2.3 match string, e.g. 'cpe:2.3:a:apache:log4j:2.14.1:*:*:*:*:*:*:*'"
+        example: "cpe:2.3:a:apache:log4j:2.14.1:*:*:*:*:*:*:*"
         in: query
       - name: resultsPerPage
         type: int
@@ -96,10 +106,14 @@ actions:
         description: Number of results per page
         in: query
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$.vulnerabilities"
-      - truncate: { max_items: 20 }
-      - template: |
+      - type: json
+        extract: "$.vulnerabilities"
+      - type: truncate
+        max_items: 20
+      - type: format
+        template: |
           {{range .}}{{.cve.id}} {{if .cve.descriptions}}{{(index .cve.descriptions 0).value}}{{end}} {{if .cve.metrics}}{{if .cve.metrics.cvssMetricV31}}{{(index .cve.metrics.cvssMetricV31 0).cvssData.baseSeverity}}{{end}}{{end}}
           {{end}}

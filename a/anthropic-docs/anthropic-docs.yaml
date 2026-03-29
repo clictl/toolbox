@@ -1,42 +1,26 @@
+spec: "1.0"
 name: anthropic-docs
 description: Anthropic developer documentation for Claude APIs, SDKs, and guides
 version: "1.0"
 category: documentation
 tags: [documentation, claude, llm, ai, api-reference]
-protocol: rest
-tool_type: website
-owner_name: Anthropic
-website: https://docs.anthropic.com
-support_url: https://support.anthropic.com
-pricing_model: free
 
-site:
+server:
+  type: http
   url: https://docs.anthropic.com
-  llms_txt: https://docs.anthropic.com/llms.txt
-  sitemap: https://docs.anthropic.com/sitemap.xml
-  content_type: documentation
-  preferred_format: markdown
-
-access:
-  method: fetch
-  robots_txt: respected
-
-connection:
-  base_url: https://docs.anthropic.com
-
-auth:
-  - type: none
 
 actions:
   - name: get_llms_txt
     description: Fetch the llms.txt file with a summary of all documentation pages
-    method: GET
-    path: /llms.txt
+    request:
+      method: GET
+      path: /llms.txt
 
   - name: get_page
     description: Fetch a specific documentation page
-    method: GET
-    path: /{page_path}
+    request:
+      method: GET
+      path: /{page_path}
     params:
       - name: page_path
         type: string

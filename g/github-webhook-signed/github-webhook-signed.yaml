@@ -1,28 +1,22 @@
+spec: "1.0"
 name: github-webhook-signed
 description: Send signed webhook payloads to a GitHub webhook endpoint
 version: "1.0"
 category: developer
 tags: [github, webhook, signing, hmac]
-protocol: rest
-owner_name: GitHub
-website: https://github.com
-support_url: https://docs.github.com/en/webhooks
-pricing_model: free
 
-connection:
-  base_url: https://api.github.com
+server:
+  type: http
+  url: https://api.github.com
   timeout: 15s
   headers:
     Accept: application/json
     Content-Type: application/json
 
 auth:
-  - type: api_key
-    key_env: GITHUB_TOKEN
-    inject:
-      location: header
-      param: Authorization
-      prefix: "Bearer"
+  env: GITHUB_TOKEN
+  header: Authorization
+  value: "Bearer ${GITHUB_TOKEN}"
 
 signing:
   method: hmac-sha256
@@ -36,8 +30,9 @@ signing:
 actions:
   - name: send-event
     description: Send a signed webhook event payload to a configured webhook URL
-    method: POST
-    path: /repos/{owner}/{repo}/dispatches
+    request:
+      method: POST
+      path: /repos/{owner}/{repo}/dispatches
     params:
       - name: owner
         type: string
@@ -59,13 +54,14 @@ actions:
         description: "JSON payload with event-specific data, e.g. {\"ref\": \"main\", \"sha\": \"abc123\"}"
         in: body
     assert:
-      - status: [204]
+      - type: status
+        status: [204]
 
   - name: test-webhook
     description: Send a test ping event to verify webhook signing is configured correctly
-    method: POST
-    safe: true
-    path: /repos/{owner}/{repo}/dispatches
+    request:
+      method: POST
+      path: /repos/{owner}/{repo}/dispatches
     params:
       - name: owner
         type: string
@@ -82,4 +78,5 @@ actions:
           event_type: ping
           client_payload: '{"test": true, "timestamp": "{{now}}"}'
     assert:
-      - status: [204]
+      - type: status
+        status: [204]

@@ -1,199 +1,93 @@
+spec: "1.0"
 name: playwright-mcp
 description: MCP server for browser automation using Playwright with structured accessibility snapshots instead of screenshots
 version: "1.0"
 category: developer
-tags: [mcp, browser, automation, testing, playwright, web, scraping, accessibility]
-protocol: mcp
-owner_name: Microsoft
-website: https://github.com/microsoft/playwright-mcp
-support_url: https://github.com/microsoft/playwright-mcp/issues
-pricing_model: free
-license: Apache-2.0
+tags: [browser, automation, testing, playwright, web, scraping, accessibility]
 
 package:
   registry: npm
   name: "@playwright/mcp"
   version: "0.0.68"
-  manager: npx
 
 docs:
   api_reference: https://playwright.dev/docs/api/class-playwright
 
-auth:
-  - type: none
+server:
+  type: stdio
+  keep_alive: 300s
 
-tools:
-  expose:
-    - name: browser_navigate
-      description: "Navigate the browser to a URL"
-      params:
-        - name: url
-          type: string
-          required: true
-          description: "URL to navigate to"
-    - name: browser_snapshot
-      description: "Capture an accessibility snapshot of the current page"
-    - name: browser_click
-      description: "Click an element on the page using its accessibility ref"
-      destructive: true
-      params:
-        - name: element
-          type: string
-          required: true
-          description: "Accessibility ref of the element to click"
-        - name: ref
-          type: string
-          required: true
-          description: "Exact ref value from the accessibility snapshot"
-    - name: browser_type
-      description: "Type text into an input element"
-      destructive: true
-      params:
-        - name: ref
-          type: string
-          required: true
-          description: "Accessibility ref of the input element"
-        - name: text
-          type: string
-          required: true
-          description: "Text to type into the element"
-        - name: submit
-          type: bool
-          required: false
-          description: "Press Enter after typing"
-    - name: browser_select_option
-      description: "Select an option from a dropdown"
-      destructive: true
-      params:
-        - name: ref
-          type: string
-          required: true
-          description: "Accessibility ref of the select element"
-        - name: values
-          type: string
-          required: true
-          description: "Values to select"
-    - name: browser_hover
-      description: "Hover over an element on the page"
-      params:
-        - name: ref
-          type: string
-          required: true
-          description: "Accessibility ref of the element to hover"
-    - name: browser_tab_list
-      description: "List all open browser tabs"
-    - name: browser_tab_new
-      description: "Open a new browser tab"
-      params:
-        - name: url
-          type: string
-          required: false
-          description: "URL to open in the new tab"
-    - name: browser_tab_select
-      description: "Switch to a specific browser tab"
-      params:
-        - name: index
-          type: int
-          required: true
-          description: "Tab index to switch to"
-    - name: browser_tab_close
-      description: "Close the current browser tab"
-      destructive: true
-    - name: browser_console_messages
-      description: "Get browser console log messages"
-    - name: browser_network_requests
-      description: "Get network requests made by the page"
-    - name: browser_screenshot
-      description: "Take a screenshot of the current page"
-    - name: browser_wait
-      description: "Wait for a specified amount of time"
-      params:
-        - name: time
-          type: int
-          required: true
-          description: "Time to wait in milliseconds"
-    - name: browser_pdf_save
-      description: "Save the current page as a PDF"
-      params:
-        - name: filename
-          type: string
-          required: true
-          description: "Filename for the PDF"
-    - name: browser_close
-      description: "Close the browser"
-      destructive: true
-    - name: browser_resize
-      description: "Resize the browser window"
-      params:
-        - name: width
-          type: int
-          required: true
-          description: "Window width in pixels"
-        - name: height
-          type: int
-          required: true
-          description: "Window height in pixels"
-    - name: browser_handle_dialog
-      description: "Handle a browser dialog (alert, confirm, prompt)"
-      destructive: true
-      params:
-        - name: accept
-          type: bool
-          required: true
-          description: "Whether to accept or dismiss the dialog"
-        - name: promptText
-          type: string
-          required: false
-          description: "Text to enter for prompt dialogs"
-    - name: browser_file_upload
-      description: "Upload files to a file input element"
-      destructive: true
-      params:
-        - name: ref
-          type: string
-          required: true
-          description: "Accessibility ref of the file input"
-        - name: paths
-          type: string
-          required: true
-          description: "File paths to upload"
-    - name: browser_press_key
-      description: "Press a keyboard key"
-      destructive: true
-      params:
-        - name: key
-          type: string
-          required: true
-          description: "Key to press (e.g. Enter, Escape, ArrowDown)"
-  tool_transforms:
-    browser_snapshot:
-      - truncate: { max_length: 15000 }
-    browser_console_messages:
-      - truncate: { max_items: 100 }
-    browser_network_requests:
-      - truncate: { max_items: 50 }
+instructions: |
+  This server controls a browser via Playwright. Use browser_snapshot
+  (accessibility tree) instead of screenshots for understanding page
+  structure. Reference elements by their accessibility ref attribute.
+  Take a snapshot after navigation to verify page state.
+
+actions:
+  - name: browser_navigate
+    description: "Navigate the browser to a URL"
+    instructions: "Take a snapshot after navigating to understand the page structure."
+  - name: browser_snapshot
+    description: "Capture an accessibility snapshot of the current page"
+  - name: browser_click
+    description: "Click an element on the page using its accessibility ref"
+    mutable: true
+    instructions: "Use the ref attribute from browser_snapshot to identify elements."
+  - name: browser_type
+    description: "Type text into an input element"
+    mutable: true
+    instructions: "Click the input field first if it is not focused."
+  - name: browser_select_option
+    description: "Select an option from a dropdown"
+    mutable: true
+  - name: browser_hover
+    description: "Hover over an element on the page"
+  - name: browser_tab_list
+    description: "List all open browser tabs"
+  - name: browser_tab_new
+    description: "Open a new browser tab"
+  - name: browser_tab_select
+    description: "Switch to a specific browser tab"
+  - name: browser_tab_close
+    description: "Close the current browser tab"
+    mutable: true
+  - name: browser_console_messages
+    description: "Get browser console log messages"
+  - name: browser_network_requests
+    description: "Get network requests made by the page"
+  - name: browser_screenshot
+    description: "Take a screenshot of the current page"
+  - name: browser_wait
+    description: "Wait for a specified amount of time"
+  - name: browser_pdf_save
+    description: "Save the current page as a PDF"
+  - name: browser_close
+    description: "Close the browser"
+    mutable: true
+  - name: browser_resize
+    description: "Resize the browser window"
+  - name: browser_handle_dialog
+    description: "Handle a browser dialog (alert, confirm, prompt)"
+    mutable: true
+  - name: browser_file_upload
+    description: "Upload files to a file input element"
+    mutable: true
+  - name: browser_press_key
+    description: "Press a keyboard key"
+    mutable: true
+
+transforms:
+  browser_snapshot:
+    - truncate: { max_length: 15000 }
+  browser_console_messages:
+    - truncate: { max_items: 100 }
+  browser_network_requests:
+    - truncate: { max_items: 50 }
 
 permissions:
   filesystem:
     read:
       - "."
 
-prompts:
-  system: |
-    This server controls a browser via Playwright. Use browser_snapshot
-    (accessibility tree) instead of screenshots for understanding page
-    structure. Reference elements by their accessibility ref attribute.
-    Take a snapshot after navigation to verify page state.
-  tool_instructions:
-    browser_navigate: "Take a snapshot after navigating to understand the page structure."
-    browser_click: "Use the ref attribute from browser_snapshot to identify elements."
-    browser_type: "Click the input field first if it is not focused."
-
 resources:
   expose: all
-
-install_mode:
-  default: mcp
-  allow_mcp: true
-  allow_skill: true
-  keep_alive: 300s

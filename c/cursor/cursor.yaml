@@ -1,26 +1,22 @@
+spec: '1.0'
 name: cursor
 description: AI-powered code editor with built-in chat and code generation
-version: "1.0"
+version: '1.0'
 category: ai
-tags: [ai, cursor, editor, coding, llm]
-protocol: cli
-tool_type: cli
-owner_name: Anysphere
-website: https://cursor.com
-support_url: https://forum.cursor.com
-pricing_model: freemium
-
-auth:
-  - type: none
-
+tags:
+- ai
+- cursor
+- editor
+- coding
+- llm
+pricing:
+  model: freemium
 actions:
-  - name: open
-    description: Open a file or directory in Cursor
-    method: command
-    path: cursor
-    params:
-      - name: path
-        type: string
-        required: false
-        description: File or directory to open
-        in: arg
+- name: open
+  description: Open a file or directory in Cursor
+  params:
+  - name: path
+    type: string
+    required: false
+    description: File or directory to open
+    in: arg

@@ -1,48 +1,50 @@
+spec: "1.0"
 name: airtable
 description: Airtable API for listing bases, reading table records, and viewing table schemas
 version: "1.0"
 category: productivity
 tags: [airtable, database, spreadsheet, records, nocode]
-protocol: rest
-owner_name: Airtable
-website: https://airtable.com
-support_url: https://airtable.com/developers/web/api
-pricing_model: freemium
 
-connection:
-  base_url: https://api.airtable.com/v0
+pricing:
+  model: freemium
+
+server:
+  type: http
+  url: https://api.airtable.com/v0
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: AIRTABLE_TOKEN
-    inject:
-      location: header
-      param: Authorization
-      prefix: "Bearer"
+  env: AIRTABLE_TOKEN
+  header: Authorization
+  value: "Bearer ${AIRTABLE_TOKEN}"
 
 actions:
   - name: list-bases
     description: List all bases (databases) accessible to your Airtable account
-    method: GET
-    path: /meta/bases
+    request:
+      method: GET
+      path: /meta/bases
     params:
       - name: offset
         type: string
         description: Pagination cursor from a previous response
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.bases"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.bases"
+      - type: truncate
+        max_items: 20
 
   - name: list-tables
     description: List all tables and their field schemas in a specific base
-    method: GET
-    path: /meta/bases/{{base_id}}/tables
+    request:
+      method: GET
+      path: /meta/bases/{{base_id}}/tables
     params:
       - name: base_id
         type: string
@@ -50,15 +52,19 @@ actions:
         description: The Airtable base ID (starts with 'app')
         in: path
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.tables"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.tables"
+      - type: truncate
+        max_items: 20
 
   - name: list-records
     description: List records from a table in a specific base
-    method: GET
-    path: /{{base_id}}/{{table_name}}
+    request:
+      method: GET
+      path: /{{base_id}}/{{table_name}}
     params:
       - name: base_id
         type: string
@@ -96,15 +102,19 @@ actions:
         description: Pagination cursor from a previous response
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.records"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.records"
+      - type: truncate
+        max_items: 20
 
   - name: get-record
     description: Get a single record by its ID from a table
-    method: GET
-    path: /{{base_id}}/{{table_name}}/{{record_id}}
+    request:
+      method: GET
+      path: /{{base_id}}/{{table_name}}/{{record_id}}
     params:
       - name: base_id
         type: string
@@ -122,7 +132,9 @@ actions:
         description: The record ID (starts with 'rec')
         in: path
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["id", "fields", "createdTime"]
+      - type: json
+        extract: "$"
+        select: ["id", "fields", "createdTime"]

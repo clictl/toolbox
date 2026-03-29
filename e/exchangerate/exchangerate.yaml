@@ -1,31 +1,28 @@
+spec: "1.0"
 name: exchangerate
 description: Free exchange rate API for currency conversion
 version: "1.0"
 category: finance
 tags: [currency, exchange-rate, forex, conversion]
-protocol: rest
-owner_name: ExchangeRate-API
-website: https://www.exchangerate-api.com
-support_url: https://www.exchangerate-api.com/docs
 
-connection:
-  base_url: https://v6.exchangerate-api.com
+server:
+  type: http
+  url: https://v6.exchangerate-api.com
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: EXCHANGE_RATE_API_KEY
-    inject:
-      location: path
-      param: api_key
+  env: EXCHANGE_RATE_API_KEY
+  path: api_key
+  value: "${EXCHANGE_RATE_API_KEY}"
 
 actions:
   - name: latest
     description: Get latest exchange rates for a base currency
-    method: GET
-    path: /v6/{{api_key}}/latest/{{base}}
+    request:
+      method: GET
+      path: /v6/{{api_key}}/latest/{{base}}
     params:
       - name: base
         type: string
@@ -35,8 +32,9 @@ actions:
 
   - name: pair
     description: Convert between two currencies with a specific amount
-    method: GET
-    path: /v6/{{api_key}}/pair/{{from}}/{{to}}/{{amount}}
+    request:
+      method: GET
+      path: /v6/{{api_key}}/pair/{{from}}/{{to}}/{{amount}}
     params:
       - name: from
         type: string

@@ -1,33 +1,30 @@
+spec: "1.0"
 name: npm-registry
 description: npm public registry API for searching packages, viewing package metadata, and version details
 version: "1.0"
 category: developer
 tags: [npm, nodejs, javascript, packages, registry]
-protocol: rest
-owner_name: npm Inc.
-website: https://www.npmjs.com
-support_url: https://docs.npmjs.com
-pricing_model: free
 
-connection:
-  base_url: https://registry.npmjs.org
+server:
+  type: http
+  url: https://registry.npmjs.org
   timeout: 15s
   headers:
     Accept: application/json
 
-auth:
-  - type: none
-
 actions:
   - name: search
     description: Search the npm registry for packages by keyword or phrase
-    method: GET
-    path: /-/v1/search
+    output: json
+    request:
+      method: GET
+      path: /-/v1/search
     params:
       - name: text
         type: string
         required: true
         description: Search query text
+        example: "express"
         in: query
       - name: size
         type: int
@@ -52,51 +49,67 @@ actions:
         description: Weight for maintenance score (0.0 to 1.0)
         in: query
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$.objects"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.objects"
+      - type: truncate
+        max_items: 20
 
   - name: package-info
     description: Get full metadata for a specific npm package including all versions, maintainers, and dependencies
-    method: GET
-    path: /{{name}}
+    output: text
+    request:
+      method: GET
+      path: /{{name}}
     params:
       - name: name
         type: string
         required: true
         description: Package name (use URL-encoded name for scoped packages, e.g. @scope%2Fname)
+        example: "express"
         in: path
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$"
-      - select: ["name", "description", "dist-tags", "license", "homepage"]
-      - rename: { "dist-tags": "dist_tags" }
-      - template: |
+      - type: json
+        extract: "$"
+        select: ["name", "description", "dist-tags", "license", "homepage"]
+        rename: { "dist-tags": "dist_tags" }
+      - type: format
+        template: |
           {{.name}} v{{index .dist_tags "latest"}} - {{.description}}
 
   - name: package-version
     description: Get metadata for a specific version of a package
-    method: GET
-    path: /{{name}}/{{version}}
+    output: markdown
+    request:
+      method: GET
+      path: /{{name}}/{{version}}
     params:
       - name: name
         type: string
         required: true
         description: Package name
+        example: "express"
         in: path
       - name: version
         type: string
         required: true
         description: "Semver version string, e.g. '1.0.0' or 'latest'"
+        example: "4.18.2"
         in: path
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$"
-      - select: ["name", "version", "description", "dependencies", "license", "homepage"]
-      - template: |
+      - type: json
+        extract: "$"
+        select: ["name", "version", "description", "dependencies", "license", "homepage"]
+      - type: format
+        template: |
           # {{.name}} {{.version}}
           {{.description}}
 

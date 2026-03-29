@@ -1,77 +1,71 @@
+spec: '1.0'
 name: exa-mcp
 description: MCP server for Exa real-time web search with configurable results and live crawling
-version: "1.0"
+version: '1.0'
 category: search
-tags: [mcp, exa, search, web, real-time, crawling]
-protocol: mcp
-owner_name: Exa Labs
-website: https://github.com/exa-labs/exa-mcp-server
-support_url: https://github.com/exa-labs/exa-mcp-server/issues
-pricing_model: freemium
-license: MIT
-
+tags:
+- mcp
+- exa
+- search
+- web
+- real-time
+- crawling
+auth:
+  env: EXA_API_KEY
+  inject: env
+pricing:
+  model: freemium
 package:
   registry: npm
-  name: "exa-mcp-server"
-  version: "1.0.0"
+  name: exa-mcp-server
+  version: 1.0.0
   manager: npx
-
-auth:
-  - type: api_key
-    key_env: EXA_API_KEY
-    inject:
-      location: env
-      param: EXA_API_KEY
-
 tools:
   expose:
-    - name: search
-      description: "Search the web using Exa semantic search"
-      params:
-        - name: query
-          type: string
-          required: true
-          description: "Search query string"
-        - name: num_results
-          type: int
-          required: false
-          description: "Number of results to return"
-        - name: type
-          type: string
-          required: false
-          description: "Search type: neural, keyword, or auto"
-        - name: start_published_date
-          type: string
-          required: false
-          description: "Filter results published after this date (ISO format)"
-    - name: get_contents
-      description: "Get the full contents of a URL"
-      params:
-        - name: urls
-          type: string
-          required: true
-          description: "URLs to retrieve content from"
-    - name: find_similar
-      description: "Find pages similar to a given URL"
-      params:
-        - name: url
-          type: string
-          required: true
-          description: "URL to find similar pages for"
-        - name: num_results
-          type: int
-          required: false
-          description: "Number of results to return"
-
+  - name: search
+    description: Search the web using Exa semantic search
+    params:
+    - name: query
+      type: string
+      required: true
+      description: Search query string
+    - name: num_results
+      type: int
+      required: false
+      description: Number of results to return
+    - name: type
+      type: string
+      required: false
+      description: 'Search type: neural, keyword, or auto'
+    - name: start_published_date
+      type: string
+      required: false
+      description: Filter results published after this date (ISO format)
+  - name: get_contents
+    description: Get the full contents of a URL
+    params:
+    - name: urls
+      type: string
+      required: true
+      description: URLs to retrieve content from
+  - name: find_similar
+    description: Find pages similar to a given URL
+    params:
+    - name: url
+      type: string
+      required: true
+      description: URL to find similar pages for
+    - name: num_results
+      type: int
+      required: false
+      description: Number of results to return
 prompts:
   system: |
     This server provides real-time web search via Exa. Use it for
     finding up-to-date information, researching topics, and discovering
     relevant web content with semantic search capabilities.
-
 resources:
   expose: all
-
 install_mode:
   default: mcp
   allow_mcp: true

@@ -1,95 +1,87 @@
+spec: '1.0'
 name: obsidian-mcp
 description: MCP server for Obsidian vault access via the Local REST API plugin
-version: "1.0"
+version: '1.0'
 category: productivity
-tags: [mcp, obsidian, notes, knowledge-base, markdown, vault]
-protocol: mcp
-owner_name: fazer-ai
-website: https://github.com/fazer-ai/mcp-obsidian
-support_url: https://github.com/fazer-ai/mcp-obsidian/issues
-pricing_model: free
-license: MIT
-
+tags:
+- mcp
+- obsidian
+- notes
+- knowledge-base
+- markdown
+- vault
+auth:
+  env: OBSIDIAN_REST_API_KEY
+  inject: env
 package:
   registry: npm
-  name: "@fazer-ai/mcp-obsidian"
-  version: "1.2.0"
+  name: '@fazer-ai/mcp-obsidian'
+  version: 1.2.0
   manager: npx
-
-auth:
-  - type: api_key
-    key_env: OBSIDIAN_REST_API_KEY
-    inject:
-      location: env
-      param: OBSIDIAN_REST_API_KEY
-
 tools:
   expose:
-    - name: search_notes
-      description: "Search for notes in the vault"
-      params:
-        - name: query
-          type: string
-          required: true
-          description: "Search query string"
-    - name: read_note
-      description: "Read the contents of a note"
-      params:
-        - name: path
-          type: string
-          required: true
-          description: "Note path relative to vault root"
-    - name: create_note
-      description: "Create a new note"
-      destructive: true
-      params:
-        - name: path
-          type: string
-          required: true
-          description: "Note path relative to vault root"
-        - name: content
-          type: string
-          required: true
-          description: "Note content in markdown"
-    - name: update_note
-      description: "Update an existing note"
-      destructive: true
-      params:
-        - name: path
-          type: string
-          required: true
-          description: "Note path relative to vault root"
-        - name: content
-          type: string
-          required: true
-          description: "Updated note content"
-    - name: delete_note
-      description: "Delete a note from the vault"
-      destructive: true
-      params:
-        - name: path
-          type: string
-          required: true
-          description: "Note path relative to vault root"
-    - name: list_notes
-      description: "List notes in a directory"
-      params:
-        - name: path
-          type: string
-          required: false
-          description: "Directory path, defaults to vault root"
-    - name: list_tags
-      description: "List all tags used in the vault"
-
+  - name: search_notes
+    description: Search for notes in the vault
+    params:
+    - name: query
+      type: string
+      required: true
+      description: Search query string
+  - name: read_note
+    description: Read the contents of a note
+    params:
+    - name: path
+      type: string
+      required: true
+      description: Note path relative to vault root
+  - name: create_note
+    description: Create a new note
+    params:
+    - name: path
+      type: string
+      required: true
+      description: Note path relative to vault root
+    - name: content
+      type: string
+      required: true
+      description: Note content in markdown
+    mutable: true
+  - name: update_note
+    description: Update an existing note
+    params:
+    - name: path
+      type: string
+      required: true
+      description: Note path relative to vault root
+    - name: content
+      type: string
+      required: true
+      description: Updated note content
+    mutable: true
+  - name: delete_note
+    description: Delete a note from the vault
+    params:
+    - name: path
+      type: string
+      required: true
+      description: Note path relative to vault root
+    mutable: true
+  - name: list_notes
+    description: List notes in a directory
+    params:
+    - name: path
+      type: string
+      required: false
+      description: Directory path, defaults to vault root
+  - name: list_tags
+    description: List all tags used in the vault
 prompts:
   system: |
     This server provides access to Obsidian vaults via the Local REST API plugin.
     Use it to search, read, and manage notes. The Obsidian app must be running
     with the Local REST API plugin enabled.
-
 resources:
   expose: all
-
 install_mode:
   default: mcp
   allow_mcp: true

@@ -1,73 +1,45 @@
+spec: "1.0"
 name: sqlite-mcp
 description: MCP server for SQLite database access with query execution, schema inspection, and business intelligence
 version: "1.0"
 category: data
-tags: [mcp, sqlite, database, sql, query, analytics]
-protocol: mcp
-owner_name: Anthropic
-website: https://github.com/modelcontextprotocol/servers
-support_url: https://github.com/modelcontextprotocol/servers/issues
-pricing_model: free
-license: MIT
+tags: [sqlite, database, sql, query, analytics]
 
 package:
   registry: pypi
   name: "mcp-server-sqlite"
   version: "0.5.0"
-  manager: uvx
 
-auth:
-  - type: none
+server:
+  type: stdio
+  keep_alive: 600s
 
-tools:
-  expose:
-    - name: read_query
-      description: "Execute a SELECT query on the SQLite database"
-      params:
-        - name: query
-          type: string
-          required: true
-          description: "SELECT SQL query to execute"
-    - name: list_tables
-      description: "List all tables in the database"
-    - name: describe_table
-      description: "Show the schema of a specific table"
-      params:
-        - name: table_name
-          type: string
-          required: true
-          description: "Name of table to describe"
-    - name: append_insight
-      description: "Record a business intelligence insight from data analysis"
-      destructive: true
-      params:
-        - name: insight
-          type: string
-          required: true
-          description: "Business insight to record"
-  tool_transforms:
-    read_query:
-      - truncate: { max_items: 100, max_length: 10000 }
-    list_tables:
-      - truncate: { max_items: 200 }
+instructions: |
+  This server provides SQLite database access. Use list_tables and
+  describe_table to understand the schema before writing queries.
+  Use LIMIT clauses on SELECT queries to avoid returning too many rows.
+  Record interesting findings with append_insight for future reference.
 
-prompts:
-  system: |
-    This server provides SQLite database access. Use list_tables and
-    describe_table to understand the schema before writing queries.
-    Use LIMIT clauses on SELECT queries to avoid returning too many rows.
-    Record interesting findings with append_insight for future reference.
-  tool_instructions:
-    read_query: "Always include a LIMIT clause. Use describe_table first to understand column types."
+actions:
+  - name: read_query
+    description: "Execute a SELECT query on the SQLite database"
+    instructions: "Always include a LIMIT clause. Use describe_table first to understand column types."
+  - name: list_tables
+    description: "List all tables in the database"
+  - name: describe_table
+    description: "Show the schema of a specific table"
+  - name: append_insight
+    description: "Record a business intelligence insight from data analysis"
+    mutable: true
+
+transforms:
+  read_query:
+    - truncate: { max_items: 100, max_length: 10000 }
+  list_tables:
+    - truncate: { max_items: 200 }
 
 resources:
   expose:
     - uri_pattern: "sqlite://schema/**"
       description: "Database schema information"
       read_only: true
-
-install_mode:
-  default: skill
-  allow_mcp: true
-  allow_skill: true
-  keep_alive: 600s

@@ -1,32 +1,31 @@
+spec: "1.0"
 name: news-api
 description: NewsAPI.org for searching worldwide news articles and top headlines across 80,000+ sources
 version: "1.0"
 category: news
 tags: [news, headlines, articles, media]
-protocol: rest
-owner_name: NewsAPI.org
-website: https://newsapi.org
-support_url: https://newsapi.org/docs
-pricing_model: freemium
 
-connection:
-  base_url: https://newsapi.org/v2
+pricing:
+  model: freemium
+
+server:
+  type: http
+  url: https://newsapi.org/v2
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: NEWS_API_KEY
-    inject:
-      location: header
-      key: X-Api-Key
+  env: NEWS_API_KEY
+  header: X-Api-Key
+  value: "${NEWS_API_KEY}"
 
 actions:
   - name: top-headlines
     description: Get top headlines by country, category, or source
-    method: GET
-    path: /top-headlines
+    request:
+      method: GET
+      path: /top-headlines
     params:
       - name: country
         type: string
@@ -51,16 +50,20 @@ actions:
         description: Page number for pagination
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.articles"
-      - select: ["title", "description", "url", "source", "publishedAt", "author"]
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.articles"
+        select: ["title", "description", "url", "source", "publishedAt", "author"]
+      - type: truncate
+        max_items: 20
 
   - name: everything
     description: Search all articles matching a query across all sources
-    method: GET
-    path: /everything
+    request:
+      method: GET
+      path: /everything
     params:
       - name: q
         type: string
@@ -95,16 +98,20 @@ actions:
         description: Page number for pagination
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.articles"
-      - select: ["title", "description", "url", "source", "publishedAt", "author"]
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.articles"
+        select: ["title", "description", "url", "source", "publishedAt", "author"]
+      - type: truncate
+        max_items: 20
 
   - name: sources
     description: List available news sources filtered by category, language, or country
-    method: GET
-    path: /top-headlines/sources
+    request:
+      method: GET
+      path: /top-headlines/sources
     params:
       - name: category
         type: string
@@ -119,8 +126,11 @@ actions:
         description: "2-letter country code, e.g. us, gb, de"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.sources"
-      - select: ["id", "name", "description", "url", "category", "language", "country"]
-      - truncate: { max_items: 50 }
+      - type: json
+        extract: "$.sources"
+        select: ["id", "name", "description", "url", "category", "language", "country"]
+      - type: truncate
+        max_items: 50

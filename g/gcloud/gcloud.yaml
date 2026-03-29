@@ -1,65 +1,58 @@
+spec: '1.0'
 name: gcloud
 description: Google Cloud CLI for managing GCP resources. Deploy applications, manage infrastructure, and configure services
-version: "1.0"
+version: '1.0'
 category: cloud
-tags: [gcp, google-cloud, infrastructure]
-protocol: cli
-tool_type: cli
-owner_name: Google
-website: https://cloud.google.com/sdk
-support_url: https://cloud.google.com/sdk/docs
-
-connection:
+tags:
+- gcp
+- google-cloud
+- infrastructure
+server:
+  type: command
   shell: /bin/sh
   requires:
-    - name: gcloud
-      url: https://cloud.google.com/sdk/docs/install
-      check: "gcloud --version"
-
+  - name: gcloud
+    url: https://cloud.google.com/sdk/docs/install
+    check: gcloud --version
 auth:
-  - type: oauth2
-    note: "Run 'gcloud auth login' to authenticate via browser-based OAuth2 flow"
-
+  type: oauth2
 actions:
-  - name: auth_login
-    description: Authenticate with Google Cloud using an interactive browser login
-    run: "gcloud auth login"
-    params: []
-
-  - name: project_list
-    description: List all accessible Google Cloud projects
-    run: "gcloud projects list"
-    params: []
-
-  - name: config_set_project
-    description: Set the active Google Cloud project for subsequent commands
-    run: "gcloud config set project {{project_id}}"
-    params:
-      - name: project_id
-        type: string
-        required: true
-        description: Google Cloud project ID to set as active
-
-  - name: run_deploy
-    description: Deploy a container image to Google Cloud Run
-    run: "gcloud run deploy {{service}} --image {{image}} --region {{#region}}{{region}}{{/region}}{{^region}}us-central1{{/region}} {{#allow_unauthenticated}}--allow-unauthenticated{{/allow_unauthenticated}}"
-    params:
-      - name: service
-        type: string
-        required: true
-        description: Cloud Run service name
-      - name: image
-        type: string
-        required: true
-        description: "Container image to deploy (e.g., gcr.io/project/image:tag)"
-      - name: region
-        type: string
-        description: GCP region to deploy to (defaults to us-central1)
-      - name: allow_unauthenticated
-        type: bool
-        description: Allow unauthenticated access to the service
-
-  - name: compute_list
-    description: List all Compute Engine VM instances in the current project
-    run: "gcloud compute instances list"
-    params: []
+- name: auth_login
+  description: Authenticate with Google Cloud using an interactive browser login
+  run: gcloud auth login
+  params: []
+- name: project_list
+  description: List all accessible Google Cloud projects
+  run: gcloud projects list
+  params: []
+- name: config_set_project
+  description: Set the active Google Cloud project for subsequent commands
+  run: gcloud config set project {{project_id}}
+  params:
+  - name: project_id
+    type: string
+    required: true
+    description: Google Cloud project ID to set as active
+- name: run_deploy
+  description: Deploy a container image to Google Cloud Run
+  run: gcloud run deploy {{service}} --image {{image}} --region {{#region}}{{region}}{{/region}}{{^region}}us-central1{{/region}}
+    {{#allow_unauthenticated}}--allow-unauthenticated{{/allow_unauthenticated}}
+  params:
+  - name: service
+    type: string
+    required: true
+    description: Cloud Run service name
+  - name: image
+    type: string
+    required: true
+    description: Container image to deploy (e.g., gcr.io/project/image:tag)
+  - name: region
+    type: string
+    description: GCP region to deploy to (defaults to us-central1)
+  - name: allow_unauthenticated
+    type: bool
+    description: Allow unauthenticated access to the service
+- name: compute_list
+  description: List all Compute Engine VM instances in the current project
+  run: gcloud compute instances list
+  params: []

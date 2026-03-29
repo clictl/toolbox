@@ -1,34 +1,32 @@
+spec: "1.0"
 name: perplexity
 description: Perplexity AI search API for grounded answers with citations using the Sonar model family
 version: "1.0"
 category: ai
 tags: [ai, search, perplexity, citations]
-protocol: rest
-owner_name: Perplexity AI
-website: https://www.perplexity.ai
-support_url: https://docs.perplexity.ai
-pricing_model: paid
 
-connection:
-  base_url: https://api.perplexity.ai
+pricing:
+  model: paid
+
+server:
+  type: http
+  url: https://api.perplexity.ai
   timeout: 30s
   headers:
     Accept: application/json
     Content-Type: application/json
 
 auth:
-  - type: bearer
-    key_env: PERPLEXITY_API_KEY
-    inject:
-      location: header
-      key: Authorization
-      prefix: "Bearer "
+  env: PERPLEXITY_API_KEY
+  header: Authorization
+  value: "Bearer ${PERPLEXITY_API_KEY}"
 
 actions:
   - name: search
     description: Search the web and get a grounded answer with citations using the Sonar model
-    method: POST
-    path: /chat/completions
+    request:
+      method: POST
+      path: /chat/completions
     params:
       - name: query
         type: string
@@ -42,15 +40,18 @@ actions:
         - role: user
           content: "{{query}}"
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["choices", "citations"]
+      - type: json
+        extract: "$"
+        select: ["choices", "citations"]
 
   - name: search-pro
     description: Deep search with the Sonar Pro model for complex, multi-step research queries
-    method: POST
-    path: /chat/completions
+    request:
+      method: POST
+      path: /chat/completions
     params:
       - name: query
         type: string
@@ -64,15 +65,18 @@ actions:
         - role: user
           content: "{{query}}"
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["choices", "citations"]
+      - type: json
+        extract: "$"
+        select: ["choices", "citations"]
 
   - name: search-reasoning
     description: Search with the Sonar Reasoning model for queries requiring step-by-step analysis
-    method: POST
-    path: /chat/completions
+    request:
+      method: POST
+      path: /chat/completions
     params:
       - name: query
         type: string
@@ -86,7 +90,9 @@ actions:
         - role: user
           content: "{{query}}"
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["choices", "citations"]
+      - type: json
+        extract: "$"
+        select: ["choices", "citations"]

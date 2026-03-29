@@ -1,6 +1,7 @@
+spec: '1.0'
 name: seo-audit
 description: Skill for SEO analysis workflows including technical audits, content optimization, and search performance review
-version: "1.0"
+version: '1.0'
 category: productivity
 tags:
 - skill
@@ -9,22 +10,3 @@ tags:
 - audit
 - content-optimization
 - technical-seo
-protocol: skill
-owner_name: Anthropic
-namespace: anthropic
-website: https://github.com/anthropics/skills
-support_url: https://github.com/anthropics/skills/issues
-pricing_model: free
-license: Apache-2.0
-platforms:
-- name: claude-code
-  install_method: skill
-  config_path: .claude/skills/
-- name: cursor
-  install_method: skill
-  config_path: .cursor/skills/
-skill_metadata:
-  author: anthropic
-  version: '1.0'
-auth:
-- type: none

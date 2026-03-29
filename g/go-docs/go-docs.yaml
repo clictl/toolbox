@@ -1,52 +1,39 @@
+spec: '1.0'
 name: go-docs
 description: Go package discovery and documentation site. Search for modules and view package documentation
-version: "1.0"
+version: '1.0'
 category: documentation
-tags: [documentation, go, golang, packages, modules]
-protocol: rest
-tool_type: website
-owner_name: Google
-website: https://pkg.go.dev
-support_url: https://github.com/golang/go/issues
-pricing_model: free
-
-site:
+tags:
+- documentation
+- go
+- golang
+- packages
+- modules
+server:
+  type: http
   url: https://pkg.go.dev
-  sitemap: https://pkg.go.dev/sitemap/index.xml
-  content_type: documentation
-  preferred_format: html
-
-access:
-  method: fetch
-  robots_txt: respected
-
-connection:
-  base_url: https://pkg.go.dev
   headers:
     Accept: text/html
-
-auth:
-  - type: none
-
 actions:
-  - name: search
-    description: Search for Go packages and modules by name or keyword
+- name: search
+  description: Search for Go packages and modules by name or keyword
+  params:
+  - name: q
+    type: string
+    required: true
+    description: Search query (e.g., http router, json parser, context)
+    in: query
+  request:
     method: GET
     path: /search
-    params:
-      - name: q
-        type: string
-        required: true
-        description: Search query (e.g., http router, json parser, context)
-        in: query
-
-  - name: package
-    description: View documentation for a specific Go module or package
+- name: package
+  description: View documentation for a specific Go module or package
+  params:
+  - name: module
+    type: string
+    required: true
+    description: Full module path (e.g., net/http, github.com/gin-gonic/gin)
+    in: path
+  request:
     method: GET
     path: /{module}
-    params:
-      - name: module
-        type: string
-        required: true
-        description: Full module path (e.g., net/http, github.com/gin-gonic/gin)
-        in: path

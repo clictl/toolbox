@@ -1,150 +1,149 @@
+spec: '1.0'
 name: linear-mcp
 description: Official Linear MCP server for issue tracking, project management, and sprint planning
-version: "1.0"
+version: '1.0'
 category: productivity
-tags: [mcp, linear, issues, project-management, sprints, tickets, agile]
-protocol: mcp
-owner_name: Linear
-website: https://github.com/linear/linear-mcp
-support_url: https://github.com/linear/linear-mcp/issues
-pricing_model: freemium
-license: MIT
-
+tags:
+- mcp
+- linear
+- issues
+- project-management
+- sprints
+- tickets
+- agile
+auth:
+  env: LINEAR_API_KEY
+  inject: env
+pricing:
+  model: freemium
 package:
   registry: npm
-  name: "@linear/mcp-server"
-  version: "0.1.0"
+  name: '@linear/mcp-server'
+  version: 0.1.0
   manager: npx
-
-docs:
-  api_reference: https://developers.linear.app/docs
-
-auth:
-  - type: api_key
-    key_env: LINEAR_API_KEY
-    inject:
-      location: env
-      param: LINEAR_API_KEY
-
 tools:
   expose:
-    - name: linear_search_issues
-      description: "Search for issues using text queries"
-      params:
-        - name: query
-          type: string
-          required: true
-          description: "Text search query"
-    - name: linear_get_issue
-      description: "Get detailed information about a specific issue by ID"
-      params:
-        - name: issue_id
-          type: string
-          required: true
-          description: "Issue ID"
-    - name: linear_create_issue
-      description: "Create a new issue in a team"
-      destructive: true
-      params:
-        - name: team_id
-          type: string
-          required: true
-          description: "Team ID"
-        - name: title
-          type: string
-          required: true
-          description: "Issue title"
-        - name: description
-          type: string
-          required: false
-          description: "Issue description"
-        - name: priority
-          type: integer
-          required: false
-          description: "Priority level (0=none, 1=urgent, 2=high, 3=medium, 4=low)"
-        - name: assignee_id
-          type: string
-          required: false
-          description: "User ID to assign the issue to"
-    - name: linear_update_issue
-      description: "Update an existing issue (title, description, status, assignee)"
-      destructive: true
-      params:
-        - name: issue_id
-          type: string
-          required: true
-          description: "Issue ID"
-        - name: title
-          type: string
-          required: false
-          description: "Updated title"
-        - name: description
-          type: string
-          required: false
-          description: "Updated description"
-        - name: status
-          type: string
-          required: false
-          description: "Updated status"
-        - name: priority
-          type: integer
-          required: false
-          description: "Updated priority level"
-        - name: assignee_id
-          type: string
-          required: false
-          description: "Updated assignee user ID"
-    - name: linear_list_teams
-      description: "List all teams in the workspace"
-    - name: linear_list_projects
-      description: "List projects with optional filtering"
-      params:
-        - name: team_id
-          type: string
-          required: false
-          description: "Filter by team"
-    - name: linear_list_cycles
-      description: "List cycles (sprints) for a team"
-      params:
-        - name: team_id
-          type: string
-          required: true
-          description: "Team ID"
-    - name: linear_add_comment
-      description: "Add a comment to an issue"
-      destructive: true
-      params:
-        - name: issue_id
-          type: string
-          required: true
-          description: "Issue ID"
-        - name: body
-          type: string
-          required: true
-          description: "Comment text in markdown"
-    - name: linear_get_user
-      description: "Get information about a user"
-      params:
-        - name: user_id
-          type: string
-          required: true
-          description: "User ID"
-  tool_transforms:
+  - name: linear_search_issues
+    description: Search for issues using text queries
+    params:
+    - name: query
+      type: string
+      required: true
+      description: Text search query
+  - name: linear_get_issue
+    description: Get detailed information about a specific issue by ID
+    params:
+    - name: issue_id
+      type: string
+      required: true
+      description: Issue ID
+  - name: linear_create_issue
+    description: Create a new issue in a team
+    params:
+    - name: team_id
+      type: string
+      required: true
+      description: Team ID
+    - name: title
+      type: string
+      required: true
+      description: Issue title
+    - name: description
+      type: string
+      required: false
+      description: Issue description
+    - name: priority
+      type: integer
+      required: false
+      description: Priority level (0=none, 1=urgent, 2=high, 3=medium, 4=low)
+    - name: assignee_id
+      type: string
+      required: false
+      description: User ID to assign the issue to
+    mutable: true
+  - name: linear_update_issue
+    description: Update an existing issue (title, description, status, assignee)
+    params:
+    - name: issue_id
+      type: string
+      required: true
+      description: Issue ID
+    - name: title
+      type: string
+      required: false
+      description: Updated title
+    - name: description
+      type: string
+      required: false
+      description: Updated description
+    - name: status
+      type: string
+      required: false
+      description: Updated status
+    - name: priority
+      type: integer
+      required: false
+      description: Updated priority level
+    - name: assignee_id
+      type: string
+      required: false
+      description: Updated assignee user ID
+    mutable: true
+  - name: linear_list_teams
+    description: List all teams in the workspace
+  - name: linear_list_projects
+    description: List projects with optional filtering
+    params:
+    - name: team_id
+      type: string
+      required: false
+      description: Filter by team
+  - name: linear_list_cycles
+    description: List cycles (sprints) for a team
+    params:
+    - name: team_id
+      type: string
+      required: true
+      description: Team ID
+  - name: linear_add_comment
+    description: Add a comment to an issue
+    params:
+    - name: issue_id
+      type: string
+      required: true
+      description: Issue ID
+    - name: body
+      type: string
+      required: true
+      description: Comment text in markdown
+    mutable: true
+  - name: linear_get_user
+    description: Get information about a user
+    params:
+    - name: user_id
+      type: string
+      required: true
+      description: User ID
+  transforms:
     linear_search_issues:
-      - truncate: { max_items: 30 }
+    - truncate:
+        max_items: 30
     linear_list_teams:
-      - truncate: { max_items: 50 }
+    - truncate:
+        max_items: 50
     linear_list_projects:
-      - truncate: { max_items: 30 }
+    - truncate:
+        max_items: 30
     linear_list_cycles:
-      - truncate: { max_items: 20 }
-
-permissions:
+    - truncate:
+        max_items: 20
+sandbox:
   network:
-    - "api.linear.app"
+    allow:
+    - api.linear.app
   env:
-    - "LINEAR_API_KEY"
-
+    allow:
+    - LINEAR_API_KEY
 prompts:
   system: |
     This server provides access to Linear for issue tracking. Use
@@ -152,12 +151,10 @@ prompts:
     duplicates. When creating issues, include clear titles, descriptions,
     and assign to the appropriate team.
   tool_instructions:
-    linear_create_issue: "Include a clear title and description. Assign to the correct team."
-    linear_update_issue: "Confirm status changes with the user before updating."
-
+    linear_create_issue: Include a clear title and description. Assign to the correct team.
+    linear_update_issue: Confirm status changes with the user before updating.
 resources:
   expose: all
-
 install_mode:
   default: both
   allow_mcp: true

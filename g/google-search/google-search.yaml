@@ -1,37 +1,34 @@
+spec: "1.0"
 name: google-search
 description: Google Custom Search JSON API for web search, image search, and site-specific queries
 version: "1.0"
 category: search
 tags: [search, google, web]
-protocol: rest
-owner_name: Google
-website: https://developers.google.com/custom-search
-support_url: https://developers.google.com/custom-search/v1/overview
-pricing_model: freemium
 
-connection:
-  base_url: https://www.googleapis.com/customsearch/v1
+pricing:
+  model: freemium
+
+server:
+  type: http
+  url: https://www.googleapis.com/customsearch/v1
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: GOOGLE_API_KEY
-    inject:
-      location: query
-      key: key
-  - type: api_key
-    key_env: GOOGLE_CSE_ID
-    inject:
-      location: query
-      key: cx
+  - env: GOOGLE_API_KEY
+    param: key
+    value: "${GOOGLE_API_KEY}"
+  - env: GOOGLE_CSE_ID
+    param: cx
+    value: "${GOOGLE_CSE_ID}"
 
 actions:
   - name: search
     description: Search the web using Google Custom Search
-    method: GET
-    path: /
+    request:
+      method: GET
+      path: /
     params:
       - name: q
         type: string
@@ -56,16 +53,20 @@ actions:
         description: Restrict results to a specific site (e.g. example.com)
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.items"
-      - select: ["title", "link", "snippet", "displayLink"]
-      - truncate: { max_items: 10 }
+      - type: json
+        extract: "$.items"
+        select: ["title", "link", "snippet", "displayLink"]
+      - type: truncate
+        max_items: 10
 
   - name: search-images
     description: Search for images using Google Custom Search
-    method: GET
-    path: /
+    request:
+      method: GET
+      path: /
     params:
       - name: q
         type: string
@@ -92,8 +93,11 @@ actions:
         description: "Filter by image type: face, photo, clipart, lineart, animated"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.items"
-      - select: ["title", "link", "image", "displayLink"]
-      - truncate: { max_items: 10 }
+      - type: json
+        extract: "$.items"
+        select: ["title", "link", "image", "displayLink"]
+      - type: truncate
+        max_items: 10

@@ -1,156 +1,150 @@
+spec: '1.0'
 name: kubectl
 description: Kubernetes cluster management. Get, describe, scale, delete resources and run commands in pods
-version: "1.0"
+version: '1.0'
 category: devops
-tags: [kubernetes, k8s, containers, orchestration, devops, infrastructure, destructive]
-protocol: cli
-tool_type: cli
-owner_name: Kubernetes
-website: https://kubernetes.io
-support_url: https://kubernetes.io/docs/reference/kubectl/
-
-connection:
+tags:
+- kubernetes
+- k8s
+- containers
+- orchestration
+- devops
+- infrastructure
+- destructive
+server:
+  type: command
   shell: /bin/sh
   requires:
-    - name: kubectl
-      url: https://kubernetes.io/docs/tasks/tools/
-      check: "kubectl version --client"
-
-auth:
-  - type: none
-
+  - name: kubectl
+    url: https://kubernetes.io/docs/tasks/tools/
+    check: kubectl version --client
 actions:
-  - name: get
-    description: List resources of a given type in the cluster
-    run: "kubectl get {{resource}} {{#namespace}}-n {{namespace}}{{/namespace}} {{#output}}-o {{output}}{{/output}}"
-    params:
-      - name: resource
-        type: string
-        required: true
-        description: "Resource type, e.g. pods, services, deployments, nodes"
-      - name: namespace
-        type: string
-        description: Kubernetes namespace to query
-      - name: output
-        type: string
-        description: "Output format: wide, json, yaml, name"
-
-  - name: describe
-    description: Show detailed information about a specific resource
-    run: "kubectl describe {{resource}} {{name}} {{#namespace}}-n {{namespace}}{{/namespace}}"
-    params:
-      - name: resource
-        type: string
-        required: true
-        description: "Resource type, e.g. pod, service, deployment, node"
-      - name: name
-        type: string
-        required: true
-        description: Name of the resource
-      - name: namespace
-        type: string
-        description: Kubernetes namespace
-
-  - name: logs
-    description: Get logs from a pod
-    run: "kubectl logs {{pod}} {{#container}}-c {{container}}{{/container}} {{#namespace}}-n {{namespace}}{{/namespace}} --tail {{lines}} {{#follow}}-f{{/follow}}"
-    params:
-      - name: pod
-        type: string
-        required: true
-        description: Pod name
-      - name: container
-        type: string
-        description: Container name within the pod
-      - name: namespace
-        type: string
-        description: Kubernetes namespace
-      - name: lines
-        type: int
-        default: "50"
-        description: Number of recent log lines to show
-      - name: follow
-        type: bool
-        description: Follow log output in real time
-
-  - name: top
-    description: Show resource usage metrics for nodes or pods
-    run: "kubectl top {{resource}} {{#namespace}}-n {{namespace}}{{/namespace}}"
-    params:
-      - name: resource
-        type: string
-        required: true
-        description: "Resource type: nodes or pods"
-      - name: namespace
-        type: string
-        description: Kubernetes namespace (only applicable for pods)
-
-  - name: apply
-    description: Apply a configuration file to create or update resources
-    run: "kubectl apply -f {{file}} {{#namespace}}-n {{namespace}}{{/namespace}}"
-    params:
-      - name: file
-        type: string
-        required: true
-        description: Path to the YAML or JSON configuration file
-      - name: namespace
-        type: string
-        description: Kubernetes namespace
-
-  - name: delete
-    description: Delete a resource from the cluster
-    run: "kubectl delete {{resource}} {{name}} {{#namespace}}-n {{namespace}}{{/namespace}}"
-    params:
-      - name: resource
-        type: string
-        required: true
-        description: "Resource type, e.g. pod, service, deployment"
-      - name: name
-        type: string
-        required: true
-        description: Name of the resource to delete
-      - name: namespace
-        type: string
-        description: Kubernetes namespace
-
-  - name: scale
-    description: Scale a deployment, replica set, or stateful set
-    run: "kubectl scale {{resource}} {{name}} --replicas={{count}} {{#namespace}}-n {{namespace}}{{/namespace}}"
-    params:
-      - name: resource
-        type: string
-        required: true
-        description: "Resource type, e.g. deployment, replicaset, statefulset"
-      - name: name
-        type: string
-        required: true
-        description: Name of the resource to scale
-      - name: count
-        type: int
-        required: true
-        description: Desired number of replicas
-      - name: namespace
-        type: string
-        description: Kubernetes namespace
-
-  - name: exec
-    description: Run a command inside a running pod
-    run: "kubectl exec {{#interactive}}-it{{/interactive}} {{pod}} {{#container}}-c {{container}}{{/container}} {{#namespace}}-n {{namespace}}{{/namespace}} -- {{cmd}}"
-    params:
-      - name: pod
-        type: string
-        required: true
-        description: Pod name
-      - name: cmd
-        type: string
-        required: true
-        description: "Command to run, e.g. 'sh' or 'cat /etc/config'"
-      - name: container
-        type: string
-        description: Container name within the pod
-      - name: namespace
-        type: string
-        description: Kubernetes namespace
-      - name: interactive
-        type: bool
-        description: Run in interactive mode with a TTY
+- name: get
+  description: List resources of a given type in the cluster
+  run: kubectl get {{resource}} {{#namespace}}-n {{namespace}}{{/namespace}} {{#output}}-o {{output}}{{/output}}
+  params:
+  - name: resource
+    type: string
+    required: true
+    description: Resource type, e.g. pods, services, deployments, nodes
+  - name: namespace
+    type: string
+    description: Kubernetes namespace to query
+  - name: output
+    type: string
+    description: 'Output format: wide, json, yaml, name'
+- name: describe
+  description: Show detailed information about a specific resource
+  run: kubectl describe {{resource}} {{name}} {{#namespace}}-n {{namespace}}{{/namespace}}
+  params:
+  - name: resource
+    type: string
+    required: true
+    description: Resource type, e.g. pod, service, deployment, node
+  - name: name
+    type: string
+    required: true
+    description: Name of the resource
+  - name: namespace
+    type: string
+    description: Kubernetes namespace
+- name: logs
+  description: Get logs from a pod
+  run: kubectl logs {{pod}} {{#container}}-c {{container}}{{/container}} {{#namespace}}-n {{namespace}}{{/namespace}} --tail
+    {{lines}} {{#follow}}-f{{/follow}}
+  params:
+  - name: pod
+    type: string
+    required: true
+    description: Pod name
+  - name: container
+    type: string
+    description: Container name within the pod
+  - name: namespace
+    type: string
+    description: Kubernetes namespace
+  - name: lines
+    type: int
+    default: '50'
+    description: Number of recent log lines to show
+  - name: follow
+    type: bool
+    description: Follow log output in real time
+- name: top
+  description: Show resource usage metrics for nodes or pods
+  run: kubectl top {{resource}} {{#namespace}}-n {{namespace}}{{/namespace}}
+  params:
+  - name: resource
+    type: string
+    required: true
+    description: 'Resource type: nodes or pods'
+  - name: namespace
+    type: string
+    description: Kubernetes namespace (only applicable for pods)
+- name: apply
+  description: Apply a configuration file to create or update resources
+  run: kubectl apply -f {{file}} {{#namespace}}-n {{namespace}}{{/namespace}}
+  params:
+  - name: file
+    type: string
+    required: true
+    description: Path to the YAML or JSON configuration file
+  - name: namespace
+    type: string
+    description: Kubernetes namespace
+- name: delete
+  description: Delete a resource from the cluster
+  run: kubectl delete {{resource}} {{name}} {{#namespace}}-n {{namespace}}{{/namespace}}
+  params:
+  - name: resource
+    type: string
+    required: true
+    description: Resource type, e.g. pod, service, deployment
+  - name: name
+    type: string
+    required: true
+    description: Name of the resource to delete
+  - name: namespace
+    type: string
+    description: Kubernetes namespace
+- name: scale
+  description: Scale a deployment, replica set, or stateful set
+  run: kubectl scale {{resource}} {{name}} --replicas={{count}} {{#namespace}}-n {{namespace}}{{/namespace}}
+  params:
+  - name: resource
+    type: string
+    required: true
+    description: Resource type, e.g. deployment, replicaset, statefulset
+  - name: name
+    type: string
+    required: true
+    description: Name of the resource to scale
+  - name: count
+    type: int
+    required: true
+    description: Desired number of replicas
+  - name: namespace
+    type: string
+    description: Kubernetes namespace
+- name: exec
+  description: Run a command inside a running pod
+  run: kubectl exec {{#interactive}}-it{{/interactive}} {{pod}} {{#container}}-c {{container}}{{/container}} {{#namespace}}-n
+    {{namespace}}{{/namespace}} -- {{cmd}}
+  params:
+  - name: pod
+    type: string
+    required: true
+    description: Pod name
+  - name: cmd
+    type: string
+    required: true
+    description: Command to run, e.g. 'sh' or 'cat /etc/config'
+  - name: container
+    type: string
+    description: Container name within the pod
+  - name: namespace
+    type: string
+    description: Kubernetes namespace
+  - name: interactive
+    type: bool
+    description: Run in interactive mode with a TTY

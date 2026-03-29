@@ -1,74 +1,28 @@
+spec: "1.0"
 name: sequential-thinking-mcp
 description: MCP server for dynamic problem-solving through sequential thought chains with branching and revision
 version: "1.0"
 category: ai
-tags: [mcp, thinking, reasoning, problem-solving, chain-of-thought]
-protocol: mcp
-owner_name: Anthropic
-website: https://github.com/modelcontextprotocol/servers
-support_url: https://github.com/modelcontextprotocol/servers/issues
-pricing_model: free
-license: MIT
+tags: [thinking, reasoning, problem-solving, chain-of-thought]
 
 package:
   registry: npm
   name: "@modelcontextprotocol/server-sequential-thinking"
   version: "0.6.2"
-  manager: npx
 
-auth:
-  - type: none
+server:
+  type: stdio
+  keep_alive: 120s
 
-tools:
-  expose:
-    - name: sequentialthinking
-      description: "Create a dynamic chain of thoughts for problem-solving with branching and revision support"
-      params:
-        - name: thought
-          type: string
-          required: true
-          description: "The current thinking step"
-        - name: nextThoughtNeeded
-          type: boolean
-          required: true
-          description: "Whether another thought step is needed"
-        - name: thoughtNumber
-          type: integer
-          required: true
-          description: "Current thought number"
-        - name: totalThoughts
-          type: integer
-          required: true
-          description: "Estimated total thoughts needed"
-        - name: isRevision
-          type: boolean
-          required: false
-          description: "Whether this revises a previous thought"
-        - name: revisesThought
-          type: integer
-          required: false
-          description: "Which thought number is being revised"
-        - name: branchFromThought
-          type: integer
-          required: false
-          description: "Thought number to branch from"
-        - name: branchId
-          type: string
-          required: false
-          description: "Identifier for this branch"
+instructions: |
+  This server provides a structured thinking tool for complex problems.
+  Use it to break down multi-step reasoning, explore alternative
+  approaches, and revise earlier conclusions. Each thought can branch
+  or revise previous steps.
 
-prompts:
-  system: |
-    This server provides a structured thinking tool for complex problems.
-    Use it to break down multi-step reasoning, explore alternative
-    approaches, and revise earlier conclusions. Each thought can branch
-    or revise previous steps.
+actions:
+  - name: sequentialthinking
+    description: "Create a dynamic chain of thoughts for problem-solving with branching and revision support"
 
 resources:
   expose: all
-
-install_mode:
-  default: both
-  allow_mcp: true
-  allow_skill: true
-  keep_alive: 120s

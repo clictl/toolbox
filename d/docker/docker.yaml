@@ -1,118 +1,105 @@
+spec: '1.0'
 name: docker
 description: Docker container management. List, inspect, start, stop, remove, and get logs from containers
-version: "1.0"
+version: '1.0'
 category: devops
-tags: [docker, containers, devops, infrastructure, destructive]
-protocol: cli
-tool_type: cli
-owner_name: Docker
-website: https://docker.com
-support_url: https://docs.docker.com
-
-connection:
+tags:
+- docker
+- containers
+- devops
+- infrastructure
+- destructive
+server:
+  type: command
   shell: /bin/sh
   requires:
-    - name: docker
-      url: https://docs.docker.com/get-docker/
-      check: "docker --version"
-
-auth:
-  - type: none
-
+  - name: docker
+    url: https://docs.docker.com/get-docker/
+    check: docker --version
 actions:
-  - name: ps
-    description: List running containers with their names, status, and port mappings
-    run: "docker ps --format 'table {{`{{.ID}}`}}\t{{`{{.Names}}`}}\t{{`{{.Image}}`}}\t{{`{{.Status}}`}}\t{{`{{.Ports}}`}}'"
-    params: []
-
-  - name: ps_all
-    description: List all containers including stopped ones
-    run: "docker ps -a --format 'table {{`{{.ID}}`}}\t{{`{{.Names}}`}}\t{{`{{.Image}}`}}\t{{`{{.Status}}`}}'"
-    params: []
-
-  - name: logs
-    description: Get recent logs from a container
-    run: "docker logs {{container}} --tail {{lines}} {{#follow}}-f{{/follow}}"
-    params:
-      - name: container
-        type: string
-        required: true
-        description: Container name or ID
-      - name: lines
-        type: int
-        default: "50"
-        description: Number of recent log lines to show
-      - name: follow
-        type: bool
-        description: Follow log output in real time
-
-  - name: inspect
-    description: Get detailed configuration and state information for a container
-    run: "docker inspect {{container}}"
-    params:
-      - name: container
-        type: string
-        required: true
-        description: Container name or ID
-
-  - name: stats
-    description: Show live CPU, memory, and network usage for running containers
-    run: "docker stats --no-stream --format 'table {{`{{.Name}}`}}\t{{`{{.CPUPerc}}`}}\t{{`{{.MemUsage}}`}}\t{{`{{.NetIO}}`}}'"
-    params: []
-
-  - name: images
-    description: List locally available Docker images
-    run: "docker images --format 'table {{`{{.Repository}}`}}\t{{`{{.Tag}}`}}\t{{`{{.Size}}`}}\t{{`{{.CreatedSince}}`}}'"
-    params: []
-
-  - name: exec
-    description: Run a command inside a running container
-    run: "docker exec {{#interactive}}-it{{/interactive}} {{container}} {{cmd}}"
-    params:
-      - name: container
-        type: string
-        required: true
-        description: Container name or ID
-      - name: cmd
-        type: string
-        required: true
-        description: "Command to run, e.g. 'sh' or 'ls /app'"
-      - name: interactive
-        type: bool
-        description: Run in interactive mode with a TTY
-
-  - name: stop
-    description: Stop a running container
-    run: "docker stop {{container}}"
-    params:
-      - name: container
-        type: string
-        required: true
-        description: Container name or ID
-
-  - name: restart
-    description: Restart a container
-    run: "docker restart {{container}}"
-    params:
-      - name: container
-        type: string
-        required: true
-        description: Container name or ID
-
-  - name: rm
-    description: Remove a stopped container
-    run: "docker rm {{container}}"
-    params:
-      - name: container
-        type: string
-        required: true
-        description: Container name or ID
-
-  - name: rmi
-    description: Remove a Docker image
-    run: "docker rmi {{image}}"
-    params:
-      - name: image
-        type: string
-        required: true
-        description: Image name or ID
+- name: ps
+  description: List running containers with their names, status, and port mappings
+  run: "docker ps --format 'table {{`{{.ID}}`}}\t{{`{{.Names}}`}}\t{{`{{.Image}}`}}\t{{`{{.Status}}`}}\t{{`{{.Ports}}`}}'"
+  params: []
+- name: ps_all
+  description: List all containers including stopped ones
+  run: "docker ps -a --format 'table {{`{{.ID}}`}}\t{{`{{.Names}}`}}\t{{`{{.Image}}`}}\t{{`{{.Status}}`}}'"
+  params: []
+- name: logs
+  description: Get recent logs from a container
+  run: docker logs {{container}} --tail {{lines}} {{#follow}}-f{{/follow}}
+  params:
+  - name: container
+    type: string
+    required: true
+    description: Container name or ID
+  - name: lines
+    type: int
+    default: '50'
+    description: Number of recent log lines to show
+  - name: follow
+    type: bool
+    description: Follow log output in real time
+- name: inspect
+  description: Get detailed configuration and state information for a container
+  run: docker inspect {{container}}
+  params:
+  - name: container
+    type: string
+    required: true
+    description: Container name or ID
+- name: stats
+  description: Show live CPU, memory, and network usage for running containers
+  run: "docker stats --no-stream --format 'table {{`{{.Name}}`}}\t{{`{{.CPUPerc}}`}}\t{{`{{.MemUsage}}`}}\t{{`{{.NetIO}}`}}'"
+  params: []
+- name: images
+  description: List locally available Docker images
+  run: "docker images --format 'table {{`{{.Repository}}`}}\t{{`{{.Tag}}`}}\t{{`{{.Size}}`}}\t{{`{{.CreatedSince}}`}}'"
+  params: []
+- name: exec
+  description: Run a command inside a running container
+  run: docker exec {{#interactive}}-it{{/interactive}} {{container}} {{cmd}}
+  params:
+  - name: container
+    type: string
+    required: true
+    description: Container name or ID
+  - name: cmd
+    type: string
+    required: true
+    description: Command to run, e.g. 'sh' or 'ls /app'
+  - name: interactive
+    type: bool
+    description: Run in interactive mode with a TTY
+- name: stop
+  description: Stop a running container
+  run: docker stop {{container}}
+  params:
+  - name: container
+    type: string
+    required: true
+    description: Container name or ID
+- name: restart
+  description: Restart a container
+  run: docker restart {{container}}
+  params:
+  - name: container
+    type: string
+    required: true
+    description: Container name or ID
+- name: rm
+  description: Remove a stopped container
+  run: docker rm {{container}}
+  params:
+  - name: container
+    type: string
+    required: true
+    description: Container name or ID
+- name: rmi
+  description: Remove a Docker image
+  run: docker rmi {{image}}
+  params:
+  - name: image
+    type: string
+    required: true
+    description: Image name or ID

@@ -1,52 +1,47 @@
+spec: '1.0'
 name: jq
 description: Lightweight command-line JSON processor. Filter, transform, and format JSON data
-version: "1.0"
+version: '1.0'
 category: developer
-tags: [jq, json, parser, filter, developer]
-protocol: cli
-tool_type: cli
-owner_name: jqlang
-website: https://jqlang.github.io/jq/
-support_url: https://jqlang.github.io/jq/manual/
-
-connection:
+tags:
+- jq
+- json
+- parser
+- filter
+- developer
+server:
+  type: command
   shell: /bin/sh
   requires:
-    - name: jq
-      url: https://jqlang.github.io/jq/download/
-      check: "jq --version"
-
-auth:
-  - type: none
-
+  - name: jq
+    url: https://jqlang.github.io/jq/download/
+    check: jq --version
 actions:
-  - name: filter
-    description: Apply a jq filter expression to JSON input and return the result
-    run: "echo '{{input}}' | jq '{{expression}}'"
-    params:
-      - name: input
-        type: string
-        required: true
-        description: JSON string to process
-      - name: expression
-        type: string
-        required: true
-        description: "jq filter expression (e.g., .name, .items[] | select(.active))"
-
-  - name: format
-    description: Pretty-print and format raw JSON input with proper indentation
-    run: "echo '{{input}}' | jq ."
-    params:
-      - name: input
-        type: string
-        required: true
-        description: JSON string to format
-
-  - name: keys
-    description: Extract and list the top-level keys from a JSON object
-    run: "echo '{{input}}' | jq 'keys'"
-    params:
-      - name: input
-        type: string
-        required: true
-        description: JSON object string to extract keys from
+- name: filter
+  description: Apply a jq filter expression to JSON input and return the result
+  run: echo '{{input}}' | jq '{{expression}}'
+  params:
+  - name: input
+    type: string
+    required: true
+    description: JSON string to process
+  - name: expression
+    type: string
+    required: true
+    description: jq filter expression (e.g., .name, .items[] | select(.active))
+- name: format
+  description: Pretty-print and format raw JSON input with proper indentation
+  run: echo '{{input}}' | jq .
+  params:
+  - name: input
+    type: string
+    required: true
+    description: JSON string to format
+- name: keys
+  description: Extract and list the top-level keys from a JSON object
+  run: echo '{{input}}' | jq 'keys'
+  params:
+  - name: input
+    type: string
+    required: true
+    description: JSON object string to extract keys from

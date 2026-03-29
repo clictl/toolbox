@@ -1,33 +1,31 @@
+spec: "1.0"
 name: vercel
 description: Vercel API for listing deployments, projects, domains, and checking build status
 version: "1.0"
 category: developer
 tags: [vercel, deployments, hosting, serverless, frontend, ci-cd]
-protocol: rest
-owner_name: Vercel
-website: https://vercel.com
-support_url: https://vercel.com/docs/rest-api
-pricing_model: freemium
 
-connection:
-  base_url: https://api.vercel.com
+pricing:
+  model: freemium
+
+server:
+  type: http
+  url: https://api.vercel.com
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: VERCEL_TOKEN
-    inject:
-      location: header
-      param: Authorization
-      prefix: "Bearer"
+  env: VERCEL_TOKEN
+  header: Authorization
+  value: "Bearer ${VERCEL_TOKEN}"
 
 actions:
   - name: list-deployments
     description: List recent deployments across all projects or for a specific project
-    method: GET
-    path: /v6/deployments
+    request:
+      method: GET
+      path: /v6/deployments
     params:
       - name: projectId
         type: string
@@ -47,15 +45,19 @@ actions:
         description: "Filter by target environment: 'production' or 'preview'"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.deployments"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.deployments"
+      - type: truncate
+        max_items: 20
 
   - name: get-deployment
     description: Get detailed information about a specific deployment
-    method: GET
-    path: /v13/deployments/{{deployment_id}}
+    request:
+      method: GET
+      path: /v13/deployments/{{deployment_id}}
     params:
       - name: deployment_id
         type: string
@@ -63,15 +65,18 @@ actions:
         description: The deployment ID or URL
         in: path
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["id", "name", "url", "state", "readyState", "target", "createdAt", "buildingAt", "ready", "meta"]
+      - type: json
+        extract: "$"
+        select: ["id", "name", "url", "state", "readyState", "target", "createdAt", "buildingAt", "ready", "meta"]
 
   - name: list-projects
     description: List all projects in your Vercel account or team
-    method: GET
-    path: /v9/projects
+    request:
+      method: GET
+      path: /v9/projects
     params:
       - name: search
         type: string
@@ -83,15 +88,19 @@ actions:
         description: Maximum number of projects to return
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.projects"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.projects"
+      - type: truncate
+        max_items: 20
 
   - name: get-project
     description: Get details for a specific project by ID or name
-    method: GET
-    path: /v9/projects/{{project_id}}
+    request:
+      method: GET
+      path: /v9/projects/{{project_id}}
     params:
       - name: project_id
         type: string
@@ -99,15 +108,18 @@ actions:
         description: The project ID or name
         in: path
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["id", "name", "framework", "nodeVersion", "buildCommand", "outputDirectory", "link", "latestDeployments"]
+      - type: json
+        extract: "$"
+        select: ["id", "name", "framework", "nodeVersion", "buildCommand", "outputDirectory", "link", "latestDeployments"]
 
   - name: list-domains
     description: List all domains configured for a project
-    method: GET
-    path: /v9/projects/{{project_id}}/domains
+    request:
+      method: GET
+      path: /v9/projects/{{project_id}}/domains
     params:
       - name: project_id
         type: string
@@ -120,7 +132,10 @@ actions:
         description: Maximum number of domains to return
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.domains"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.domains"
+      - type: truncate
+        max_items: 20

@@ -1,33 +1,28 @@
+spec: "1.0"
 name: unsplash
 description: Unsplash API for searching and browsing high-quality photos and photographer profiles
 version: "1.0"
 category: media
 tags: [unsplash, photos, images, stock, photography]
-protocol: rest
-owner_name: Unsplash
-website: https://unsplash.com
-support_url: https://unsplash.com/documentation
-pricing_model: free
 
-connection:
-  base_url: https://api.unsplash.com
+server:
+  type: http
+  url: https://api.unsplash.com
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: UNSPLASH_ACCESS_KEY
-    inject:
-      location: header
-      param: Authorization
-      prefix: "Client-ID"
+  env: UNSPLASH_ACCESS_KEY
+  header: Authorization
+  value: "Client-ID ${UNSPLASH_ACCESS_KEY}"
 
 actions:
   - name: search-photos
     description: Search for photos by keyword or phrase
-    method: GET
-    path: /search/photos
+    request:
+      method: GET
+      path: /search/photos
     params:
       - name: query
         type: string
@@ -58,15 +53,19 @@ actions:
         description: "Sort order: 'relevant' or 'latest'"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.results"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.results"
+      - type: truncate
+        max_items: 20
 
   - name: get-photo
     description: Get full details for a specific photo by its ID
-    method: GET
-    path: /photos/{{photo_id}}
+    request:
+      method: GET
+      path: /photos/{{photo_id}}
     params:
       - name: photo_id
         type: string
@@ -74,15 +73,18 @@ actions:
         description: The unique photo ID
         in: path
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["id", "description", "alt_description", "urls", "width", "height", "likes", "user", "created_at", "tags"]
+      - type: json
+        extract: "$"
+        select: ["id", "description", "alt_description", "urls", "width", "height", "likes", "user", "created_at", "tags"]
 
   - name: list-photos
     description: Browse the editorial feed of curated photos
-    method: GET
-    path: /photos
+    request:
+      method: GET
+      path: /photos
     params:
       - name: page
         type: int
@@ -100,15 +102,19 @@ actions:
         description: "Sort order: 'latest', 'oldest', or 'popular'"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$"
+      - type: truncate
+        max_items: 20
 
   - name: get-user
     description: Get a photographer's public profile and stats
-    method: GET
-    path: /users/{{username}}
+    request:
+      method: GET
+      path: /users/{{username}}
     params:
       - name: username
         type: string
@@ -116,7 +122,9 @@ actions:
         description: The photographer's Unsplash username
         in: path
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["id", "username", "name", "bio", "location", "total_photos", "total_likes", "total_collections", "portfolio_url"]
+      - type: json
+        extract: "$"
+        select: ["id", "username", "name", "bio", "location", "total_photos", "total_likes", "total_collections", "portfolio_url"]

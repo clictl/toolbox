@@ -1,6 +1,8 @@
+spec: '1.0'
 name: sentry-skill
-description: Inspect Sentry issues or events, summarize recent production errors, or pull basic Sentry health data via the Sentry API
-version: "1.0"
+description: Inspect Sentry issues or events, summarize recent production errors, or pull basic Sentry health data via the
+  Sentry API
+version: '1.0'
 category: developer
 tags:
 - skill
@@ -8,49 +10,23 @@ tags:
 - error-tracking
 - monitoring
 - debugging
-protocol: skill
-owner_name: OpenAI
-namespace: openai
-website: https://github.com/openai/skills
-support_url: https://github.com/openai/skills/issues
-pricing_model: free
-license: MIT
 source:
-  type: github
   repo: openai/skills
   path: skills/.curated/sentry/
   ref: main
   files:
-  - name: LICENSE.txt
-    sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
-  - name: SKILL.md
-    sha256: b598ea447ad6bec923f5c3879ace25e4a7f1368a7eac019b5c0e2f79a36322c6
-  - name: agents/openai.yaml
-    sha256: c7ed57441b9a1e3f4caa19da4d90d432a65cd398c4f361b47dbf9408be0e065f
-  - name: assets/sentry-small.svg
-    sha256: f1de8efc906c03b583b4d74560b003175c8a3d9ea5950d891ce3142fec11ca99
-  - name: assets/sentry.png
-    sha256: b61e0534635a275cf56f7dad26ac7cc36504b7bd9a60c95791d6e72634129fb1
-  - name: scripts/sentry_api.py
-    sha256: 688e4ba95c4a9780d1c15b4afbefaca9c1255a10d032dd66cfca160c89ad4608
-platforms:
-- name: claude-code
-  install_method: skill
-  config_path: .claude/skills/
-- name: cursor
-  install_method: skill
-  config_path: .cursor/skills/
-- name: codex
-  install_method: skill
-  config_path: .codex/skills/
-- name: vscode
-  install_method: copy
-  config_path: .github/skills/
-skill_metadata:
-  author: openai
-  version: '1.0'
-auth:
-- type: none
+  - sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
+    path: LICENSE.txt
+  - sha256: b598ea447ad6bec923f5c3879ace25e4a7f1368a7eac019b5c0e2f79a36322c6
+    path: SKILL.md
+  - sha256: c7ed57441b9a1e3f4caa19da4d90d432a65cd398c4f361b47dbf9408be0e065f
+    path: agents/openai.yaml
+  - sha256: f1de8efc906c03b583b4d74560b003175c8a3d9ea5950d891ce3142fec11ca99
+    path: assets/sentry-small.svg
+  - sha256: b61e0534635a275cf56f7dad26ac7cc36504b7bd9a60c95791d6e72634129fb1
+    path: assets/sentry.png
+  - sha256: 688e4ba95c4a9780d1c15b4afbefaca9c1255a10d032dd66cfca160c89ad4608
+    path: scripts/sentry_api.py
 requires_system:
 - name: python3
   check: python3 --version

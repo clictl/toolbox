@@ -1,44 +1,46 @@
+spec: "1.0"
 name: resend
 description: Resend email API for sending transactional emails, managing domains, and viewing delivery status
 version: "1.0"
 category: communication
 tags: [resend, email, transactional, delivery, api]
-protocol: rest
-owner_name: Resend
-website: https://resend.com
-support_url: https://resend.com/docs
-pricing_model: freemium
 
-connection:
-  base_url: https://api.resend.com
+pricing:
+  model: freemium
+
+server:
+  type: http
+  url: https://api.resend.com
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: RESEND_API_KEY
-    inject:
-      location: header
-      param: Authorization
-      prefix: "Bearer"
+  env: RESEND_API_KEY
+  header: Authorization
+  value: "Bearer ${RESEND_API_KEY}"
 
 actions:
   - name: list-emails
     description: List recently sent emails from your Resend account
-    method: GET
-    path: /emails
+    request:
+      method: GET
+      path: /emails
     params: []
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.data"
+      - type: truncate
+        max_items: 20
 
   - name: get-email
     description: Get the delivery status and details for a specific sent email
-    method: GET
-    path: /emails/{{email_id}}
+    request:
+      method: GET
+      path: /emails/{{email_id}}
     params:
       - name: email_id
         type: string
@@ -46,26 +48,33 @@ actions:
         description: The unique ID of the email to retrieve
         in: path
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["id", "from", "to", "subject", "created_at", "last_event"]
+      - type: json
+        extract: "$"
+        select: ["id", "from", "to", "subject", "created_at", "last_event"]
 
   - name: list-domains
     description: List all verified sending domains in your account
-    method: GET
-    path: /domains
+    request:
+      method: GET
+      path: /domains
     params: []
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.data"
+      - type: truncate
+        max_items: 20
 
   - name: get-domain
     description: Get details and DNS records for a specific sending domain
-    method: GET
-    path: /domains/{{domain_id}}
+    request:
+      method: GET
+      path: /domains/{{domain_id}}
     params:
       - name: domain_id
         type: string
@@ -73,18 +82,24 @@ actions:
         description: The unique ID of the domain to retrieve
         in: path
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["id", "name", "status", "region", "created_at", "records"]
+      - type: json
+        extract: "$"
+        select: ["id", "name", "status", "region", "created_at", "records"]
 
   - name: list-api-keys
     description: List all API keys in your Resend account
-    method: GET
-    path: /api-keys
+    request:
+      method: GET
+      path: /api-keys
     params: []
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.data"
+      - type: truncate
+        max_items: 20

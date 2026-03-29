@@ -1,70 +1,63 @@
+spec: '1.0'
 name: gcloud-mcp
 description: Official Google Cloud MCP server for interacting with GCP services via natural language through gcloud CLI
-version: "1.0"
+version: '1.0'
 category: cloud
-tags: [mcp, google-cloud, gcp, gcloud, infrastructure, cloud-management, destructive]
-protocol: mcp
-owner_name: Google Cloud
-website: https://github.com/googleapis/gcloud-mcp
-support_url: https://github.com/googleapis/gcloud-mcp/issues
-pricing_model: free
-license: Apache-2.0
-
+tags:
+- mcp
+- google-cloud
+- gcp
+- gcloud
+- infrastructure
+- cloud-management
+- destructive
 package:
   registry: npm
-  name: "@anthropic/gcloud-mcp"
-  version: "0.1.0"
+  name: '@anthropic/gcloud-mcp'
+  version: 0.1.0
   manager: npx
-
-docs:
-  api_reference: https://cloud.google.com/sdk/gcloud/reference
-
-auth:
-  - type: none
-  # Uses the active gcloud auth session
-
 tools:
   expose:
-    - name: gcloud
-      description: "Execute a gcloud CLI command"
-      destructive: true
-      params:
-        - name: command
-          type: string
-          required: true
-          description: "gcloud command to execute (without 'gcloud' prefix)"
-    - name: list_projects
-      description: "List GCP projects accessible to the current account"
-    - name: get_project
-      description: "Get details of the current GCP project"
-    - name: list_instances
-      description: "List Compute Engine instances"
-      params:
-        - name: zone
-          type: string
-          required: false
-          description: "Zone to list instances in"
-    - name: list_services
-      description: "List enabled APIs and services"
-    - name: list_buckets
-      description: "List Cloud Storage buckets"
-    - name: get_logs
-      description: "Read log entries from Cloud Logging"
-      params:
-        - name: filter
-          type: string
-          required: false
-          description: "Log filter expression"
-        - name: limit
-          type: int
-          required: false
-          description: "Maximum number of entries to return"
+  - name: gcloud
+    description: Execute a gcloud CLI command
+    params:
+    - name: command
+      type: string
+      required: true
+      description: gcloud command to execute (without 'gcloud' prefix)
+    mutable: true
+  - name: list_projects
+    description: List GCP projects accessible to the current account
+  - name: get_project
+    description: Get details of the current GCP project
+  - name: list_instances
+    description: List Compute Engine instances
+    params:
+    - name: zone
+      type: string
+      required: false
+      description: Zone to list instances in
+  - name: list_services
+    description: List enabled APIs and services
+  - name: list_buckets
+    description: List Cloud Storage buckets
+  - name: get_logs
+    description: Read log entries from Cloud Logging
+    params:
+    - name: filter
+      type: string
+      required: false
+      description: Log filter expression
+    - name: limit
+      type: int
+      required: false
+      description: Maximum number of entries to return
   deny:
-    - name: execute_arbitrary
-  tool_transforms:
+  - name: execute_arbitrary
+  transforms:
     gcloud:
-      - truncate: { max_length: 15000 }
-
+    - truncate:
+        max_length: 15000
 prompts:
   system: |
     This server provides Google Cloud Platform access via gcloud CLI.
@@ -72,11 +65,9 @@ prompts:
     the active project and account before making changes. Use read
     operations (describe, list) before write operations (create, delete).
   tool_instructions:
-    gcloud: "Check the active project with 'gcloud config get-value project' before running commands."
-
+    gcloud: Check the active project with 'gcloud config get-value project' before running commands.
 resources:
   expose: all
-
 install_mode:
   default: both
   allow_mcp: true

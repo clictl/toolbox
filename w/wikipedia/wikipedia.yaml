@@ -1,47 +1,29 @@
+spec: "1.0"
 name: wikipedia
 description: Free encyclopedia with structured articles and data exports
 version: "1.0"
 category: knowledge-base
 tags: [encyclopedia, knowledge, reference, open-data]
-protocol: rest
-tool_type: website
-owner_name: Wikimedia Foundation
-website: https://wikipedia.org
-support_url: https://en.wikipedia.org/wiki/Help:Contents
-pricing_model: free
 
-site:
-  url: https://en.wikipedia.org
-  sitemap: https://en.wikipedia.org/sitemap.xml
-  feeds:
-    - url: https://en.wikipedia.org/w/api.php
-      format: json
-  content_type: knowledge-base
-  preferred_format: markdown
-
-access:
-  method: api
-  rate_limit: 200/minute
-  robots_txt: respected
-
-connection:
-  base_url: https://en.wikipedia.org/w
+server:
+  type: http
+  url: https://en.wikipedia.org/w
   headers:
     Accept: application/json
-
-auth:
-  - type: none
 
 actions:
   - name: search
     description: Search Wikipedia articles by keyword
-    method: GET
-    path: /api.php
+    output: json
+    request:
+      method: GET
+      path: /api.php
     params:
       - name: search
         type: string
         required: true
         description: Search query
+        example: "artificial intelligence"
         in: query
       - name: action
         type: string
@@ -59,13 +41,16 @@ actions:
 
   - name: get_summary
     description: Get a short summary of a Wikipedia article
-    method: GET
-    path: /api.php
+    output: json
+    request:
+      method: GET
+      path: /api.php
     params:
       - name: titles
         type: string
         required: true
         description: Article title
+        example: "Python (programming language)"
         in: query
       - name: action
         type: string

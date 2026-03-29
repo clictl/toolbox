@@ -1,32 +1,31 @@
+spec: "1.0"
 name: google-trends
 description: Google Trends data via SerpAPI for tracking search interest, related queries, and trending topics
 version: "1.0"
 category: data
 tags: [google, trends, data, research]
-protocol: rest
-owner_name: SerpAPI
-website: https://serpapi.com
-support_url: https://serpapi.com/google-trends-api
-pricing_model: freemium
 
-connection:
-  base_url: https://serpapi.com
+pricing:
+  model: freemium
+
+server:
+  type: http
+  url: https://serpapi.com
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: SERPAPI_KEY
-    inject:
-      location: query
-      key: api_key
+  env: SERPAPI_KEY
+  param: api_key
+  value: "${SERPAPI_KEY}"
 
 actions:
   - name: trends
     description: Get Google Trends interest over time for one or more search terms
-    method: GET
-    path: /search
+    request:
+      method: GET
+      path: /search
     params:
       - name: q
         type: string
@@ -54,15 +53,18 @@ actions:
         description: "Data type: TIMESERIES, GEO_MAP, GEO_MAP_0, RELATED_TOPICS, RELATED_QUERIES"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["interest_over_time", "related_queries", "related_topics"]
+      - type: json
+        extract: "$"
+        select: ["interest_over_time", "related_queries", "related_topics"]
 
   - name: related-queries
     description: Get related search queries for a given term
-    method: GET
-    path: /search
+    request:
+      method: GET
+      path: /search
     params:
       - name: q
         type: string
@@ -86,14 +88,17 @@ actions:
         description: "Country code to filter by, e.g. US, GB, DE"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.related_queries"
+      - type: json
+        extract: "$.related_queries"
 
   - name: trending-now
     description: Get currently trending searches in a specific country
-    method: GET
-    path: /search
+    request:
+      method: GET
+      path: /search
     params:
       - name: engine
         type: string
@@ -112,7 +117,10 @@ actions:
         description: "Frequency: daily or realtime"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.trending_searches"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.trending_searches"
+      - type: truncate
+        max_items: 20

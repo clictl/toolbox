@@ -1,6 +1,7 @@
+spec: '1.0'
 name: vercel-deploy
 description: Skill that teaches agents to deploy applications to Vercel with environment config and preview URLs
-version: "1.0"
+version: '1.0'
 category: devops
 tags:
 - skill
@@ -10,49 +11,23 @@ tags:
 - serverless
 - preview
 - hosting
-protocol: skill
-owner_name: OpenAI
-namespace: openai
-website: https://github.com/openai/skills
-support_url: https://github.com/openai/skills/issues
-pricing_model: free
-license: MIT
 source:
-  type: github
   repo: openai/skills
   path: skills/.curated/vercel-deploy/
   ref: main
   files:
-  - name: LICENSE.txt
-    sha256: e0fad1e120e56b02bb8e65745ff5be6d3234368f2df9d0dd183183879e595fc1
-  - name: SKILL.md
-    sha256: f4a6cbfbb378a320fae179a79f727a881d19677e9b3db96ed49d2dc02a74fa46
-  - name: agents/openai.yaml
-    sha256: 5fdfff98a8cd084737f47231d65e7b8315e9036e12c8f2c90df7593f75abcf74
-  - name: assets/vercel-small.svg
-    sha256: 169e5fedb5898d756254c29e02873508eef714a8dd11638f283ca8e7c46096a5
-  - name: assets/vercel.png
-    sha256: ab37ffb06bdb1ab6d076c26329e8677d057ba95d66f7e2c710221345ff6e2043
-  - name: scripts/deploy.sh
-    sha256: 91f16c6a298c8b70eff7b7722f860e54101be2f23cea75d2e26ec0778006f9b4
-platforms:
-- name: claude-code
-  install_method: skill
-  config_path: .claude/skills/
-- name: cursor
-  install_method: skill
-  config_path: .cursor/skills/
-- name: codex
-  install_method: skill
-  config_path: .codex/skills/
-- name: vscode
-  install_method: copy
-  config_path: .github/skills/
-skill_metadata:
-  author: openai
-  version: '1.0'
-auth:
-- type: none
+  - sha256: e0fad1e120e56b02bb8e65745ff5be6d3234368f2df9d0dd183183879e595fc1
+    path: LICENSE.txt
+  - sha256: f4a6cbfbb378a320fae179a79f727a881d19677e9b3db96ed49d2dc02a74fa46
+    path: SKILL.md
+  - sha256: 5fdfff98a8cd084737f47231d65e7b8315e9036e12c8f2c90df7593f75abcf74
+    path: agents/openai.yaml
+  - sha256: 169e5fedb5898d756254c29e02873508eef714a8dd11638f283ca8e7c46096a5
+    path: assets/vercel-small.svg
+  - sha256: ab37ffb06bdb1ab6d076c26329e8677d057ba95d66f7e2c710221345ff6e2043
+    path: assets/vercel.png
+  - sha256: 91f16c6a298c8b70eff7b7722f860e54101be2f23cea75d2e26ec0778006f9b4
+    path: scripts/deploy.sh
 requires_system:
 - name: curl
   check: curl --version

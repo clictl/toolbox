@@ -1,32 +1,31 @@
+spec: "1.0"
 name: bing-search
 description: Bing Web Search API v7 for web search, news search, and content discovery
 version: "1.0"
 category: search
 tags: [search, bing, web, news, microsoft]
-protocol: rest
-owner_name: Microsoft
-website: https://www.microsoft.com/en-us/bing/apis/bing-web-search-api
-support_url: https://learn.microsoft.com/en-us/bing/search-apis/bing-web-search/overview
-pricing_model: freemium
 
-connection:
-  base_url: https://api.bing.microsoft.com/v7.0
+pricing:
+  model: freemium
+
+server:
+  type: http
+  url: https://api.bing.microsoft.com/v7.0
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: BING_API_KEY
-    inject:
-      location: header
-      key: Ocp-Apim-Subscription-Key
+  env: BING_API_KEY
+  header: Ocp-Apim-Subscription-Key
+  value: "${BING_API_KEY}"
 
 actions:
   - name: search
     description: Search the web using Bing Web Search
-    method: GET
-    path: /search
+    request:
+      method: GET
+      path: /search
     params:
       - name: q
         type: string
@@ -52,16 +51,20 @@ actions:
         description: "Filter by age: Day, Week, Month, or a date range like 2024-01-01..2024-12-31"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.webPages.value"
-      - select: ["name", "url", "snippet", "dateLastCrawled"]
-      - truncate: { max_items: 10 }
+      - type: json
+        extract: "$.webPages.value"
+        select: ["name", "url", "snippet", "dateLastCrawled"]
+      - type: truncate
+        max_items: 10
 
   - name: news
     description: Search for news articles using Bing News Search
-    method: GET
-    path: /news/search
+    request:
+      method: GET
+      path: /news/search
     params:
       - name: q
         type: string
@@ -87,16 +90,20 @@ actions:
         description: "Sort order: Date or Relevance"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.value"
-      - select: ["name", "url", "description", "datePublished", "provider"]
-      - truncate: { max_items: 10 }
+      - type: json
+        extract: "$.value"
+        select: ["name", "url", "description", "datePublished", "provider"]
+      - type: truncate
+        max_items: 10
 
   - name: trending
     description: Get trending news topics
-    method: GET
-    path: /news/trendingtopics
+    request:
+      method: GET
+      path: /news/trendingtopics
     params:
       - name: mkt
         type: string
@@ -104,8 +111,11 @@ actions:
         description: "Market code for trending topics"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.value"
-      - select: ["name", "query", "image", "newsSearchUrl"]
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.value"
+        select: ["name", "query", "image", "newsSearchUrl"]
+      - type: truncate
+        max_items: 20

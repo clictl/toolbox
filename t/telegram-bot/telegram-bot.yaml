@@ -1,43 +1,42 @@
+spec: "1.0"
 name: telegram-bot
 description: Telegram Bot API for sending messages, receiving updates, and managing bot interactions
 version: "1.0"
 category: communication
 tags: [telegram, bot, messaging, chat, notifications]
-protocol: rest
-owner_name: Telegram
-website: https://telegram.org
-support_url: https://core.telegram.org/bots/api
-pricing_model: free
 
-connection:
-  base_url: https://api.telegram.org
+server:
+  type: http
+  url: https://api.telegram.org
   timeout: 30s
   headers:
     Accept: application/json
     Content-Type: application/json
 
 auth:
-  - type: api_key
-    key_env: TELEGRAM_BOT_TOKEN
-    inject:
-      location: path
-      param: token
+  env: TELEGRAM_BOT_TOKEN
+  path: token
+  value: "${TELEGRAM_BOT_TOKEN}"
 
 actions:
   - name: get-me
     description: Get basic information about the bot, including its username and ID
-    method: GET
-    path: /bot{{token}}/getMe
+    request:
+      method: GET
+      path: /bot{{token}}/getMe
     params: []
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.result"
+      - type: json
+        extract: "$.result"
 
   - name: get-updates
     description: Receive incoming updates (messages, callbacks) for the bot
-    method: GET
-    path: /bot{{token}}/getUpdates
+    request:
+      method: GET
+      path: /bot{{token}}/getUpdates
     params:
       - name: offset
         type: int
@@ -54,15 +53,19 @@ actions:
         description: Timeout in seconds for long polling (0 for short polling)
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.result"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.result"
+      - type: truncate
+        max_items: 20
 
   - name: send-message
     description: Send a text message to a chat or user
-    method: POST
-    path: /bot{{token}}/sendMessage
+    request:
+      method: POST
+      path: /bot{{token}}/sendMessage
     params:
       - name: chat_id
         type: string
@@ -79,15 +82,18 @@ actions:
         description: "Formatting mode: 'Markdown', 'MarkdownV2', or 'HTML'"
         in: body
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.result"
-      - select: ["message_id", "chat", "date", "text"]
+      - type: json
+        extract: "$.result"
+        select: ["message_id", "chat", "date", "text"]
 
   - name: get-chat
     description: Get information about a chat by its ID
-    method: GET
-    path: /bot{{token}}/getChat
+    request:
+      method: GET
+      path: /bot{{token}}/getChat
     params:
       - name: chat_id
         type: string
@@ -95,6 +101,8 @@ actions:
         description: "Chat ID or username (e.g. @channelusername)"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.result"
+      - type: json
+        extract: "$.result"

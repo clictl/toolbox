@@ -1,37 +1,31 @@
+spec: '1.0'
 name: copilot-cli
 description: GitHub Copilot in the CLI for command suggestions and explanations
-version: "1.0"
+version: '1.0'
 category: ai
-tags: [ai, github, copilot, coding, shell, suggestions]
-protocol: cli
-tool_type: cli
-owner_name: GitHub
-website: https://docs.github.com/en/copilot/using-github-copilot/using-github-copilot-in-the-command-line
-support_url: https://github.com/github/gh-copilot/issues
-pricing_model: paid
-
-auth:
-  - type: none
-
+tags:
+- ai
+- github
+- copilot
+- coding
+- shell
+- suggestions
+pricing:
+  model: paid
 actions:
-  - name: suggest
-    description: Get command suggestions for a task
-    method: command
-    path: gh copilot suggest
-    params:
-      - name: prompt
-        type: string
-        required: true
-        description: Describe what you want to do
-        in: arg
-
-  - name: explain
-    description: Explain a command
-    method: command
-    path: gh copilot explain
-    params:
-      - name: command
-        type: string
-        required: true
-        description: The command to explain
-        in: arg
+- name: suggest
+  description: Get command suggestions for a task
+  params:
+  - name: prompt
+    type: string
+    required: true
+    description: Describe what you want to do
+    in: arg
+- name: explain
+  description: Explain a command
+  params:
+  - name: command
+    type: string
+    required: true
+    description: The command to explain
+    in: arg

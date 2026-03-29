@@ -1,32 +1,28 @@
+spec: "1.0"
 name: youtube-data
 description: YouTube Data API for searching videos, viewing channel info, and reading video metadata
 version: "1.0"
 category: media
 tags: [youtube, video, search, channels, google]
-protocol: rest
-owner_name: Google
-website: https://www.youtube.com
-support_url: https://developers.google.com/youtube/v3
-pricing_model: free
 
-connection:
-  base_url: https://www.googleapis.com/youtube/v3
+server:
+  type: http
+  url: https://www.googleapis.com/youtube/v3
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: YOUTUBE_API_KEY
-    inject:
-      location: query
-      param: key
+  env: YOUTUBE_API_KEY
+  param: key
+  value: "${YOUTUBE_API_KEY}"
 
 actions:
   - name: search
     description: Search YouTube for videos, channels, or playlists by keyword
-    method: GET
-    path: /search
+    request:
+      method: GET
+      path: /search
     params:
       - name: q
         type: string
@@ -62,15 +58,19 @@ actions:
         description: Token for pagination from a previous response
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.items"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.items"
+      - type: truncate
+        max_items: 20
 
   - name: get-video
     description: Get detailed metadata for one or more videos by ID
-    method: GET
-    path: /videos
+    request:
+      method: GET
+      path: /videos
     params:
       - name: id
         type: string
@@ -83,15 +83,19 @@ actions:
         description: "Comma-separated resource parts: 'snippet', 'statistics', 'contentDetails', 'status'"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.items"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.items"
+      - type: truncate
+        max_items: 20
 
   - name: get-channel
     description: Get metadata and statistics for a YouTube channel
-    method: GET
-    path: /channels
+    request:
+      method: GET
+      path: /channels
     params:
       - name: id
         type: string
@@ -107,15 +111,19 @@ actions:
         description: "Comma-separated resource parts: 'snippet', 'statistics', 'contentDetails', 'brandingSettings'"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.items"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.items"
+      - type: truncate
+        max_items: 20
 
   - name: list-playlists
     description: List playlists for a specific channel
-    method: GET
-    path: /playlists
+    request:
+      method: GET
+      path: /playlists
     params:
       - name: channelId
         type: string
@@ -137,7 +145,10 @@ actions:
         description: Token for pagination
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.items"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.items"
+      - type: truncate
+        max_items: 20

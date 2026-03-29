@@ -1,103 +1,88 @@
+spec: '1.0'
 name: confluence-mcp
 description: MCP server for Atlassian Confluence with page search, reading, and space management
-version: "1.0"
+version: '1.0'
 category: productivity
-tags: [mcp, confluence, atlassian, wiki, documentation, knowledge-base]
-protocol: mcp
-owner_name: Anthropic
-website: https://github.com/anthropics/confluence-mcp-server
-support_url: https://github.com/anthropics/confluence-mcp-server/issues
-pricing_model: free
-license: MIT
-
+tags:
+- mcp
+- confluence
+- atlassian
+- wiki
+- documentation
+- knowledge-base
+auth:
+  env: CONFLUENCE_API_TOKEN
+  inject: env
 package:
   registry: npm
-  name: "@anthropic/confluence-mcp"
-  version: "0.1.0"
+  name: '@anthropic/confluence-mcp'
+  version: 0.1.0
   manager: npx
-
-auth:
-  - type: api_key
-    key_env: CONFLUENCE_API_TOKEN
-    inject:
-      location: env
-      param: CONFLUENCE_API_TOKEN
-    additional_env:
-      - name: CONFLUENCE_BASE_URL
-        description: "Base URL of your Confluence instance (e.g. https://yoursite.atlassian.net/wiki)"
-        required: true
-      - name: CONFLUENCE_EMAIL
-        description: "Email address associated with your Atlassian account"
-        required: true
-
 tools:
   expose:
-    - name: search_pages
-      description: "Search Confluence pages using CQL"
-      params:
-        - name: query
-          type: string
-          required: true
-          description: "CQL search query string"
-        - name: limit
-          type: int
-          required: false
-          description: "Maximum number of results to return"
-    - name: read_page
-      description: "Read the content of a Confluence page by ID"
-      params:
-        - name: page_id
-          type: string
-          required: true
-          description: "Confluence page ID"
-        - name: format
-          type: string
-          required: false
-          description: "Content format - storage or view (default: view)"
-    - name: list_spaces
-      description: "List available Confluence spaces"
-      params:
-        - name: type
-          type: string
-          required: false
-          description: "Space type filter (e.g. global, personal)"
-    - name: get_page_children
-      description: "List child pages of a given page"
-      params:
-        - name: page_id
-          type: string
-          required: true
-          description: "Parent page ID"
-    - name: create_page
-      description: "Create a new Confluence page"
-      destructive: true
-      params:
-        - name: space_key
-          type: string
-          required: true
-          description: "Space key where the page will be created"
-        - name: title
-          type: string
-          required: true
-          description: "Page title"
-        - name: body
-          type: string
-          required: true
-          description: "Page content in storage format"
-        - name: parent_id
-          type: string
-          required: false
-          description: "Parent page ID for nesting"
-
+  - name: search_pages
+    description: Search Confluence pages using CQL
+    params:
+    - name: query
+      type: string
+      required: true
+      description: CQL search query string
+    - name: limit
+      type: int
+      required: false
+      description: Maximum number of results to return
+  - name: read_page
+    description: Read the content of a Confluence page by ID
+    params:
+    - name: page_id
+      type: string
+      required: true
+      description: Confluence page ID
+    - name: format
+      type: string
+      required: false
+      description: 'Content format - storage or view (default: view)'
+  - name: list_spaces
+    description: List available Confluence spaces
+    params:
+    - name: type
+      type: string
+      required: false
+      description: Space type filter (e.g. global, personal)
+  - name: get_page_children
+    description: List child pages of a given page
+    params:
+    - name: page_id
+      type: string
+      required: true
+      description: Parent page ID
+  - name: create_page
+    description: Create a new Confluence page
+    params:
+    - name: space_key
+      type: string
+      required: true
+      description: Space key where the page will be created
+    - name: title
+      type: string
+      required: true
+      description: Page title
+    - name: body
+      type: string
+      required: true
+      description: Page content in storage format
+    - name: parent_id
+      type: string
+      required: false
+      description: Parent page ID for nesting
+    mutable: true
 prompts:
   system: |
     This server provides access to Atlassian Confluence. Use it for searching
     documentation, reading wiki pages, and browsing spaces. Confirm before
     creating or modifying any pages.
-
 resources:
   expose: all
-
 install_mode:
   default: mcp
   allow_mcp: true

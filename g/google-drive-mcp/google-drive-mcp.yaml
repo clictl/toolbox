@@ -1,70 +1,63 @@
+spec: '1.0'
 name: google-drive-mcp
 description: MCP server for Google Drive file search, read, and management
-version: "1.0"
+version: '1.0'
 category: productivity
-tags: [mcp, google-drive, files, cloud-storage, google, documents]
-protocol: mcp
-owner_name: Anthropic
-website: https://github.com/modelcontextprotocol/servers
-support_url: https://github.com/modelcontextprotocol/servers/issues
-pricing_model: free
-license: MIT
-
+tags:
+- mcp
+- google-drive
+- files
+- cloud-storage
+- google
+- documents
+auth:
+  type: oauth2
+  token_url: https://oauth2.googleapis.com/token
 package:
   registry: npm
-  name: "@modelcontextprotocol/server-gdrive"
-  version: "2025.1.14"
+  name: '@modelcontextprotocol/server-gdrive'
+  version: 2025.1.14
   manager: npx
-
-auth:
-  - type: oauth2
-    authorization_url: https://accounts.google.com/o/oauth2/v2/auth
-    token_url: https://oauth2.googleapis.com/token
-    scopes: [https://www.googleapis.com/auth/drive.readonly]
-
 tools:
   expose:
-    - name: search_files
-      description: "Search for files in Google Drive"
-      params:
-        - name: query
-          type: string
-          required: true
-          description: "Search query string"
-    - name: get_file
-      description: "Get a file's content from Google Drive"
-      params:
-        - name: file_id
-          type: string
-          required: true
-          description: "Google Drive file ID"
-    - name: list_files
-      description: "List files in a folder"
-      params:
-        - name: folder_id
-          type: string
-          required: false
-          description: "Folder ID (defaults to root)"
-        - name: page_size
-          type: int
-          required: false
-          description: "Number of files to return"
-    - name: get_file_metadata
-      description: "Get metadata for a file"
-      params:
-        - name: file_id
-          type: string
-          required: true
-          description: "Google Drive file ID"
-
+  - name: search_files
+    description: Search for files in Google Drive
+    params:
+    - name: query
+      type: string
+      required: true
+      description: Search query string
+  - name: get_file
+    description: Get a file's content from Google Drive
+    params:
+    - name: file_id
+      type: string
+      required: true
+      description: Google Drive file ID
+  - name: list_files
+    description: List files in a folder
+    params:
+    - name: folder_id
+      type: string
+      required: false
+      description: Folder ID (defaults to root)
+    - name: page_size
+      type: int
+      required: false
+      description: Number of files to return
+  - name: get_file_metadata
+    description: Get metadata for a file
+    params:
+    - name: file_id
+      type: string
+      required: true
+      description: Google Drive file ID
 prompts:
   system: |
     This server provides access to Google Drive. Use it to search for
     files, read document contents, and browse folder structures.
-
 resources:
   expose: all
-
 install_mode:
   default: mcp
   allow_mcp: true

@@ -1,59 +1,28 @@
+spec: "1.0"
 name: time-mcp
 description: MCP server for current time retrieval and timezone conversion with DST awareness
 version: "1.0"
 category: reference
-tags: [mcp, time, timezone, conversion, dst, clock]
-protocol: mcp
-owner_name: Anthropic
-website: https://github.com/modelcontextprotocol/servers
-support_url: https://github.com/modelcontextprotocol/servers/issues
-pricing_model: free
-license: MIT
+tags: [time, timezone, conversion, dst, clock]
 
 package:
   registry: pypi
   name: "mcp-server-time"
   version: "0.5.0"
-  manager: uvx
 
-auth:
-  - type: none
+server:
+  type: stdio
+  keep_alive: 120s
 
-tools:
-  expose:
-    - name: get_current_time
-      description: "Get the current time in a specified IANA timezone"
-      params:
-        - name: timezone
-          type: string
-          required: true
-          description: "IANA timezone name (e.g. America/New_York, Europe/London, Asia/Tokyo)"
-    - name: convert_time
-      description: "Convert a time between two IANA timezones with DST awareness"
-      params:
-        - name: time
-          type: string
-          required: true
-          description: "Time to convert in ISO 8601 format (e.g. 2024-01-15T14:30:00)"
-        - name: source_timezone
-          type: string
-          required: true
-          description: "Source IANA timezone"
-        - name: target_timezone
-          type: string
-          required: true
-          description: "Target IANA timezone"
+instructions: |
+  This server provides time and timezone utilities. Use IANA timezone
+  names (e.g., America/New_York, Europe/London, Asia/Tokyo).
 
-prompts:
-  system: |
-    This server provides time and timezone utilities. Use IANA timezone
-    names (e.g., America/New_York, Europe/London, Asia/Tokyo).
+actions:
+  - name: get_current_time
+    description: "Get the current time in a specified IANA timezone"
+  - name: convert_time
+    description: "Convert a time between two IANA timezones with DST awareness"
 
 resources:
   expose: all
-
-install_mode:
-  default: both
-  allow_mcp: true
-  allow_skill: true
-  keep_alive: 120s

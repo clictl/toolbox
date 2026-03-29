@@ -1,45 +1,46 @@
+spec: "1.0"
 name: openai
 description: OpenAI API for chat completions, embeddings, and models
 version: "1.0"
 category: ai
 tags: [openai, gpt, ai, llm, chat, embeddings]
-protocol: rest
-owner_name: OpenAI
-website: https://openai.com
-support_url: https://platform.openai.com/docs
 
-connection:
-  base_url: https://api.openai.com/v1
+server:
+  type: http
+  url: https://api.openai.com/v1
   timeout: 60s
   headers:
     Accept: application/json
     Content-Type: application/json
 
 auth:
-  - type: bearer
-    key_env: OPENAI_API_KEY
-    inject:
-      location: header
-      key: Authorization
-      prefix: "Bearer "
+  env: OPENAI_API_KEY
+  header: Authorization
+  value: "Bearer ${OPENAI_API_KEY}"
 
 actions:
   - name: models
     description: List all available models
-    method: GET
-    path: /models
+    output: json
+    request:
+      method: GET
+      path: /models
     params: []
     transform:
-      extract: "$.data"
+      - type: json
+        extract: "$.data"
 
   - name: chat
     description: Create a chat completion with a model
-    method: POST
-    safe: true
-    path: /chat/completions
+    output: json
+    request:
+      method: POST
+      path: /chat/completions
     assert:
-      - status: 200
-      - exists: "$.choices"
+      - type: status
+        status: 200
+      - type: exists
+        path: "$.choices"
     params:
       - name: model
         type: string
@@ -55,14 +56,16 @@ actions:
 
   - name: embeddings
     description: Create vector embeddings for text input
-    method: POST
-    safe: true
-    path: /embeddings
+    output: json
+    request:
+      method: POST
+      path: /embeddings
     params:
       - name: input
         type: string
         required: true
         description: Text to generate embeddings for
+        example: "The quick brown fox jumps over the lazy dog"
         in: body
       - name: model
         type: string
@@ -70,4 +73,5 @@ actions:
         description: "Embedding model, e.g. 'text-embedding-3-small', 'text-embedding-3-large'"
         in: body
     transform:
-      extract: "$.data"
+      - type: json
+        extract: "$.data"

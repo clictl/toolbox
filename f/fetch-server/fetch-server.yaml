@@ -1,59 +1,33 @@
+spec: "1.0"
 name: fetch-server
 description: MCP server for fetching and converting web content to markdown for agent consumption
 version: "1.0"
 category: data
-tags: [mcp, fetch, web, http, scraping, markdown, content]
-protocol: mcp
-owner_name: Anthropic
-website: https://github.com/modelcontextprotocol/servers
-support_url: https://github.com/modelcontextprotocol/servers/issues
-pricing_model: free
-license: MIT
+tags: [fetch, web, http, scraping, markdown, content]
 
 package:
   registry: npm
   name: "@modelcontextprotocol/server-fetch"
   version: "0.6.2"
-  manager: npx
 
-auth:
-  - type: none
+server:
+  type: stdio
+  keep_alive: 120s
 
-tools:
-  expose:
-    - name: fetch
-      description: "Fetch a URL and return its content as markdown"
-      params:
-        - name: url
-          type: string
-          required: true
-          description: "URL to fetch"
-        - name: max_length
-          type: int
-          required: false
-          description: "Maximum response content length in characters"
-        - name: raw
-          type: bool
-          required: false
-          description: "Return raw content without markdown conversion"
-  tool_transforms:
-    fetch:
-      - truncate: { max_length: 20000 }
-      - html_to_markdown: {}
+instructions: |
+  This server fetches web pages and converts them to markdown.
+  Respect robots.txt and rate limits. Do not use this to scrape
+  private or authenticated content.
 
-prompts:
-  system: |
-    This server fetches web pages and converts them to markdown.
-    Respect robots.txt and rate limits. Do not use this to scrape
-    private or authenticated content.
-  tool_instructions:
-    fetch: "Use for reading documentation, articles, and public web pages."
+actions:
+  - name: fetch
+    description: "Fetch a URL and return its content as markdown"
+    instructions: "Use for reading documentation, articles, and public web pages."
+
+transforms:
+  fetch:
+    - truncate: { max_length: 20000 }
+    - html_to_markdown: {}
 
 resources:
   expose: all
-
-install_mode:
-  default: both
-  allow_mcp: true
-  allow_skill: true
-  keep_alive: 120s

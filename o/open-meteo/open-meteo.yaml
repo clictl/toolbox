@@ -1,43 +1,36 @@
+spec: "1.0"
 name: open-meteo
 description: Free weather API with current conditions, forecasts, and historical data. No API key required.
 version: "1.0"
 category: weather
 tags: [weather, forecast, temperature, climate, wind, humidity, free]
-protocol: rest
-owner_name: Open-Meteo
-website: https://open-meteo.com
-support_url: https://open-meteo.com/en/docs
-pricing_model: free
-data_freshness: real-time
 
-docs:
-  api_reference: https://open-meteo.com/en/docs
-  getting_started: https://open-meteo.com/en/docs
-
-connection:
-  base_url: https://api.open-meteo.com/v1
+server:
+  type: http
+  url: https://api.open-meteo.com/v1
   timeout: 15s
   headers:
     Accept: application/json
 
-auth:
-  - type: none
-
 actions:
   - name: current
     description: Get current weather conditions for a location by latitude and longitude
-    method: GET
-    path: /forecast
+    output: text
+    request:
+      method: GET
+      path: /forecast
     params:
       - name: latitude
         type: number
         required: true
         description: Latitude coordinate
+        example: 40.7128
         in: query
       - name: longitude
         type: number
         required: true
         description: Longitude coordinate
+        example: -74.0060
         in: query
       - name: current
         type: string
@@ -50,28 +43,35 @@ actions:
         description: "Temperature unit: celsius or fahrenheit"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$.current"
-      - template: |
+      - type: json
+        extract: "$.current"
+      - type: format
+        template: |
           Temperature: {{.temperature_2m}}°C (feels like {{.apparent_temperature}}°C)
           Humidity: {{.relative_humidity_2m}}%
           Wind: {{.wind_speed_10m}} km/h
 
   - name: forecast
     description: Get a multi-day weather forecast with daily high/low temperatures
-    method: GET
-    path: /forecast
+    output: json
+    request:
+      method: GET
+      path: /forecast
     params:
       - name: latitude
         type: number
         required: true
         description: Latitude coordinate
+        example: 40.7128
         in: query
       - name: longitude
         type: number
         required: true
         description: Longitude coordinate
+        example: -74.0060
         in: query
       - name: daily
         type: string
@@ -89,24 +89,30 @@ actions:
         description: "Temperature unit: celsius or fahrenheit"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$.daily"
+      - type: json
+        extract: "$.daily"
 
   - name: hourly
     description: Get hourly weather forecast for the next 24-48 hours
-    method: GET
-    path: /forecast
+    output: json
+    request:
+      method: GET
+      path: /forecast
     params:
       - name: latitude
         type: number
         required: true
         description: Latitude coordinate
+        example: 40.7128
         in: query
       - name: longitude
         type: number
         required: true
         description: Longitude coordinate
+        example: -74.0060
         in: query
       - name: hourly
         type: string
@@ -124,6 +130,8 @@ actions:
         description: "Temperature unit: celsius or fahrenheit"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$.hourly"
+      - type: json
+        extract: "$.hourly"

@@ -1,34 +1,32 @@
+spec: "1.0"
 name: recraft
 description: Recraft AI API for generating and transforming images with multiple artistic styles
 version: "1.0"
 category: ai
 tags: [ai, image-generation, recraft]
-protocol: rest
-owner_name: Recraft AI
-website: https://www.recraft.ai
-support_url: https://www.recraft.ai/docs
-pricing_model: paid
 
-connection:
-  base_url: https://external.api.recraft.ai/v1
+pricing:
+  model: paid
+
+server:
+  type: http
+  url: https://external.api.recraft.ai/v1
   timeout: 60s
   headers:
     Accept: application/json
     Content-Type: application/json
 
 auth:
-  - type: bearer
-    key_env: RECRAFT_API_KEY
-    inject:
-      location: header
-      key: Authorization
-      prefix: "Bearer "
+  env: RECRAFT_API_KEY
+  header: Authorization
+  value: "Bearer ${RECRAFT_API_KEY}"
 
 actions:
   - name: generate
     description: Generate an image from a text prompt
-    method: POST
-    path: /images/generations
+    request:
+      method: POST
+      path: /images/generations
     params:
       - name: prompt
         type: string
@@ -56,15 +54,18 @@ actions:
       size: "{{size}}"
       n: "{{n}}"
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data"
-      - select: ["url", "b64_json"]
+      - type: json
+        extract: "$.data"
+        select: ["url", "b64_json"]
 
   - name: vectorize
     description: Convert a raster image to SVG vector format
-    method: POST
-    path: /images/vectorize
+    request:
+      method: POST
+      path: /images/vectorize
     params:
       - name: image_url
         type: string
@@ -74,14 +75,17 @@ actions:
     body:
       image_url: "{{image_url}}"
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data"
+      - type: json
+        extract: "$.data"
 
   - name: remove-background
     description: Remove the background from an image
-    method: POST
-    path: /images/removeBackground
+    request:
+      method: POST
+      path: /images/removeBackground
     params:
       - name: image_url
         type: string
@@ -91,6 +95,8 @@ actions:
     body:
       image_url: "{{image_url}}"
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data"
+      - type: json
+        extract: "$.data"

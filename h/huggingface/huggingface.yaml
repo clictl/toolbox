@@ -1,33 +1,31 @@
+spec: "1.0"
 name: huggingface
 description: Hugging Face Hub API for discovering models, datasets, and machine learning resources
 version: "1.0"
 category: ai
 tags: [huggingface, models, datasets, machine-learning, transformers, nlp]
-protocol: rest
-owner_name: Hugging Face
-website: https://huggingface.co
-support_url: https://huggingface.co/docs/hub
-pricing_model: freemium
 
-connection:
-  base_url: https://huggingface.co/api
+pricing:
+  model: freemium
+
+server:
+  type: http
+  url: https://huggingface.co/api
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: HF_TOKEN
-    inject:
-      location: header
-      key: Authorization
-      prefix: "Bearer "
+  env: HF_TOKEN
+  header: Authorization
+  value: "Bearer ${HF_TOKEN}"
 
 actions:
   - name: search-models
     description: Search for machine learning models by keyword, task, or library
-    method: GET
-    path: /models
+    request:
+      method: GET
+      path: /models
     params:
       - name: search
         type: string
@@ -49,14 +47,17 @@ actions:
         description: Maximum number of results to return
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - truncate: { max_items: 20 }
+      - type: truncate
+        max_items: 20
 
   - name: model-info
     description: Get detailed information about a specific model including tags, downloads, and card data
-    method: GET
-    path: /models/{{model_id}}
+    request:
+      method: GET
+      path: /models/{{model_id}}
     params:
       - name: model_id
         type: string
@@ -64,15 +65,18 @@ actions:
         description: "Full model ID including namespace, e.g. 'meta-llama/Llama-2-7b'"
         in: path
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["modelId", "pipeline_tag", "tags", "downloads", "likes", "lastModified", "author"]
+      - type: json
+        extract: "$"
+        select: ["modelId", "pipeline_tag", "tags", "downloads", "likes", "lastModified", "author"]
 
   - name: search-datasets
     description: Search for datasets by keyword or task type
-    method: GET
-    path: /datasets
+    request:
+      method: GET
+      path: /datasets
     params:
       - name: search
         type: string
@@ -90,14 +94,17 @@ actions:
         description: Maximum number of results to return
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - truncate: { max_items: 20 }
+      - type: truncate
+        max_items: 20
 
   - name: dataset-info
     description: Get detailed information about a specific dataset
-    method: GET
-    path: /datasets/{{dataset_id}}
+    request:
+      method: GET
+      path: /datasets/{{dataset_id}}
     params:
       - name: dataset_id
         type: string
@@ -105,7 +112,9 @@ actions:
         description: "Full dataset ID including namespace, e.g. 'squad' or 'huggingface/documentation-images'"
         in: path
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$"
-      - select: ["id", "description", "tags", "downloads", "likes", "lastModified", "author"]
+      - type: json
+        extract: "$"
+        select: ["id", "description", "tags", "downloads", "likes", "lastModified", "author"]

@@ -1,38 +1,31 @@
+spec: "1.0"
 name: twitch
 description: Twitch API for searching channels, browsing live streams, and looking up users and games
 version: "1.0"
 category: communication
 tags: [social, twitch, streaming, gaming, live]
-protocol: rest
-owner_name: Twitch
-website: https://www.twitch.tv
-support_url: https://dev.twitch.tv/docs/api
-pricing_model: free
 
-connection:
-  base_url: https://api.twitch.tv/helix
+server:
+  type: http
+  url: https://api.twitch.tv/helix
   timeout: 15s
   headers:
     Accept: application/json
 
 auth:
-  - type: api_key
-    key_env: TWITCH_CLIENT_ID
-    inject:
-      location: header
-      key: Client-Id
-  - type: bearer
-    key_env: TWITCH_ACCESS_TOKEN
-    inject:
-      location: header
-      key: Authorization
-      prefix: "Bearer "
+  - env: TWITCH_CLIENT_ID
+    header: Client-Id
+    value: "${TWITCH_CLIENT_ID}"
+  - env: TWITCH_ACCESS_TOKEN
+    header: Authorization
+    value: "Bearer ${TWITCH_ACCESS_TOKEN}"
 
 actions:
   - name: search-channels
     description: Search for Twitch channels by name or keyword
-    method: GET
-    path: /search/channels
+    request:
+      method: GET
+      path: /search/channels
     params:
       - name: query
         type: string
@@ -50,16 +43,20 @@ actions:
         description: Only return channels that are currently live
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data"
-      - select: ["id", "display_name", "game_name", "is_live", "title", "broadcaster_language"]
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.data"
+        select: ["id", "display_name", "game_name", "is_live", "title", "broadcaster_language"]
+      - type: truncate
+        max_items: 20
 
   - name: streams
     description: Get currently live streams, optionally filtered by game or user
-    method: GET
-    path: /streams
+    request:
+      method: GET
+      path: /streams
     params:
       - name: game_id
         type: string
@@ -79,16 +76,20 @@ actions:
         description: Number of results to return (max 100)
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data"
-      - select: ["user_name", "game_name", "title", "viewer_count", "language", "started_at", "thumbnail_url"]
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.data"
+        select: ["user_name", "game_name", "title", "viewer_count", "language", "started_at", "thumbnail_url"]
+      - type: truncate
+        max_items: 20
 
   - name: users
     description: Look up Twitch user profiles by login name or ID
-    method: GET
-    path: /users
+    request:
+      method: GET
+      path: /users
     params:
       - name: login
         type: string
@@ -99,15 +100,18 @@ actions:
         description: User ID (can specify multiple, comma-separated)
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data"
-      - select: ["id", "login", "display_name", "description", "profile_image_url", "view_count", "created_at"]
+      - type: json
+        extract: "$.data"
+        select: ["id", "login", "display_name", "description", "profile_image_url", "view_count", "created_at"]
 
   - name: games
     description: Look up game or category information by name or ID
-    method: GET
-    path: /games
+    request:
+      method: GET
+      path: /games
     params:
       - name: name
         type: string
@@ -118,15 +122,18 @@ actions:
         description: Game ID to look up
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data"
-      - select: ["id", "name", "box_art_url", "igdb_id"]
+      - type: json
+        extract: "$.data"
+        select: ["id", "name", "box_art_url", "igdb_id"]
 
   - name: top-games
     description: Get the most popular games on Twitch by viewer count
-    method: GET
-    path: /games/top
+    request:
+      method: GET
+      path: /games/top
     params:
       - name: first
         type: int
@@ -134,8 +141,11 @@ actions:
         description: Number of results to return (max 100)
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data"
-      - select: ["id", "name", "box_art_url", "igdb_id"]
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.data"
+        select: ["id", "name", "box_art_url", "igdb_id"]
+      - type: truncate
+        max_items: 20

@@ -1,67 +1,36 @@
+spec: "1.0"
 name: context7-mcp
 description: MCP server that fetches up-to-date documentation and code examples for libraries and frameworks
 version: "1.0"
 category: documentation
-tags: [mcp, documentation, libraries, frameworks, code-examples, reference]
-protocol: mcp
-owner_name: Upstash
-website: https://github.com/upstash/context7
-support_url: https://github.com/upstash/context7/issues
-pricing_model: free
-license: Apache-2.0
+tags: [documentation, libraries, frameworks, code-examples, reference]
 
 package:
   registry: npm
   name: "context7-mcp"
   version: "1.0.0"
-  manager: npx
 
-auth:
-  - type: none
+server:
+  type: stdio
+  keep_alive: 120s
 
-tools:
-  expose:
-    - name: resolve-library-id
-      description: "Resolve a library name to its Context7 compatible library ID"
-      params:
-        - name: libraryName
-          type: string
-          required: true
-          description: "Library or package name to search for"
-    - name: get-library-docs
-      description: "Fetch documentation for a library using its Context7 ID"
-      params:
-        - name: context7CompatibleLibraryID
-          type: string
-          required: true
-          description: "Library ID from resolve-library-id"
-        - name: topic
-          type: string
-          required: false
-          description: "Specific documentation topic or section"
-        - name: tokens
-          type: int
-          required: false
-          description: "Maximum number of tokens to return"
-  tool_transforms:
-    get-library-docs:
-      - truncate: { max_length: 20000 }
+instructions: |
+  This server provides up-to-date documentation for programming
+  libraries. Always use resolve-library-id first to find the correct
+  library ID, then get-library-docs for the documentation. This
+  provides accurate, current information that avoids hallucination.
 
-prompts:
-  system: |
-    This server provides up-to-date documentation for programming
-    libraries. Always use resolve-library-id first to find the correct
-    library ID, then get-library-docs for the documentation. This
-    provides accurate, current information that avoids hallucination.
-  tool_instructions:
-    resolve-library-id: "Search with the common library name (e.g., 'react', 'nextjs', 'express')."
-    get-library-docs: "Use the topic parameter to get specific sections of documentation."
+actions:
+  - name: resolve-library-id
+    description: "Resolve a library name to its Context7 compatible library ID"
+    instructions: "Search with the common library name (e.g., 'react', 'nextjs', 'express')."
+  - name: get-library-docs
+    description: "Fetch documentation for a library using its Context7 ID"
+    instructions: "Use the topic parameter to get specific sections of documentation."
+
+transforms:
+  get-library-docs:
+    - truncate: { max_length: 20000 }
 
 resources:
   expose: all
-
-install_mode:
-  default: both
-  allow_mcp: true
-  allow_skill: true
-  keep_alive: 120s

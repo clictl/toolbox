@@ -1,74 +1,88 @@
+spec: "1.0"
 name: homebrew-formulae
 description: Homebrew Formulae API for browsing and searching macOS and Linux package formulae and casks
 version: "1.0"
 category: developer
 tags: [homebrew, brew, macos, linux, packages, formulae, casks]
-protocol: rest
-owner_name: Homebrew
-website: https://brew.sh
-support_url: https://docs.brew.sh
-pricing_model: free
 
-connection:
-  base_url: https://formulae.brew.sh/api
+server:
+  type: http
+  url: https://formulae.brew.sh/api
   timeout: 15s
   headers:
     Accept: application/json
 
-auth:
-  - type: none
-
 actions:
   - name: search-formula
     description: List all Homebrew formulae (useful for client-side search and filtering)
-    method: GET
-    path: /formula.json
+    output: json
+    request:
+      method: GET
+      path: /formula.json
     params: []
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$"
+      - type: truncate
+        max_items: 20
 
   - name: formula-info
     description: Get detailed information about a specific Homebrew formula including dependencies and install counts
-    method: GET
-    path: /formula/{{name}}.json
+    output: json
+    request:
+      method: GET
+      path: /formula/{{name}}.json
     params:
       - name: name
         type: string
         required: true
         description: "Formula name, e.g. 'wget', 'node', 'python@3.12'"
+        example: "wget"
         in: path
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$"
-      - select: ["name", "full_name", "desc", "homepage", "license", "versions", "dependencies", "build_dependencies", "analytics"]
+      - type: json
+        extract: "$"
+        select: ["name", "full_name", "desc", "homepage", "license", "versions", "dependencies", "build_dependencies", "analytics"]
 
   - name: search-cask
     description: List all Homebrew casks (macOS GUI applications)
-    method: GET
-    path: /cask.json
+    output: json
+    request:
+      method: GET
+      path: /cask.json
     params: []
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$"
+      - type: truncate
+        max_items: 20
 
   - name: cask-info
     description: Get detailed information about a specific Homebrew cask including version, URL, and requirements
-    method: GET
-    path: /cask/{{token}}.json
+    output: json
+    request:
+      method: GET
+      path: /cask/{{token}}.json
     params:
       - name: token
         type: string
         required: true
         description: "Cask token, e.g. 'firefox', 'visual-studio-code', 'docker'"
+        example: "firefox"
         in: path
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$"
-      - select: ["token", "full_token", "name", "desc", "homepage", "url", "version", "sha256", "depends_on"]
+      - type: json
+        extract: "$"
+        select: ["token", "full_token", "name", "desc", "homepage", "url", "version", "sha256", "depends_on"]

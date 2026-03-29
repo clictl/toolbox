@@ -1,33 +1,30 @@
+spec: "1.0"
 name: docker-hub
 description: Docker Hub API for searching container images and browsing repository tags
 version: "1.0"
 category: developer
 tags: [docker, containers, images, registry, devops]
-protocol: rest
-owner_name: Docker Inc.
-website: https://hub.docker.com
-support_url: https://docs.docker.com/docker-hub/
-pricing_model: freemium
 
-connection:
-  base_url: https://hub.docker.com/v2
+server:
+  type: http
+  url: https://hub.docker.com/v2
   timeout: 15s
   headers:
     Accept: application/json
 
-auth:
-  - type: none
-
 actions:
   - name: search
     description: Search Docker Hub for container images by keyword
-    method: GET
-    path: /search/repositories
+    output: json
+    request:
+      method: GET
+      path: /search/repositories
     params:
       - name: query
         type: string
         required: true
         description: Search query string
+        example: "nginx"
         in: query
       - name: page_size
         type: int
@@ -40,25 +37,32 @@ actions:
         description: Page number for pagination
         in: query
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$.results"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.results"
+      - type: truncate
+        max_items: 20
 
   - name: tags
     description: List available tags for a Docker Hub repository
-    method: GET
-    path: /repositories/{{namespace}}/{{repo}}/tags
+    output: json
+    request:
+      method: GET
+      path: /repositories/{{namespace}}/{{repo}}/tags
     params:
       - name: namespace
         type: string
         required: true
         description: "Repository namespace or username (use 'library' for official images)"
+        example: "library"
         in: path
       - name: repo
         type: string
         required: true
         description: Repository name
+        example: "nginx"
         in: path
       - name: page_size
         type: int
@@ -75,7 +79,10 @@ actions:
         description: "Sort order: last_updated, -last_updated, name, -name"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$.results"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.results"
+      - type: truncate
+        max_items: 20

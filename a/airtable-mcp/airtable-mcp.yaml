@@ -1,127 +1,119 @@
+spec: '1.0'
 name: airtable-mcp
 description: MCP server for Airtable database access with schema inspection and record management
-version: "1.0"
+version: '1.0'
 category: productivity
-tags: [mcp, airtable, database, spreadsheet, records, nocode]
-protocol: mcp
-owner_name: Community
-website: https://github.com/domdomegg/airtable-mcp-server
-support_url: https://github.com/domdomegg/airtable-mcp-server/issues
-pricing_model: free
-license: MIT
-
+tags:
+- mcp
+- airtable
+- database
+- spreadsheet
+- records
+- nocode
+auth:
+  env: AIRTABLE_API_KEY
+  inject: env
 package:
   registry: npm
-  name: "airtable-mcp-server"
-  version: "1.13.0"
+  name: airtable-mcp-server
+  version: 1.13.0
   manager: npx
-
-auth:
-  - type: api_key
-    key_env: AIRTABLE_API_KEY
-    inject:
-      location: env
-      param: AIRTABLE_API_KEY
-
 tools:
   expose:
-    - name: list_bases
-      description: "List all accessible Airtable bases"
-    - name: list_tables
-      description: "List tables in a base"
-      params:
-        - name: base_id
-          type: string
-          required: true
-          description: "Airtable base ID"
-    - name: get_records
-      description: "Get records from a table"
-      params:
-        - name: base_id
-          type: string
-          required: true
-          description: "Airtable base ID"
-        - name: table_name
-          type: string
-          required: true
-          description: "Table name"
-        - name: max_records
-          type: int
-          required: false
-          description: "Maximum number of records to return"
-    - name: create_record
-      description: "Create a new record in a table"
-      destructive: true
-      params:
-        - name: base_id
-          type: string
-          required: true
-          description: "Airtable base ID"
-        - name: table_name
-          type: string
-          required: true
-          description: "Table name"
-        - name: fields
-          type: string
-          required: true
-          description: "JSON object of field values"
-    - name: update_record
-      description: "Update an existing record"
-      destructive: true
-      params:
-        - name: base_id
-          type: string
-          required: true
-          description: "Airtable base ID"
-        - name: table_name
-          type: string
-          required: true
-          description: "Table name"
-        - name: record_id
-          type: string
-          required: true
-          description: "Record ID"
-        - name: fields
-          type: string
-          required: true
-          description: "JSON object of field values to update"
-    - name: delete_record
-      description: "Delete a record from a table"
-      destructive: true
-      params:
-        - name: base_id
-          type: string
-          required: true
-          description: "Airtable base ID"
-        - name: table_name
-          type: string
-          required: true
-          description: "Table name"
-        - name: record_id
-          type: string
-          required: true
-          description: "Record ID"
-    - name: get_table_schema
-      description: "Get the schema of a table including field types"
-      params:
-        - name: base_id
-          type: string
-          required: true
-          description: "Airtable base ID"
-        - name: table_name
-          type: string
-          required: true
-          description: "Table name"
-
+  - name: list_bases
+    description: List all accessible Airtable bases
+  - name: list_tables
+    description: List tables in a base
+    params:
+    - name: base_id
+      type: string
+      required: true
+      description: Airtable base ID
+  - name: get_records
+    description: Get records from a table
+    params:
+    - name: base_id
+      type: string
+      required: true
+      description: Airtable base ID
+    - name: table_name
+      type: string
+      required: true
+      description: Table name
+    - name: max_records
+      type: int
+      required: false
+      description: Maximum number of records to return
+  - name: create_record
+    description: Create a new record in a table
+    params:
+    - name: base_id
+      type: string
+      required: true
+      description: Airtable base ID
+    - name: table_name
+      type: string
+      required: true
+      description: Table name
+    - name: fields
+      type: string
+      required: true
+      description: JSON object of field values
+    mutable: true
+  - name: update_record
+    description: Update an existing record
+    params:
+    - name: base_id
+      type: string
+      required: true
+      description: Airtable base ID
+    - name: table_name
+      type: string
+      required: true
+      description: Table name
+    - name: record_id
+      type: string
+      required: true
+      description: Record ID
+    - name: fields
+      type: string
+      required: true
+      description: JSON object of field values to update
+    mutable: true
+  - name: delete_record
+    description: Delete a record from a table
+    params:
+    - name: base_id
+      type: string
+      required: true
+      description: Airtable base ID
+    - name: table_name
+      type: string
+      required: true
+      description: Table name
+    - name: record_id
+      type: string
+      required: true
+      description: Record ID
+    mutable: true
+  - name: get_table_schema
+    description: Get the schema of a table including field types
+    params:
+    - name: base_id
+      type: string
+      required: true
+      description: Airtable base ID
+    - name: table_name
+      type: string
+      required: true
+      description: Table name
 prompts:
   system: |
     This server provides access to Airtable bases and tables. Use it
     for reading records, inspecting schemas, and managing data.
     Always confirm before writing or modifying records.
-
 resources:
   expose: all
-
 install_mode:
   default: mcp
   allow_mcp: true

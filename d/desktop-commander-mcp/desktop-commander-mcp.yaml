@@ -1,110 +1,42 @@
+spec: "1.0"
 name: desktop-commander-mcp
 description: MCP server for terminal control, file system search, and diff-based file editing
 version: "1.0"
 category: developer
-tags: [mcp, terminal, filesystem, editing, commands, desktop]
-protocol: mcp
-owner_name: Community
-website: https://github.com/wonderwhy-er/DesktopCommanderMCP
-support_url: https://github.com/wonderwhy-er/DesktopCommanderMCP/issues
-pricing_model: free
-license: MIT
+tags: [terminal, filesystem, editing, commands, desktop]
 
 package:
   registry: npm
   name: "@wonderwhy-er/desktop-commander"
   version: "0.2.38"
-  manager: npx
 
-auth:
-  - type: none
+server:
+  type: stdio
+  keep_alive: 300s
 
-tools:
-  expose:
-    - name: execute_command
-      description: "Execute a terminal command"
-      destructive: true
-      params:
-        - name: command
-          type: string
-          required: true
-          description: "Shell command to execute"
-        - name: timeout
-          type: int
-          required: false
-          description: "Command timeout in milliseconds"
-    - name: read_file
-      description: "Read the contents of a file"
-      params:
-        - name: path
-          type: string
-          required: true
-          description: "Absolute file path to read"
-    - name: write_file
-      description: "Write content to a file"
-      destructive: true
-      params:
-        - name: path
-          type: string
-          required: true
-          description: "Absolute file path to write"
-        - name: content
-          type: string
-          required: true
-          description: "Content to write"
-    - name: edit_file
-      description: "Make diff-based edits to a file"
-      destructive: true
-      params:
-        - name: path
-          type: string
-          required: true
-          description: "Absolute file path to edit"
-        - name: diff
-          type: string
-          required: true
-          description: "Unified diff of changes to apply"
-    - name: search_files
-      description: "Search for files matching a pattern"
-      params:
-        - name: path
-          type: string
-          required: true
-          description: "Directory path to search in"
-        - name: pattern
-          type: string
-          required: true
-          description: "Search pattern"
-    - name: search_content
-      description: "Search file contents using regex"
-      params:
-        - name: path
-          type: string
-          required: true
-          description: "Directory path to search in"
-        - name: pattern
-          type: string
-          required: true
-          description: "Regex pattern to search for"
-    - name: list_directory
-      description: "List contents of a directory"
-      params:
-        - name: path
-          type: string
-          required: true
-          description: "Directory path to list"
+instructions: |
+  This server provides terminal control and file system operations.
+  Use it for running commands, searching files, and making diff-based
+  edits. Be careful with destructive commands and confirm with the user.
 
-prompts:
-  system: |
-    This server provides terminal control and file system operations.
-    Use it for running commands, searching files, and making diff-based
-    edits. Be careful with destructive commands and confirm with the user.
+actions:
+  - name: execute_command
+    description: "Execute a terminal command"
+    mutable: true
+  - name: read_file
+    description: "Read the contents of a file"
+  - name: write_file
+    description: "Write content to a file"
+    mutable: true
+  - name: edit_file
+    description: "Make diff-based edits to a file"
+    mutable: true
+  - name: search_files
+    description: "Search for files matching a pattern"
+  - name: search_content
+    description: "Search file contents using regex"
+  - name: list_directory
+    description: "List contents of a directory"
 
 resources:
   expose: all
-
-install_mode:
-  default: mcp
-  allow_mcp: true
-  allow_skill: true
-  keep_alive: 300s

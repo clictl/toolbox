@@ -1,299 +1,298 @@
+spec: '1.0'
 name: stripe-mcp
 description: Official Stripe MCP server for payment processing, customer management, billing, and financial operations
-version: "1.0"
+version: '1.0'
 category: finance
-tags: [mcp, stripe, payments, billing, subscriptions, invoices, customers]
-protocol: mcp
-owner_name: Stripe
-website: https://github.com/stripe/agent-toolkit
-support_url: https://github.com/stripe/agent-toolkit/issues
-pricing_model: freemium
-license: MIT
-
+tags:
+- mcp
+- stripe
+- payments
+- billing
+- subscriptions
+- invoices
+- customers
+auth:
+  env: STRIPE_SECRET_KEY
+  inject: env
+pricing:
+  model: freemium
 package:
   registry: npm
-  name: "@stripe/agent-toolkit"
-  version: "0.3.0"
+  name: '@stripe/agent-toolkit'
+  version: 0.3.0
   manager: npx
-
-docs:
-  api_reference: https://docs.stripe.com/api
-
-auth:
-  - type: api_key
-    key_env: STRIPE_SECRET_KEY
-    inject:
-      location: env
-      param: STRIPE_SECRET_KEY
-
 tools:
   expose:
-    - name: create_customer
-      description: "Create a new Stripe customer"
-      destructive: true
-      params:
-        - name: email
-          type: string
-          required: true
-          description: "Customer email address"
-        - name: name
-          type: string
-          required: false
-          description: "Customer name"
-        - name: description
-          type: string
-          required: false
-          description: "Customer description"
-    - name: list_customers
-      description: "List customers with optional filtering"
-      params:
-        - name: limit
-          type: int
-          required: false
-          description: "Maximum number of results to return"
-        - name: email
-          type: string
-          required: false
-          description: "Filter by email address"
-    - name: create_product
-      description: "Create a new product"
-      destructive: true
-      params:
-        - name: name
-          type: string
-          required: true
-          description: "Product name"
-        - name: description
-          type: string
-          required: false
-          description: "Product description"
-    - name: list_products
-      description: "List all products"
-      params:
-        - name: limit
-          type: int
-          required: false
-          description: "Maximum number of results to return"
-    - name: create_price
-      description: "Create a pricing plan for a product"
-      destructive: true
-      params:
-        - name: product_id
-          type: string
-          required: true
-          description: "The ID of the product"
-        - name: unit_amount
-          type: int
-          required: true
-          description: "Price in cents"
-        - name: currency
-          type: string
-          required: true
-          description: "Currency code, e.g. usd"
-        - name: recurring_interval
-          type: string
-          required: false
-          description: "Billing interval - month or year for subscriptions"
-    - name: list_prices
-      description: "List all prices"
-      params:
-        - name: product_id
-          type: string
-          required: false
-          description: "Filter by product ID"
-        - name: limit
-          type: int
-          required: false
-          description: "Maximum number of results to return"
-    - name: create_payment_link
-      description: "Create a shareable payment link"
-      destructive: true
-      params:
-        - name: price_id
-          type: string
-          required: true
-          description: "The ID of the price"
-        - name: quantity
-          type: int
-          required: false
-          description: "Quantity, default 1"
-    - name: create_invoice
-      description: "Create a draft invoice for a customer"
-      destructive: true
-      params:
-        - name: customer_id
-          type: string
-          required: true
-          description: "The ID of the customer"
-        - name: description
-          type: string
-          required: false
-          description: "Invoice description"
-    - name: list_invoices
-      description: "List invoices with optional filtering"
-      params:
-        - name: customer_id
-          type: string
-          required: false
-          description: "Filter by customer ID"
-        - name: status
-          type: string
-          required: false
-          description: "Filter by status - draft, open, paid, or void"
-        - name: limit
-          type: int
-          required: false
-          description: "Maximum number of results to return"
-    - name: create_invoice_item
-      description: "Add a line item to an invoice"
-      destructive: true
-      params:
-        - name: invoice_id
-          type: string
-          required: true
-          description: "The ID of the invoice"
-        - name: price_id
-          type: string
-          required: false
-          description: "The ID of the price"
-        - name: amount
-          type: int
-          required: false
-          description: "Amount in cents"
-        - name: description
-          type: string
-          required: false
-          description: "Line item description"
-    - name: finalize_invoice
-      description: "Finalize a draft invoice for payment"
-      destructive: true
-      params:
-        - name: invoice_id
-          type: string
-          required: true
-          description: "The ID of the invoice to finalize"
-    - name: list_balance_transactions
-      description: "List balance transactions and history"
-      params:
-        - name: limit
-          type: int
-          required: false
-          description: "Maximum number of results to return"
-    - name: create_refund
-      description: "Refund a payment"
-      destructive: true
-      params:
-        - name: payment_intent_id
-          type: string
-          required: true
-          description: "The ID of the payment intent to refund"
-        - name: amount
-          type: int
-          required: false
-          description: "Partial refund amount in cents"
-    - name: list_payment_intents
-      description: "List payment intents"
-      params:
-        - name: customer_id
-          type: string
-          required: false
-          description: "Filter by customer ID"
-        - name: limit
-          type: int
-          required: false
-          description: "Maximum number of results to return"
-    - name: search_customers
-      description: "Search customers by query"
-      params:
-        - name: query
-          type: string
-          required: true
-          description: "Search query"
-    - name: search_charges
-      description: "Search charges by query"
-      params:
-        - name: query
-          type: string
-          required: true
-          description: "Search query"
-    - name: search_invoices
-      description: "Search invoices by query"
-      params:
-        - name: query
-          type: string
-          required: true
-          description: "Search query"
-    - name: create_subscription
-      description: "Create a subscription for a customer"
-      destructive: true
-      params:
-        - name: customer_id
-          type: string
-          required: true
-          description: "The ID of the customer"
-        - name: price_id
-          type: string
-          required: true
-          description: "The ID of the price"
-    - name: list_subscriptions
-      description: "List subscriptions"
-      params:
-        - name: customer_id
-          type: string
-          required: false
-          description: "Filter by customer ID"
-        - name: status
-          type: string
-          required: false
-          description: "Filter by subscription status"
-        - name: limit
-          type: int
-          required: false
-          description: "Maximum number of results to return"
-    - name: update_subscription
-      description: "Update an existing subscription"
-      destructive: true
-      params:
-        - name: subscription_id
-          type: string
-          required: true
-          description: "The ID of the subscription"
-        - name: price_id
-          type: string
-          required: false
-          description: "New price ID"
-        - name: cancel_at_period_end
-          type: bool
-          required: false
-          description: "Whether to cancel at the end of the billing period"
-    - name: cancel_subscription
-      description: "Cancel a subscription"
-      destructive: true
-      params:
-        - name: subscription_id
-          type: string
-          required: true
-          description: "The ID of the subscription to cancel"
-        - name: cancel_at_period_end
-          type: bool
-          required: false
-          description: "Cancel at end of billing period, default true"
-  tool_transforms:
+  - name: create_customer
+    description: Create a new Stripe customer
+    params:
+    - name: email
+      type: string
+      required: true
+      description: Customer email address
+    - name: name
+      type: string
+      required: false
+      description: Customer name
+    - name: description
+      type: string
+      required: false
+      description: Customer description
+    mutable: true
+  - name: list_customers
+    description: List customers with optional filtering
+    params:
+    - name: limit
+      type: int
+      required: false
+      description: Maximum number of results to return
+    - name: email
+      type: string
+      required: false
+      description: Filter by email address
+  - name: create_product
+    description: Create a new product
+    params:
+    - name: name
+      type: string
+      required: true
+      description: Product name
+    - name: description
+      type: string
+      required: false
+      description: Product description
+    mutable: true
+  - name: list_products
+    description: List all products
+    params:
+    - name: limit
+      type: int
+      required: false
+      description: Maximum number of results to return
+  - name: create_price
+    description: Create a pricing plan for a product
+    params:
+    - name: product_id
+      type: string
+      required: true
+      description: The ID of the product
+    - name: unit_amount
+      type: int
+      required: true
+      description: Price in cents
+    - name: currency
+      type: string
+      required: true
+      description: Currency code, e.g. usd
+    - name: recurring_interval
+      type: string
+      required: false
+      description: Billing interval - month or year for subscriptions
+    mutable: true
+  - name: list_prices
+    description: List all prices
+    params:
+    - name: product_id
+      type: string
+      required: false
+      description: Filter by product ID
+    - name: limit
+      type: int
+      required: false
+      description: Maximum number of results to return
+  - name: create_payment_link
+    description: Create a shareable payment link
+    params:
+    - name: price_id
+      type: string
+      required: true
+      description: The ID of the price
+    - name: quantity
+      type: int
+      required: false
+      description: Quantity, default 1
+    mutable: true
+  - name: create_invoice
+    description: Create a draft invoice for a customer
+    params:
+    - name: customer_id
+      type: string
+      required: true
+      description: The ID of the customer
+    - name: description
+      type: string
+      required: false
+      description: Invoice description
+    mutable: true
+  - name: list_invoices
+    description: List invoices with optional filtering
+    params:
+    - name: customer_id
+      type: string
+      required: false
+      description: Filter by customer ID
+    - name: status
+      type: string
+      required: false
+      description: Filter by status - draft, open, paid, or void
+    - name: limit
+      type: int
+      required: false
+      description: Maximum number of results to return
+  - name: create_invoice_item
+    description: Add a line item to an invoice
+    params:
+    - name: invoice_id
+      type: string
+      required: true
+      description: The ID of the invoice
+    - name: price_id
+      type: string
+      required: false
+      description: The ID of the price
+    - name: amount
+      type: int
+      required: false
+      description: Amount in cents
+    - name: description
+      type: string
+      required: false
+      description: Line item description
+    mutable: true
+  - name: finalize_invoice
+    description: Finalize a draft invoice for payment
+    params:
+    - name: invoice_id
+      type: string
+      required: true
+      description: The ID of the invoice to finalize
+    mutable: true
+  - name: list_balance_transactions
+    description: List balance transactions and history
+    params:
+    - name: limit
+      type: int
+      required: false
+      description: Maximum number of results to return
+  - name: create_refund
+    description: Refund a payment
+    params:
+    - name: payment_intent_id
+      type: string
+      required: true
+      description: The ID of the payment intent to refund
+    - name: amount
+      type: int
+      required: false
+      description: Partial refund amount in cents
+    mutable: true
+  - name: list_payment_intents
+    description: List payment intents
+    params:
+    - name: customer_id
+      type: string
+      required: false
+      description: Filter by customer ID
+    - name: limit
+      type: int
+      required: false
+      description: Maximum number of results to return
+  - name: search_customers
+    description: Search customers by query
+    params:
+    - name: query
+      type: string
+      required: true
+      description: Search query
+  - name: search_charges
+    description: Search charges by query
+    params:
+    - name: query
+      type: string
+      required: true
+      description: Search query
+  - name: search_invoices
+    description: Search invoices by query
+    params:
+    - name: query
+      type: string
+      required: true
+      description: Search query
+  - name: create_subscription
+    description: Create a subscription for a customer
+    params:
+    - name: customer_id
+      type: string
+      required: true
+      description: The ID of the customer
+    - name: price_id
+      type: string
+      required: true
+      description: The ID of the price
+    mutable: true
+  - name: list_subscriptions
+    description: List subscriptions
+    params:
+    - name: customer_id
+      type: string
+      required: false
+      description: Filter by customer ID
+    - name: status
+      type: string
+      required: false
+      description: Filter by subscription status
+    - name: limit
+      type: int
+      required: false
+      description: Maximum number of results to return
+  - name: update_subscription
+    description: Update an existing subscription
+    params:
+    - name: subscription_id
+      type: string
+      required: true
+      description: The ID of the subscription
+    - name: price_id
+      type: string
+      required: false
+      description: New price ID
+    - name: cancel_at_period_end
+      type: bool
+      required: false
+      description: Whether to cancel at the end of the billing period
+    mutable: true
+  - name: cancel_subscription
+    description: Cancel a subscription
+    params:
+    - name: subscription_id
+      type: string
+      required: true
+      description: The ID of the subscription to cancel
+    - name: cancel_at_period_end
+      type: bool
+      required: false
+      description: Cancel at end of billing period, default true
+    mutable: true
+  transforms:
     list_customers:
-      - truncate: { max_items: 30 }
+    - truncate:
+        max_items: 30
     list_invoices:
-      - truncate: { max_items: 30 }
+    - truncate:
+        max_items: 30
     list_balance_transactions:
-      - truncate: { max_items: 30 }
+    - truncate:
+        max_items: 30
     list_payment_intents:
-      - truncate: { max_items: 30 }
-
-permissions:
+    - truncate:
+        max_items: 30
+sandbox:
   network:
-    - "api.stripe.com"
+    allow:
+    - api.stripe.com
   env:
-    - "STRIPE_SECRET_KEY"
-
+    allow:
+    - STRIPE_SECRET_KEY
 prompts:
   system: |
     This server provides access to the Stripe API. Always confirm
@@ -301,13 +300,11 @@ prompts:
     and search tools to find existing resources before creating new ones.
     Never expose API keys or sensitive financial data in responses.
   tool_instructions:
-    create_customer: "Verify email and name with the user before creating."
-    create_refund: "Always confirm the amount and payment ID with the user."
-    cancel_subscription: "Warn the user about immediate vs end-of-period cancellation."
-
+    create_customer: Verify email and name with the user before creating.
+    create_refund: Always confirm the amount and payment ID with the user.
+    cancel_subscription: Warn the user about immediate vs end-of-period cancellation.
 resources:
   expose: all
-
 install_mode:
   default: both
   allow_mcp: true

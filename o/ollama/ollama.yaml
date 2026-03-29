@@ -1,95 +1,95 @@
+spec: '1.0'
 name: ollama
 description: Local LLM inference via Ollama. Run AI models like Llama, Mistral, and Gemma on your machine
-version: "1.0"
+version: '1.0'
 category: ai
-tags: [ai, llm, local, ollama, inference, chat, embedding]
-protocol: rest
-owner_name: Ollama
-website: https://ollama.com
-support_url: https://github.com/ollama/ollama/issues
-
-connection:
-  base_url: http://localhost:11434
+tags:
+- ai
+- llm
+- local
+- ollama
+- inference
+- chat
+- embedding
+server:
+  type: http
+  url: http://localhost:11434
   timeout: 120s
   headers:
     Content-Type: application/json
   requires:
-    - name: ollama
-      url: https://ollama.com/download
-      check: "ollama --version"
-
-auth:
-  - type: none
-
+  - name: ollama
+    url: https://ollama.com/download
+    check: ollama --version
 actions:
-  - name: generate
-    description: Generate a text completion from a prompt using a local model
+- name: generate
+  description: Generate a text completion from a prompt using a local model
+  params:
+  - name: model
+    type: string
+    required: true
+    description: Model name, e.g. 'llama3.2', 'mistral', 'gemma2'
+    in: body
+  - name: prompt
+    type: string
+    required: true
+    description: The input prompt to generate a response for
+    in: body
+  - name: stream
+    type: bool
+    default: 'false'
+    description: Stream the response token by token
+    in: body
+  request:
     method: POST
-    safe: true
     path: /api/generate
-    params:
-      - name: model
-        type: string
-        required: true
-        description: "Model name, e.g. 'llama3.2', 'mistral', 'gemma2'"
-        in: body
-      - name: prompt
-        type: string
-        required: true
-        description: The input prompt to generate a response for
-        in: body
-      - name: stream
-        type: bool
-        default: "false"
-        description: Stream the response token by token
-        in: body
-
-  - name: chat
-    description: Send a chat message and get a response (single turn)
+- name: chat
+  description: Send a chat message and get a response (single turn)
+  send:
+    type: json
+    template: |
+      {
+        "model": "{{model}}",
+        "messages": [{"role": "user", "content": "{{message}}"}],
+        "stream": false
+      }
+  params:
+  - name: model
+    type: string
+    required: true
+    description: Model name, e.g. 'llama3.2'
+  - name: message
+    type: string
+    required: true
+    description: Chat message to send
+  transform:
+  - type: extract
+    path: $.message.content
+  request:
     method: POST
-    safe: true
     path: /api/chat
-    send:
-      type: json
-      template: |
-        {
-          "model": "{{model}}",
-          "messages": [{"role": "user", "content": "{{message}}"}],
-          "stream": false
-        }
-    params:
-      - name: model
-        type: string
-        required: true
-        description: "Model name, e.g. 'llama3.2'"
-      - name: message
-        type: string
-        required: true
-        description: Chat message to send
-    transform:
-      extract: "$.message.content"
-
-  - name: list
-    description: List all models currently downloaded on your machine
+- name: list
+  description: List all models currently downloaded on your machine
+  params: []
+  transform:
+  - type: extract
+    path: $.models
+  request:
     method: GET
     path: /api/tags
-    params: []
-    transform:
-      extract: "$.models"
-
-  - name: embeddings
-    description: Generate vector embeddings for text using a local model
+- name: embeddings
+  description: Generate vector embeddings for text using a local model
+  params:
+  - name: model
+    type: string
+    required: true
+    description: Model name, e.g. 'nomic-embed-text'
+    in: body
+  - name: prompt
+    type: string
+    required: true
+    description: Text to generate embeddings for
+    in: body
+  request:
     method: POST
-    safe: true
     path: /api/embeddings
-    params:
-      - name: model
-        type: string
-        required: true
-        description: "Model name, e.g. 'nomic-embed-text'"
-        in: body
-      - name: prompt
-        type: string
-        required: true
-        description: Text to generate embeddings for
-        in: body

@@ -1,146 +1,144 @@
+spec: '1.0'
 name: sentry-mcp
 description: Official Sentry MCP server for error tracking, issue management, performance monitoring, and release health
-version: "1.0"
+version: '1.0'
 category: monitoring
-tags: [mcp, sentry, errors, monitoring, debugging, performance, issues]
-protocol: mcp
-owner_name: Sentry
-website: https://github.com/getsentry/sentry-mcp
-support_url: https://github.com/getsentry/sentry-mcp/issues
-pricing_model: freemium
-license: Apache-2.0
-
+tags:
+- mcp
+- sentry
+- errors
+- monitoring
+- debugging
+- performance
+- issues
+auth:
+  env: SENTRY_AUTH_TOKEN
+  inject: env
+pricing:
+  model: freemium
 package:
   registry: npm
-  name: "@sentry/mcp-server"
-  version: "0.1.0"
+  name: '@sentry/mcp-server'
+  version: 0.1.0
   manager: npx
-
-docs:
-  api_reference: https://docs.sentry.io/api/
-
-auth:
-  - type: api_key
-    key_env: SENTRY_AUTH_TOKEN
-    inject:
-      location: env
-      param: SENTRY_AUTH_TOKEN
-
 tools:
   expose:
-    - name: list_organizations
-      description: "List Sentry organizations the auth token has access to"
-    - name: list_projects
-      description: "List projects in a Sentry organization"
-      params:
-        - name: organization_slug
-          type: string
-          required: true
-          description: "Organization slug"
-    - name: list_issues
-      description: "Search and list issues with filtering by query, project, and sort"
-      params:
-        - name: organization_slug
-          type: string
-          required: true
-          description: "Organization slug"
-        - name: project_slug
-          type: string
-          required: false
-          description: "Project slug"
-        - name: query
-          type: string
-          required: false
-          description: "Search query e.g. is:unresolved"
-        - name: sort_by
-          type: string
-          required: false
-          description: "Sort order e.g. date, priority, freq"
-    - name: get_issue_details
-      description: "Get detailed information about a specific issue including stacktrace"
-      params:
-        - name: issue_id
-          type: string
-          required: true
-          description: "Issue ID"
-    - name: list_issue_events
-      description: "List events for a specific issue"
-      params:
-        - name: issue_id
-          type: string
-          required: true
-          description: "Issue ID"
-    - name: get_event_details
-      description: "Get detailed information about a specific event"
-      params:
-        - name: event_id
-          type: string
-          required: true
-          description: "Event ID"
-    - name: create_issue_comment
-      description: "Add a comment to an issue"
-      destructive: true
-      params:
-        - name: issue_id
-          type: string
-          required: true
-          description: "Issue ID"
-        - name: text
-          type: string
-          required: true
-          description: "Comment text"
-    - name: update_issue
-      description: "Update issue status (resolve, ignore, etc.)"
-      destructive: true
-      params:
-        - name: issue_id
-          type: string
-          required: true
-          description: "Issue ID"
-        - name: status
-          type: string
-          required: false
-          description: "Issue status e.g. resolved, ignored, unresolved"
-        - name: assignee
-          type: string
-          required: false
-          description: "Assignee username"
-    - name: list_releases
-      description: "List releases for a project"
-      params:
-        - name: organization_slug
-          type: string
-          required: true
-          description: "Organization slug"
-        - name: project_slug
-          type: string
-          required: false
-          description: "Project slug"
-    - name: get_release_details
-      description: "Get details about a specific release"
-      params:
-        - name: organization_slug
-          type: string
-          required: true
-          description: "Organization slug"
-        - name: version
-          type: string
-          required: true
-          description: "Release version"
-  tool_transforms:
+  - name: list_organizations
+    description: List Sentry organizations the auth token has access to
+  - name: list_projects
+    description: List projects in a Sentry organization
+    params:
+    - name: organization_slug
+      type: string
+      required: true
+      description: Organization slug
+  - name: list_issues
+    description: Search and list issues with filtering by query, project, and sort
+    params:
+    - name: organization_slug
+      type: string
+      required: true
+      description: Organization slug
+    - name: project_slug
+      type: string
+      required: false
+      description: Project slug
+    - name: query
+      type: string
+      required: false
+      description: Search query e.g. is:unresolved
+    - name: sort_by
+      type: string
+      required: false
+      description: Sort order e.g. date, priority, freq
+  - name: get_issue_details
+    description: Get detailed information about a specific issue including stacktrace
+    params:
+    - name: issue_id
+      type: string
+      required: true
+      description: Issue ID
+  - name: list_issue_events
+    description: List events for a specific issue
+    params:
+    - name: issue_id
+      type: string
+      required: true
+      description: Issue ID
+  - name: get_event_details
+    description: Get detailed information about a specific event
+    params:
+    - name: event_id
+      type: string
+      required: true
+      description: Event ID
+  - name: create_issue_comment
+    description: Add a comment to an issue
+    params:
+    - name: issue_id
+      type: string
+      required: true
+      description: Issue ID
+    - name: text
+      type: string
+      required: true
+      description: Comment text
+    mutable: true
+  - name: update_issue
+    description: Update issue status (resolve, ignore, etc.)
+    params:
+    - name: issue_id
+      type: string
+      required: true
+      description: Issue ID
+    - name: status
+      type: string
+      required: false
+      description: Issue status e.g. resolved, ignored, unresolved
+    - name: assignee
+      type: string
+      required: false
+      description: Assignee username
+    mutable: true
+  - name: list_releases
+    description: List releases for a project
+    params:
+    - name: organization_slug
+      type: string
+      required: true
+      description: Organization slug
+    - name: project_slug
+      type: string
+      required: false
+      description: Project slug
+  - name: get_release_details
+    description: Get details about a specific release
+    params:
+    - name: organization_slug
+      type: string
+      required: true
+      description: Organization slug
+    - name: version
+      type: string
+      required: true
+      description: Release version
+  transforms:
     list_issues:
-      - truncate: { max_items: 30 }
+    - truncate:
+        max_items: 30
     list_issue_events:
-      - truncate: { max_items: 20 }
+    - truncate:
+        max_items: 20
     list_releases:
-      - truncate: { max_items: 20 }
-
-permissions:
+    - truncate:
+        max_items: 20
+sandbox:
   network:
-    - "sentry.io"
+    allow:
+    - sentry.io
   env:
-    - "SENTRY_AUTH_TOKEN"
-
+    allow:
+    - SENTRY_AUTH_TOKEN
 prompts:
   system: |
     This server provides access to Sentry error tracking. Use
@@ -148,12 +146,10 @@ prompts:
     and context. When debugging, correlate errors with recent releases
     using list_releases.
   tool_instructions:
-    list_issues: "Use query syntax like 'is:unresolved' or 'assigned:me' for filtering."
-    update_issue: "Confirm status changes with the user before resolving or ignoring issues."
-
+    list_issues: Use query syntax like 'is:unresolved' or 'assigned:me' for filtering.
+    update_issue: Confirm status changes with the user before resolving or ignoring issues.
 resources:
   expose: all
-
 install_mode:
   default: both
   allow_mcp: true

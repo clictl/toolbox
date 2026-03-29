@@ -1,58 +1,50 @@
+spec: '1.0'
 name: npm-cli
 description: Node Package Manager CLI. Search the npm registry, inspect packages, and audit project dependencies
-version: "1.0"
+version: '1.0'
 category: developer
-tags: [npm, nodejs, javascript, package-manager]
-protocol: cli
-tool_type: cli
-owner_name: npm
-website: https://www.npmjs.com
-support_url: https://docs.npmjs.com
-
-connection:
+tags:
+- npm
+- nodejs
+- javascript
+- package-manager
+server:
+  type: command
   shell: /bin/sh
   requires:
-    - name: npm
-      url: https://nodejs.org
-      check: "npm --version"
-
-auth:
-  - type: none
-
+  - name: npm
+    url: https://nodejs.org
+    check: npm --version
 actions:
-  - name: search
-    description: Search the npm registry for packages matching a query
-    run: "npm search {{query}}"
-    params:
-      - name: query
-        type: string
-        required: true
-        description: Search term for package lookup
-
-  - name: info
-    description: Show detailed metadata for a package including version, dependencies, and repository
-    run: "npm info {{package}}"
-    params:
-      - name: package
-        type: string
-        required: true
-        description: Package name (e.g., express, react)
-
-  - name: list
-    description: List installed packages in the current project
-    run: "npm list --depth={{depth}}"
-    params:
-      - name: depth
-        type: int
-        default: "0"
-        description: Depth of the dependency tree to display
-
-  - name: outdated
-    description: List packages with newer versions available
-    run: "npm outdated"
-    params: []
-
-  - name: audit
-    description: Run a security audit on installed dependencies and report vulnerabilities
-    run: "npm audit --json"
-    params: []
+- name: search
+  description: Search the npm registry for packages matching a query
+  run: npm search {{query}}
+  params:
+  - name: query
+    type: string
+    required: true
+    description: Search term for package lookup
+- name: info
+  description: Show detailed metadata for a package including version, dependencies, and repository
+  run: npm info {{package}}
+  params:
+  - name: package
+    type: string
+    required: true
+    description: Package name (e.g., express, react)
+- name: list
+  description: List installed packages in the current project
+  run: npm list --depth={{depth}}
+  params:
+  - name: depth
+    type: int
+    default: '0'
+    description: Depth of the dependency tree to display
+- name: outdated
+  description: List packages with newer versions available
+  run: npm outdated
+  params: []
+- name: audit
+  description: Run a security audit on installed dependencies and report vulnerabilities
+  run: npm audit --json
+  params: []

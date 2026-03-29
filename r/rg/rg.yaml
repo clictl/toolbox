@@ -1,78 +1,71 @@
+spec: '1.0'
 name: rg
 description: Fast regex search tool for recursively searching file contents. A modern, high-performance alternative to grep
-version: "1.0"
+version: '1.0'
 category: developer
-tags: [search, grep, regex, code]
-protocol: cli
-tool_type: cli
-owner_name: BurntSushi
-website: https://github.com/BurntSushi/ripgrep
-support_url: https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md
-
-connection:
+tags:
+- search
+- grep
+- regex
+- code
+server:
+  type: command
   shell: /bin/sh
   requires:
-    - name: rg
-      url: https://github.com/BurntSushi/ripgrep#installation
-      check: "rg --version"
-
-auth:
-  - type: none
-
+  - name: rg
+    url: https://github.com/BurntSushi/ripgrep#installation
+    check: rg --version
 actions:
-  - name: search
-    description: Search for a regex pattern in files, recursively from the given path
-    run: "rg {{#ignore_case}}-i{{/ignore_case}} {{#max_count}}-m {{max_count}}{{/max_count}} '{{pattern}}' {{path}}"
-    params:
-      - name: pattern
-        type: string
-        required: true
-        description: Regex pattern to search for
-      - name: path
-        type: string
-        description: Directory or file to search in (defaults to current directory)
-      - name: ignore_case
-        type: bool
-        description: Perform case-insensitive matching
-      - name: max_count
-        type: int
-        description: Limit the number of matches per file
-
-  - name: search_files
-    description: List files that would be searched without performing a search (respects .gitignore)
-    run: "rg --files {{path}} {{#glob}}--glob '{{glob}}'{{/glob}}"
-    params:
-      - name: path
-        type: string
-        description: Directory to list files from
-      - name: glob
-        type: string
-        description: "Glob pattern to filter files (e.g., *.py, *.ts)"
-
-  - name: count
-    description: Count the number of matches per file for a given pattern
-    run: "rg -c '{{pattern}}' {{path}}"
-    params:
-      - name: pattern
-        type: string
-        required: true
-        description: Regex pattern to count matches for
-      - name: path
-        type: string
-        description: Directory or file to search in
-
-  - name: search_type
-    description: Search for a pattern only in files of a specific type
-    run: "rg --type {{filetype}} '{{pattern}}' {{path}}"
-    params:
-      - name: pattern
-        type: string
-        required: true
-        description: Regex pattern to search for
-      - name: filetype
-        type: string
-        required: true
-        description: "File type to search (e.g., py, js, go, rust, ts)"
-      - name: path
-        type: string
-        description: Directory or file to search in
+- name: search
+  description: Search for a regex pattern in files, recursively from the given path
+  run: rg {{#ignore_case}}-i{{/ignore_case}} {{#max_count}}-m {{max_count}}{{/max_count}} '{{pattern}}' {{path}}
+  params:
+  - name: pattern
+    type: string
+    required: true
+    description: Regex pattern to search for
+  - name: path
+    type: string
+    description: Directory or file to search in (defaults to current directory)
+  - name: ignore_case
+    type: bool
+    description: Perform case-insensitive matching
+  - name: max_count
+    type: int
+    description: Limit the number of matches per file
+- name: search_files
+  description: List files that would be searched without performing a search (respects .gitignore)
+  run: rg --files {{path}} {{#glob}}--glob '{{glob}}'{{/glob}}
+  params:
+  - name: path
+    type: string
+    description: Directory to list files from
+  - name: glob
+    type: string
+    description: Glob pattern to filter files (e.g., *.py, *.ts)
+- name: count
+  description: Count the number of matches per file for a given pattern
+  run: rg -c '{{pattern}}' {{path}}
+  params:
+  - name: pattern
+    type: string
+    required: true
+    description: Regex pattern to count matches for
+  - name: path
+    type: string
+    description: Directory or file to search in
+- name: search_type
+  description: Search for a pattern only in files of a specific type
+  run: rg --type {{filetype}} '{{pattern}}' {{path}}
+  params:
+  - name: pattern
+    type: string
+    required: true
+    description: Regex pattern to search for
+  - name: filetype
+    type: string
+    required: true
+    description: File type to search (e.g., py, js, go, rust, ts)
+  - name: path
+    type: string
+    description: Directory or file to search in

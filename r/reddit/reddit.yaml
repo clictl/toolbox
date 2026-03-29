@@ -1,37 +1,31 @@
+spec: "1.0"
 name: reddit
 description: Reddit API for searching posts, browsing subreddits, and reading comments
 version: "1.0"
 category: communication
 tags: [social, reddit, community, discussion]
-protocol: rest
-owner_name: Reddit
-website: https://www.reddit.com
-support_url: https://www.reddit.com/dev/api
-pricing_model: free
 
-connection:
-  base_url: https://oauth.reddit.com
+server:
+  type: http
+  url: https://oauth.reddit.com
   timeout: 15s
   headers:
     Accept: application/json
     User-Agent: "clictl:v1.0 (by /u/clictl)"
 
 auth:
-  - type: oauth2
-    key_env: REDDIT_CLIENT_ID
-    secret_env: REDDIT_CLIENT_SECRET
-    token_url: https://www.reddit.com/api/v1/access_token
-    grant_type: client_credentials
-    inject:
-      location: header
-      key: Authorization
-      prefix: "Bearer "
+  type: oauth2
+  env: REDDIT_CLIENT_ID
+  secret_env: REDDIT_CLIENT_SECRET
+  token_url: https://www.reddit.com/api/v1/access_token
+  grant_type: client_credentials
 
 actions:
   - name: search
     description: Search Reddit posts across all subreddits
-    method: GET
-    path: /search
+    request:
+      method: GET
+      path: /search
     params:
       - name: q
         type: string
@@ -59,16 +53,20 @@ actions:
         description: "Result type: link, sr (subreddit), user"
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data.children[*].data"
-      - select: ["title", "subreddit", "selftext", "url", "score", "num_comments", "created_utc", "author"]
-      - truncate: { max_items: 25 }
+      - type: json
+        extract: "$.data.children[*].data"
+        select: ["title", "subreddit", "selftext", "url", "score", "num_comments", "created_utc", "author"]
+      - type: truncate
+        max_items: 25
 
   - name: subreddit-posts
     description: Get posts from a specific subreddit
-    method: GET
-    path: /r/{{subreddit}}/{{listing}}
+    request:
+      method: GET
+      path: /r/{{subreddit}}/{{listing}}
     params:
       - name: subreddit
         type: string
@@ -91,16 +89,20 @@ actions:
         description: Number of posts to return (max 100)
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data.children[*].data"
-      - select: ["title", "selftext", "url", "score", "num_comments", "created_utc", "author"]
-      - truncate: { max_items: 25 }
+      - type: json
+        extract: "$.data.children[*].data"
+        select: ["title", "selftext", "url", "score", "num_comments", "created_utc", "author"]
+      - type: truncate
+        max_items: 25
 
   - name: comments
     description: Get comments for a specific post
-    method: GET
-    path: /r/{{subreddit}}/comments/{{post_id}}
+    request:
+      method: GET
+      path: /r/{{subreddit}}/comments/{{post_id}}
     params:
       - name: subreddit
         type: string
@@ -123,16 +125,20 @@ actions:
         description: Number of top-level comments to return
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$[1].data.children[*].data"
-      - select: ["author", "body", "score", "created_utc", "replies"]
-      - truncate: { max_items: 25 }
+      - type: json
+        extract: "$[1].data.children[*].data"
+        select: ["author", "body", "score", "created_utc", "replies"]
+      - type: truncate
+        max_items: 25
 
   - name: subreddit-about
     description: Get information about a subreddit
-    method: GET
-    path: /r/{{subreddit}}/about
+    request:
+      method: GET
+      path: /r/{{subreddit}}/about
     params:
       - name: subreddit
         type: string
@@ -140,7 +146,9 @@ actions:
         description: Subreddit name without the r/ prefix
         in: path
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.data"
-      - select: ["display_name", "title", "public_description", "subscribers", "active_user_count", "created_utc"]
+      - type: json
+        extract: "$.data"
+        select: ["display_name", "title", "public_description", "subscribers", "active_user_count", "created_utc"]

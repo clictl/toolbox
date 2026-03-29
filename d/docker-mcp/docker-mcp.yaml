@@ -1,111 +1,105 @@
+spec: '1.0'
 name: docker-mcp
 description: MCP server for Docker container, image, network, and volume management
-version: "1.0"
+version: '1.0'
 category: devops
-tags: [mcp, docker, containers, images, devops, infrastructure]
-protocol: mcp
-owner_name: Community
-website: https://github.com/ckreiling/mcp-server-docker
-support_url: https://github.com/ckreiling/mcp-server-docker/issues
-pricing_model: free
-license: GPL-3.0
-
-transport:
-  type: stdio
-  command: uvx
-  args: ["mcp-server-docker"]
-  requires:
-    - name: docker
-      url: https://docs.docker.com/get-docker/
-      check: "docker --version"
-    - name: uv
-      url: https://docs.astral.sh/uv/
-      check: "uv --version"
-
-auth:
-  - type: none
-
+tags:
+- mcp
+- docker
+- containers
+- images
+- devops
+- infrastructure
 tools:
   expose:
-    - name: list_containers
-      description: "List Docker containers"
-      params:
-        - name: all
-          type: bool
-          required: false
-          description: "Show all containers including stopped"
-    - name: inspect_container
-      description: "Get detailed info about a container"
-      params:
-        - name: container_id
-          type: string
-          required: true
-          description: "Container ID or name"
-    - name: start_container
-      description: "Start a stopped container"
-      destructive: true
-      params:
-        - name: container_id
-          type: string
-          required: true
-          description: "Container ID or name"
-    - name: stop_container
-      description: "Stop a running container"
-      destructive: true
-      params:
-        - name: container_id
-          type: string
-          required: true
-          description: "Container ID or name"
-    - name: remove_container
-      description: "Remove a container"
-      destructive: true
-      params:
-        - name: container_id
-          type: string
-          required: true
-          description: "Container ID or name"
-    - name: container_logs
-      description: "Get logs from a container"
-      params:
-        - name: container_id
-          type: string
-          required: true
-          description: "Container ID or name"
-        - name: tail
-          type: int
-          required: false
-          description: "Number of lines from the end"
-    - name: list_images
-      description: "List Docker images"
-    - name: list_networks
-      description: "List Docker networks"
-    - name: list_volumes
-      description: "List Docker volumes"
-    - name: create_container
-      description: "Create a new container"
-      destructive: true
-      params:
-        - name: image
-          type: string
-          required: true
-          description: "Docker image to use"
-        - name: name
-          type: string
-          required: false
-          description: "Container name"
-
+  - name: list_containers
+    description: List Docker containers
+    params:
+    - name: all
+      type: bool
+      required: false
+      description: Show all containers including stopped
+  - name: inspect_container
+    description: Get detailed info about a container
+    params:
+    - name: container_id
+      type: string
+      required: true
+      description: Container ID or name
+  - name: start_container
+    description: Start a stopped container
+    params:
+    - name: container_id
+      type: string
+      required: true
+      description: Container ID or name
+    mutable: true
+  - name: stop_container
+    description: Stop a running container
+    params:
+    - name: container_id
+      type: string
+      required: true
+      description: Container ID or name
+    mutable: true
+  - name: remove_container
+    description: Remove a container
+    params:
+    - name: container_id
+      type: string
+      required: true
+      description: Container ID or name
+    mutable: true
+  - name: container_logs
+    description: Get logs from a container
+    params:
+    - name: container_id
+      type: string
+      required: true
+      description: Container ID or name
+    - name: tail
+      type: int
+      required: false
+      description: Number of lines from the end
+  - name: list_images
+    description: List Docker images
+  - name: list_networks
+    description: List Docker networks
+  - name: list_volumes
+    description: List Docker volumes
+  - name: create_container
+    description: Create a new container
+    params:
+    - name: image
+      type: string
+      required: true
+      description: Docker image to use
+    - name: name
+      type: string
+      required: false
+      description: Container name
+    mutable: true
 prompts:
   system: |
     This server provides Docker container management. Use it for
     listing, inspecting, starting, stopping containers and managing
     images and volumes. Confirm destructive operations with the user.
-
 resources:
   expose: all
-
 install_mode:
   default: mcp
   allow_mcp: true
   allow_skill: true
   keep_alive: 300s
+transport:
+  type: stdio
+  command: uvx
+  args:
+  - mcp-server-docker
+  requires:
+  - name: docker
+    url: https://docs.docker.com/get-docker/
+    check: docker --version
+  - name: uv
+    url: https://docs.astral.sh/uv/
+    check: uv --version

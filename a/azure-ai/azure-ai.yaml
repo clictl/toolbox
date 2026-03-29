@@ -1,6 +1,8 @@
+spec: '1.0'
 name: azure-ai
-description: Skill for Microsoft Azure AI services including Cognitive Services, OpenAI integration, and ML model deployment patterns
-version: "1.0"
+description: Skill for Microsoft Azure AI services including Cognitive Services, OpenAI integration, and ML model deployment
+  patterns
+version: '1.0'
 category: cloud
 tags:
 - skill
@@ -10,22 +12,3 @@ tags:
 - openai
 - machine-learning
 - microsoft
-protocol: skill
-owner_name: Anthropic
-namespace: anthropic
-website: https://github.com/anthropics/skills
-support_url: https://github.com/anthropics/skills/issues
-pricing_model: free
-license: Apache-2.0
-platforms:
-- name: claude-code
-  install_method: skill
-  config_path: .claude/skills/
-- name: cursor
-  install_method: skill
-  config_path: .cursor/skills/
-skill_metadata:
-  author: anthropic
-  version: '1.0'
-auth:
-- type: none

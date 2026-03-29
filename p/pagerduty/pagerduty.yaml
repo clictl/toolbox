@@ -1,34 +1,32 @@
+spec: "1.0"
 name: pagerduty
 description: PagerDuty API for listing incidents, services, and on-call schedules
 version: "1.0"
 category: monitoring
 tags: [pagerduty, incidents, oncall, alerting, operations]
-protocol: rest
-owner_name: PagerDuty
-website: https://www.pagerduty.com
-support_url: https://developer.pagerduty.com
-pricing_model: paid
 
-connection:
-  base_url: https://api.pagerduty.com
+pricing:
+  model: paid
+
+server:
+  type: http
+  url: https://api.pagerduty.com
   timeout: 15s
   headers:
     Accept: application/json
     Content-Type: application/json
 
 auth:
-  - type: api_key
-    key_env: PAGERDUTY_TOKEN
-    inject:
-      location: header
-      param: Authorization
-      prefix: "Token token="
+  env: PAGERDUTY_TOKEN
+  header: Authorization
+  value: "Token token=${PAGERDUTY_TOKEN}"
 
 actions:
   - name: list-incidents
     description: List incidents from your PagerDuty account with optional filtering
-    method: GET
-    path: /incidents
+    request:
+      method: GET
+      path: /incidents
     params:
       - name: statuses[]
         type: string
@@ -57,15 +55,19 @@ actions:
         description: Pagination offset
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.incidents"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.incidents"
+      - type: truncate
+        max_items: 20
 
   - name: get-incident
     description: Get detailed information about a specific incident
-    method: GET
-    path: /incidents/{{id}}
+    request:
+      method: GET
+      path: /incidents/{{id}}
     params:
       - name: id
         type: string
@@ -73,15 +75,18 @@ actions:
         description: The PagerDuty incident ID
         in: path
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.incident"
-      - select: ["id", "incident_number", "title", "status", "urgency", "created_at", "service", "assignments", "last_status_change_at"]
+      - type: json
+        extract: "$.incident"
+        select: ["id", "incident_number", "title", "status", "urgency", "created_at", "service", "assignments", "last_status_change_at"]
 
   - name: list-services
     description: List all services configured in your PagerDuty account
-    method: GET
-    path: /services
+    request:
+      method: GET
+      path: /services
     params:
       - name: query
         type: string
@@ -98,15 +103,19 @@ actions:
         description: Pagination offset
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.services"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.services"
+      - type: truncate
+        max_items: 20
 
   - name: list-oncalls
     description: List current on-call entries across escalation policies
-    method: GET
-    path: /oncalls
+    request:
+      method: GET
+      path: /oncalls
     params:
       - name: schedule_ids[]
         type: string
@@ -122,7 +131,10 @@ actions:
         description: Number of results per page
         in: query
     assert:
-      - status: [200]
+      - type: status
+        status: [200]
     transform:
-      - extract: "$.oncalls"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.oncalls"
+      - type: truncate
+        max_items: 20
