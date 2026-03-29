@@ -15,7 +15,7 @@ If you have not already done so:
 
 1. Go to Settings > Publishing > Publisher Profile
 2. Click "Enable Publishing"
-3. Claim a namespace (e.g., `@mycompany`). This is how users will reference your tools (`clictl install @mycompany/my-tool`)
+3. Claim a namespace (e.g., `mycompany`). This is how users will reference your tools (`clictl install mycompany/my-tool`)
 
 Namespaces share a global pool with usernames and workspace slugs. Choose a name that represents your brand or organization.
 
@@ -38,7 +38,7 @@ Drag and drop tools in the "Published" section to control their display order on
 
 ## Step 5: Preview your publisher page
 
-Click "Preview Page" to see your public publisher profile at `/@your-namespace`. This page shows your publisher info, featured tools, and a searchable list of all published tools.
+Click "Preview Page" to see your public publisher profile at `/your-namespace`. This page shows your publisher info, featured tools, and a searchable list of all published tools.
 
 ## How other workspaces consume your tools
 
@@ -47,13 +47,13 @@ Once published, other users can add your tools in two ways:
 **Install a specific tool:**
 
 ```bash
-clictl install @mycompany/my-tool
+clictl install mycompany/my-tool
 ```
 
 **Add your publisher as a toolbox source:**
 
 ```bash
-clictl toolbox add @mycompany
+clictl toolbox add mycompany
 ```
 
 This adds your publisher registry endpoint as a source. All your published tools become available for search and install. It works the same way as adding a git-based toolbox, but the source is your publisher's API endpoint.

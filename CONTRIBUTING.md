@@ -13,7 +13,7 @@ All specs live under `{first-letter}/{tool-name}/` where `{first-letter}` is the
 Name the file `<tool-name>.yaml` using kebab-case.
 
 ```yaml
-spec: "2.0"
+spec: "1.0"
 name: my-tool
 description: Clear, one-line description of what it does
 version: "1.0"

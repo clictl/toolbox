@@ -68,7 +68,7 @@ Add a `.clictl.yaml` to your fork's root:
 
 ```yaml
 workspace: myworkspace
-namespace: "@yourorg"
+namespace: yourorg
 spec_paths:
   - "toolbox/"
 ```
@@ -79,7 +79,7 @@ Then run `clictl toolbox sync` in CI or manually.
 
 After syncing, your modified tool appears in My Toolbox with a "Linked" badge. It is namespaced under your workspace, so it does not conflict with the original:
 
-- `@publisher/my-tool` - the original
+- `publisher/my-tool` - the original
 - `@yourorg/my-tool` - your customized version
 
 You can install and use your version:

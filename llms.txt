@@ -6,19 +6,19 @@ This registry contains YAML spec files that describe tools. Agents use these spe
 
 ## How to create a spec
 
-Read SPEC_SCHEMA.md for the complete schema reference with templates and examples.
+Read docs/spec-reference.md for the complete schema reference with templates and examples.
 
 ## File structure
 
 - `specs/{first-letter}/<tool-name>/<tool-name>.yaml` - All tool specs (APIs, CLIs, websites, MCP servers, skills)
-- `SPEC_SCHEMA.md` - Complete spec schema reference (read this first)
+- `docs/spec-reference.md` - Complete spec schema reference (read this first)
 - `README.md` - Overview and contributing guide
 
 ## Key rules
 
-- Every API/CLI action must have `assert` (at least `status: [200]`) and `transform`
-- POST actions that are read-only must include `safe: true`
-- Auth is an array: `auth: [{ type: api_key, key_env: FOO, inject: { location: header, param: Authorization, prefix: "Bearer" } }]`
+- Every API/CLI action must have `assert` (at least `- type: status` with `values: [200]`) and `transform`
+- Actions that modify state must include `mutable: true`. Default is false (non-mutable), so omit when false.
+- Auth uses a flat format: `auth: { env: FOO, header: Authorization, value: "Bearer ${FOO}" }`
 - Destructive actions (DELETE, state-changing CLI commands) must include `destructive` in tags
 - Destructive actions are controlled by workspace ACL security rules
 - No em dashes in any content
@@ -30,72 +30,66 @@ ai, cloud, communication, crypto, data, data-portal, developer, devops, document
 ## Spec format summary
 
 ```yaml
+spec: "1.0"
 name: tool-name
 description: One line description
 version: "1.0"
 category: developer
 tags: [tag1, tag2]
-protocol: http
-owner_name: Company
-website: https://example.com
-support_url: https://docs.example.com
-pricing_model: freemium
-connection:
-  base_url: https://api.example.com
+
+server:
+  type: http
+  url: https://api.example.com
   timeout: 15s
   headers:
     Accept: application/json
+
 auth:
-  - type: api_key
-    key_env: EXAMPLE_KEY
-    inject:
-      location: header
-      param: Authorization
-      prefix: "Bearer"
+  env: EXAMPLE_KEY
+  header: Authorization
+  value: "Bearer ${EXAMPLE_KEY}"
+
 actions:
   - name: get-data
     description: Fetch data
-    method: GET
-    path: /data
+    request:
+      method: GET
+      path: /data
     params:
       - name: q
         type: string
         required: true
         in: query
     assert:
-      - status: [200]
+      - type: status
+        values: [200]
     transform:
-      - extract: "$.data"
-      - truncate: { max_items: 20 }
+      - type: json
+        extract: "$.data"
+      - type: truncate
+        max_items: 20
 ```
 
 ## MCP spec format summary
 
-MCP specs use `protocol: mcp` and define a `transport` block instead of `connection`, and a `tools` block instead of `actions`.
+MCP specs use `server.type: stdio` (or `server.type: http` for HTTP MCP) and define a `tools` block instead of `actions`.
 
 ```yaml
+spec: "1.0"
 name: my-mcp-server
 description: One line description
 version: "1.0"
 category: developer
 tags: [mcp, tag1, tag2]
-protocol: mcp
-owner_name: Author Name
-website: https://example.com
-support_url: https://github.com/org/repo/issues
-pricing_model: free
 
-transport:
-  type: stdio                     # stdio or http
+server:
+  type: stdio
   command: npx
   args: ["-y", "@scope/mcp-server"]
   requires:
     - name: node
       url: https://nodejs.org
       check: "node --version"
-
-auth:
-  - type: none
 
 tools:
   expose:                          # all, or list of tools
@@ -107,7 +101,8 @@ tools:
     - name: blocked_tool
   tool_transforms:                 # Output transforms per tool
     tool_name:
-      - truncate: { max_length: 8000 }
+      - type: truncate
+        max_length: 8000
 
 prompts:
   system: |
@@ -126,7 +121,7 @@ install_mode:
 
 ## MCP key rules
 
-- MCP specs must have `protocol: mcp` and a `transport` block
+- MCP specs must have `server.type: stdio` (or `server.type: http` for HTTP MCP) and a `server` block with command/args
 - MCP specs must have a `tools` block (expose: all, or a list of tool names)
 - Tools marked `destructive: true` are controlled by workspace ACL rules
 - Tools in the `deny` list are never exposed regardless of ACL
@@ -136,20 +131,15 @@ install_mode:
 
 ## Skill spec format summary
 
-Skill specs use `protocol: skill` and define a `source` block (where to get the SKILL.md) and `platforms` block (which platforms support it). No `connection` or `actions` needed.
+Skill specs define a `source` block (where to get the SKILL.md) and `platforms` block (which platforms support it). No `server` or `actions` needed.
 
 ```yaml
+spec: "1.0"
 name: my-skill
 description: What this skill teaches the agent to do
 version: "1.0"
 category: developer
 tags: [skill, tag1, tag2]
-protocol: skill
-owner_name: Author Name
-website: https://github.com/org/repo
-support_url: https://github.com/org/repo/issues
-pricing_model: free
-license: Apache-2.0
 
 source:
   type: github                     # github, npm, or inline
@@ -172,22 +162,19 @@ skill_metadata:
   author: org-name
   version: "1.0"
 
-auth:
-  - type: none
-
 requires_tools: [bash, read, write]    # Agent tools the skill expects
 requires_mcp: [filesystem-server]      # MCP servers the skill needs (optional)
 ```
 
 ## Skill key rules
 
-- Skill specs must have `protocol: skill` and a `source` block
+- Skill specs must have a `source` block
 - Skill specs must have a `platforms` block listing supported platforms
 - `source.type` is one of: `github`, `npm`, `inline`
 - For `github` source: `repo` (org/repo) and `path` (path to SKILL.md) are required
 - `requires_tools` lists agent tools the skill expects to be available
 - `requires_mcp` lists MCP servers the skill depends on (resolved during install)
-- Skills don't use `connection` or `actions` blocks (they are instruction-based, not function-based)
+- Skills don't use `server` or `actions` blocks (they are instruction-based, not function-based)
 
 ## Validation
 

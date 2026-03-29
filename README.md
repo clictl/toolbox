@@ -16,6 +16,7 @@ clictl search github
 ## Documentation
 
 - **[Spec Reference](docs/spec-reference.md)** - Complete field reference (spec 1.0)
+- **[Transform Guide](docs/transforms.md)** - Cookbook for response transforms, DAG pipelines, and recipes
 - **[Quick Reference](docs/quick-reference.md)** - One-page cheat sheet
 - **[Creating Tools](docs/guides/creating-tools.md)** - Step-by-step guide
 - **[Customizing Tools](docs/guides/customizing-tools.md)** - Forks and overrides

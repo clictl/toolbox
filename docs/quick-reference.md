@@ -5,7 +5,7 @@ One-page cheat sheet for clictl tool specs. See [spec-reference.md](spec-referen
 ## Minimal Spec (REST API, no auth)
 
 ```yaml
-spec: "2.0"
+spec: "1.0"
 name: my-api
 description: What this API does
 version: "1.0"
@@ -267,7 +267,7 @@ params:
 
 | Field | Default |
 |-------|---------|
-| `spec` | `"2.0"` |
+| `spec` | `"1.0"` |
 | `server.timeout` | `30s` |
 | `params[].type` | `string` |
 | `params[].required` | `false` |

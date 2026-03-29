@@ -28,36 +28,41 @@ clictl init --from https://api.example.com/openapi.json
 Open the generated file and fill in the required fields:
 
 ```yaml
+spec: "1.0"
 name: my-tool
 version: "1.0.0"
 description: A short description of what this tool does
-category: developer-tools
-protocol: rest
+category: developer
+tags: [api, data, example]
 
-connection:
-  base_url: https://api.example.com
+server:
+  type: http
+  url: https://api.example.com
 
 auth:
-  type: api_key
-  key_env: MY_TOOL_API_KEY
-  inject:
-    location: header
-    param: Authorization
-    prefix: "Bearer "
+  env: MY_TOOL_API_KEY
+  header: Authorization
+  value: "Bearer ${MY_TOOL_API_KEY}"
 
 actions:
   - name: list-items
     description: List all items
-    method: GET
-    path: /items
     output: json
+    request:
+      method: GET
+      path: /items
     params:
       - name: limit
         type: int
-        required: false
         description: Maximum number of items to return
-        example: "25"
-        in: query
+        default: "25"
+        example: "10"
+    transform:
+      - type: json
+        extract: "$.data"
+        select: [id, name, status]
+      - type: truncate
+        max_items: 20
 ```
 
 **Required fields:**
@@ -65,12 +70,13 @@ actions:
 | Field | Description |
 |-------|-------------|
 | `name` | Unique tool identifier (lowercase, hyphens allowed) |
-| `version` | Semantic version string |
+| `version` | Version string (major.minor) |
 | `description` | One-line summary of the tool |
-| `category` | One of: ai, data, developer-tools, devops, security, communication, finance, productivity, commerce, media, science, location, health, monitoring, social, iot, other |
-| `protocol` | `rest`, `mcp`, `cli`, or `skill` |
+| `category` | Category slug (developer, data, ai, devops, security, etc.) |
+| `tags` | 3-8 search tags |
+| `server` | How to connect (type: http, stdio, or command) |
 
-For the full spec format reference, see [Spec Format](https://github.com/clictl/toolbox/blob/main/SPEC_SCHEMA.md).
+For the full spec format reference, see [Spec Reference](../spec-reference.md).
 
 ## Step 3: Validate the spec
 
@@ -109,12 +115,14 @@ For public repos, add `clictl toolbox sync` to your CI pipeline. Create a `.clic
 
 ```yaml
 workspace: myworkspace
-namespace: "@mycompany"
+namespace: mycompany
 spec_paths:
   - "my-tool/"
 ```
 
-Then add a GitHub Actions workflow or GitLab CI job to run `clictl toolbox sync` on push. See the [Toolbox Sync section](../../cli/README.md#toolbox-sync) in the CLI README for a complete CI example.
+The `namespace` field sets the default publisher namespace for all specs in the toolbox. Individual specs can override it with their own `namespace` field. Namespace is a bare string (e.g., `mycompany`). Tools are referenced as `mycompany/my-tool` when qualified.
+
+Then add a GitHub Actions workflow or GitLab CI job to run `clictl toolbox sync` on push.
 
 ## Step 6: Verify the tool appears
 
@@ -128,8 +136,96 @@ clictl run my-tool list-items
 
 In the web UI, navigate to Settings > My Toolbox to see your tool listed with a "Linked" badge.
 
-## Next steps
+## Example Specs
 
-- [Publishing Tools](publishing-tools.md) - Share your tool with the community
-- [Securing Secrets](securing-secrets.md) - Use `vault://` for API keys instead of plaintext
-- [Spec Format](https://github.com/clictl/toolbox/blob/main/SPEC_SCHEMA.md) - Full reference for all spec fields, transforms, and assertions
+### REST API (no auth)
+
+```yaml
+spec: "1.0"
+name: open-meteo
+description: Free weather forecast API
+version: "1.0"
+category: weather
+tags: [weather, forecast, temperature]
+
+server:
+  type: http
+  url: https://api.open-meteo.com/v1
+
+actions:
+  - name: current
+    description: Get current weather for a location
+    request:
+      method: GET
+      path: /forecast
+    params:
+      - name: latitude
+        type: float
+        required: true
+        example: "51.5"
+      - name: longitude
+        type: float
+        required: true
+        example: "-0.12"
+      - name: current
+        default: "temperature_2m,wind_speed_10m"
+```
+
+### CLI wrapper
+
+```yaml
+spec: "1.0"
+name: docker
+description: Docker container management
+version: "1.0"
+category: devops
+tags: [docker, containers]
+
+server:
+  type: command
+  shell: bash
+  requires:
+    - name: docker
+      check: "docker --version"
+      url: https://docs.docker.com/get-docker/
+
+actions:
+  - name: ps
+    description: List running containers
+    run: "docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Status}}'"
+    output: text
+```
+
+### MCP server
+
+```yaml
+spec: "1.0"
+name: filesystem-mcp
+description: Local filesystem access via MCP
+version: "1.0"
+category: developer
+tags: [filesystem, files, mcp]
+
+server:
+  type: stdio
+  command: npx
+  args: ["-y", "@modelcontextprotocol/server-filesystem", "/home"]
+  requires:
+    - name: node
+      check: "node --version"
+
+actions:
+  - name: read_file
+    description: Read file contents
+    output: text
+    params:
+      - name: path
+        required: true
+        example: "./README.md"
+```
+
+## Next Steps
+
+- [Spec Reference](../spec-reference.md) - full field reference
+- [Transforms Guide](../transforms.md) - transform pipeline recipes
+- [Quick Reference](../quick-reference.md) - one-page cheat sheet

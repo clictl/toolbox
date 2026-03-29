@@ -22,7 +22,7 @@ The agent always sees the same thing: a list of named operations with params, de
 ## Spec Structure
 
 ```yaml
-spec: "2.0"
+spec: "1.0"
 
 # --- Identity (required) ---
 name: my-tool
@@ -75,7 +75,7 @@ actions:
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `spec` | string | `"2.0"` | Spec format version. |
+| `spec` | string | `"1.0"` | Spec format version. |
 | `namespace` | string | - | Publisher identity for marketplace display. Not the resolution namespace. |
 | `instructions` | string | - | Markdown guidance for agents: when to use, when not to use, rate limits, gotchas. |
 | `canonical` | string | - | Source URL for this spec. Used by `clictl audit` to check divergence. |
@@ -1010,7 +1010,7 @@ transforms:
 Skills are prompt-based agent capabilities. They have no `server` or `actions` blocks. The `source` block tells clictl where to fetch the skill files.
 
 ```yaml
-spec: "2.0"
+spec: "1.0"
 name: pdf
 namespace: anthropic
 description: Extract and analyze PDF content
@@ -1183,7 +1183,7 @@ Unknown fields without `x-` are a validation warning (not error).
 
 | Field | Default | Notes |
 |-------|---------|-------|
-| `spec` | `"2.0"` | Spec format version |
+| `spec` | `"1.0"` | Spec format version |
 | `server.timeout` | `30s` | Connection timeout |
 | `discover` | `false` | MCP dynamic discovery off |
 | `pricing.model` | `free` | Omit pricing block for free tools |
@@ -1207,7 +1207,7 @@ Unknown fields without `x-` are a validation warning (not error).
 ### REST API (no auth)
 
 ```yaml
-spec: "2.0"
+spec: "1.0"
 name: nominatim
 namespace: openstreetmap
 description: Geocoding service powered by OpenStreetMap. Convert addresses to coordinates.
@@ -1280,7 +1280,7 @@ actions:
 ### REST API (with auth)
 
 ```yaml
-spec: "2.0"
+spec: "1.0"
 name: github
 namespace: github
 description: GitHub REST API for repositories, issues, pull requests, and users
@@ -1375,7 +1375,7 @@ actions:
 ### CLI wrapper
 
 ```yaml
-spec: "2.0"
+spec: "1.0"
 name: docker
 namespace: docker
 description: Docker container management
@@ -1433,7 +1433,7 @@ actions:
 ### MCP server (dynamic discovery)
 
 ```yaml
-spec: "2.0"
+spec: "1.0"
 name: postgres-mcp
 namespace: modelcontextprotocol
 description: PostgreSQL database access via MCP
@@ -1502,7 +1502,7 @@ transforms:
 ### Skill
 
 ```yaml
-spec: "2.0"
+spec: "1.0"
 name: pdf
 namespace: anthropic
 description: Extract and analyze PDF content
@@ -1533,7 +1533,7 @@ sandbox:
 ### Composite (multi-tool pipeline)
 
 ```yaml
-spec: "2.0"
+spec: "1.0"
 name: github-translate
 namespace: community
 description: Search GitHub repos and translate descriptions
