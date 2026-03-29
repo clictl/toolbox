@@ -46,13 +46,14 @@ actions:
       - type: status
         values: [200]
     transform:
+      - extract: "$.current"
       - type: json
-        extract: "$.current"
+        select: ["temperature_2m", "apparent_temperature", "relative_humidity_2m", "wind_speed_10m", "weather_code"]
       - type: format
         template: |
-          Temperature: {{.temperature_2m}}°C (feels like {{.apparent_temperature}}°C)
-          Humidity: {{.relative_humidity_2m}}%
-          Wind: {{.wind_speed_10m}} km/h
+          Temperature: {temperature_2m}°C (feels like {apparent_temperature}°C)
+          Humidity: {relative_humidity_2m}%
+          Wind: {wind_speed_10m} km/h
 
   - name: forecast
     description: Get a multi-day weather forecast with daily high/low temperatures
@@ -92,8 +93,7 @@ actions:
       - type: status
         values: [200]
     transform:
-      - type: json
-        extract: "$.daily"
+      - extract: "$.daily"
 
   - name: hourly
     description: Get hourly weather forecast for the next 24-48 hours
@@ -133,5 +133,4 @@ actions:
       - type: status
         values: [200]
     transform:
-      - type: json
-        extract: "$.hourly"
+      - extract: "$.hourly"

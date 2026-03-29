@@ -15,7 +15,7 @@ server:
 actions:
   - name: search
     description: Search the npm registry for packages by keyword or phrase
-    output: json
+    output: text
     request:
       method: GET
       path: /-/v1/search
@@ -52,10 +52,13 @@ actions:
       - type: status
         values: [200]
     transform:
+      - extract: "$.objects"
       - type: json
-        extract: "$.objects"
+        select: ["package.name", "package.version", "package.description"]
       - type: truncate
-        max_items: 20
+        max_items: 10
+      - type: format
+        template: "- {package.name} v{package.version} - {package.description}"
 
   - name: package-info
     description: Get full metadata for a specific npm package including all versions, maintainers, and dependencies
@@ -75,16 +78,17 @@ actions:
         values: [200]
     transform:
       - type: json
-        extract: "$"
-        select: ["name", "description", "dist-tags", "license", "homepage"]
-        rename: { "dist-tags": "dist_tags" }
+        select: ["name", "description", "license", "homepage"]
       - type: format
         template: |
-          {{.name}} v{{index .dist_tags "latest"}} - {{.description}}
+          {name}
+          {description}
+          License: {license}
+          Homepage: {homepage}
 
   - name: package-version
     description: Get metadata for a specific version of a package
-    output: markdown
+    output: text
     request:
       method: GET
       path: /{{name}}/{{version}}
@@ -106,12 +110,10 @@ actions:
         values: [200]
     transform:
       - type: json
-        extract: "$"
-        select: ["name", "version", "description", "dependencies", "license", "homepage"]
+        select: ["name", "version", "description", "license", "homepage"]
       - type: format
         template: |
-          # {{.name}} {{.version}}
-          {{.description}}
-
-          - **License:** {{if .license}}{{.license}}{{else}}-{{end}}
-          - **Homepage:** {{if .homepage}}{{.homepage}}{{else}}-{{end}}
+          {name} v{version}
+          {description}
+          License: {license}
+          Homepage: {homepage}

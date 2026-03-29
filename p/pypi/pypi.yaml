@@ -30,18 +30,16 @@ actions:
       - type: status
         values: [200]
     transform:
+      - extract: "$.info"
       - type: json
-        extract: "$.info"
-        select: ["name", "version", "summary", "author", "license", "home_page", "requires_python", "project_urls"]
+        select: ["name", "version", "summary", "author", "author_email", "license", "requires_python", "home_page"]
       - type: format
         template: |
-          # {{.name}} {{.version}}
-          {{.summary}}
-
-          - **Author:** {{if .author}}{{.author}}{{else}}-{{end}}
-          - **License:** {{if .license}}{{.license}}{{else}}-{{end}}
-          - **Python:** {{if .requires_python}}{{.requires_python}}{{else}}-{{end}}
-          - **Homepage:** {{if .home_page}}{{.home_page}}{{else}}-{{end}}
+          {name} v{version}
+          {summary}
+          Author: {author_email}
+          License: {license}
+          Python: {requires_python}
 
   - name: package-version
     description: Get metadata for a specific version of a Python package
@@ -66,17 +64,16 @@ actions:
       - type: status
         values: [200]
     transform:
+      - extract: "$.info"
       - type: json
-        extract: "$.info"
-        select: ["name", "version", "summary", "author", "license", "requires_python", "requires_dist"]
+        select: ["name", "version", "summary", "author", "license", "requires_python"]
       - type: format
         template: |
-          # {{.name}} {{.version}}
-          {{.summary}}
-
-          - **Author:** {{if .author}}{{.author}}{{else}}-{{end}}
-          - **License:** {{if .license}}{{.license}}{{else}}-{{end}}
-          - **Python:** {{if .requires_python}}{{.requires_python}}{{else}}-{{end}}
+          {name} v{version}
+          {summary}
+          Author: {author}
+          License: {license}
+          Python: {requires_python}
 
   - name: package-releases
     description: Get all release versions for a Python package
@@ -95,5 +92,4 @@ actions:
       - type: status
         values: [200]
     transform:
-      - type: json
-        extract: "$.releases"
+      - extract: "$.releases"

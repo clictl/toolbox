@@ -14,26 +14,47 @@ server:
 
 actions:
   - name: posts
-    description: List all posts or get a specific post by ID
-    output: json
+    description: List all posts with title and user ID
+    output: text
     request:
       method: GET
-      path: /posts/{{#id}}{{id}}{{/id}}
-    transform:
-      - type: truncate
-        max_items: 10
-      - type: json
-        select: ["id", "title", "userId"]
+      path: /posts
     params:
-      - name: id
-        type: int
-        description: Post ID (omit to list all posts)
-        example: 1
       - name: userId
         type: int
         description: Filter posts by user ID
         example: 1
         in: query
+    transform:
+      - type: truncate
+        max_items: 10
+      - type: json
+        select: ["id", "title", "userId"]
+      - type: format
+        template: "- [{id}] {title} (user {userId})"
+
+  - name: post
+    description: Get a specific post by ID
+    output: text
+    request:
+      method: GET
+      path: /posts/{{id}}
+    params:
+      - name: id
+        type: int
+        required: true
+        description: Post ID
+        example: 1
+        in: path
+    transform:
+      - type: json
+        select: ["id", "title", "body", "userId"]
+      - type: format
+        template: |
+          [{id}] {title}
+          Author: user {userId}
+
+          {body}
 
   - name: create_post
     description: Create a new post (simulated, returns the created object with an ID)
@@ -76,16 +97,31 @@ actions:
         in: path
 
   - name: users
-    description: List all users or get a specific user by ID
+    description: List all users
+    output: text
+    request:
+      method: GET
+      path: /users
+    params: []
+    transform:
+      - type: json
+        select: ["id", "name", "email", "company.name"]
+      - type: format
+        template: "- [{id}] {name} ({email})"
+
+  - name: user
+    description: Get a specific user by ID
     output: json
     request:
       method: GET
-      path: /users/{{#id}}{{id}}{{/id}}
+      path: /users/{{id}}
     params:
       - name: id
         type: int
-        description: User ID (omit to list all users)
+        required: true
+        description: User ID
         example: 1
+        in: path
 
   - name: todos
     description: List all todos or filter by completion status

@@ -13,7 +13,7 @@ server:
 actions:
   - name: define
     description: Look up the definition of an English word including phonetics, meanings, synonyms, and example usage
-    output: json
+    output: text
     request:
       method: GET
       path: /entries/en/{{word}}
@@ -25,17 +25,13 @@ actions:
         example: "serendipity"
         in: path
     transform:
-      - js: |
-          function transform(data) {
-            var entry = data[0];
-            var result = { word: entry.word, phonetic: entry.phonetic || "" };
-            result.meanings = entry.meanings.map(function(m) {
-              return {
-                part_of_speech: m.partOfSpeech,
-                definitions: m.definitions.slice(0, 3).map(function(d) {
-                  return { definition: d.definition, example: d.example || "" };
-                })
-              };
-            });
-            return result;
-          }
+      - extract: "$[0]"
+      - type: json
+        select: ["word", "phonetic", "meanings"]
+      - type: template
+        template: |
+          {{.word}}  {{.phonetic}}
+          {{range .meanings}}
+          {{.partOfSpeech}}:{{range .definitions}}
+            - {{.definition}}{{end}}
+          {{end}}

@@ -15,23 +15,33 @@ server:
 actions:
   - name: search-formula
     description: List all Homebrew formulae (useful for client-side search and filtering)
-    output: json
+    output: text
     request:
       method: GET
       path: /formula.json
-    params: []
+    params:
+      - name: q
+        type: string
+        description: Search term (note - the API returns all formulae, results are truncated)
+        example: "jq"
+        in: query
     assert:
       - type: status
         values: [200]
     transform:
+      - extract: "$"
       - type: json
-        extract: "$"
+        select: ["name", "desc", "versions.stable"]
+        rename:
+          versions.stable: version
       - type: truncate
         max_items: 20
+      - type: format
+        template: "- {name} {version} - {desc}"
 
   - name: formula-info
     description: Get detailed information about a specific Homebrew formula including dependencies and install counts
-    output: json
+    output: text
     request:
       method: GET
       path: /formula/{{name}}.json
@@ -46,29 +56,44 @@ actions:
       - type: status
         values: [200]
     transform:
+      - extract: "$"
       - type: json
-        extract: "$"
-        select: ["name", "full_name", "desc", "homepage", "license", "versions", "dependencies", "build_dependencies", "analytics"]
+        select: ["name", "full_name", "desc", "homepage", "license", "versions", "dependencies", "build_dependencies"]
+      - type: format
+        template: |
+          # {name}
+          {desc}
+          Homepage: {homepage}
+          License: {license}
+          Version: {versions.stable}
 
   - name: search-cask
     description: List all Homebrew casks (macOS GUI applications)
-    output: json
+    output: text
     request:
       method: GET
       path: /cask.json
-    params: []
+    params:
+      - name: q
+        type: string
+        description: Search term (note - the API returns all casks, results are truncated)
+        example: "firefox"
+        in: query
     assert:
       - type: status
         values: [200]
     transform:
+      - extract: "$"
       - type: json
-        extract: "$"
+        select: ["token", "name", "desc", "version"]
       - type: truncate
         max_items: 20
+      - type: format
+        template: "- {token} {version} - {desc}"
 
   - name: cask-info
     description: Get detailed information about a specific Homebrew cask including version, URL, and requirements
-    output: json
+    output: text
     request:
       method: GET
       path: /cask/{{token}}.json
@@ -83,6 +108,13 @@ actions:
       - type: status
         values: [200]
     transform:
+      - extract: "$"
       - type: json
-        extract: "$"
-        select: ["token", "full_token", "name", "desc", "homepage", "url", "version", "sha256", "depends_on"]
+        select: ["token", "full_token", "name", "desc", "homepage", "url", "version", "sha256"]
+      - type: format
+        template: |
+          # {token}
+          {desc}
+          Homepage: {homepage}
+          Version: {version}
+          URL: {url}

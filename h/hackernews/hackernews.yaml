@@ -12,15 +12,19 @@ server:
 
 actions:
   - name: top
-    description: Get the IDs of the current top stories on Hacker News
+    description: Get the current top story IDs. Use 'item' action to fetch details for each ID.
     output: json
+    instructions: |
+      Returns an array of story IDs. To get full stories, call the 'item' action for each ID:
+      clictl run hackernews item --id <id>
     request:
       method: GET
       path: /topstories.json
-    params: []
     transform:
       - type: truncate
-        max_items: 20
+        max_items: 10
+      - type: prompt
+        value: "Use `clictl run hackernews item --id <id>` to fetch story details for any ID above."
 
   - name: new
     description: Get the IDs of the newest stories
@@ -46,7 +50,7 @@ actions:
 
   - name: item
     description: Get a specific item (story, comment, job, poll) by its ID
-    output: json
+    output: text
     request:
       method: GET
       path: /item/{{id}}.json
@@ -57,6 +61,15 @@ actions:
         description: Item ID number
         example: 8863
         in: path
+    transform:
+      - type: json
+        select: ["title", "url", "score", "by", "descendants", "type"]
+      - type: format
+        template: |
+          {title}
+          URL: {url}
+          Score: {score} points by {by} | {descendants} comments
+          Type: {type}
 
   - name: user
     description: Get a Hacker News user profile by username

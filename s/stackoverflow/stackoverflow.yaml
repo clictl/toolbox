@@ -14,7 +14,7 @@ server:
 actions:
   - name: search
     description: Search Stack Overflow questions by title keywords, sorted by relevance
-    output: json
+    output: text
     request:
       method: GET
       path: /search
@@ -51,8 +51,13 @@ actions:
         description: Number of results per page
         in: query
     transform:
+      - extract: "$.items"
       - type: json
-        extract: "$.items"
+        select: ["title", "score", "answer_count", "is_answered", "link"]
+      - type: truncate
+        max_items: 10
+      - type: format
+        template: "- [{score} votes, {answer_count} answers] {title}\n  {link}"
 
   - name: question
     description: Retrieve a specific question by its ID including body and metadata
@@ -78,8 +83,7 @@ actions:
         description: Response filter to include question body
         in: query
     transform:
-      - type: json
-        extract: "$.items[0]"
+      - extract: "$.items[0]"
 
   - name: answers
     description: Retrieve all answers for a specific question, sorted by votes
@@ -115,5 +119,4 @@ actions:
         description: Response filter to include answer bodies
         in: query
     transform:
-      - type: json
-        extract: "$.items"
+      - extract: "$.items"

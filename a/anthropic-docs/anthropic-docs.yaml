@@ -7,23 +7,23 @@ tags: [documentation, claude, llm, ai, api-reference]
 
 server:
   type: http
-  url: https://docs.anthropic.com
+  url: https://platform.claude.com/docs
+  headers:
+    Accept: text/plain
 
 actions:
-  - name: get_llms_txt
-    description: Fetch the llms.txt file with a summary of all documentation pages
-    request:
-      method: GET
-      path: /llms.txt
-
   - name: get_page
-    description: Fetch a specific documentation page
+    description: Fetch an Anthropic documentation page
+    output: text
     request:
       method: GET
-      path: /{page_path}
+      path: /en/{page_path}
     params:
       - name: page_path
         type: string
         required: true
-        description: Documentation page path (e.g., en/docs/build-with-claude/prompt-caching)
-        in: path
+        description: "Documentation page path (e.g., about-claude/models, build-with-claude/prompt-caching)"
+        example: "about-claude/models"
+    transform:
+      - type: html_to_markdown
+        remove_images: true

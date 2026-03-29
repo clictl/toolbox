@@ -16,7 +16,7 @@ server:
 actions:
   - name: search
     description: Forward geocode an address or place name to get coordinates and structured location data
-    output: json
+    output: text
     request:
       method: GET
       path: /search
@@ -46,6 +46,8 @@ actions:
         select: ["display_name", "lat", "lon", "type"]
       - type: truncate
         max_items: 5
+      - type: format
+        template: "- {display_name} ({lat}, {lon}) [{type}]"
 
   - name: reverse
     description: Reverse geocode coordinates to get the address at that location

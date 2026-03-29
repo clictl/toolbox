@@ -50,10 +50,13 @@ actions:
       - type: status
         values: [200]
     transform:
+      - extract: "$.response.docs"
       - type: json
-        extract: "$.response.docs"
+        select: [title, creator, date, mediatype, identifier]
       - type: truncate
-        max_items: 20
+        max_items: 10
+      - type: format
+        template: "- {title} by {creator} ({date}) [{mediatype}]\n  https://archive.org/details/{identifier}"
 
   - name: wayback
     description: Check if a URL has been archived by the Wayback Machine and get the most recent snapshot

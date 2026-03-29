@@ -51,13 +51,18 @@ actions:
       - type: status
         values: [200]
     transform:
+      - extract: "$.vulnerabilities"
       - type: json
-        extract: "$.vulnerabilities"
+        select: ["cve.id", "cve.descriptions", "cve.metrics"]
+        rename:
+          cve.id: id
+          cve.descriptions: descriptions
+          cve.metrics: metrics
       - type: truncate
         max_items: 20
-      - type: format
+      - type: template
         template: |
-          {{range .}}{{.cve.id}} {{if .cve.descriptions}}{{(index .cve.descriptions 0).value}}{{end}} {{if .cve.metrics}}{{if .cve.metrics.cvssMetricV31}}{{(index .cve.metrics.cvssMetricV31 0).cvssData.baseSeverity}}{{end}}{{end}}
+          {{range .}}- {{.id}}{{if .metrics}}{{if .metrics.cvssMetricV31}} ({{(index .metrics.cvssMetricV31 0).cvssData.baseSeverity}}){{else if .metrics.cvssMetricV2}} ({{(index .metrics.cvssMetricV2 0).baseSeverity}}){{end}}{{end}} - {{if .descriptions}}{{(index .descriptions 0).value}}{{end}}
           {{end}}
 
   - name: get-cve
@@ -77,10 +82,10 @@ actions:
       - type: status
         values: [200]
     transform:
+      - extract: "$.vulnerabilities[0].cve"
       - type: json
-        extract: "$.vulnerabilities[0].cve"
         select: ["id", "descriptions", "metrics", "references", "published", "lastModified"]
-      - type: format
+      - type: template
         template: |
           # {{.id}}
           Published: {{.published}}
@@ -109,11 +114,16 @@ actions:
       - type: status
         values: [200]
     transform:
+      - extract: "$.vulnerabilities"
       - type: json
-        extract: "$.vulnerabilities"
+        select: ["cve.id", "cve.descriptions", "cve.metrics"]
+        rename:
+          cve.id: id
+          cve.descriptions: descriptions
+          cve.metrics: metrics
       - type: truncate
         max_items: 20
-      - type: format
+      - type: template
         template: |
-          {{range .}}{{.cve.id}} {{if .cve.descriptions}}{{(index .cve.descriptions 0).value}}{{end}} {{if .cve.metrics}}{{if .cve.metrics.cvssMetricV31}}{{(index .cve.metrics.cvssMetricV31 0).cvssData.baseSeverity}}{{end}}{{end}}
+          {{range .}}- {{.id}}{{if .metrics}}{{if .metrics.cvssMetricV31}} ({{(index .metrics.cvssMetricV31 0).cvssData.baseSeverity}}){{else if .metrics.cvssMetricV2}} ({{(index .metrics.cvssMetricV2 0).baseSeverity}}){{end}}{{end}} - {{if .descriptions}}{{(index .descriptions 0).value}}{{end}}
           {{end}}

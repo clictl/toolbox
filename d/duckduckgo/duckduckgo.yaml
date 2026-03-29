@@ -37,5 +37,10 @@ actions:
         description: "Strip HTML from results (1 = yes, 0 = no)"
         in: query
     transform:
+      - extract: "$.RelatedTopics"
       - type: json
-        select: ["Heading", "AbstractText", "AbstractURL", "RelatedTopics"]
+        select: [Text, FirstURL]
+      - type: truncate
+        max_items: 10
+      - type: format
+        template: "- {Text}\n  {FirstURL}"

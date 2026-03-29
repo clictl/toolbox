@@ -14,7 +14,7 @@ server:
 actions:
   - name: search_datasets
     description: Search for datasets in the US government open data catalog
-    output: json
+    output: text
     request:
       method: GET
       path: /api/3/action/package_search
@@ -36,12 +36,19 @@ actions:
         description: Offset for pagination
         in: query
     transform:
+      - extract: "$.result.results"
       - type: json
-        extract: "$.result.results"
+        select: ["title", "notes", "organization.title", "num_resources"]
+        rename:
+          organization.title: org
+      - type: truncate
+        max_items: 20
+      - type: format
+        template: "- {title} - {org} ({num_resources} resources)"
 
   - name: get_dataset
     description: Get details of a specific dataset by ID
-    output: json
+    output: text
     request:
       method: GET
       path: /api/3/action/package_show
@@ -52,5 +59,17 @@ actions:
         description: Dataset ID or name
         in: query
     transform:
+      - extract: "$.result"
       - type: json
-        extract: "$.result"
+        select: ["title", "notes", "organization.title", "maintainer", "metadata_created", "num_resources", "resources"]
+        rename:
+          organization.title: org
+      - type: format
+        template: |
+          # {title}
+          Organization: {org}
+          Maintainer: {maintainer}
+          Created: {metadata_created}
+          Resources: {num_resources}
+
+          {notes}

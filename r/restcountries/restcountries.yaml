@@ -20,25 +20,27 @@ actions:
     params:
       - name: fields
         type: string
-        description: "Comma-separated fields to return, e.g. 'name,capital,population,flags'"
+        default: "name,capital,population,region"
+        description: "Comma-separated fields to return"
         in: query
+    transform:
+      - type: truncate
+        max_items: 20
 
   - name: name
     description: Search for countries by name (partial match supported)
     output: json
     request:
       method: GET
-      path: /name/{{name}}
+      path: /name/{name}
     params:
       - name: name
         type: string
         required: true
-        description: "Country name or partial name, e.g. 'united', 'germany'"
+        description: "Country name or partial name"
         example: "germany"
-        in: path
-      - name: fullText
-        type: string
-        description: "Set to 'true' for exact name match only"
+      - name: fields
+        default: "name,capital,population,region"
         in: query
 
   - name: code

@@ -16,7 +16,7 @@ server:
 actions:
   - name: search
     description: Search for Rust crates by keyword with sorting and pagination
-    output: json
+    output: text
     request:
       method: GET
       path: /crates
@@ -45,10 +45,13 @@ actions:
       - type: status
         values: [200]
     transform:
+      - extract: "$.crates"
       - type: json
-        extract: "$.crates"
+        select: ["name", "max_stable_version", "downloads", "description"]
       - type: truncate
-        max_items: 20
+        max_items: 10
+      - type: format
+        template: "- {name} v{max_stable_version} ({downloads} downloads)\n  {description}"
 
   - name: crate-info
     description: Get detailed information about a specific Rust crate including description, downloads, and links
@@ -67,8 +70,7 @@ actions:
       - type: status
         values: [200]
     transform:
-      - type: json
-        extract: "$.crate"
+      - extract: "$.crate"
 
   - name: crate-versions
     description: List all published versions of a Rust crate with download counts and metadata
@@ -87,7 +89,6 @@ actions:
       - type: status
         values: [200]
     transform:
-      - type: json
-        extract: "$.versions"
+      - extract: "$.versions"
       - type: truncate
         max_items: 20

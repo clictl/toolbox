@@ -15,7 +15,7 @@ server:
 actions:
   - name: list-countries
     description: List all countries and regions available in the World Bank database
-    output: json
+    output: text
     request:
       method: GET
       path: /country
@@ -39,14 +39,20 @@ actions:
       - type: status
         values: [200]
     transform:
+      - extract: "$[1]"
       - type: json
-        extract: "$[1]"
+        select: ["id", "name", "incomeLevel.value", "region.value"]
+        rename:
+          incomeLevel.value: income
+          region.value: region
       - type: truncate
-        max_items: 20
+        max_items: 50
+      - type: format
+        template: "- {id} - {name} ({income}, {region})"
 
   - name: get-country
     description: Get details for a specific country by its ISO code
-    output: json
+    output: text
     request:
       method: GET
       path: /country/{{country_code}}
@@ -66,12 +72,24 @@ actions:
       - type: status
         values: [200]
     transform:
+      - extract: "$[1][0]"
       - type: json
-        extract: "$[1][0]"
+        select: ["id", "name", "capitalCity", "incomeLevel.value", "region.value", "lendingType.value"]
+        rename:
+          incomeLevel.value: income
+          region.value: region
+          lendingType.value: lending
+      - type: format
+        template: |
+          # {name} ({id})
+          Capital: {capitalCity}
+          Income: {income}
+          Region: {region}
+          Lending: {lending}
 
   - name: get-indicator
     description: Get time-series data for a specific indicator and country
-    output: json
+    output: text
     request:
       method: GET
       path: /country/{{country_code}}/indicator/{{indicator_code}}
@@ -111,14 +129,20 @@ actions:
       - type: status
         values: [200]
     transform:
+      - extract: "$[1]"
       - type: json
-        extract: "$[1]"
+        select: ["country.value", "date", "value", "indicator.value"]
+        rename:
+          country.value: country
+          indicator.value: indicator
       - type: truncate
         max_items: 20
+      - type: format
+        template: "- {country} ({date}): {value} - {indicator}"
 
   - name: list-indicators
     description: Search and browse available indicators in the World Bank database
-    output: json
+    output: text
     request:
       method: GET
       path: /indicator
@@ -142,14 +166,17 @@ actions:
       - type: status
         values: [200]
     transform:
+      - extract: "$[1]"
       - type: json
-        extract: "$[1]"
+        select: ["id", "name", "sourceNote"]
       - type: truncate
         max_items: 20
+      - type: format
+        template: "- {id} - {name}"
 
   - name: list-topics
     description: List all topic categories used to organize World Bank indicators
-    output: json
+    output: text
     request:
       method: GET
       path: /topic
@@ -163,7 +190,10 @@ actions:
       - type: status
         values: [200]
     transform:
+      - extract: "$[1]"
       - type: json
-        extract: "$[1]"
+        select: ["id", "value", "sourceNote"]
       - type: truncate
         max_items: 20
+      - type: format
+        template: "- {id}. {value}"

@@ -53,9 +53,11 @@ actions:
         values: [200]
     transform:
       - type: json
-        extract: "$"
+        select: [display_name, lat, lon, type]
       - type: truncate
-        max_items: 20
+        max_items: 5
+      - type: format
+        template: "- {display_name} ({lat}, {lon}) [{type}]"
 
   - name: reverse
     description: Look up the address for a given latitude and longitude

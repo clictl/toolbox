@@ -17,6 +17,10 @@ clictl search github
 
 - **[Spec Reference](docs/spec-reference.md)** - Complete field reference (spec 1.0)
 - **[Transform Guide](docs/transforms.md)** - Cookbook for response transforms, DAG pipelines, and recipes
+- **[DAG Transform Guide](docs/dag.md)** - Deep dive into parallel branches, fan-out, merge strategies, and testing
+- **[Auth Patterns](docs/auth.md)** - Bearer tokens, API keys, OAuth2, MCP auth, vault resolution
+- **[MCP Tool Guide](docs/mcp.md)** - Authoring specs for MCP servers, discovery, filtering, and transforms
+- **[Skill Authoring Guide](docs/skills.md)** - Source blocks, sandbox constraints, trust model, and file hashing
 - **[Quick Reference](docs/quick-reference.md)** - One-page cheat sheet
 - **[Creating Tools](docs/guides/creating-tools.md)** - Step-by-step guide
 - **[Customizing Tools](docs/guides/customizing-tools.md)** - Forks and overrides

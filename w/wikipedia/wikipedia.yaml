@@ -14,7 +14,7 @@ server:
 actions:
   - name: search
     description: Search Wikipedia articles by keyword
-    output: json
+    output: text
     request:
       method: GET
       path: /api.php
@@ -23,14 +23,12 @@ actions:
         type: string
         required: true
         description: Search query
-        example: "artificial intelligence"
+        example: "rust programming"
         in: query
       - name: action
-        type: string
         default: opensearch
         in: query
       - name: format
-        type: string
         default: json
         in: query
       - name: limit
@@ -38,6 +36,10 @@ actions:
         default: "10"
         description: Maximum number of results
         in: query
+    transform:
+      - extract: "$[1]"
+      - type: truncate
+        max_items: 10
 
   - name: get_summary
     description: Get a short summary of a Wikipedia article

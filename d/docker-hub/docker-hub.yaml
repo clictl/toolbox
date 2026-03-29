@@ -15,7 +15,7 @@ server:
 actions:
   - name: search
     description: Search Docker Hub for container images by keyword
-    output: json
+    output: text
     request:
       method: GET
       path: /search/repositories
@@ -40,14 +40,20 @@ actions:
       - type: status
         values: [200]
     transform:
+      - on: request
+        rename_params:
+          q: query
+      - extract: "$.results"
       - type: json
-        extract: "$.results"
+        select: ["repo_name", "is_official", "pull_count", "short_description"]
       - type: truncate
-        max_items: 20
+        max_items: 10
+      - type: format
+        template: "- {repo_name} ({pull_count} pulls) - {short_description}"
 
   - name: tags
     description: List available tags for a Docker Hub repository
-    output: json
+    output: text
     request:
       method: GET
       path: /repositories/{{namespace}}/{{repo}}/tags
@@ -82,7 +88,10 @@ actions:
       - type: status
         values: [200]
     transform:
+      - extract: "$.results"
       - type: json
-        extract: "$.results"
+        select: ["name", "full_size", "last_updated"]
       - type: truncate
         max_items: 20
+      - type: format
+        template: "- {name} ({full_size} bytes, updated {last_updated})"
