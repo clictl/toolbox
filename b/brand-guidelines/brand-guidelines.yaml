@@ -24,7 +24,9 @@ source:
   ref: main
   files:
   - name: LICENSE.txt
+    sha256: 58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd
   - name: SKILL.md
+    sha256: 1120b3769e2985cefb3d25be981b1f914abeba57ae079b83c20c666c164fa9fe
 platforms:
 - name: claude-code
   install_method: skill

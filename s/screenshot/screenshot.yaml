@@ -22,16 +22,27 @@ source:
   ref: main
   files:
   - name: LICENSE.txt
+    sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
   - name: SKILL.md
+    sha256: 081935a6a163277537d46365f49d6b4a3cb40b4748347e7e88759c5927fa8cf5
   - name: agents/openai.yaml
+    sha256: f29638eb930e27d44846474620b0d817b4b77fb5d09caf27db269463ae45cfa8
   - name: assets/screenshot-small.svg
+    sha256: b0ff24097dfcd889504fab312a0e20d1d79dde0745268647a8cc2471b4baf794
   - name: assets/screenshot.png
+    sha256: 4ff96a476f2a2ac4ca7b626f9d4b78a7aa8cce0219e0688c5f15355513b61b5b
   - name: scripts/ensure_macos_permissions.sh
+    sha256: 9aa750f1e9592519d6c18b966fd65c1d4108c25bd3471ce625dfafd784856d7f
   - name: scripts/macos_display_info.swift
+    sha256: 0969cfef9c9890c82cae5ad75a6cd40fd56d33b28f27347642ef5e837f18b042
   - name: scripts/macos_permissions.swift
+    sha256: cf110651350e50d600268f0a1a892ac8d662505474b4455cdfde2ac5b5f4aca6
   - name: scripts/macos_window_info.swift
+    sha256: c7faff7913d6072284b7ef1e5d26c524ab861ad32afc0c066f24ba95ae3f3597
   - name: scripts/take_screenshot.ps1
+    sha256: a31a2242e41fd1c5471651afbcced660f98fbc884f11e531218348f700a3f826
   - name: scripts/take_screenshot.py
+    sha256: 56eeabe2dac5d23915b9a0fb57a07431fad2d310c5444f60f71f09299899232b
 platforms:
 - name: claude-code
   install_method: skill

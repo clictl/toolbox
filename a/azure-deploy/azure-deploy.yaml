@@ -18,15 +18,6 @@ website: https://github.com/anthropics/skills
 support_url: https://github.com/anthropics/skills/issues
 pricing_model: free
 license: Apache-2.0
-# TODO: Verify source repo path exists before publishing
-source:
-  type: github
-  repo: anthropics/skills
-  path: skills/azure-deploy/
-  ref: main
-  files:
-  - name: SKILL.md
-    sha256: "" # TODO: Compute hash from source repo
 platforms:
 - name: claude-code
   install_method: skill

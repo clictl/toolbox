@@ -22,16 +22,27 @@ source:
   ref: main
   files:
   - name: LICENSE.txt
+    sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
   - name: SKILL.md
+    sha256: 826d05b806d51fa81cd650f1c0854b0a1f7fbccd1b152c588ded1797a2e7218f
   - name: agents/openai.yaml
+    sha256: fafccbf7ded0d78be24c7dc1c0a2e0ac1bbf27bfd13a1fed969da643d973826a
   - name: assets/imagegen-small.svg
+    sha256: cff5f34f57ff60b3ee92eaedd17b15e96dd4b9e776df3e78936c9e00d42be294
   - name: assets/imagegen.png
+    sha256: 95952f644064eb9e890f98d8db07216347186526e4c41ad66d3420629eb86e20
   - name: references/cli.md
+    sha256: 6d7996f425d13a329fb1e0c10b2be55634a7c0fe4c2dbe076442d97ab00264c2
   - name: references/codex-network.md
+    sha256: dd6e85cb3da3589cab0f65be15b2c8f9d19633d9490f0a4b0fef5fd243d0464c
   - name: references/image-api.md
+    sha256: 005d8db53d05223dda473f255b3576b95dff239d6dfbf544a454110e98aa87b5
   - name: references/prompting.md
+    sha256: e547ff9fe8e0de8e844c70a550e0b66e0f72323307e5acd0e562678f10eb0db2
   - name: references/sample-prompts.md
+    sha256: 82b0e14db9eace50fca0a4e728b535ded0f3661893538e6b15b18a9a82b71d5b
   - name: scripts/image_gen.py
+    sha256: eaffd8fe4cde5722d748cc35729a03438d6b8fda5e84edd46ea1ce521d41f58b
 platforms:
 - name: claude-code
   install_method: skill

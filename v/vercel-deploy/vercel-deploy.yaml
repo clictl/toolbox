@@ -24,11 +24,17 @@ source:
   ref: main
   files:
   - name: LICENSE.txt
+    sha256: e0fad1e120e56b02bb8e65745ff5be6d3234368f2df9d0dd183183879e595fc1
   - name: SKILL.md
+    sha256: f4a6cbfbb378a320fae179a79f727a881d19677e9b3db96ed49d2dc02a74fa46
   - name: agents/openai.yaml
+    sha256: 5fdfff98a8cd084737f47231d65e7b8315e9036e12c8f2c90df7593f75abcf74
   - name: assets/vercel-small.svg
+    sha256: 169e5fedb5898d756254c29e02873508eef714a8dd11638f283ca8e7c46096a5
   - name: assets/vercel.png
+    sha256: ab37ffb06bdb1ab6d076c26329e8677d057ba95d66f7e2c710221345ff6e2043
   - name: scripts/deploy.sh
+    sha256: 91f16c6a298c8b70eff7b7722f860e54101be2f23cea75d2e26ec0778006f9b4
 platforms:
 - name: claude-code
   install_method: skill

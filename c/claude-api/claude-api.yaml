@@ -29,23 +29,23 @@ source:
   - name: LICENSE.txt
     sha256: 58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd
   - name: SKILL.md
-    sha256: c002a63824a58fab2e00a100eed4956a00cbe52d282c74fc5bb3e7e4db9230bd
+    sha256: bdbd2080d675adb18d961a46d1bd6e3a3d26806bfda7c6cd36e6de638d18f6ac
   - name: csharp/claude-api.md
-    sha256: 95cdc92848c94a9949ad11eb552bffe103cfb999e49e420694eed55c990628b0
+    sha256: c17ddeb20330f54d8fbf9af3e1225ab0370396b86d211cf71b1f8a5008c39e5f
   - name: curl/examples.md
-    sha256: 0b4d9e99429997a3acea2e878b2cd73cba28307cd2cbc7af29ba9b7e5d01c798
+    sha256: 4a587cbc1bc26e97d14c5f2abeb98a11cd7ffd10eabcdb32512b22dd55dde508
   - name: go/claude-api.md
-    sha256: 1b8101463027b18dad2790a216b1154762c035fcefb3d0b382cbb6ef52776461
+    sha256: 79730feb26fde385d351e269ff5dec022e9d2f88f1b94230c48b18db1b3e1a9b
   - name: java/claude-api.md
-    sha256: 89c13c04bdfa5770b401823409a4572770aabe13823d2de7959455f1418dc702
+    sha256: dba7d2e9539ba370b66c8163a8186d3fcd49cbcd4a2b943e8643ff4f0b232e39
   - name: php/claude-api.md
-    sha256: 62345606728b47b79ba759e68932b72c9022844713723e5310043fd2579c19f2
+    sha256: 059a14b04a7c73d88b7072c24322b4503b716e5722b378084ef6644826c7f165
   - name: python/agent-sdk/README.md
-    sha256: 74cd0f60352e55c39964fa35fc3fdcd366fed55fb2d99a9de7dfb8f6e2a5ef7b
+    sha256: f06fc8a83a16e28183f66733e08eb7e2633f6e31348fcfe384ae2389c185bab6
   - name: python/agent-sdk/patterns.md
     sha256: 1a42261beea4f9dce4884931b311a88123b4b0981c7a303b10513c8796218303
   - name: python/claude-api/README.md
-    sha256: 4f21842cf20287acef645273f9798a6722a71ea0b1225201f4f3094faa1baec7
+    sha256: 78c6ea2ef13d2880f50527bea1f88042ac18944d03bb18f292866cc25fdcbe42
   - name: python/claude-api/batches.md
     sha256: 576101d29343fe3e687a646bda8991663e45305f03c4a3053ddd38c60657c0d7
   - name: python/claude-api/files-api.md
@@ -55,7 +55,7 @@ source:
   - name: python/claude-api/tool-use.md
     sha256: 35b2b5bdd79fc2d880b28bd98abe0d169c0031d6883c9ea991689744778be54c
   - name: ruby/claude-api.md
-    sha256: 33647b8fd6c88956e55add34221f030add8dbb2aeff2f311df8c5ab03ce06405
+    sha256: 51a56bba19696d7f35c35305c1b3e0ff80485fc441ec49cb9224a753bcaac292
   - name: shared/error-codes.md
     sha256: 590f6539f223a46e9ddff391a09cf2646b05c59bb679955d060f26a898c5091b
   - name: shared/live-sources.md
@@ -63,13 +63,13 @@ source:
   - name: shared/models.md
     sha256: 2a18cf78b18d7e62e6e64810f4d3f28225e024fd1cfa4928dcb5d23dcc50d4d9
   - name: shared/tool-use-concepts.md
-    sha256: 2292366a6c142b1ddba67d47010485cd6daaac1cdb7b799aaffcc91915a28753
+    sha256: edd1ff670170d6720491d4ee7dc64c20e59ed097af4d7a082d1620d894025b65
   - name: typescript/agent-sdk/README.md
-    sha256: 3a485b2b561cc79c0c29b73b83ab7042fff157ab5e13322c71445e81fd99e180
+    sha256: 8b887efb720def6c51303d169e79ae94b6d78f8bbf81c66791543c77329f39c2
   - name: typescript/agent-sdk/patterns.md
     sha256: 8a47275106399f7274ff5db2978a8ea7addb1ac5d81086abebd42a5a620c7619
   - name: typescript/claude-api/README.md
-    sha256: fda52e75d2ac8d014736dc2709be009c133159350a723d32f79e665cc6e46d9e
+    sha256: bc48c999d4b6117945f7abc0c2031f0902c59d61911697fd6a628bbbea077a78
   - name: typescript/claude-api/batches.md
     sha256: 8a9b31d7008e63f717d9647ec2b5c3a499c7af9e64793a799c53ae4569747f39
   - name: typescript/claude-api/files-api.md

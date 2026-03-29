@@ -22,11 +22,17 @@ source:
   ref: main
   files:
   - name: LICENSE.txt
+    sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
   - name: SKILL.md
+    sha256: 7b326b4a2f0f5f85122144628ec02077e48841e0e0e82efce88b3415bcfb7c26
   - name: agents/openai.yaml
+    sha256: 36f73b9450504983d1647c960689596f59bf9147c14b1b43162912ed7ada9af6
   - name: assets/github-small.svg
+    sha256: ee05e92d373d4d84f4612af3c1090ef67698d421bbe30896a4ed5a00cb86a069
   - name: assets/github.png
+    sha256: d55a9baa41798d8b5108e3058df3a5bda09914ea9fd73b49929cc38a8832424f
   - name: scripts/inspect_pr_checks.py
+    sha256: 9459e5b03f86785d184a83e5cd8d621b832e918ec04158a2962d867785812c6c
 platforms:
 - name: claude-code
   install_method: skill

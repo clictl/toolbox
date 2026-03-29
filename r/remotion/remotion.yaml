@@ -17,15 +17,6 @@ website: https://github.com/remotion-dev/remotion
 support_url: https://github.com/remotion-dev/remotion/issues
 pricing_model: free
 license: MIT
-# TODO: Verify exact path and file listing from source repo before publishing
-source:
-  type: github
-  repo: remotion-dev/remotion
-  path: packages/docs/
-  ref: main
-  files:
-  - name: SKILL.md
-    sha256: "" # TODO: Compute hash from source repo
 platforms:
 - name: claude-code
   install_method: skill

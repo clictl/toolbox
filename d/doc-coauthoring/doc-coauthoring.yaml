@@ -23,6 +23,7 @@ source:
   ref: main
   files:
   - name: SKILL.md
+    sha256: 2e47d78846faeea4a56e9809c52700087a15a2155a3f293a3efbaded81398ef4
     description: Skill instructions and examples
 platforms:
 - name: claude-code

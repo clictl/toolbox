@@ -22,11 +22,17 @@ source:
   ref: main
   files:
   - name: LICENSE.txt
+    sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
   - name: SKILL.md
+    sha256: b598ea447ad6bec923f5c3879ace25e4a7f1368a7eac019b5c0e2f79a36322c6
   - name: agents/openai.yaml
+    sha256: c7ed57441b9a1e3f4caa19da4d90d432a65cd398c4f361b47dbf9408be0e065f
   - name: assets/sentry-small.svg
+    sha256: f1de8efc906c03b583b4d74560b003175c8a3d9ea5950d891ce3142fec11ca99
   - name: assets/sentry.png
+    sha256: b61e0534635a275cf56f7dad26ac7cc36504b7bd9a60c95791d6e72634129fb1
   - name: scripts/sentry_api.py
+    sha256: 688e4ba95c4a9780d1c15b4afbefaca9c1255a10d032dd66cfca160c89ad4608
 platforms:
 - name: claude-code
   install_method: skill

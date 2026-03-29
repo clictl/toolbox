@@ -22,10 +22,15 @@ source:
   ref: main
   files:
   - name: LICENSE.txt
+    sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
   - name: SKILL.md
+    sha256: 2b4583b296a3a043b9002cd74e3ca5407fce832598dcd428272da08a9839f64b
   - name: agents/openai.yaml
+    sha256: 6f0a463b53232932ad70aec529e25fad9d54312de0bd29d64a38bb14a4e748de
   - name: assets/yeet-small.svg
+    sha256: e4b365d5389b8772e9bad36ad7a37d8333436fa961bb98c8d77b8fbf4e9dbc3b
   - name: assets/yeet.png
+    sha256: 6b5448b6c5b3480ca7511f983fa81ced59e6b9c664332bc559ea0d323fc06ab8
 platforms:
 - name: claude-code
   install_method: skill

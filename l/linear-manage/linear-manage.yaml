@@ -24,10 +24,15 @@ source:
   ref: main
   files:
   - name: LICENSE.txt
+    sha256: 58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd
   - name: SKILL.md
+    sha256: ce0f39c95b6c9190f8ea33614393cdb556b2684dd8388ded394e9cb915f42601
   - name: agents/openai.yaml
+    sha256: 9e6f164960e3dd0bc56456538abdf196d9e4fd8b4273be06fe1ef0110fbab9cb
   - name: assets/linear-small.svg
+    sha256: 6af9dbc5e58a51e80fcbcee47e5f9bd196a997cc5985c2147a89c908831d327f
   - name: assets/linear.png
+    sha256: be13bf3f97e4437e67cda80979759998fb4f4dcace3cdd6a220ba6a75e1c2a82
 platforms:
 - name: claude-code
   install_method: skill

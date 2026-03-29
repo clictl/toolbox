@@ -23,11 +23,17 @@ source:
   ref: main
   files:
   - name: LICENSE.txt
+    sha256: 9a7110fc2d2f964038e5dc49128f908f29f47a574c961cba16085914e879cbda
   - name: NOTICE.txt
+    sha256: 7fe676d2e5359fb6aa0bdf5b0881b26e14c272dd36b04408366d4b0e26738322
   - name: SKILL.md
+    sha256: f6c1155d923e6ae3ccc12abfef2266f119f8e9546df2ddeee1f5eb369845a0a1
   - name: agents/openai.yaml
+    sha256: 7342e0a2c2cb8f3e20982317467f58b06c8bf71ba308ed8fcc1cda4a6e9397d8
   - name: assets/playwright-small.svg
+    sha256: 0744d0d4cc1433e2130c3522196e1571222d502f1461f39274f680520e728588
   - name: assets/playwright.png
+    sha256: 29b51cdeeb4e541565d1d419e5150e11913af50f72ebb4d27cfcc8813185ffd6
 platforms:
 - name: claude-code
   install_method: skill

@@ -22,13 +22,21 @@ source:
   ref: main
   files:
   - name: LICENSE.txt
+    sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
   - name: SKILL.md
+    sha256: f06c1a59247569326702c945f397af163ea96cf2ecfdf2dde280605bf89a3ec8
   - name: agents/openai.yaml
+    sha256: 40877a3cdb1753aa187fc85a83bc138a866a1edb74165e009c885cfb6a16e433
   - name: references/neo4j-import.md
+    sha256: 176d0ef2ed3588530ed65ccda7cb30ae322e4cbec5c374dba5d1685e2bb9dd02
   - name: scripts/build_ownership_map.py
+    sha256: c0454c47c7eb001b6e247cd7e473df1b28a3a148a2dca6b2fe88a74a7602cc9b
   - name: scripts/community_maintainers.py
+    sha256: 95adec5458cc85b41d0ae7965b0a17e4e8eaa6aaab274459324580d9a91cc3cc
   - name: scripts/query_ownership.py
+    sha256: 0f8d1a1ac3ef807a9b66939a8cdfd02564f4cda018489a3664d37f8c3a7b1b93
   - name: scripts/run_ownership_map.py
+    sha256: 362b547d6133659eb5c4fe889b8b930bea790f31e412f3198671baae09eec692
 platforms:
 - name: claude-code
   install_method: skill

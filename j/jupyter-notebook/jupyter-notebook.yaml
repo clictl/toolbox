@@ -22,17 +22,29 @@ source:
   ref: main
   files:
   - name: LICENSE.txt
+    sha256: 4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9
   - name: SKILL.md
+    sha256: 62f102e8554b25716dccef0ffab4572d4e3eaf05ccc76562d33a065bc9c521fb
   - name: agents/openai.yaml
+    sha256: 3a2d6a8f9ed10e18f6caa66aeb26a02305bc61f36fc4b333c904e02f9988fb9c
   - name: assets/experiment-template.ipynb
+    sha256: 25f85914103cd84244e20ef378f59097479c72481cd18d3a931354d107c3f300
   - name: assets/jupyter-small.svg
+    sha256: a36bd27bef3775f111309241754b386db81e7d356f07672190e2fcb24478a250
   - name: assets/jupyter.png
+    sha256: 852fd5468885bb176d266d547e61684792332e44a88cfbc8cd07323937040ccb
   - name: assets/tutorial-template.ipynb
+    sha256: 704a809c09c7c9e6e5c437860df95524412b50c58571a14204610d73e0744765
   - name: references/experiment-patterns.md
+    sha256: 1ff9c04281c01e8e2209bde9f1fd910b8e4b620dd1f1f040e2101f1d88513a91
   - name: references/notebook-structure.md
+    sha256: a85051a2e88fd3424bbed2636e952ec5f858e7efa4e076c28d62a8cc2cc9dc06
   - name: references/quality-checklist.md
+    sha256: ed01afe6ff47714d85935d11053b64c414772f02250fdc604e3fca65e5139136
   - name: references/tutorial-patterns.md
+    sha256: 8c194bb640de2fb7747e3db87006ecec5219252d301f53670975dbb5310ff659
   - name: scripts/new_notebook.py
+    sha256: a004e2ea3115edb24313928be0be6d1dc07e571d7ca6c1b24375f0569c616d2f
 platforms:
 - name: claude-code
   install_method: skill
