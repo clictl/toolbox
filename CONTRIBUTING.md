@@ -157,7 +157,7 @@ transforms:
 
 ### Skill
 
-No `server` or `actions` blocks. Uses `source` to point to skill files.
+No `server` or `actions` blocks. Uses `source` to point to skill files. The file list and SHA256 hashes are auto-computed by `sync_registry` after merge, so you only need `repo` and `path`.
 
 ```yaml
 name: my-skill
@@ -169,16 +169,14 @@ tags: [skill, example]
 source:
   repo: myorg/my-repo
   path: skills/my-skill
-  ref: main
-  files:
-    - path: SKILL.md
-      sha256: abc123...
 
 sandbox:
   bash_allow: [python3]
   filesystem:
     read: ["**/*.py"]
 ```
+
+For the full skill contribution workflow, see [Adding Skills](docs/ADDING_SKILLS.md). For the complete spec field reference, see [Spec Format](docs/SPEC_FORMAT.md).
 
 ## Requirements
 
