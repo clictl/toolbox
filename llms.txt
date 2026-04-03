@@ -52,9 +52,7 @@ auth:
 actions:
   - name: get-data
     description: Fetch data
-    request:
-      method: GET
-      path: /data
+    path: /data
     params:
       - name: q
         type: string

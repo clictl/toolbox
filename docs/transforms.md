@@ -936,9 +936,7 @@ auth:
 actions:
   - name: search_and_translate
     description: Search repos and translate descriptions
-    request:
-      method: GET
-      path: /search/repositories
+    path: /search/repositories
     params:
       - name: q
         required: true

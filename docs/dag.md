@@ -474,9 +474,7 @@ auth:
 actions:
   - name: overview
     description: Get repo info and npm package details for a project
-    request:
-      method: GET
-      path: /repos/{owner}/{repo}
+    path: /repos/{owner}/{repo}
     params:
       - name: owner
         required: true

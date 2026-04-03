@@ -48,9 +48,7 @@ actions:
   - name: list-items
     description: List all items
     output: json
-    request:
-      method: GET
-      path: /items
+    path: /items
     params:
       - name: limit
         type: int
@@ -155,9 +153,7 @@ server:
 actions:
   - name: current
     description: Get current weather for a location
-    request:
-      method: GET
-      path: /forecast
+    path: /forecast
     params:
       - name: latitude
         type: float

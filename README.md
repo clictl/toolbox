@@ -152,9 +152,8 @@ Specs include transforms that clean up raw API responses before your Agent sees 
 actions:
   - name: current
     description: Get current weather for a location
-    request:
-      method: GET
-      path: /data/2.5/weather
+    method: GET
+    path: /data/2.5/weather
     assert:
       - type: status
         values: [200]

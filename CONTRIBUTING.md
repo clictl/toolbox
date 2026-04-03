@@ -36,9 +36,7 @@ instructions: |
 actions:
   - name: get-data
     description: What this action does
-    request:
-      method: GET
-      path: /data
+    path: /data
     params:
       - name: query
         required: true
@@ -76,7 +74,7 @@ privacy:
 
 ### REST API
 
-Uses `server.type: http` with actions that have a `request` block containing `method` and `path`.
+Uses `server.type: http` with actions that define `method`, `url`, and `path` directly on each action.
 
 ```yaml
 server:
@@ -86,9 +84,7 @@ server:
 actions:
   - name: search
     description: Search for items
-    request:
-      method: GET
-      path: /search
+    path: /search
     params:
       - name: q
         required: true

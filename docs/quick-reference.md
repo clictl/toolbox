@@ -19,9 +19,7 @@ server:
 actions:
   - name: search
     description: Search for items
-    request:
-      method: GET
-      path: /search
+    path: /search
     params:
       - name: q
         required: true
@@ -48,9 +46,7 @@ auth:
 actions:
   - name: get_item
     description: Fetch an item by ID
-    request:
-      method: GET
-      path: /items/{id}
+    path: /items/{id}
     params:
       - name: id
         required: true
@@ -268,6 +264,7 @@ params:
 | Field | Default |
 |-------|---------|
 | `spec` | `"1.0"` |
+| `method` | `GET` |
 | `server.timeout` | `30s` |
 | `params[].type` | `string` |
 | `params[].required` | `false` |
