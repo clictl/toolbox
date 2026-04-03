@@ -52,9 +52,8 @@ actions:
     path: $.modules
   - type: truncate
     max_items: 20
-  request:
-    method: GET
-    path: /modules/search
+  method: GET
+  path: /modules/search
 - name: module-info
   description: Get detailed information about a specific Terraform module
   params:
@@ -92,9 +91,8 @@ actions:
     - published_at
     - downloads
     - verified
-  request:
-    method: GET
-    path: /modules/{{namespace}}/{{name}}/{{provider}}
+  method: GET
+  path: /modules/{{namespace}}/{{name}}/{{provider}}
 - name: search-providers
   description: Search for Terraform providers (plugins for managing infrastructure resources)
   params:
@@ -122,6 +120,5 @@ actions:
     path: $.providers
   - type: truncate
     max_items: 20
-  request:
-    method: GET
-    path: /providers/search
+  method: GET
+  path: /providers/search

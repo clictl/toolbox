@@ -23,9 +23,8 @@ auth:
 actions:
   - name: list-messages
     description: List SMS and MMS messages for your Twilio account
-    request:
-      method: GET
-      path: /Accounts/{{account_sid}}/Messages.json
+    method: GET
+    path: /Accounts/{{account_sid}}/Messages.json
     params:
       - name: account_sid
         type: string
@@ -60,9 +59,8 @@ actions:
 
   - name: get-message
     description: Get details for a specific message by its SID
-    request:
-      method: GET
-      path: /Accounts/{{account_sid}}/Messages/{{message_sid}}.json
+    method: GET
+    path: /Accounts/{{account_sid}}/Messages/{{message_sid}}.json
     params:
       - name: account_sid
         type: string
@@ -84,9 +82,8 @@ actions:
 
   - name: lookup-phone
     description: Look up information about a phone number using the Twilio Lookup API
-    request:
-      method: GET
-      path: /PhoneNumbers/{{phone_number}}
+    method: GET
+    path: /PhoneNumbers/{{phone_number}}
     params:
       - name: phone_number
         type: string

@@ -22,9 +22,8 @@ actions:
   - name: models
     description: List all available models
     output: json
-    request:
-      method: GET
-      path: /models
+    method: GET
+    path: /models
     params: []
     transform:
       - type: json
@@ -33,9 +32,8 @@ actions:
   - name: chat
     description: Create a chat completion with a model
     output: json
-    request:
-      method: POST
-      path: /chat/completions
+    method: POST
+    path: /chat/completions
     assert:
       - type: status
         status: 200
@@ -57,9 +55,8 @@ actions:
   - name: embeddings
     description: Create vector embeddings for text input
     output: json
-    request:
-      method: POST
-      path: /embeddings
+    method: POST
+    path: /embeddings
     params:
       - name: input
         type: string

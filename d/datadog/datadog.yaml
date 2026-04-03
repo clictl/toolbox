@@ -24,9 +24,8 @@ actions:
   - name: list-monitors
     description: List all monitors in your Datadog account with their current status
     output: json
-    request:
-      method: GET
-      path: /monitor
+    method: GET
+    path: /monitor
     params:
       - name: group_states
         type: string
@@ -62,9 +61,8 @@ actions:
   - name: get-monitor
     description: Get details for a specific monitor by its ID
     output: json
-    request:
-      method: GET
-      path: /monitor/{{monitor_id}}
+    method: GET
+    path: /monitor/{{monitor_id}}
     params:
       - name: monitor_id
         type: string
@@ -82,9 +80,8 @@ actions:
   - name: query-metrics
     description: Query time-series metric data points from Datadog
     output: json
-    request:
-      method: GET
-      path: /query
+    method: GET
+    path: /query
     params:
       - name: from
         type: int
@@ -115,9 +112,8 @@ actions:
   - name: list-dashboards
     description: List all dashboards in your Datadog account
     output: json
-    request:
-      method: GET
-      path: /dashboard/lists/manual
+    method: GET
+    path: /dashboard/lists/manual
     params: []
     assert:
       - type: status

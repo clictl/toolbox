@@ -17,9 +17,8 @@ actions:
   - name: search
     description: Search for Rust crates by keyword with sorting and pagination
     output: text
-    request:
-      method: GET
-      path: /crates
+    method: GET
+    path: /crates
     params:
       - name: q
         type: string
@@ -56,9 +55,8 @@ actions:
   - name: crate-info
     description: Get detailed information about a specific Rust crate including description, downloads, and links
     output: json
-    request:
-      method: GET
-      path: /crates/{{name}}
+    method: GET
+    path: /crates/{{name}}
     params:
       - name: name
         type: string
@@ -75,9 +73,8 @@ actions:
   - name: crate-versions
     description: List all published versions of a Rust crate with download counts and metadata
     output: json
-    request:
-      method: GET
-      path: /crates/{{name}}/versions
+    method: GET
+    path: /crates/{{name}}/versions
     params:
       - name: name
         type: string

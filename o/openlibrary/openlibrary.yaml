@@ -16,9 +16,8 @@ actions:
   - name: search
     description: Search for books by title, author, subject, or general keyword
     output: text
-    request:
-      method: GET
-      path: /search.json
+    method: GET
+    path: /search.json
     params:
       - name: q
         type: string
@@ -46,9 +45,8 @@ actions:
   - name: book
     description: Get detailed information about a specific work by its Open Library ID
     output: json
-    request:
-      method: GET
-      path: /works/{{olid}}.json
+    method: GET
+    path: /works/{{olid}}.json
     params:
       - name: olid
         type: string
@@ -67,9 +65,8 @@ actions:
   - name: author
     description: Get information about an author by their Open Library ID
     output: json
-    request:
-      method: GET
-      path: /authors/{{olid}}.json
+    method: GET
+    path: /authors/{{olid}}.json
     params:
       - name: olid
         type: string

@@ -23,9 +23,8 @@ auth:
 actions:
   - name: list-deployments
     description: List recent deployments across all projects or for a specific project
-    request:
-      method: GET
-      path: /v6/deployments
+    method: GET
+    path: /v6/deployments
     params:
       - name: projectId
         type: string
@@ -55,9 +54,8 @@ actions:
 
   - name: get-deployment
     description: Get detailed information about a specific deployment
-    request:
-      method: GET
-      path: /v13/deployments/{{deployment_id}}
+    method: GET
+    path: /v13/deployments/{{deployment_id}}
     params:
       - name: deployment_id
         type: string
@@ -74,9 +72,8 @@ actions:
 
   - name: list-projects
     description: List all projects in your Vercel account or team
-    request:
-      method: GET
-      path: /v9/projects
+    method: GET
+    path: /v9/projects
     params:
       - name: search
         type: string
@@ -98,9 +95,8 @@ actions:
 
   - name: get-project
     description: Get details for a specific project by ID or name
-    request:
-      method: GET
-      path: /v9/projects/{{project_id}}
+    method: GET
+    path: /v9/projects/{{project_id}}
     params:
       - name: project_id
         type: string
@@ -117,9 +113,8 @@ actions:
 
   - name: list-domains
     description: List all domains configured for a project
-    request:
-      method: GET
-      path: /v9/projects/{{project_id}}/domains
+    method: GET
+    path: /v9/projects/{{project_id}}/domains
     params:
       - name: project_id
         type: string

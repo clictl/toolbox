@@ -25,9 +25,8 @@ actions:
   - name: user
     description: Get a GitHub user's public profile including bio, repos count, and follower stats
     output: json
-    request:
-      method: GET
-      path: /users/{{username}}
+    method: GET
+    path: /users/{{username}}
     params:
       - name: username
         type: string
@@ -39,9 +38,8 @@ actions:
   - name: repos
     description: List public repositories for a user sorted by stars, updated date, or name
     output: text
-    request:
-      method: GET
-      path: /users/{{username}}/repos
+    method: GET
+    path: /users/{{username}}/repos
     params:
       - name: username
         type: string
@@ -78,9 +76,8 @@ actions:
   - name: repo
     description: Get detailed information about a specific repository
     output: json
-    request:
-      method: GET
-      path: /repos/{{owner}}/{{repo}}
+    method: GET
+    path: /repos/{{owner}}/{{repo}}
     params:
       - name: owner
         type: string
@@ -98,9 +95,8 @@ actions:
   - name: issues
     description: List open issues for a repository
     output: json
-    request:
-      method: GET
-      path: /repos/{{owner}}/{{repo}}/issues
+    method: GET
+    path: /repos/{{owner}}/{{repo}}/issues
     params:
       - name: owner
         type: string
@@ -129,9 +125,8 @@ actions:
   - name: search_repos
     description: Search for repositories across all of GitHub by keyword
     output: json
-    request:
-      method: GET
-      path: /search/repositories
+    method: GET
+    path: /search/repositories
     params:
       - name: q
         type: string

@@ -20,9 +20,8 @@ auth:
 actions:
   - name: search
     description: Search for tracks, artists, albums, or playlists
-    request:
-      method: GET
-      path: /search
+    method: GET
+    path: /search
     params:
       - name: q
         type: string
@@ -43,9 +42,8 @@ actions:
 
   - name: artist
     description: Get detailed information about an artist
-    request:
-      method: GET
-      path: /artists/{{id}}
+    method: GET
+    path: /artists/{{id}}
     params:
       - name: id
         type: string
@@ -55,9 +53,8 @@ actions:
 
   - name: top_tracks
     description: Get an artist's top tracks by country
-    request:
-      method: GET
-      path: /artists/{{id}}/top-tracks
+    method: GET
+    path: /artists/{{id}}/top-tracks
     params:
       - name: id
         type: string

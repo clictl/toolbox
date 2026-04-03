@@ -24,9 +24,8 @@ auth:
 actions:
   - name: translate
     description: Translate text into a target language with automatic source language detection
-    request:
-      method: POST
-      path: /translate
+    method: POST
+    path: /translate
     params:
       - name: text
         type: string
@@ -57,9 +56,8 @@ actions:
 
   - name: languages
     description: List all supported languages for translation
-    request:
-      method: GET
-      path: /languages
+    method: GET
+    path: /languages
     params:
       - name: type
         type: string
@@ -74,9 +72,8 @@ actions:
 
   - name: usage
     description: Check current API usage and character limits for your account
-    request:
-      method: GET
-      path: /usage
+    method: GET
+    path: /usage
     params: []
     assert:
       - type: status

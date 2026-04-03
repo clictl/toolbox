@@ -21,9 +21,8 @@ actions:
   - name: zones
     description: List zones (domains) in the account
     output: json
-    request:
-      method: GET
-      path: /zones
+    method: GET
+    path: /zones
     params:
       - name: name
         type: string
@@ -46,9 +45,8 @@ actions:
   - name: dns_records
     description: List DNS records for a zone
     output: json
-    request:
-      method: GET
-      path: /zones/{{zone_id}}/dns_records
+    method: GET
+    path: /zones/{{zone_id}}/dns_records
     params:
       - name: zone_id
         type: string
@@ -70,9 +68,8 @@ actions:
   - name: zone_detail
     description: Get detailed information about a specific zone
     output: json
-    request:
-      method: GET
-      path: /zones/{{zone_id}}
+    method: GET
+    path: /zones/{{zone_id}}
     params:
       - name: zone_id
         type: string

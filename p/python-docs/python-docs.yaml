@@ -23,9 +23,8 @@ actions:
     required: true
     description: Search query (e.g., asyncio, dataclasses, pathlib)
     in: query
-  request:
-    method: GET
-    path: /search.html
+  method: GET
+  path: /search.html
 - name: get_page
   description: Fetch a specific Python documentation page
   params:
@@ -34,6 +33,5 @@ actions:
     required: true
     description: Documentation path (e.g., library/os.html, tutorial/classes.html)
     in: path
-  request:
-    method: GET
-    path: /{path}
+  method: GET
+  path: /{path}

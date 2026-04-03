@@ -15,9 +15,8 @@ actions:
   - name: search_datasets
     description: Search for datasets in the US government open data catalog
     output: text
-    request:
-      method: GET
-      path: /api/3/action/package_search
+    method: GET
+    path: /api/3/action/package_search
     params:
       - name: q
         type: string
@@ -49,9 +48,8 @@ actions:
   - name: get_dataset
     description: Get details of a specific dataset by ID
     output: text
-    request:
-      method: GET
-      path: /api/3/action/package_show
+    method: GET
+    path: /api/3/action/package_show
     params:
       - name: id
         type: string

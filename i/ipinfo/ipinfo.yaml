@@ -20,9 +20,8 @@ auth:
 actions:
   - name: lookup
     description: Get geolocation, ISP, and network info for an IP address (omit IP to look up your own)
-    request:
-      method: GET
-      path: /{{#ip}}{{ip}}{{/ip}}
+    method: GET
+    path: /{{#ip}}{{ip}}{{/ip}}
     params:
       - name: ip
         type: string
@@ -30,7 +29,6 @@ actions:
 
   - name: my_ip
     description: Get your own public IP address
-    request:
-      method: GET
-      path: /ip
+    method: GET
+    path: /ip
     params: []

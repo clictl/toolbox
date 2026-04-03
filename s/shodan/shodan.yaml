@@ -23,9 +23,8 @@ auth:
 actions:
   - name: host
     description: Get all available information about a host IP, including open ports, banners, and location
-    request:
-      method: GET
-      path: /shodan/host/{{ip}}
+    method: GET
+    path: /shodan/host/{{ip}}
     params:
       - name: ip
         type: string
@@ -47,9 +46,8 @@ actions:
 
   - name: search
     description: Search for devices matching a Shodan query filter
-    request:
-      method: GET
-      path: /shodan/host/search
+    method: GET
+    path: /shodan/host/search
     params:
       - name: query
         type: string
@@ -72,9 +70,8 @@ actions:
 
   - name: info
     description: Check your API plan, credits remaining, and usage limits
-    request:
-      method: GET
-      path: /api-info
+    method: GET
+    path: /api-info
     params: []
     assert:
       - type: status

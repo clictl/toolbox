@@ -21,9 +21,8 @@ auth:
 actions:
   - name: get-me
     description: Get basic information about the bot, including its username and ID
-    request:
-      method: GET
-      path: /bot{{token}}/getMe
+    method: GET
+    path: /bot{{token}}/getMe
     params: []
     assert:
       - type: status
@@ -34,9 +33,8 @@ actions:
 
   - name: get-updates
     description: Receive incoming updates (messages, callbacks) for the bot
-    request:
-      method: GET
-      path: /bot{{token}}/getUpdates
+    method: GET
+    path: /bot{{token}}/getUpdates
     params:
       - name: offset
         type: int
@@ -63,9 +61,8 @@ actions:
 
   - name: send-message
     description: Send a text message to a chat or user
-    request:
-      method: POST
-      path: /bot{{token}}/sendMessage
+    method: POST
+    path: /bot{{token}}/sendMessage
     params:
       - name: chat_id
         type: string
@@ -91,9 +88,8 @@ actions:
 
   - name: get-chat
     description: Get information about a chat by its ID
-    request:
-      method: GET
-      path: /bot{{token}}/getChat
+    method: GET
+    path: /bot{{token}}/getChat
     params:
       - name: chat_id
         type: string

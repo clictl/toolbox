@@ -23,9 +23,8 @@ auth:
 actions:
   - name: search
     description: Search Reddit posts across all subreddits
-    request:
-      method: GET
-      path: /search
+    method: GET
+    path: /search
     params:
       - name: q
         type: string
@@ -64,9 +63,8 @@ actions:
 
   - name: subreddit-posts
     description: Get posts from a specific subreddit
-    request:
-      method: GET
-      path: /r/{{subreddit}}/{{listing}}
+    method: GET
+    path: /r/{{subreddit}}/{{listing}}
     params:
       - name: subreddit
         type: string
@@ -100,9 +98,8 @@ actions:
 
   - name: comments
     description: Get comments for a specific post
-    request:
-      method: GET
-      path: /r/{{subreddit}}/comments/{{post_id}}
+    method: GET
+    path: /r/{{subreddit}}/comments/{{post_id}}
     params:
       - name: subreddit
         type: string
@@ -136,9 +133,8 @@ actions:
 
   - name: subreddit-about
     description: Get information about a subreddit
-    request:
-      method: GET
-      path: /r/{{subreddit}}/about
+    method: GET
+    path: /r/{{subreddit}}/about
     params:
       - name: subreddit
         type: string

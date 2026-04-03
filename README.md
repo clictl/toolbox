@@ -188,6 +188,12 @@ actions:
 
 See [Spec Reference](docs/spec-reference.md) for the complete schema reference with examples.
 
+## Reporting Bugs
+
+Found a problem with a tool spec, sync failure, or registry issue? File a [toolbox bug report](https://github.com/clictl/cli/issues/new?template=bug_toolbox.yml).
+
+All bugs are tracked in the [clictl/cli](https://github.com/clictl/cli/issues) repository.
+
 ## Links
 
 - [clictl.dev](https://clictl.dev) - Website

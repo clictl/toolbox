@@ -16,9 +16,8 @@ actions:
   - name: search
     description: Search for instant answers including summaries, related topics, and source links
     output: json
-    request:
-      method: GET
-      path: /
+    method: GET
+    path: /
     params:
       - name: q
         type: string

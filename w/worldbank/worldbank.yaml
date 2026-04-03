@@ -16,9 +16,8 @@ actions:
   - name: list-countries
     description: List all countries and regions available in the World Bank database
     output: text
-    request:
-      method: GET
-      path: /country
+    method: GET
+    path: /country
     params:
       - name: format
         type: string
@@ -53,9 +52,8 @@ actions:
   - name: get-country
     description: Get details for a specific country by its ISO code
     output: text
-    request:
-      method: GET
-      path: /country/{{country_code}}
+    method: GET
+    path: /country/{{country_code}}
     params:
       - name: country_code
         type: string
@@ -90,9 +88,8 @@ actions:
   - name: get-indicator
     description: Get time-series data for a specific indicator and country
     output: text
-    request:
-      method: GET
-      path: /country/{{country_code}}/indicator/{{indicator_code}}
+    method: GET
+    path: /country/{{country_code}}/indicator/{{indicator_code}}
     params:
       - name: country_code
         type: string
@@ -143,9 +140,8 @@ actions:
   - name: list-indicators
     description: Search and browse available indicators in the World Bank database
     output: text
-    request:
-      method: GET
-      path: /indicator
+    method: GET
+    path: /indicator
     params:
       - name: format
         type: string
@@ -177,9 +173,8 @@ actions:
   - name: list-topics
     description: List all topic categories used to organize World Bank indicators
     output: text
-    request:
-      method: GET
-      path: /topic
+    method: GET
+    path: /topic
     params:
       - name: format
         type: string

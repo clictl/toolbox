@@ -24,9 +24,8 @@ actions:
   - name: list-projects
     description: List all projects across your Sentry organizations
     output: json
-    request:
-      method: GET
-      path: /projects/
+    method: GET
+    path: /projects/
     params:
       - name: cursor
         type: string
@@ -44,9 +43,8 @@ actions:
   - name: list-issues
     description: List issues (error groups) for a specific project
     output: json
-    request:
-      method: GET
-      path: /projects/{{organization_slug}}/{{project_slug}}/issues/
+    method: GET
+    path: /projects/{{organization_slug}}/{{project_slug}}/issues/
     params:
       - name: organization_slug
         type: string
@@ -85,9 +83,8 @@ actions:
   - name: get-issue
     description: Get detailed information about a specific issue
     output: json
-    request:
-      method: GET
-      path: /issues/{{issue_id}}/
+    method: GET
+    path: /issues/{{issue_id}}/
     params:
       - name: issue_id
         type: string
@@ -105,9 +102,8 @@ actions:
   - name: list-events
     description: List the latest events (individual error occurrences) for an issue
     output: json
-    request:
-      method: GET
-      path: /issues/{{issue_id}}/events/
+    method: GET
+    path: /issues/{{issue_id}}/events/
     params:
       - name: issue_id
         type: string

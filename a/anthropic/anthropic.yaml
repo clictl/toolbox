@@ -23,9 +23,8 @@ actions:
   - name: messages
     description: Create a message with Claude
     output: json
-    request:
-      method: POST
-      path: /messages
+    method: POST
+    path: /messages
     assert:
       - type: status
         status: 200
@@ -48,7 +47,6 @@ actions:
   - name: models
     description: List available Claude models
     output: json
-    request:
-      method: GET
-      path: /models
+    method: GET
+    path: /models
     params: []

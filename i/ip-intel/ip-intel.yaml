@@ -21,7 +21,6 @@ actions:
 - name: check
   description: Look up full intelligence for an IP address - resolves your public IP if none provided, then gets geo and threat
     data
-  composite: true
   params:
   - name: ip
     type: string

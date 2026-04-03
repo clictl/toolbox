@@ -20,9 +20,8 @@ auth:
 actions:
   - name: publish
     description: Send a push notification to a topic. Anyone subscribed to the topic will receive it.
-    request:
-      method: POST
-      path: /
+    method: POST
+    path: /
     params:
       - name: topic
         type: string
@@ -56,9 +55,8 @@ actions:
 
   - name: poll
     description: Poll for recent messages on a topic without subscribing to a stream
-    request:
-      method: GET
-      path: /{{topic}}/json
+    method: GET
+    path: /{{topic}}/json
     params:
       - name: topic
         type: string
@@ -85,9 +83,8 @@ actions:
 
   - name: server-health
     description: Check the health status of the ntfy server
-    request:
-      method: GET
-      path: /v1/health
+    method: GET
+    path: /v1/health
     params: []
     assert:
       - type: status

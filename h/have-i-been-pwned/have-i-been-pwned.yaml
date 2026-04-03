@@ -23,9 +23,8 @@ auth:
 actions:
   - name: breaches-for-account
     description: Get all breaches that an email address has appeared in
-    request:
-      method: GET
-      path: /breachedaccount/{{email}}
+    method: GET
+    path: /breachedaccount/{{email}}
     params:
       - name: email
         type: string
@@ -51,9 +50,8 @@ actions:
 
   - name: list-breaches
     description: Get the complete list of all breaches in the HIBP system
-    request:
-      method: GET
-      path: /breaches
+    method: GET
+    path: /breaches
     params:
       - name: domain
         type: string
@@ -70,9 +68,8 @@ actions:
 
   - name: get-breach
     description: Get details for a single breach by its name
-    request:
-      method: GET
-      path: /breach/{{name}}
+    method: GET
+    path: /breach/{{name}}
     params:
       - name: name
         type: string
@@ -89,9 +86,8 @@ actions:
 
   - name: pastes-for-account
     description: Get all paste dumps that an email address has appeared in
-    request:
-      method: GET
-      path: /pasteaccount/{{email}}
+    method: GET
+    path: /pasteaccount/{{email}}
     params:
       - name: email
         type: string

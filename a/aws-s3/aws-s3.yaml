@@ -19,16 +19,14 @@ auth:
 actions:
   - name: list_buckets
     description: List all S3 buckets in the account
-    request:
-      method: GET
-      path: /
+    method: GET
+    path: /
     params: []
 
   - name: list_objects
     description: List objects in a specific S3 bucket
-    request:
-      method: GET
-      path: /{{bucket}}
+    method: GET
+    path: /{{bucket}}
     params:
       - name: bucket
         type: string

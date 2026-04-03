@@ -21,9 +21,8 @@ actions:
   - name: post_message
     description: Send a message to a Slack channel
     output: json
-    request:
-      method: POST
-      path: /chat.postMessage
+    method: POST
+    path: /chat.postMessage
     params:
       - name: channel
         type: string
@@ -41,9 +40,8 @@ actions:
   - name: channels
     description: List channels in the workspace
     output: json
-    request:
-      method: GET
-      path: /conversations.list
+    method: GET
+    path: /conversations.list
     params:
       - name: limit
         type: int
@@ -59,9 +57,8 @@ actions:
   - name: users
     description: List all users in the workspace
     output: json
-    request:
-      method: GET
-      path: /users.list
+    method: GET
+    path: /users.list
     params:
       - name: limit
         type: int

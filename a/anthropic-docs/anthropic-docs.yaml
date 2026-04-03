@@ -15,9 +15,8 @@ actions:
   - name: get_page
     description: Fetch an Anthropic documentation page
     output: text
-    request:
-      method: GET
-      path: /en/{page_path}
+    method: GET
+    path: /en/{page_path}
     params:
       - name: page_path
         type: string

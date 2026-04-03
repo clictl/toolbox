@@ -16,9 +16,8 @@ actions:
   - name: posts
     description: List all posts with title and user ID
     output: text
-    request:
-      method: GET
-      path: /posts
+    method: GET
+    path: /posts
     params:
       - name: userId
         type: int
@@ -36,9 +35,8 @@ actions:
   - name: post
     description: Get a specific post by ID
     output: text
-    request:
-      method: GET
-      path: /posts/{{id}}
+    method: GET
+    path: /posts/{{id}}
     params:
       - name: id
         type: int
@@ -59,9 +57,8 @@ actions:
   - name: create_post
     description: Create a new post (simulated, returns the created object with an ID)
     output: json
-    request:
-      method: POST
-      path: /posts
+    method: POST
+    path: /posts
     params:
       - name: title
         type: string
@@ -85,9 +82,8 @@ actions:
   - name: comments
     description: Get comments on a specific post
     output: json
-    request:
-      method: GET
-      path: /posts/{{postId}}/comments
+    method: GET
+    path: /posts/{{postId}}/comments
     params:
       - name: postId
         type: int
@@ -99,9 +95,8 @@ actions:
   - name: users
     description: List all users
     output: text
-    request:
-      method: GET
-      path: /users
+    method: GET
+    path: /users
     params: []
     transform:
       - type: json
@@ -112,9 +107,8 @@ actions:
   - name: user
     description: Get a specific user by ID
     output: json
-    request:
-      method: GET
-      path: /users/{{id}}
+    method: GET
+    path: /users/{{id}}
     params:
       - name: id
         type: int
@@ -126,9 +120,8 @@ actions:
   - name: todos
     description: List all todos or filter by completion status
     output: json
-    request:
-      method: GET
-      path: /todos
+    method: GET
+    path: /todos
     params:
       - name: completed
         type: string

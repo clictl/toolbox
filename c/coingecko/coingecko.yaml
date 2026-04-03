@@ -20,9 +20,8 @@ auth:
 actions:
   - name: price
     description: Get the current price of one or more cryptocurrencies in any supported currency
-    request:
-      method: GET
-      path: /simple/price
+    method: GET
+    path: /simple/price
     params:
       - name: ids
         type: string
@@ -47,9 +46,8 @@ actions:
 
   - name: markets
     description: List coins with market data sorted by market cap, volume, or price change
-    request:
-      method: GET
-      path: /coins/markets
+    method: GET
+    path: /coins/markets
     params:
       - name: vs_currency
         type: string
@@ -73,9 +71,8 @@ actions:
 
   - name: coin
     description: Get detailed data for a specific coin including description, links, and market data
-    request:
-      method: GET
-      path: /coins/{{id}}
+    method: GET
+    path: /coins/{{id}}
     params:
       - name: id
         type: string
@@ -89,9 +86,8 @@ actions:
 
   - name: trending
     description: Get the top 7 trending coins searched by users in the last 24 hours
-    request:
-      method: GET
-      path: /search/trending
+    method: GET
+    path: /search/trending
     params: []
     transform:
       - type: json
@@ -99,9 +95,8 @@ actions:
 
   - name: search
     description: Search for coins, categories, and exchanges by name or symbol
-    request:
-      method: GET
-      path: /search
+    method: GET
+    path: /search
     params:
       - name: query
         type: string

@@ -16,9 +16,8 @@ actions:
   - name: search
     description: Search Docker Hub for container images by keyword
     output: text
-    request:
-      method: GET
-      path: /search/repositories
+    method: GET
+    path: /search/repositories
     params:
       - name: query
         type: string
@@ -54,9 +53,8 @@ actions:
   - name: tags
     description: List available tags for a Docker Hub repository
     output: text
-    request:
-      method: GET
-      path: /repositories/{{namespace}}/{{repo}}/tags
+    method: GET
+    path: /repositories/{{namespace}}/{{repo}}/tags
     params:
       - name: namespace
         type: string

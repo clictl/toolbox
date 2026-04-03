@@ -23,6 +23,5 @@ actions:
     required: true
     description: Documentation path (e.g., reference/react/useState, learn/thinking-in-react)
     in: path
-  request:
-    method: GET
-    path: /{path}
+  method: GET
+  path: /{path}

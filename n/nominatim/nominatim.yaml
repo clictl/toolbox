@@ -17,9 +17,8 @@ actions:
   - name: search
     description: Forward geocode an address or place name to get coordinates and structured location data
     output: text
-    request:
-      method: GET
-      path: /search
+    method: GET
+    path: /search
     params:
       - name: q
         type: string
@@ -52,9 +51,8 @@ actions:
   - name: reverse
     description: Reverse geocode coordinates to get the address at that location
     output: json
-    request:
-      method: GET
-      path: /reverse
+    method: GET
+    path: /reverse
     params:
       - name: lat
         type: float
@@ -81,9 +79,8 @@ actions:
   - name: lookup
     description: Look up address details for one or more OpenStreetMap objects by their IDs
     output: json
-    request:
-      method: GET
-      path: /lookup
+    method: GET
+    path: /lookup
     params:
       - name: osm_ids
         type: string

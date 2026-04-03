@@ -23,9 +23,8 @@ auth:
 actions:
   - name: search-models
     description: Search for machine learning models by keyword, task, or library
-    request:
-      method: GET
-      path: /models
+    method: GET
+    path: /models
     params:
       - name: search
         type: string
@@ -55,9 +54,8 @@ actions:
 
   - name: model-info
     description: Get detailed information about a specific model including tags, downloads, and card data
-    request:
-      method: GET
-      path: /models/{{model_id}}
+    method: GET
+    path: /models/{{model_id}}
     params:
       - name: model_id
         type: string
@@ -74,9 +72,8 @@ actions:
 
   - name: search-datasets
     description: Search for datasets by keyword or task type
-    request:
-      method: GET
-      path: /datasets
+    method: GET
+    path: /datasets
     params:
       - name: search
         type: string
@@ -102,9 +99,8 @@ actions:
 
   - name: dataset-info
     description: Get detailed information about a specific dataset
-    request:
-      method: GET
-      path: /datasets/{{dataset_id}}
+    method: GET
+    path: /datasets/{{dataset_id}}
     params:
       - name: dataset_id
         type: string

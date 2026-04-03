@@ -16,9 +16,8 @@ actions:
   - name: search
     description: Search the NVD for CVEs by keyword, date range, or severity
     output: text
-    request:
-      method: GET
-      path: /
+    method: GET
+    path: /
     params:
       - name: keywordSearch
         type: string
@@ -68,9 +67,8 @@ actions:
   - name: get-cve
     description: Get full details for a specific CVE by its ID
     output: text
-    request:
-      method: GET
-      path: /
+    method: GET
+    path: /
     params:
       - name: cveId
         type: string
@@ -95,9 +93,8 @@ actions:
   - name: search-by-cpe
     description: Search for CVEs affecting a specific product using its CPE name
     output: text
-    request:
-      method: GET
-      path: /
+    method: GET
+    path: /
     params:
       - name: cpeName
         type: string

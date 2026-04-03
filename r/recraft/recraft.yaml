@@ -24,9 +24,8 @@ auth:
 actions:
   - name: generate
     description: Generate an image from a text prompt
-    request:
-      method: POST
-      path: /images/generations
+    method: POST
+    path: /images/generations
     params:
       - name: prompt
         type: string
@@ -63,9 +62,8 @@ actions:
 
   - name: vectorize
     description: Convert a raster image to SVG vector format
-    request:
-      method: POST
-      path: /images/vectorize
+    method: POST
+    path: /images/vectorize
     params:
       - name: image_url
         type: string
@@ -83,9 +81,8 @@ actions:
 
   - name: remove-background
     description: Remove the background from an image
-    request:
-      method: POST
-      path: /images/removeBackground
+    method: POST
+    path: /images/removeBackground
     params:
       - name: image_url
         type: string

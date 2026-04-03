@@ -23,9 +23,8 @@ auth:
 actions:
   - name: search-issues
     description: Search for issues using JQL (Jira Query Language)
-    request:
-      method: GET
-      path: /search
+    method: GET
+    path: /search
     params:
       - name: jql
         type: string
@@ -53,9 +52,8 @@ actions:
 
   - name: issue
     description: Get a single issue by its key, including summary, status, and description
-    request:
-      method: GET
-      path: /issue/{{issue_key}}
+    method: GET
+    path: /issue/{{issue_key}}
     params:
       - name: issue_key
         type: string
@@ -76,9 +74,8 @@ actions:
 
   - name: projects
     description: List all projects visible to the authenticated user
-    request:
-      method: GET
-      path: /project
+    method: GET
+    path: /project
     params:
       - name: maxResults
         type: int
@@ -94,9 +91,8 @@ actions:
 
   - name: project
     description: Get details for a specific project by key or ID
-    request:
-      method: GET
-      path: /project/{{project_key}}
+    method: GET
+    path: /project/{{project_key}}
     params:
       - name: project_key
         type: string

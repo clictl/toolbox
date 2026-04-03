@@ -16,9 +16,8 @@ actions:
   - name: search-formula
     description: List all Homebrew formulae (useful for client-side search and filtering)
     output: text
-    request:
-      method: GET
-      path: /formula.json
+    method: GET
+    path: /formula.json
     params:
       - name: q
         type: string
@@ -42,9 +41,8 @@ actions:
   - name: formula-info
     description: Get detailed information about a specific Homebrew formula including dependencies and install counts
     output: text
-    request:
-      method: GET
-      path: /formula/{{name}}.json
+    method: GET
+    path: /formula/{{name}}.json
     params:
       - name: name
         type: string
@@ -70,9 +68,8 @@ actions:
   - name: search-cask
     description: List all Homebrew casks (macOS GUI applications)
     output: text
-    request:
-      method: GET
-      path: /cask.json
+    method: GET
+    path: /cask.json
     params:
       - name: q
         type: string
@@ -94,9 +91,8 @@ actions:
   - name: cask-info
     description: Get detailed information about a specific Homebrew cask including version, URL, and requirements
     output: text
-    request:
-      method: GET
-      path: /cask/{{token}}.json
+    method: GET
+    path: /cask/{{token}}.json
     params:
       - name: token
         type: string

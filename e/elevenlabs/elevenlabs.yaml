@@ -23,9 +23,8 @@ auth:
 actions:
   - name: list-voices
     description: List all available voices including premade and custom cloned voices
-    request:
-      method: GET
-      path: /voices
+    method: GET
+    path: /voices
     params: []
     assert:
       - type: status
@@ -38,9 +37,8 @@ actions:
 
   - name: get-voice
     description: Get metadata and settings for a specific voice
-    request:
-      method: GET
-      path: /voices/{{voice_id}}
+    method: GET
+    path: /voices/{{voice_id}}
     params:
       - name: voice_id
         type: string
@@ -57,9 +55,8 @@ actions:
 
   - name: list-models
     description: List all available TTS models and their capabilities
-    request:
-      method: GET
-      path: /models
+    method: GET
+    path: /models
     params: []
     assert:
       - type: status
@@ -72,9 +69,8 @@ actions:
 
   - name: get-history
     description: List your recent text-to-speech generation history
-    request:
-      method: GET
-      path: /history
+    method: GET
+    path: /history
     params:
       - name: page_size
         type: int
@@ -96,9 +92,8 @@ actions:
 
   - name: get-subscription
     description: Check your current subscription status and usage limits
-    request:
-      method: GET
-      path: /user/subscription
+    method: GET
+    path: /user/subscription
     params: []
     assert:
       - type: status

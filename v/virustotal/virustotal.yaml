@@ -23,9 +23,8 @@ auth:
 actions:
   - name: file-report
     description: Get the analysis report for a file by its hash (MD5, SHA-1, or SHA-256)
-    request:
-      method: GET
-      path: /files/{{hash}}
+    method: GET
+    path: /files/{{hash}}
     params:
       - name: hash
         type: string
@@ -42,9 +41,8 @@ actions:
 
   - name: url-report
     description: Get the analysis report for a URL by its URL ID (base64-encoded URL without padding)
-    request:
-      method: GET
-      path: /urls/{{url_id}}
+    method: GET
+    path: /urls/{{url_id}}
     params:
       - name: url_id
         type: string
@@ -61,9 +59,8 @@ actions:
 
   - name: domain-report
     description: Get the analysis report and reputation data for a domain
-    request:
-      method: GET
-      path: /domains/{{domain}}
+    method: GET
+    path: /domains/{{domain}}
     params:
       - name: domain
         type: string

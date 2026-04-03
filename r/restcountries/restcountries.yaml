@@ -14,9 +14,8 @@ actions:
   - name: all
     description: List all countries with basic info
     output: json
-    request:
-      method: GET
-      path: /all
+    method: GET
+    path: /all
     params:
       - name: fields
         type: string
@@ -30,9 +29,8 @@ actions:
   - name: name
     description: Search for countries by name (partial match supported)
     output: json
-    request:
-      method: GET
-      path: /name/{name}
+    method: GET
+    path: /name/{name}
     params:
       - name: name
         type: string
@@ -46,9 +44,8 @@ actions:
   - name: code
     description: Get a country by its ISO 3166-1 alpha-2 or alpha-3 code
     output: json
-    request:
-      method: GET
-      path: /alpha/{{code}}
+    method: GET
+    path: /alpha/{{code}}
     params:
       - name: code
         type: string
@@ -60,9 +57,8 @@ actions:
   - name: currency
     description: Search for countries that use a specific currency
     output: json
-    request:
-      method: GET
-      path: /currency/{{currency}}
+    method: GET
+    path: /currency/{{currency}}
     params:
       - name: currency
         type: string
@@ -74,9 +70,8 @@ actions:
   - name: language
     description: Search for countries where a specific language is spoken
     output: json
-    request:
-      method: GET
-      path: /lang/{{language}}
+    method: GET
+    path: /lang/{{language}}
     params:
       - name: language
         type: string
@@ -88,9 +83,8 @@ actions:
   - name: region
     description: Search for countries by region or subregion
     output: json
-    request:
-      method: GET
-      path: /region/{{region}}
+    method: GET
+    path: /region/{{region}}
     params:
       - name: region
         type: string
@@ -102,9 +96,8 @@ actions:
   - name: capital
     description: Search for countries by capital city name
     output: json
-    request:
-      method: GET
-      path: /capital/{{capital}}
+    method: GET
+    path: /capital/{{capital}}
     params:
       - name: capital
         type: string

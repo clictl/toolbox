@@ -20,9 +20,8 @@ auth:
 actions:
   - name: search_movies
     description: Search for movies by title
-    request:
-      method: GET
-      path: /search/movie
+    method: GET
+    path: /search/movie
     params:
       - name: query
         type: string
@@ -45,9 +44,8 @@ actions:
 
   - name: movie
     description: Get detailed information about a specific movie
-    request:
-      method: GET
-      path: /movie/{{movie_id}}
+    method: GET
+    path: /movie/{{movie_id}}
     params:
       - name: movie_id
         type: int
@@ -62,9 +60,8 @@ actions:
 
   - name: trending
     description: Get trending movies for a given time window
-    request:
-      method: GET
-      path: /trending/movie/{{time_window}}
+    method: GET
+    path: /trending/movie/{{time_window}}
     params:
       - name: time_window
         type: string
@@ -83,9 +80,8 @@ actions:
 
   - name: popular
     description: Get a list of currently popular movies
-    request:
-      method: GET
-      path: /movie/popular
+    method: GET
+    path: /movie/popular
     params:
       - name: page
         type: int

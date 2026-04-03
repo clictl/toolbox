@@ -23,9 +23,8 @@ auth:
 actions:
   - name: generate
     description: Generate an image from a text prompt using Stable Image Core
-    request:
-      method: POST
-      path: /stable-image/generate/core
+    method: POST
+    path: /stable-image/generate/core
     params:
       - name: prompt
         type: string
@@ -59,9 +58,8 @@ actions:
 
   - name: generate-ultra
     description: Generate a high-quality image using Stable Image Ultra
-    request:
-      method: POST
-      path: /stable-image/generate/ultra
+    method: POST
+    path: /stable-image/generate/ultra
     params:
       - name: prompt
         type: string
@@ -95,9 +93,8 @@ actions:
 
   - name: upscale
     description: Upscale an image using fast upscaling
-    request:
-      method: POST
-      path: /stable-image/upscale/fast
+    method: POST
+    path: /stable-image/upscale/fast
     params:
       - name: image
         type: string
@@ -121,9 +118,8 @@ actions:
 
   - name: remove-background
     description: Remove the background from an image
-    request:
-      method: POST
-      path: /stable-image/edit/remove-background
+    method: POST
+    path: /stable-image/edit/remove-background
     params:
       - name: image
         type: string

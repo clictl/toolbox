@@ -23,9 +23,8 @@ auth:
 actions:
   - name: search
     description: Search the web using Bing Web Search
-    request:
-      method: GET
-      path: /search
+    method: GET
+    path: /search
     params:
       - name: q
         type: string
@@ -62,9 +61,8 @@ actions:
 
   - name: news
     description: Search for news articles using Bing News Search
-    request:
-      method: GET
-      path: /news/search
+    method: GET
+    path: /news/search
     params:
       - name: q
         type: string
@@ -101,9 +99,8 @@ actions:
 
   - name: trending
     description: Get trending news topics
-    request:
-      method: GET
-      path: /news/trendingtopics
+    method: GET
+    path: /news/trendingtopics
     params:
       - name: mkt
         type: string

@@ -24,9 +24,8 @@ auth:
 actions:
   - name: get-monitors
     description: List all monitors with their current status, uptime ratio, and response times
-    request:
-      method: POST
-      path: /getMonitors
+    method: POST
+    path: /getMonitors
     params:
       - name: monitors
         type: string
@@ -57,9 +56,8 @@ actions:
 
   - name: get-account
     description: Get account details including monitor limits and current usage
-    request:
-      method: POST
-      path: /getAccountDetails
+    method: POST
+    path: /getAccountDetails
     params: []
     assert:
       - type: status

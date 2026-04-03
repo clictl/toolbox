@@ -23,9 +23,8 @@ auth:
 actions:
   - name: list-emails
     description: List recently sent emails from your Resend account
-    request:
-      method: GET
-      path: /emails
+    method: GET
+    path: /emails
     params: []
     assert:
       - type: status
@@ -38,9 +37,8 @@ actions:
 
   - name: get-email
     description: Get the delivery status and details for a specific sent email
-    request:
-      method: GET
-      path: /emails/{{email_id}}
+    method: GET
+    path: /emails/{{email_id}}
     params:
       - name: email_id
         type: string
@@ -57,9 +55,8 @@ actions:
 
   - name: list-domains
     description: List all verified sending domains in your account
-    request:
-      method: GET
-      path: /domains
+    method: GET
+    path: /domains
     params: []
     assert:
       - type: status
@@ -72,9 +69,8 @@ actions:
 
   - name: get-domain
     description: Get details and DNS records for a specific sending domain
-    request:
-      method: GET
-      path: /domains/{{domain_id}}
+    method: GET
+    path: /domains/{{domain_id}}
     params:
       - name: domain_id
         type: string
@@ -91,9 +87,8 @@ actions:
 
   - name: list-api-keys
     description: List all API keys in your Resend account
-    request:
-      method: GET
-      path: /api-keys
+    method: GET
+    path: /api-keys
     params: []
     assert:
       - type: status

@@ -23,9 +23,8 @@ auth:
 actions:
   - name: query
     description: Submit a full query to Wolfram Alpha and get structured pods with results, plots, and computations
-    request:
-      method: GET
-      path: /query
+    method: GET
+    path: /query
     params:
       - name: input
         type: string
@@ -53,9 +52,8 @@ actions:
 
   - name: short-answer
     description: Get a single-line text answer to a factual question
-    request:
-      method: GET
-      path: /result
+    method: GET
+    path: /result
     params:
       - name: i
         type: string

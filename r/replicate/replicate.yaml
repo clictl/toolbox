@@ -23,9 +23,8 @@ auth:
 actions:
   - name: list-models
     description: List public models available on Replicate
-    request:
-      method: GET
-      path: /models
+    method: GET
+    path: /models
     params:
       - name: cursor
         type: string
@@ -42,9 +41,8 @@ actions:
 
   - name: get-model
     description: Get details about a specific model including its latest version
-    request:
-      method: GET
-      path: /models/{{owner}}/{{name}}
+    method: GET
+    path: /models/{{owner}}/{{name}}
     params:
       - name: owner
         type: string
@@ -66,9 +64,8 @@ actions:
 
   - name: list-predictions
     description: List your recent predictions and their statuses
-    request:
-      method: GET
-      path: /predictions
+    method: GET
+    path: /predictions
     params:
       - name: cursor
         type: string
@@ -85,9 +82,8 @@ actions:
 
   - name: get-prediction
     description: Get the status and output of a specific prediction
-    request:
-      method: GET
-      path: /predictions/{{prediction_id}}
+    method: GET
+    path: /predictions/{{prediction_id}}
     params:
       - name: prediction_id
         type: string
@@ -104,9 +100,8 @@ actions:
 
   - name: list-collections
     description: List featured model collections on Replicate
-    request:
-      method: GET
-      path: /collections
+    method: GET
+    path: /collections
     params: []
     assert:
       - type: status

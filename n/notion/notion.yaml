@@ -22,9 +22,8 @@ actions:
   - name: search
     description: Search across all pages and databases in the workspace
     output: json
-    request:
-      method: POST
-      path: /search
+    method: POST
+    path: /search
     params:
       - name: query
         type: string
@@ -35,9 +34,8 @@ actions:
   - name: page
     description: Retrieve a page and its properties by ID
     output: json
-    request:
-      method: GET
-      path: /pages/{{page_id}}
+    method: GET
+    path: /pages/{{page_id}}
     params:
       - name: page_id
         type: string
@@ -48,9 +46,8 @@ actions:
   - name: databases
     description: Query a database and return matching pages
     output: json
-    request:
-      method: POST
-      path: /databases/{{database_id}}/query
+    method: POST
+    path: /databases/{{database_id}}/query
     params:
       - name: database_id
         type: string

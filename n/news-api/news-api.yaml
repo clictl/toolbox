@@ -23,9 +23,8 @@ auth:
 actions:
   - name: top-headlines
     description: Get top headlines by country, category, or source
-    request:
-      method: GET
-      path: /top-headlines
+    method: GET
+    path: /top-headlines
     params:
       - name: country
         type: string
@@ -61,9 +60,8 @@ actions:
 
   - name: everything
     description: Search all articles matching a query across all sources
-    request:
-      method: GET
-      path: /everything
+    method: GET
+    path: /everything
     params:
       - name: q
         type: string
@@ -109,9 +107,8 @@ actions:
 
   - name: sources
     description: List available news sources filtered by category, language, or country
-    request:
-      method: GET
-      path: /top-headlines/sources
+    method: GET
+    path: /top-headlines/sources
     params:
       - name: category
         type: string

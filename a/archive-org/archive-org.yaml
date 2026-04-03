@@ -16,9 +16,8 @@ actions:
   - name: search
     description: Search the Internet Archive catalog for books, videos, audio, software, and other media
     output: json
-    request:
-      method: GET
-      path: /advancedsearch.php
+    method: GET
+    path: /advancedsearch.php
     params:
       - name: q
         type: string
@@ -61,9 +60,8 @@ actions:
   - name: wayback
     description: Check if a URL has been archived by the Wayback Machine and get the most recent snapshot
     output: json
-    request:
-      method: GET
-      path: /wayback/available
+    method: GET
+    path: /wayback/available
     params:
       - name: url
         type: string

@@ -23,9 +23,8 @@ auth:
 actions:
   - name: list-bases
     description: List all bases (databases) accessible to your Airtable account
-    request:
-      method: GET
-      path: /meta/bases
+    method: GET
+    path: /meta/bases
     params:
       - name: offset
         type: string
@@ -42,9 +41,8 @@ actions:
 
   - name: list-tables
     description: List all tables and their field schemas in a specific base
-    request:
-      method: GET
-      path: /meta/bases/{{base_id}}/tables
+    method: GET
+    path: /meta/bases/{{base_id}}/tables
     params:
       - name: base_id
         type: string
@@ -62,9 +60,8 @@ actions:
 
   - name: list-records
     description: List records from a table in a specific base
-    request:
-      method: GET
-      path: /{{base_id}}/{{table_name}}
+    method: GET
+    path: /{{base_id}}/{{table_name}}
     params:
       - name: base_id
         type: string
@@ -112,9 +109,8 @@ actions:
 
   - name: get-record
     description: Get a single record by its ID from a table
-    request:
-      method: GET
-      path: /{{base_id}}/{{table_name}}/{{record_id}}
+    method: GET
+    path: /{{base_id}}/{{table_name}}/{{record_id}}
     params:
       - name: base_id
         type: string

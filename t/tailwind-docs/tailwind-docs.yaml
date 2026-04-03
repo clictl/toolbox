@@ -21,6 +21,5 @@ actions:
     required: true
     description: Documentation topic slug (e.g., display, flex, padding, installation)
     in: path
-  request:
-    method: GET
-    path: /docs/{topic}
+  method: GET
+  path: /docs/{topic}

@@ -26,9 +26,8 @@ auth:
 actions:
   - name: search
     description: Search the web using Google Custom Search
-    request:
-      method: GET
-      path: /
+    method: GET
+    path: /
     params:
       - name: q
         type: string
@@ -64,9 +63,8 @@ actions:
 
   - name: search-images
     description: Search for images using Google Custom Search
-    request:
-      method: GET
-      path: /
+    method: GET
+    path: /
     params:
       - name: q
         type: string

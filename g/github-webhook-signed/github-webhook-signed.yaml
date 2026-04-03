@@ -30,9 +30,8 @@ signing:
 actions:
   - name: send-event
     description: Send a signed webhook event payload to a configured webhook URL
-    request:
-      method: POST
-      path: /repos/{owner}/{repo}/dispatches
+    method: POST
+    path: /repos/{owner}/{repo}/dispatches
     params:
       - name: owner
         type: string
@@ -59,9 +58,8 @@ actions:
 
   - name: test-webhook
     description: Send a test ping event to verify webhook signing is configured correctly
-    request:
-      method: POST
-      path: /repos/{owner}/{repo}/dispatches
+    method: POST
+    path: /repos/{owner}/{repo}/dispatches
     params:
       - name: owner
         type: string

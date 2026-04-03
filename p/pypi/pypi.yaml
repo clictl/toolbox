@@ -16,9 +16,8 @@ actions:
   - name: package-info
     description: Get full metadata for a Python package including latest version, description, author, and download URLs
     output: markdown
-    request:
-      method: GET
-      path: /pypi/{{name}}/json
+    method: GET
+    path: /pypi/{{name}}/json
     params:
       - name: name
         type: string
@@ -44,9 +43,8 @@ actions:
   - name: package-version
     description: Get metadata for a specific version of a Python package
     output: markdown
-    request:
-      method: GET
-      path: /pypi/{{name}}/{{version}}/json
+    method: GET
+    path: /pypi/{{name}}/{{version}}/json
     params:
       - name: name
         type: string
@@ -78,9 +76,8 @@ actions:
   - name: package-releases
     description: Get all release versions for a Python package
     output: json
-    request:
-      method: GET
-      path: /pypi/{{name}}/json
+    method: GET
+    path: /pypi/{{name}}/json
     params:
       - name: name
         type: string

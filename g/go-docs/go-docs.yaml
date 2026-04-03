@@ -23,9 +23,8 @@ actions:
     required: true
     description: Search query (e.g., http router, json parser, context)
     in: query
-  request:
-    method: GET
-    path: /search
+  method: GET
+  path: /search
 - name: package
   description: View documentation for a specific Go module or package
   params:
@@ -34,6 +33,5 @@ actions:
     required: true
     description: Full module path (e.g., net/http, github.com/gin-gonic/gin)
     in: path
-  request:
-    method: GET
-    path: /{module}
+  method: GET
+  path: /{module}

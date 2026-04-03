@@ -23,9 +23,8 @@ auth:
 actions:
   - name: search
     description: Search code across all indexed repositories using Sourcegraph query syntax
-    request:
-      method: POST
-      path: /graphql
+    method: POST
+    path: /graphql
     params:
       - name: query
         type: string
@@ -43,9 +42,8 @@ actions:
 
   - name: list-repos
     description: Search for repositories indexed on Sourcegraph
-    request:
-      method: POST
-      path: /graphql
+    method: POST
+    path: /graphql
     params:
       - name: query
         type: string
@@ -63,9 +61,8 @@ actions:
 
   - name: get-file
     description: Read the contents of a file from a specific repository and revision
-    request:
-      method: POST
-      path: /graphql
+    method: POST
+    path: /graphql
     params:
       - name: repo
         type: string
@@ -92,9 +89,8 @@ actions:
 
   - name: stream-search
     description: Search code using the streaming search API for faster results
-    request:
-      method: GET
-      path: /search/stream
+    method: GET
+    path: /search/stream
     params:
       - name: q
         type: string

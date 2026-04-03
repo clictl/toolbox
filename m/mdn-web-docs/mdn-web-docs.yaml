@@ -32,9 +32,8 @@ actions:
   transform:
   - type: extract
     path: $.documents
-  request:
-    method: GET
-    path: /api/v1/search
+  method: GET
+  path: /api/v1/search
 - name: get_page
   description: Fetch a specific MDN documentation page as JSON
   params:
@@ -43,6 +42,5 @@ actions:
     required: true
     description: Documentation path (e.g., en-US/docs/Web/CSS/display)
     in: path
-  request:
-    method: GET
-    path: /{path}/index.json
+  method: GET
+  path: /{path}/index.json

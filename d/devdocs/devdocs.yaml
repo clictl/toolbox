@@ -31,9 +31,8 @@ actions:
 
       {{range .}}- **{{.name}}** ({{.slug}}) v{{.version}}
       {{end}}
-  request:
-    method: GET
-    path: /docs/docs.json
+  method: GET
+  path: /docs/docs.json
 - name: search
   description: Search entries within a specific documentation set by slug
   params:
@@ -53,6 +52,5 @@ actions:
 
       {{range .}}- **{{.name}}** - {{.type}} ([view](https://devdocs.io/{{.path}}))
       {{end}}
-  request:
-    method: GET
-    path: /docs/{doc}/index.json
+  method: GET
+  path: /docs/{doc}/index.json

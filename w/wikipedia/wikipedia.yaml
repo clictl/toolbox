@@ -15,9 +15,8 @@ actions:
   - name: search
     description: Search Wikipedia articles by keyword
     output: text
-    request:
-      method: GET
-      path: /api.php
+    method: GET
+    path: /api.php
     params:
       - name: search
         type: string
@@ -44,9 +43,8 @@ actions:
   - name: get_summary
     description: Get a short summary of a Wikipedia article
     output: json
-    request:
-      method: GET
-      path: /api.php
+    method: GET
+    path: /api.php
     params:
       - name: titles
         type: string

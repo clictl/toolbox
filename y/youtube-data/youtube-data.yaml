@@ -20,9 +20,8 @@ auth:
 actions:
   - name: search
     description: Search YouTube for videos, channels, or playlists by keyword
-    request:
-      method: GET
-      path: /search
+    method: GET
+    path: /search
     params:
       - name: q
         type: string
@@ -68,9 +67,8 @@ actions:
 
   - name: get-video
     description: Get detailed metadata for one or more videos by ID
-    request:
-      method: GET
-      path: /videos
+    method: GET
+    path: /videos
     params:
       - name: id
         type: string
@@ -93,9 +91,8 @@ actions:
 
   - name: get-channel
     description: Get metadata and statistics for a YouTube channel
-    request:
-      method: GET
-      path: /channels
+    method: GET
+    path: /channels
     params:
       - name: id
         type: string
@@ -121,9 +118,8 @@ actions:
 
   - name: list-playlists
     description: List playlists for a specific channel
-    request:
-      method: GET
-      path: /playlists
+    method: GET
+    path: /playlists
     params:
       - name: channelId
         type: string

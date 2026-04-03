@@ -23,9 +23,8 @@ auth:
 actions:
   - name: trends
     description: Get Google Trends interest over time for one or more search terms
-    request:
-      method: GET
-      path: /search
+    method: GET
+    path: /search
     params:
       - name: q
         type: string
@@ -62,9 +61,8 @@ actions:
 
   - name: related-queries
     description: Get related search queries for a given term
-    request:
-      method: GET
-      path: /search
+    method: GET
+    path: /search
     params:
       - name: q
         type: string
@@ -96,9 +94,8 @@ actions:
 
   - name: trending-now
     description: Get currently trending searches in a specific country
-    request:
-      method: GET
-      path: /search
+    method: GET
+    path: /search
     params:
       - name: engine
         type: string

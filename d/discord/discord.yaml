@@ -20,9 +20,8 @@ auth:
 actions:
   - name: guilds
     description: List servers (guilds) the bot has joined
-    request:
-      method: GET
-      path: /users/@me/guilds
+    method: GET
+    path: /users/@me/guilds
     params:
       - name: limit
         type: int
@@ -32,9 +31,8 @@ actions:
 
   - name: channels
     description: List all channels in a server
-    request:
-      method: GET
-      path: /guilds/{{guild_id}}/channels
+    method: GET
+    path: /guilds/{{guild_id}}/channels
     params:
       - name: guild_id
         type: string
@@ -44,9 +42,8 @@ actions:
 
   - name: send_message
     description: Send a message to a channel
-    request:
-      method: POST
-      path: /channels/{{channel_id}}/messages
+    method: POST
+    path: /channels/{{channel_id}}/messages
     params:
       - name: channel_id
         type: string

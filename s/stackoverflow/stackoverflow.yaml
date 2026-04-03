@@ -15,9 +15,8 @@ actions:
   - name: search
     description: Search Stack Overflow questions by title keywords, sorted by relevance
     output: text
-    request:
-      method: GET
-      path: /search
+    method: GET
+    path: /search
     params:
       - name: intitle
         type: string
@@ -62,9 +61,8 @@ actions:
   - name: question
     description: Retrieve a specific question by its ID including body and metadata
     output: json
-    request:
-      method: GET
-      path: /questions/{id}
+    method: GET
+    path: /questions/{id}
     params:
       - name: id
         type: int
@@ -88,9 +86,8 @@ actions:
   - name: answers
     description: Retrieve all answers for a specific question, sorted by votes
     output: json
-    request:
-      method: GET
-      path: /questions/{id}/answers
+    method: GET
+    path: /questions/{id}/answers
     params:
       - name: id
         type: int

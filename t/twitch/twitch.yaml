@@ -23,9 +23,8 @@ auth:
 actions:
   - name: search-channels
     description: Search for Twitch channels by name or keyword
-    request:
-      method: GET
-      path: /search/channels
+    method: GET
+    path: /search/channels
     params:
       - name: query
         type: string
@@ -54,9 +53,8 @@ actions:
 
   - name: streams
     description: Get currently live streams, optionally filtered by game or user
-    request:
-      method: GET
-      path: /streams
+    method: GET
+    path: /streams
     params:
       - name: game_id
         type: string
@@ -87,9 +85,8 @@ actions:
 
   - name: users
     description: Look up Twitch user profiles by login name or ID
-    request:
-      method: GET
-      path: /users
+    method: GET
+    path: /users
     params:
       - name: login
         type: string
@@ -109,9 +106,8 @@ actions:
 
   - name: games
     description: Look up game or category information by name or ID
-    request:
-      method: GET
-      path: /games
+    method: GET
+    path: /games
     params:
       - name: name
         type: string
@@ -131,9 +127,8 @@ actions:
 
   - name: top-games
     description: Get the most popular games on Twitch by viewer count
-    request:
-      method: GET
-      path: /games/top
+    method: GET
+    path: /games/top
     params:
       - name: first
         type: int

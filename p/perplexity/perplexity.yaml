@@ -24,9 +24,8 @@ auth:
 actions:
   - name: search
     description: Search the web and get a grounded answer with citations using the Sonar model
-    request:
-      method: POST
-      path: /chat/completions
+    method: POST
+    path: /chat/completions
     params:
       - name: query
         type: string
@@ -49,9 +48,8 @@ actions:
 
   - name: search-pro
     description: Deep search with the Sonar Pro model for complex, multi-step research queries
-    request:
-      method: POST
-      path: /chat/completions
+    method: POST
+    path: /chat/completions
     params:
       - name: query
         type: string
@@ -74,9 +72,8 @@ actions:
 
   - name: search-reasoning
     description: Search with the Sonar Reasoning model for queries requiring step-by-step analysis
-    request:
-      method: POST
-      path: /chat/completions
+    method: POST
+    path: /chat/completions
     params:
       - name: query
         type: string

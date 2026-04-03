@@ -20,9 +20,8 @@ auth:
 actions:
   - name: search-photos
     description: Search for photos by keyword or phrase
-    request:
-      method: GET
-      path: /search/photos
+    method: GET
+    path: /search/photos
     params:
       - name: query
         type: string
@@ -63,9 +62,8 @@ actions:
 
   - name: get-photo
     description: Get full details for a specific photo by its ID
-    request:
-      method: GET
-      path: /photos/{{photo_id}}
+    method: GET
+    path: /photos/{{photo_id}}
     params:
       - name: photo_id
         type: string
@@ -82,9 +80,8 @@ actions:
 
   - name: list-photos
     description: Browse the editorial feed of curated photos
-    request:
-      method: GET
-      path: /photos
+    method: GET
+    path: /photos
     params:
       - name: page
         type: int
@@ -112,9 +109,8 @@ actions:
 
   - name: get-user
     description: Get a photographer's public profile and stats
-    request:
-      method: GET
-      path: /users/{{username}}
+    method: GET
+    path: /users/{{username}}
     params:
       - name: username
         type: string

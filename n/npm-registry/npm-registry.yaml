@@ -16,9 +16,8 @@ actions:
   - name: search
     description: Search the npm registry for packages by keyword or phrase
     output: text
-    request:
-      method: GET
-      path: /-/v1/search
+    method: GET
+    path: /-/v1/search
     params:
       - name: text
         type: string
@@ -63,9 +62,8 @@ actions:
   - name: package-info
     description: Get full metadata for a specific npm package including all versions, maintainers, and dependencies
     output: text
-    request:
-      method: GET
-      path: /{{name}}
+    method: GET
+    path: /{{name}}
     params:
       - name: name
         type: string
@@ -89,9 +87,8 @@ actions:
   - name: package-version
     description: Get metadata for a specific version of a package
     output: text
-    request:
-      method: GET
-      path: /{{name}}/{{version}}
+    method: GET
+    path: /{{name}}/{{version}}
     params:
       - name: name
         type: string

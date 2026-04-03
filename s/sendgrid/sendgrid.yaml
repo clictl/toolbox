@@ -23,9 +23,8 @@ auth:
 actions:
   - name: list-templates
     description: List all transactional email templates in your SendGrid account
-    request:
-      method: GET
-      path: /templates
+    method: GET
+    path: /templates
     params:
       - name: generations
         type: string
@@ -48,9 +47,8 @@ actions:
 
   - name: get-template
     description: Get details and versions for a specific email template
-    request:
-      method: GET
-      path: /templates/{{template_id}}
+    method: GET
+    path: /templates/{{template_id}}
     params:
       - name: template_id
         type: string
@@ -67,9 +65,8 @@ actions:
 
   - name: global-stats
     description: Get global email delivery statistics for a date range
-    request:
-      method: GET
-      path: /stats
+    method: GET
+    path: /stats
     params:
       - name: start_date
         type: string
@@ -95,9 +92,8 @@ actions:
 
   - name: list-suppressions
     description: List all email addresses on the global suppression (unsubscribe) list
-    request:
-      method: GET
-      path: /suppression/unsubscribes
+    method: GET
+    path: /suppression/unsubscribes
     params:
       - name: start_time
         type: int

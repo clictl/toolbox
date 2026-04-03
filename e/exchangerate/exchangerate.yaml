@@ -20,9 +20,8 @@ auth:
 actions:
   - name: latest
     description: Get latest exchange rates for a base currency
-    request:
-      method: GET
-      path: /v6/{{api_key}}/latest/{{base}}
+    method: GET
+    path: /v6/{{api_key}}/latest/{{base}}
     params:
       - name: base
         type: string
@@ -32,9 +31,8 @@ actions:
 
   - name: pair
     description: Convert between two currencies with a specific amount
-    request:
-      method: GET
-      path: /v6/{{api_key}}/pair/{{from}}/{{to}}/{{amount}}
+    method: GET
+    path: /v6/{{api_key}}/pair/{{from}}/{{to}}/{{amount}}
     params:
       - name: from
         type: string

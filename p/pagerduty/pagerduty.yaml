@@ -24,9 +24,8 @@ auth:
 actions:
   - name: list-incidents
     description: List incidents from your PagerDuty account with optional filtering
-    request:
-      method: GET
-      path: /incidents
+    method: GET
+    path: /incidents
     params:
       - name: statuses[]
         type: string
@@ -65,9 +64,8 @@ actions:
 
   - name: get-incident
     description: Get detailed information about a specific incident
-    request:
-      method: GET
-      path: /incidents/{{id}}
+    method: GET
+    path: /incidents/{{id}}
     params:
       - name: id
         type: string
@@ -84,9 +82,8 @@ actions:
 
   - name: list-services
     description: List all services configured in your PagerDuty account
-    request:
-      method: GET
-      path: /services
+    method: GET
+    path: /services
     params:
       - name: query
         type: string
@@ -113,9 +110,8 @@ actions:
 
   - name: list-oncalls
     description: List current on-call entries across escalation policies
-    request:
-      method: GET
-      path: /oncalls
+    method: GET
+    path: /oncalls
     params:
       - name: schedule_ids[]
         type: string

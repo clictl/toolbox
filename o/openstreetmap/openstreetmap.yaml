@@ -16,9 +16,8 @@ server:
 actions:
   - name: search
     description: Search for places by name, address, or other attributes
-    request:
-      method: GET
-      path: /search
+    method: GET
+    path: /search
     params:
       - name: q
         type: string
@@ -61,9 +60,8 @@ actions:
 
   - name: reverse
     description: Look up the address for a given latitude and longitude
-    request:
-      method: GET
-      path: /reverse
+    method: GET
+    path: /reverse
     params:
       - name: lat
         type: string
@@ -100,9 +98,8 @@ actions:
 
   - name: lookup
     description: Look up address details for one or more OSM objects by their IDs
-    request:
-      method: GET
-      path: /lookup
+    method: GET
+    path: /lookup
     params:
       - name: osm_ids
         type: string

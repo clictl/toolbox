@@ -16,9 +16,8 @@ actions:
   - name: current
     description: Get current weather conditions for a location by latitude and longitude
     output: text
-    request:
-      method: GET
-      path: /forecast
+    method: GET
+    path: /forecast
     params:
       - name: latitude
         type: number
@@ -58,9 +57,8 @@ actions:
   - name: forecast
     description: Get a multi-day weather forecast with daily high/low temperatures
     output: json
-    request:
-      method: GET
-      path: /forecast
+    method: GET
+    path: /forecast
     params:
       - name: latitude
         type: number
@@ -98,9 +96,8 @@ actions:
   - name: hourly
     description: Get hourly weather forecast for the next 24-48 hours
     output: json
-    request:
-      method: GET
-      path: /forecast
+    method: GET
+    path: /forecast
     params:
       - name: latitude
         type: number

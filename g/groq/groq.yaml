@@ -24,9 +24,8 @@ auth:
 actions:
   - name: chat
     description: Create a chat completion using Groq-hosted models with low latency
-    request:
-      method: POST
-      path: /chat/completions
+    method: POST
+    path: /chat/completions
     params:
       - name: model
         type: string
@@ -60,9 +59,8 @@ actions:
 
   - name: models
     description: List all available models on Groq
-    request:
-      method: GET
-      path: /models
+    method: GET
+    path: /models
     params: []
     assert:
       - type: status

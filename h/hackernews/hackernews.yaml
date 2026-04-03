@@ -17,9 +17,8 @@ actions:
     instructions: |
       Returns an array of story IDs. To get full stories, call the 'item' action for each ID:
       clictl run hackernews item --id <id>
-    request:
-      method: GET
-      path: /topstories.json
+    method: GET
+    path: /topstories.json
     transform:
       - type: truncate
         max_items: 10
@@ -29,9 +28,8 @@ actions:
   - name: new
     description: Get the IDs of the newest stories
     output: json
-    request:
-      method: GET
-      path: /newstories.json
+    method: GET
+    path: /newstories.json
     params: []
     transform:
       - type: truncate
@@ -40,9 +38,8 @@ actions:
   - name: best
     description: Get the IDs of the best stories
     output: json
-    request:
-      method: GET
-      path: /beststories.json
+    method: GET
+    path: /beststories.json
     params: []
     transform:
       - type: truncate
@@ -51,9 +48,8 @@ actions:
   - name: item
     description: Get a specific item (story, comment, job, poll) by its ID
     output: text
-    request:
-      method: GET
-      path: /item/{{id}}.json
+    method: GET
+    path: /item/{{id}}.json
     params:
       - name: id
         type: int
@@ -74,9 +70,8 @@ actions:
   - name: user
     description: Get a Hacker News user profile by username
     output: json
-    request:
-      method: GET
-      path: /user/{{username}}.json
+    method: GET
+    path: /user/{{username}}.json
     params:
       - name: username
         type: string
@@ -88,15 +83,13 @@ actions:
   - name: ask
     description: Get the IDs of the current Ask HN stories
     output: json
-    request:
-      method: GET
-      path: /askstories.json
+    method: GET
+    path: /askstories.json
     params: []
 
   - name: show
     description: Get the IDs of the current Show HN stories
     output: json
-    request:
-      method: GET
-      path: /showstories.json
+    method: GET
+    path: /showstories.json
     params: []

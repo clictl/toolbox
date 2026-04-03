@@ -23,9 +23,8 @@ auth:
 actions:
   - name: list-tasks
     description: List active tasks with optional filtering by project, label, or filter expression
-    request:
-      method: GET
-      path: /tasks
+    method: GET
+    path: /tasks
     params:
       - name: project_id
         type: string
@@ -50,9 +49,8 @@ actions:
 
   - name: get-task
     description: Get details for a specific task by its ID
-    request:
-      method: GET
-      path: /tasks/{{task_id}}
+    method: GET
+    path: /tasks/{{task_id}}
     params:
       - name: task_id
         type: string
@@ -69,9 +67,8 @@ actions:
 
   - name: list-projects
     description: List all projects in your Todoist account
-    request:
-      method: GET
-      path: /projects
+    method: GET
+    path: /projects
     params: []
     assert:
       - type: status
@@ -84,9 +81,8 @@ actions:
 
   - name: get-project
     description: Get details for a specific project by its ID
-    request:
-      method: GET
-      path: /projects/{{project_id}}
+    method: GET
+    path: /projects/{{project_id}}
     params:
       - name: project_id
         type: string
@@ -103,9 +99,8 @@ actions:
 
   - name: list-labels
     description: List all personal labels in your Todoist account
-    request:
-      method: GET
-      path: /labels
+    method: GET
+    path: /labels
     params: []
     assert:
       - type: status

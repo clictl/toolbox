@@ -12,7 +12,6 @@ tags:
 actions:
 - name: latest
   description: Get the latest release for a GitHub repo including tag, release notes, and downloadable assets
-  composite: true
   params:
   - name: owner
     type: string

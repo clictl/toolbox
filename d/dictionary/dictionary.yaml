@@ -14,9 +14,8 @@ actions:
   - name: define
     description: Look up the definition of an English word including phonetics, meanings, synonyms, and example usage
     output: text
-    request:
-      method: GET
-      path: /entries/en/{{word}}
+    method: GET
+    path: /entries/en/{{word}}
     params:
       - name: word
         type: string

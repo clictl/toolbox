@@ -40,9 +40,8 @@ actions:
     default: 'false'
     description: Stream the response token by token
     in: body
-  request:
-    method: POST
-    path: /api/generate
+  method: POST
+  path: /api/generate
 - name: chat
   description: Send a chat message and get a response (single turn)
   send:
@@ -65,18 +64,16 @@ actions:
   transform:
   - type: extract
     path: $.message.content
-  request:
-    method: POST
-    path: /api/chat
+  method: POST
+  path: /api/chat
 - name: list
   description: List all models currently downloaded on your machine
   params: []
   transform:
   - type: extract
     path: $.models
-  request:
-    method: GET
-    path: /api/tags
+  method: GET
+  path: /api/tags
 - name: embeddings
   description: Generate vector embeddings for text using a local model
   params:
@@ -90,6 +87,5 @@ actions:
     required: true
     description: Text to generate embeddings for
     in: body
-  request:
-    method: POST
-    path: /api/embeddings
+  method: POST
+  path: /api/embeddings

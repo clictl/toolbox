@@ -20,9 +20,8 @@ auth:
 actions:
   - name: listings
     description: Get top cryptocurrencies ranked by market cap
-    request:
-      method: GET
-      path: /v1/cryptocurrency/listings/latest
+    method: GET
+    path: /v1/cryptocurrency/listings/latest
     params:
       - name: limit
         type: int
@@ -40,9 +39,8 @@ actions:
 
   - name: quotes
     description: Get price quotes for specific cryptocurrencies by symbol
-    request:
-      method: GET
-      path: /v2/cryptocurrency/quotes/latest
+    method: GET
+    path: /v2/cryptocurrency/quotes/latest
     params:
       - name: symbol
         type: string

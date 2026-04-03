@@ -23,9 +23,8 @@ actions:
     required: true
     description: Core module name (e.g., fs, http, path, stream, child_process)
     in: path
-  request:
-    method: GET
-    path: /{module}.json
+  method: GET
+  path: /{module}.json
 - name: get_page
   description: Fetch an HTML documentation page for a Node.js core module
   params:
@@ -34,12 +33,10 @@ actions:
     required: true
     description: Core module name (e.g., fs, http, path, stream, child_process)
     in: path
-  request:
-    method: GET
-    path: /{module}.html
+  method: GET
+  path: /{module}.html
 - name: index
   description: Fetch the documentation index listing all available modules
   params: []
-  request:
-    method: GET
-    path: /index.json
+  method: GET
+  path: /index.json

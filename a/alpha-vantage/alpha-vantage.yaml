@@ -23,9 +23,8 @@ auth:
 actions:
   - name: quote
     description: Get the latest price quote for a stock symbol
-    request:
-      method: GET
-      path: /query
+    method: GET
+    path: /query
     params:
       - name: function
         type: string
@@ -47,9 +46,8 @@ actions:
 
   - name: daily
     description: Get daily time-series stock price data (open, high, low, close, volume)
-    request:
-      method: GET
-      path: /query
+    method: GET
+    path: /query
     params:
       - name: function
         type: string
@@ -77,9 +75,8 @@ actions:
 
   - name: search
     description: Search for stock symbols and company names by keyword
-    request:
-      method: GET
-      path: /query
+    method: GET
+    path: /query
     params:
       - name: function
         type: string
@@ -103,9 +100,8 @@ actions:
 
   - name: exchange-rate
     description: Get the current exchange rate between two currencies
-    request:
-      method: GET
-      path: /query
+    method: GET
+    path: /query
     params:
       - name: function
         type: string

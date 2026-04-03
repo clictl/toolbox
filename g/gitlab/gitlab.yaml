@@ -24,9 +24,8 @@ actions:
   - name: projects
     description: Search for GitLab projects by keyword
     output: json
-    request:
-      method: GET
-      path: /projects
+    method: GET
+    path: /projects
     params:
       - name: search
         type: string
@@ -61,9 +60,8 @@ actions:
   - name: project
     description: Get detailed information about a specific GitLab project by its numeric ID or URL-encoded path
     output: json
-    request:
-      method: GET
-      path: /projects/{{id}}
+    method: GET
+    path: /projects/{{id}}
     params:
       - name: id
         type: string
@@ -82,9 +80,8 @@ actions:
   - name: issues
     description: List issues for a GitLab project
     output: json
-    request:
-      method: GET
-      path: /projects/{{id}}/issues
+    method: GET
+    path: /projects/{{id}}/issues
     params:
       - name: id
         type: string
@@ -122,9 +119,8 @@ actions:
   - name: merge-requests
     description: List merge requests for a GitLab project
     output: json
-    request:
-      method: GET
-      path: /projects/{{id}}/merge_requests
+    method: GET
+    path: /projects/{{id}}/merge_requests
     params:
       - name: id
         type: string

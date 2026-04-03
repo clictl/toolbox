@@ -23,12 +23,10 @@ actions:
     required: true
     description: Handbook page path (e.g., 2/basic-types, 2/everyday-types, 2/narrowing)
     in: path
-  request:
-    method: GET
-    path: /docs/handbook/{page}
+  method: GET
+  path: /docs/handbook/{page}
 - name: tsconfig_reference
   description: Fetch the TSConfig reference page for compiler options
   params: []
-  request:
-    method: GET
-    path: /tsconfig
+  method: GET
+  path: /tsconfig
