@@ -1,0 +1,1350 @@
+{
+  "version": 1,
+  "count": 224,
+  "tools": [
+    {
+      "name": "aider",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "9beed3b5c1be4dff"
+    },
+    {
+      "name": "airtable",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "79f88edc611ad65a"
+    },
+    {
+      "name": "airtable-mcp",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "7eabd3c0c74beb3f"
+    },
+    {
+      "name": "algorithmic-art",
+      "version": "1.0",
+      "category": "design",
+      "etag": "a17540ecff28bc75"
+    },
+    {
+      "name": "alpha-vantage",
+      "version": "1.0",
+      "category": "finance",
+      "etag": "1ee1e29e718811d7"
+    },
+    {
+      "name": "anthropic",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "5ca31e8532c5df32"
+    },
+    {
+      "name": "anthropic-docs",
+      "version": "1.0",
+      "category": "documentation",
+      "etag": "6ea975ac93d85ede"
+    },
+    {
+      "name": "archive-org",
+      "version": "1.0",
+      "category": "data",
+      "etag": "9ff384d855f7d35b"
+    },
+    {
+      "name": "asana-mcp",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "f90d2a86f0db2f72"
+    },
+    {
+      "name": "aws-mcp",
+      "version": "1.0",
+      "category": "cloud",
+      "etag": "56f390705b0f12b8"
+    },
+    {
+      "name": "aws-s3",
+      "version": "1.0",
+      "category": "cloud",
+      "etag": "e28c9cebe12bc177"
+    },
+    {
+      "name": "az",
+      "version": "1.0",
+      "category": "cloud",
+      "etag": "0177160828435613"
+    },
+    {
+      "name": "azure-ai",
+      "version": "1.0",
+      "category": "cloud",
+      "etag": "e5bef83af6ed8513"
+    },
+    {
+      "name": "azure-deploy",
+      "version": "1.0",
+      "category": "cloud",
+      "etag": "3843099a358e97b1"
+    },
+    {
+      "name": "azure-mcp",
+      "version": "1.0",
+      "category": "cloud",
+      "etag": "6a5f5bad14d2d800"
+    },
+    {
+      "name": "bigquery-mcp",
+      "version": "1.0",
+      "category": "data",
+      "etag": "2196025fb69d6499"
+    },
+    {
+      "name": "binance",
+      "version": "1.0",
+      "category": "finance",
+      "etag": "32e205c697ac6876"
+    },
+    {
+      "name": "binance-ws",
+      "version": "1.0",
+      "category": "crypto",
+      "etag": "6d36dd4e87bc965b"
+    },
+    {
+      "name": "bing-search",
+      "version": "1.0",
+      "category": "search",
+      "etag": "f51238a9729b38c4"
+    },
+    {
+      "name": "brainstorming",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "369aec1e5c46ec85"
+    },
+    {
+      "name": "brand-guidelines",
+      "version": "1.0",
+      "category": "design",
+      "etag": "82c320457cce33c5"
+    },
+    {
+      "name": "brave-search-mcp",
+      "version": "1.0",
+      "category": "search",
+      "etag": "736bab491f1b5f79"
+    },
+    {
+      "name": "browser-mcp",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "8d729434ca6258d8"
+    },
+    {
+      "name": "bun",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "f0e6de5b0c9f36ca"
+    },
+    {
+      "name": "canvas-design",
+      "version": "1.0",
+      "category": "design",
+      "etag": "6ca8bdc23cb6b098"
+    },
+    {
+      "name": "claude-api",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "850a011706e70532"
+    },
+    {
+      "name": "claude-code",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "7758fce688d04e41"
+    },
+    {
+      "name": "cloudflare",
+      "version": "1.0",
+      "category": "cloud",
+      "etag": "c6f2188ebde33fc5"
+    },
+    {
+      "name": "cloudflare-deploy",
+      "version": "1.0",
+      "category": "devops",
+      "etag": "df11a2083de3bf89"
+    },
+    {
+      "name": "cloudflare-mcp",
+      "version": "1.0",
+      "category": "cloud",
+      "etag": "dbb58a332ce52a9f"
+    },
+    {
+      "name": "codex",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "518caf193af8002f"
+    },
+    {
+      "name": "coinbase-ws",
+      "version": "1.0",
+      "category": "finance",
+      "etag": "97765bde36d912e6"
+    },
+    {
+      "name": "coingecko",
+      "version": "1.0",
+      "category": "crypto",
+      "etag": "1c44cb7b0e8e1fd2"
+    },
+    {
+      "name": "coinmarketcap",
+      "version": "1.0",
+      "category": "finance",
+      "etag": "ff0aeae0056aa973"
+    },
+    {
+      "name": "confluence-mcp",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "234ac5bb96fdf488"
+    },
+    {
+      "name": "context7-mcp",
+      "version": "1.0",
+      "category": "documentation",
+      "etag": "5434ab3e52e1b350"
+    },
+    {
+      "name": "copilot-cli",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "82f3c87aa80dd135"
+    },
+    {
+      "name": "crates-io",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "6e58a36c278bd799"
+    },
+    {
+      "name": "cursor",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "6778a5203d9fef44"
+    },
+    {
+      "name": "cve",
+      "version": "1.0",
+      "category": "security",
+      "etag": "c9053599ec4a4288"
+    },
+    {
+      "name": "data-gov",
+      "version": "1.0",
+      "category": "data-portal",
+      "etag": "206ca9eef91f39ef"
+    },
+    {
+      "name": "datadog",
+      "version": "1.0",
+      "category": "monitoring",
+      "etag": "5bed9c9aba8dfc36"
+    },
+    {
+      "name": "datadog-mcp",
+      "version": "1.0",
+      "category": "monitoring",
+      "etag": "ed9492fff19bce83"
+    },
+    {
+      "name": "dbt-mcp",
+      "version": "1.0",
+      "category": "data",
+      "etag": "2274b05da5bbef00"
+    },
+    {
+      "name": "deepl",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "48c831d49179f5c0"
+    },
+    {
+      "name": "desktop-commander-mcp",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "d50f4fda9bbaaef3"
+    },
+    {
+      "name": "devdocs",
+      "version": "1.0",
+      "category": "reference",
+      "etag": "b24eb7cbf5b322a6"
+    },
+    {
+      "name": "develop-web-game",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "55987e78c83bf1cb"
+    },
+    {
+      "name": "dictionary",
+      "version": "1.0",
+      "category": "text",
+      "etag": "ae0dbdc2dd54a4ce"
+    },
+    {
+      "name": "discord",
+      "version": "1.0",
+      "category": "communication",
+      "etag": "6a3ca1846bd76536"
+    },
+    {
+      "name": "doc",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "493df68fd3c97b62"
+    },
+    {
+      "name": "doc-coauthoring",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "34ca778a5c404fa6"
+    },
+    {
+      "name": "docker",
+      "version": "1.0",
+      "category": "devops",
+      "etag": "c569a08efaec8da3"
+    },
+    {
+      "name": "docker-hub",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "b001f6d7de558051"
+    },
+    {
+      "name": "docker-mcp",
+      "version": "1.0",
+      "category": "devops",
+      "etag": "82da195dceeabebb"
+    },
+    {
+      "name": "docx",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "ef50b80ae1761292"
+    },
+    {
+      "name": "duckduckgo",
+      "version": "1.0",
+      "category": "search",
+      "etag": "fcea38e139ecbb07"
+    },
+    {
+      "name": "elastic-mcp",
+      "version": "1.0",
+      "category": "data",
+      "etag": "8c74221c422b57a8"
+    },
+    {
+      "name": "elevenlabs",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "f4f040d7508b1748"
+    },
+    {
+      "name": "everart-mcp",
+      "version": "1.0",
+      "category": "media",
+      "etag": "9a9e5a16fc757c6b"
+    },
+    {
+      "name": "exa-mcp",
+      "version": "1.0",
+      "category": "search",
+      "etag": "5902eb8a2c415968"
+    },
+    {
+      "name": "exchangerate",
+      "version": "1.0",
+      "category": "finance",
+      "etag": "850f840ab0b3e81a"
+    },
+    {
+      "name": "fd",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "9f68a0fadd54fc38"
+    },
+    {
+      "name": "fetch-server",
+      "version": "1.0",
+      "category": "data",
+      "etag": "157df105bd7ec104"
+    },
+    {
+      "name": "figma-implement-design",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "4fd098311f89a659"
+    },
+    {
+      "name": "figma-mcp",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "7873515d46351ae0"
+    },
+    {
+      "name": "filesystem-server",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "ef6240b354c1eb67"
+    },
+    {
+      "name": "firecrawl-mcp",
+      "version": "1.0",
+      "category": "data",
+      "etag": "c2c1f801f76aac15"
+    },
+    {
+      "name": "frontend-design",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "9e2fc959e86c809f"
+    },
+    {
+      "name": "gcloud",
+      "version": "1.0",
+      "category": "cloud",
+      "etag": "59d82bc56e3eab78"
+    },
+    {
+      "name": "gcloud-mcp",
+      "version": "1.0",
+      "category": "cloud",
+      "etag": "083df5830a4e531a"
+    },
+    {
+      "name": "gemini-cli",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "4abe9515d9c06ba5"
+    },
+    {
+      "name": "gh",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "4b3955c43fdb893b"
+    },
+    {
+      "name": "gh-address-comments",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "87ff0bf75239534f"
+    },
+    {
+      "name": "gh-fix-ci",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "ef21cb49cd5a96c3"
+    },
+    {
+      "name": "git",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "641391e5b85e2b3f"
+    },
+    {
+      "name": "git-mcp",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "1c9511a5752b46b9"
+    },
+    {
+      "name": "github",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "0698b8632097cd27"
+    },
+    {
+      "name": "github-graphql",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "0e304c1e2b3734fe"
+    },
+    {
+      "name": "github-mcp",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "005db97290170813"
+    },
+    {
+      "name": "github-release-info",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "d1b4e60202ffc0d6"
+    },
+    {
+      "name": "github-webhook-signed",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "f5e9f21b42501951"
+    },
+    {
+      "name": "gitlab",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "d4c647fa36a62638"
+    },
+    {
+      "name": "gitlab-mcp",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "306e04e0215fc8ce"
+    },
+    {
+      "name": "gmail-mcp",
+      "version": "1.0",
+      "category": "communication",
+      "etag": "476d2938218dd08b"
+    },
+    {
+      "name": "go-docs",
+      "version": "1.0",
+      "category": "documentation",
+      "etag": "4ea7631253d696e8"
+    },
+    {
+      "name": "google-calendar-mcp",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "dd7bc9b54bcfa9a6"
+    },
+    {
+      "name": "google-drive-mcp",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "b7415f709cc83689"
+    },
+    {
+      "name": "google-maps-mcp",
+      "version": "1.0",
+      "category": "geo",
+      "etag": "41bdd40879c57aa5"
+    },
+    {
+      "name": "google-search",
+      "version": "1.0",
+      "category": "search",
+      "etag": "464779dfabf342c2"
+    },
+    {
+      "name": "google-sheets-mcp",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "c7211eef22b192e7"
+    },
+    {
+      "name": "google-trends",
+      "version": "1.0",
+      "category": "data",
+      "etag": "5842c8b3cb7be8c6"
+    },
+    {
+      "name": "grafana-mcp",
+      "version": "1.0",
+      "category": "monitoring",
+      "etag": "3df3f5b3d7e52b2f"
+    },
+    {
+      "name": "groq",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "0ccebe06ad4e87fe"
+    },
+    {
+      "name": "hackernews",
+      "version": "1.0",
+      "category": "news",
+      "etag": "7c3846650a3d0a2e"
+    },
+    {
+      "name": "have-i-been-pwned",
+      "version": "1.0",
+      "category": "security",
+      "etag": "474aac9fc07c0699"
+    },
+    {
+      "name": "homebrew",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "98c7288cccf55230"
+    },
+    {
+      "name": "homebrew-formulae",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "da8e58401569daa5"
+    },
+    {
+      "name": "httpbin",
+      "version": "1.0",
+      "category": "data",
+      "etag": "4c4f188788838363"
+    },
+    {
+      "name": "hubspot-mcp",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "cae4bda52be19b9d"
+    },
+    {
+      "name": "huggingface",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "65920e2d1e52983f"
+    },
+    {
+      "name": "imagegen",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "aeb9412c2e1a08fc"
+    },
+    {
+      "name": "internal-comms",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "bfb40390f31499ac"
+    },
+    {
+      "name": "ip-intel",
+      "version": "1.0",
+      "category": "ip",
+      "etag": "3e7e8da222a51a28"
+    },
+    {
+      "name": "ipinfo",
+      "version": "1.0",
+      "category": "ip",
+      "etag": "cdef4440a43b215e"
+    },
+    {
+      "name": "jira",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "91cf54267b29e024"
+    },
+    {
+      "name": "jira-mcp",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "3216ddaff18ee56c"
+    },
+    {
+      "name": "jq",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "c3c265fe08f93f6f"
+    },
+    {
+      "name": "jsonplaceholder",
+      "version": "1.0",
+      "category": "data",
+      "etag": "1afd772a924ebbff"
+    },
+    {
+      "name": "jupyter-notebook",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "2a87dec7d11b5b51"
+    },
+    {
+      "name": "kubectl",
+      "version": "1.0",
+      "category": "devops",
+      "etag": "6b5ebd08788d2d91"
+    },
+    {
+      "name": "kubernetes-mcp",
+      "version": "1.0",
+      "category": "devops",
+      "etag": "9d1cbdd68f822ace"
+    },
+    {
+      "name": "linear",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "0bc9db55b6b4711a"
+    },
+    {
+      "name": "linear-manage",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "0e548e94c57acacb"
+    },
+    {
+      "name": "linear-mcp",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "f77402621b81db7b"
+    },
+    {
+      "name": "mcp-builder",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "b4903a4d0f5c2718"
+    },
+    {
+      "name": "mdn-web-docs",
+      "version": "1.0",
+      "category": "documentation",
+      "etag": "2845bbcda910af34"
+    },
+    {
+      "name": "memory-mcp",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "653ff053961af6f6"
+    },
+    {
+      "name": "mongodb-mcp",
+      "version": "1.0",
+      "category": "data",
+      "etag": "a3946b56b5cd6692"
+    },
+    {
+      "name": "mysql-mcp",
+      "version": "1.0",
+      "category": "data",
+      "etag": "ebe6366e831f34ba"
+    },
+    {
+      "name": "nasa",
+      "version": "1.0",
+      "category": "data",
+      "etag": "32f534f745eaaecc"
+    },
+    {
+      "name": "netlify-deploy",
+      "version": "1.0",
+      "category": "devops",
+      "etag": "d976f0eaab2ebe3d"
+    },
+    {
+      "name": "news-api",
+      "version": "1.0",
+      "category": "news",
+      "etag": "04c6ea5f9798f40a"
+    },
+    {
+      "name": "next-best-practices",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "0e322d456d78b95a"
+    },
+    {
+      "name": "nodejs-docs",
+      "version": "1.0",
+      "category": "documentation",
+      "etag": "7860f4bbc268c9b8"
+    },
+    {
+      "name": "nominatim",
+      "version": "1.0",
+      "category": "geo",
+      "etag": "beb48ddf7fff2241"
+    },
+    {
+      "name": "notion",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "5f62714149bdf2ab"
+    },
+    {
+      "name": "notion-mcp",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "daf94fbc9e0e4ff0"
+    },
+    {
+      "name": "npm-cli",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "d44a79d564d3b791"
+    },
+    {
+      "name": "npm-registry",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "296aba5348a19639"
+    },
+    {
+      "name": "ntfy",
+      "version": "1.0",
+      "category": "communication",
+      "etag": "aa7aa6cb3e7c128e"
+    },
+    {
+      "name": "obsidian-mcp",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "22bc215ca2a59373"
+    },
+    {
+      "name": "ollama",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "a472c1486436dd48"
+    },
+    {
+      "name": "open-meteo",
+      "version": "1.0",
+      "category": "weather",
+      "etag": "73d3dc0ef95ee385"
+    },
+    {
+      "name": "openai",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "dbbe9ccd7459667b"
+    },
+    {
+      "name": "openlibrary",
+      "version": "1.0",
+      "category": "data",
+      "etag": "5d1764f1161f2982"
+    },
+    {
+      "name": "openstreetmap",
+      "version": "1.0",
+      "category": "data",
+      "etag": "e9596ddaa707f961"
+    },
+    {
+      "name": "pagerduty",
+      "version": "1.0",
+      "category": "monitoring",
+      "etag": "2e937bcbc1103891"
+    },
+    {
+      "name": "pdf",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "c2de21647b36e894"
+    },
+    {
+      "name": "perplexity",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "64f8b2b5665aecfa"
+    },
+    {
+      "name": "playwright",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "d3e49fb55809320f"
+    },
+    {
+      "name": "playwright-interactive",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "6dfd0725cb0ebb1e"
+    },
+    {
+      "name": "playwright-mcp",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "255ac646fd207d21"
+    },
+    {
+      "name": "postgres-mcp",
+      "version": "1.0",
+      "category": "data",
+      "etag": "ffc409d7c7efc7f6"
+    },
+    {
+      "name": "postman-mcp",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "9e0ec6a5c3041544"
+    },
+    {
+      "name": "pptx",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "2850215db8629ea7"
+    },
+    {
+      "name": "puppeteer-mcp",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "35e688b62805e4f5"
+    },
+    {
+      "name": "pypi",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "09db4eaaef4f641b"
+    },
+    {
+      "name": "python-docs",
+      "version": "1.0",
+      "category": "documentation",
+      "etag": "56529214897b1c9b"
+    },
+    {
+      "name": "react-docs",
+      "version": "1.0",
+      "category": "documentation",
+      "etag": "851ff0d1c1824a5f"
+    },
+    {
+      "name": "recraft",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "5d29c52821ef690f"
+    },
+    {
+      "name": "reddit",
+      "version": "1.0",
+      "category": "communication",
+      "etag": "2c3965dbfaf53869"
+    },
+    {
+      "name": "redis",
+      "version": "1.0",
+      "category": "devops",
+      "etag": "4b669d25d1abcab5"
+    },
+    {
+      "name": "redis-mcp",
+      "version": "1.0",
+      "category": "data",
+      "etag": "17f0780ed8b25ae1"
+    },
+    {
+      "name": "remotion",
+      "version": "1.0",
+      "category": "media",
+      "etag": "1fea45a56f5d4133"
+    },
+    {
+      "name": "render-deploy",
+      "version": "1.0",
+      "category": "devops",
+      "etag": "7199cc495bc5b166"
+    },
+    {
+      "name": "replicate",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "befa47b4cff89068"
+    },
+    {
+      "name": "resend",
+      "version": "1.0",
+      "category": "communication",
+      "etag": "fbbe9611defcd1f7"
+    },
+    {
+      "name": "restcountries",
+      "version": "1.0",
+      "category": "geo",
+      "etag": "0de4ef2849aa9ad0"
+    },
+    {
+      "name": "rg",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "1ca301e77fbce3b6"
+    },
+    {
+      "name": "salesforce-mcp",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "d2d78bde32abdde5"
+    },
+    {
+      "name": "screenshot",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "f43557e9acda9492"
+    },
+    {
+      "name": "security-best-practices",
+      "version": "1.0",
+      "category": "security",
+      "etag": "88724e3ea842a525"
+    },
+    {
+      "name": "security-ownership-map",
+      "version": "1.0",
+      "category": "security",
+      "etag": "47ecb9823de24fdd"
+    },
+    {
+      "name": "security-threat-model",
+      "version": "1.0",
+      "category": "security",
+      "etag": "96aca16567adde1e"
+    },
+    {
+      "name": "sendgrid",
+      "version": "1.0",
+      "category": "communication",
+      "etag": "b999035e3e22e9d3"
+    },
+    {
+      "name": "sentry",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "176b67b55efc91c0"
+    },
+    {
+      "name": "sentry-mcp",
+      "version": "1.0",
+      "category": "monitoring",
+      "etag": "65bf813869f138b0"
+    },
+    {
+      "name": "sentry-skill",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "8bbcbf90a5ee4619"
+    },
+    {
+      "name": "seo-audit",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "4d0e62c05acc33c7"
+    },
+    {
+      "name": "sequential-thinking-mcp",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "abbddf6b5899bbaf"
+    },
+    {
+      "name": "serena-mcp",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "935156379220accf"
+    },
+    {
+      "name": "shadcn",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "e30afcac3e6fa210"
+    },
+    {
+      "name": "shodan",
+      "version": "1.0",
+      "category": "security",
+      "etag": "195ea374fae7953e"
+    },
+    {
+      "name": "shopify-mcp",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "1e57c9af8ad5589d"
+    },
+    {
+      "name": "skill-creator",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "99f37b3cbe0e3fc0"
+    },
+    {
+      "name": "slack",
+      "version": "1.0",
+      "category": "communication",
+      "etag": "8801e972f9235c55"
+    },
+    {
+      "name": "slack-gif-creator",
+      "version": "1.0",
+      "category": "design",
+      "etag": "81c7e36c87c3ae68"
+    },
+    {
+      "name": "slack-mcp",
+      "version": "1.0",
+      "category": "communication",
+      "etag": "fdab608f99da9eb4"
+    },
+    {
+      "name": "slides",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "5533672ea7369e9d"
+    },
+    {
+      "name": "snowflake-mcp",
+      "version": "1.0",
+      "category": "data",
+      "etag": "0937f30fdea141a5"
+    },
+    {
+      "name": "sourcegraph",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "a62712c894205b32"
+    },
+    {
+      "name": "speech",
+      "version": "1.0",
+      "category": "media",
+      "etag": "7683fc1e76ec6c41"
+    },
+    {
+      "name": "spotify",
+      "version": "1.0",
+      "category": "media",
+      "etag": "485bbbf851291870"
+    },
+    {
+      "name": "spreadsheet",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "1afdebd1a264d440"
+    },
+    {
+      "name": "sqlite-mcp",
+      "version": "1.0",
+      "category": "data",
+      "etag": "4ec0889e46f35437"
+    },
+    {
+      "name": "stability-ai",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "1f97b31d9ba61b37"
+    },
+    {
+      "name": "stackoverflow",
+      "version": "1.0",
+      "category": "knowledge-base",
+      "etag": "41d48503c63e450a"
+    },
+    {
+      "name": "stripe",
+      "version": "1.0",
+      "category": "finance",
+      "etag": "82616b681fd3d266"
+    },
+    {
+      "name": "stripe-mcp",
+      "version": "1.0",
+      "category": "finance",
+      "etag": "27082f13c460761f"
+    },
+    {
+      "name": "supabase-mcp",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "b1509696df846cc3"
+    },
+    {
+      "name": "systematic-debugging",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "df5dc361614ac328"
+    },
+    {
+      "name": "tailwind-docs",
+      "version": "1.0",
+      "category": "documentation",
+      "etag": "6cc5952ae6f7f7f1"
+    },
+    {
+      "name": "tavily-mcp",
+      "version": "1.0",
+      "category": "search",
+      "etag": "3029e08b76be17cf"
+    },
+    {
+      "name": "telegram-bot",
+      "version": "1.0",
+      "category": "communication",
+      "etag": "3824214fe078005a"
+    },
+    {
+      "name": "terraform-cli",
+      "version": "1.0",
+      "category": "devops",
+      "etag": "78ff2e775401133f"
+    },
+    {
+      "name": "terraform-mcp",
+      "version": "1.0",
+      "category": "devops",
+      "etag": "0d83f58671931220"
+    },
+    {
+      "name": "terraform-registry",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "32d693490d308c82"
+    },
+    {
+      "name": "theme-factory",
+      "version": "1.0",
+      "category": "design",
+      "etag": "fe1804f8356664ba"
+    },
+    {
+      "name": "time-mcp",
+      "version": "1.0",
+      "category": "reference",
+      "etag": "cfdc6505c2b2f20e"
+    },
+    {
+      "name": "tmdb",
+      "version": "1.0",
+      "category": "media",
+      "etag": "28bb40a5f96b014a"
+    },
+    {
+      "name": "todoist",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "b7c5e3e2dcbeff23"
+    },
+    {
+      "name": "transcribe",
+      "version": "1.0",
+      "category": "media",
+      "etag": "558a3b95e1180224"
+    },
+    {
+      "name": "twilio",
+      "version": "1.0",
+      "category": "communication",
+      "etag": "3951d58b0ebc7d28"
+    },
+    {
+      "name": "twitch",
+      "version": "1.0",
+      "category": "communication",
+      "etag": "a6871c25fb58b7db"
+    },
+    {
+      "name": "typescript-docs",
+      "version": "1.0",
+      "category": "documentation",
+      "etag": "825920cd998827d4"
+    },
+    {
+      "name": "unsplash",
+      "version": "1.0",
+      "category": "media",
+      "etag": "cdb8b75a93a42064"
+    },
+    {
+      "name": "uptimerobot",
+      "version": "1.0",
+      "category": "monitoring",
+      "etag": "d3930546195cfb5b"
+    },
+    {
+      "name": "uv",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "bf3ee4c942b4ed55"
+    },
+    {
+      "name": "vercel",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "c24bd59a748edebd"
+    },
+    {
+      "name": "vercel-deploy",
+      "version": "1.0",
+      "category": "devops",
+      "etag": "f73633ecdc8ee68d"
+    },
+    {
+      "name": "vercel-mcp",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "7e59991bb2e3587f"
+    },
+    {
+      "name": "virustotal",
+      "version": "1.0",
+      "category": "security",
+      "etag": "88bf8010cd4d8bf0"
+    },
+    {
+      "name": "web-artifacts-builder",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "858540679e256186"
+    },
+    {
+      "name": "webapp-testing",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "4de7445e5c3b44f6"
+    },
+    {
+      "name": "wikipedia",
+      "version": "1.0",
+      "category": "knowledge-base",
+      "etag": "665cda82cc5a2305"
+    },
+    {
+      "name": "wolfram-alpha",
+      "version": "1.0",
+      "category": "ai",
+      "etag": "e19d73fa35705c53"
+    },
+    {
+      "name": "wordpress-mcp",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "653f0881cf7c3762"
+    },
+    {
+      "name": "worldbank",
+      "version": "1.0",
+      "category": "data",
+      "etag": "ff63ec2e7c6eef5d"
+    },
+    {
+      "name": "xlsx",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "90b6354756fad2a6"
+    },
+    {
+      "name": "yeet",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "593251e770bc0e1f"
+    },
+    {
+      "name": "youtube-data",
+      "version": "1.0",
+      "category": "media",
+      "etag": "0b01f56882854495"
+    },
+    {
+      "name": "yq",
+      "version": "1.0",
+      "category": "developer",
+      "etag": "d4f49ed89b97a13b"
+    },
+    {
+      "name": "zapier-mcp",
+      "version": "1.0",
+      "category": "productivity",
+      "etag": "c4eb2ab38799d326"
+    }
+  ]
+}

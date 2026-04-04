@@ -1,0 +1,47 @@
+spec: "1.0"
+name: coinbase-ws
+description: Coinbase Advanced Trade WebSocket feed for real-time market data including tickers, trades, and order book updates
+version: "1.0"
+category: finance
+tags: [coinbase, crypto, websocket, trading, real-time, market-data]
+
+server:
+  type: websocket
+  url: wss://advanced-trade-ws.coinbase.com
+
+actions:
+  - name: ticker
+    description: Subscribe to real-time ticker updates for a product
+    message: '{"type": "subscribe", "product_ids": ["${product_id}"], "channel": "ticker"}'
+    wait: 5s
+    collect: 2
+    params:
+      - name: product_id
+        type: string
+        required: true
+        description: "Product ID (e.g., BTC-USD, ETH-USD)"
+        example: "BTC-USD"
+
+  - name: trades
+    description: Subscribe to real-time trade feed for a product
+    message: '{"type": "subscribe", "product_ids": ["${product_id}"], "channel": "market_trades"}'
+    wait: 10s
+    collect: 3
+    params:
+      - name: product_id
+        type: string
+        required: true
+        description: "Product ID (e.g., BTC-USD)"
+        example: "BTC-USD"
+
+  - name: heartbeat
+    description: Subscribe to heartbeat channel to monitor connection health
+    message: '{"type": "subscribe", "product_ids": ["${product_id}"], "channel": "heartbeats"}'
+    wait: 5s
+    collect: 2
+    params:
+      - name: product_id
+        type: string
+        required: true
+        description: "Product ID (e.g., BTC-USD)"
+        example: "BTC-USD"

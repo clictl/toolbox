@@ -17,6 +17,26 @@ server:
   - name: gh
     url: https://cli.github.com
     check: gh --version
+sandbox:
+  network:
+    allow:
+    - github.com
+    - api.github.com
+    - uploads.github.com
+  filesystem:
+    read:
+    - ~/.config/gh/
+    - ~/.ssh/
+    - .git/
+    write:
+    - .git/
+  env:
+    allow:
+    - GH_TOKEN
+    - GITHUB_TOKEN
+    - HOME
+    - PATH
+    - SSH_AUTH_SOCK
 actions:
 - name: issue_list
   description: List open issues in the current repository
